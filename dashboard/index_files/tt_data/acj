@@ -1,0 +1,26 @@
+OX_4417891761({
+  "ads":{
+    "medium":"w",
+    "record_tmpl":"http://us-ads.openx.net/{medium}/1.0/{rtype}?ts={txn_state}",
+    "pixels":"http://us-u.openx.net/w/1.0/pd?plm=5&ph=94ef58655625200a8cfc5b15afcd0b94ad52d590",
+    "adunits" : [
+      {
+        "auid":"419905",
+        "chain":[
+          {
+            "is_fallback":0,
+            "framed":1,
+            "ad_id":"1108849",
+            "width":"728",
+            "height":"90",
+            "html":"<!--/* OpenX JavaScript tag */-->\r\n\r\n<!-- /*\r\n * The tag in this template has been generated for use on a\r\n * non-SSL page. If this tag is to be placed on an SSL page, change the\r\n * 'http://mediaservices-d.openxenterprise.com/...'\r\n * to\r\n * 'https://mediaservices-d.openxenterprise.com/...'\r\n */ -->\r\n\r\n<script type=\"text/javascript\">\r\nvar page_url = \"http://www.sploder.com/index.php?&tag=Login%20Successful&good_message=logged_in\";\r\nif (!window.OX_ads) { OX_ads = []; }\r\nOX_ads.push({ \"auid\" : \"298018\" ,\"url\":page_url});\r\n</script>\r\n<script type=\"text/javascript\">\r\ndocument.write('<scr'+'ipt src=\"http://mediaservices-d.openxenterprise.com/w/1.0/jstag\"><\\/scr'+'ipt>');\r\n</script>\r\n<noscript><iframe id=\"519a9d0b5dbbf\" name=\"519a9d0b5dbbf\" src=\"http://mediaservices-d.openxenterprise.com/w/1.0/afr?auid=298018&cb=INSERT_RANDOM_NUMBER_HERE\" frameborder=\"0\" scrolling=\"no\" width=\"728\" height=\"90\"><a href=\"http://mediaservices-d.openxenterprise.com/w/1.0/rc?cs=519a9d0b5dbbf&cb=INSERT_RANDOM_NUMBER_HERE\" ><img src=\"http://mediaservices-d.openxenterprise.com/w/1.0/ai?auid=298018&cs=519a9d0b5dbbf&cb=INSERT_RANDOM_NUMBER_HERE\" border=\"0\" alt=\"\"></a></iframe></noscript>",
+            "target":"_blank",
+            "ts":"1fHJhaWQ9YTM5NTA3ODctYTFhNy00MDRjLWE0MTQtYmQzODIxOGYzNmVifG1wZj01MHxhdWlkPTQxOTkwNXxtcGM9VVNEfG1wcj01NnxtcG5mPTUwfGFpZD0xMTA4ODQ5fG13Y3I9NDc4MTEwfG1ydD0xMzg5MjQ0MjM5fG13cD04MDcwNTB8bW1uZj01MHxtd2M9MTQ2OTIwfG13Yj03MHxtYz1VU0R8cGN2PTl8b2lkPTgwMDgyfG1hPWJlMjdmNjc5LWMzZjEtNDI4MS05NGFiLTc0MTk3ZWNjNjI1YXxtYXA9NzB8bXdhPTE2MTMzfGFkdj0zNjI4fHNpZD04NzQ2OHxlbGc9MXxtb2M9VVNEfG1yPTE0fHVyPVFmYjFKanU1Q3Z8YXM9NzI4eDkwfG11aT03ZGE1YTg3MS0yZDZjLTQ5YTMtOGFjZi1mMzAxNjYxZGU2NTV8bT0xfHB1Yj04MzQ5OXxsaWQ9NjY2MTk0fGF1bT1ETUlELldFQnxhaT05NGQ4NzQ2MS1kYjcwLWI3YjQtYzgzZS04MWVjN2VhMWMwZDV8dD00fG1vcj0xNHxyaWQ9MTg0OWMyYTMtNjNiNy00ODEyLTg0ODctM2Y0NWZmZjRjODc1fHBjPVVTRHxwPTcwfGFjPVVTRHxwbT1QUklDSU5HLkNQTXxydD0xMzg5MjQ0MjM5fG1tZj01MHxwaT01NnxtcmM9V09OfHByPTU2",
+            "type":"html",
+            "ad_url":"<!--/* OpenX JavaScript tag */-->\r\n\r\n<!-- /*\r\n * The tag in this template has been generated for use on a\r\n * non-SSL page. If this tag is to be placed on an SSL page, change the\r\n * 'http://mediaservices-d.openxenterprise.com/...'\r\n * to\r\n * 'https://mediaservices-d.openxenterprise.com/...'\r\n */ -->\r\n\r\n<script type=\"text/javascript\">\r\nvar page_url = \"http://www.sploder.com/index.php?&tag=Login%20Successful&good_message=logged_in\";\r\nif (!window.OX_ads) { OX_ads = []; }\r\nOX_ads.push({ \"auid\" : \"298018\" ,\"url\":page_url});\r\n</script>\r\n<script type=\"text/javascript\">\r\ndocument.write('<scr'+'ipt src=\"http://mediaservices-d.openxenterprise.com/w/1.0/jstag\"><\\/scr'+'ipt>');\r\n</script>\r\n<noscript><iframe id=\"519a9d0b5dbbf\" name=\"519a9d0b5dbbf\" src=\"http://mediaservices-d.openxenterprise.com/w/1.0/afr?auid=298018&cb=INSERT_RANDOM_NUMBER_HERE\" frameborder=\"0\" scrolling=\"no\" width=\"728\" height=\"90\"><a href=\"http://mediaservices-d.openxenterprise.com/w/1.0/rc?cs=519a9d0b5dbbf&cb=INSERT_RANDOM_NUMBER_HERE\" ><img src=\"http://mediaservices-d.openxenterprise.com/w/1.0/ai?auid=298018&cs=519a9d0b5dbbf&cb=INSERT_RANDOM_NUMBER_HERE\" border=\"0\" alt=\"\"></a></iframe></noscript>"
+          }
+        ]
+      }
+    ]
+  }
+});

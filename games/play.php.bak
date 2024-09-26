@@ -1,0 +1,343 @@
+
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
+<?php
+function get_game_info($game_id){
+    include('../database/connect.php');
+    $db = connectToDatabase();
+    $qs = "SELECT * FROM games WHERE g_id=:game_id";
+    $statement = $db->prepare($qs);
+    $statement->execute(
+        [
+            ':game_id' => $game_id
+        ]
+    );
+    $result = $statement->fetchAll();
+    return $result[0];
+}
+function get_creator_type($type, $g_swf){
+    if($type == 'name'){
+        switch ($g_swf){
+            case '1':
+                return 'classic';
+                break;
+            case '2':
+                return 'platformer';
+                break;
+            case '3':
+                return '3d adventure';
+                break;
+            case '5':
+                return 'physics';
+                break;
+            case '7':
+                return 'arcade';
+                break;
+        }
+    } else {
+        switch ($g_swf){
+            case '1':
+                return 'shooter';
+                break;
+            case '2':
+                return 'plat';
+                break;
+            case '3':
+                return 'algo';
+                break;
+            case '5':
+                return 'ppg';
+                break;
+            case '7':
+                return 'arcade';
+                break;
+        }
+    }
+}
+function get_swf_version($g_Swf){
+    switch ($g_Swf){
+        case '1':
+            return 'idk';
+            break;
+        case '2':
+            return '20.swf?fix=3';
+            break;
+        case '3':
+            return 'idk';
+            break;
+        case '5':
+            return 'idk';
+            break;
+        case '7':
+            return 'idk';
+            break;
+    }
+}
+?>
+<?php
+    $game = get_game_info($_GET['id']);
+    if(!isset($game['title'])){
+        die("Invalid game ID");
+    }
+    $status = "playing";
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?php include('../content/head.php') ?>
+    <link rel="alternate nofollow" type="application/rss+xml" title="RSS" href="/gamefeed.php" />
+    <link rel="stylesheet" type="text/css"  href="/css/sploder_v2p22.min.css" />
+    <link rel="stylesheet" type="text/css"  href="/css/venue5.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+
+    <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/ruffle.php'); ?>
+</head>
+<?php include('../content/addressbar.php'); ?>
+<body id="everyones" class="gamepage" >
+    <?php include('../content/headernavigation.php'); ?>
+    <div id="page">
+        <?php include('../content/subnav.php') ?>
+
+        <div id="content">
+            <h3><?= $game['title'] ?></h3>
+            <h4 class="subtitle">By <a href="games/members/<?= $game['author'] ?>/"><?= $game['author'] ?></a> :: <?= date('l F j\t\h, Y',strtotime($game['date'])) ?></h4>
+            <div class="vote"" id="contestwidget"><div style="margin-top:-15px; width: 150px; height:45px; overflow: hidden;" id="contestflash">&nbsp;</div></div>
+            <div id="venue" style="margin: 6px 0 0 20px; float: right;"></div>
+            <script>
+                window.RufflePlayer = window.RufflePlayer || {};
+                window.RufflePlayer.config = {
+                    "width": "200",
+                    "height": "200",
+                    "publicPath": undefined,
+                    "polyfills": true,
+                    "autoplay": "on",
+                    "unmuteOverlay": "hidden",
+                    "backgroundColor": "#000000",
+                    "wmode": "window",
+                    "letterbox": "fullscreen",
+                    "warnOnUnsupportedContent": true,
+                    "contextMenu": false,
+                    "upgradeToHttps": window.location.protocol === "https:",
+                    "maxExecutionDuration": {"secs": 15, "nanos": 0},
+                    "logLevel": "error",
+                    "base": null,
+                    "allowScriptAccess": true,
+                    "menu": false,
+                    "salign": "TL",
+                    "scale": "noscale",
+                    "quality": "high",
+                    "preloader": false,
+                }
+                window.addEventListener("load", (event) => {
+                    const ruffle = window.RufflePlayer.newest();
+
+                    const player = ruffle.createPlayer();
+                    const container = document.getElementById("contestflash");
+                    container.appendChild(player);
+
+                    player.load({
+                        url: "/swf/contest.swf?g=<?= $game['g_id'] ?>",
+                        width: "200",
+                        height: "200",
+                        salign: "TL",
+
+                    });
+                });
+            </script>
+            <script type="text/javascript">
+                swfobject.embedSWF("/swf/contest.swf", "contestflash", "150", "30", "8", "/swfobject/expressInstall.swf", { g: "<?= $game['g_id'] ?>"}, { bgcolor: "#000000", menu: "false", quality: "high", scale: "noscale", salign: "tl", wmode: "opaque", base: "https://sploder.xyz" });
+            </script>
+                <div class="gameobject">
+                <div id="flashcontent">
+                    <img class="game_preview" src="../users/user<?= $game['user_id'] ?>/images/proj<?= $game['g_id'] ?>/image.png"/>
+                    <p class="game_loading" style="font-size: 14px; line-height: 16px; width: 500px; padding: 20px; margin-left: -130px; margin-top: 0px;">
+                        Your browser does not support the technology to run this game<br><br>
+                        You may download a single-use file to load it separately<br><br>
+                        <img border="0" alt="Download" src="/images/download.gif"/>
+                    </p>
+                </div>
+            </div>
+            <script type="text/javascript">
+
+                var g_swf = "game<?= $game['g_swf'] ?>.swf";
+                var g_version = "10";
+
+                try {
+                    if (g_swf == "game2.swf") {
+                        var fmv = deconcept.SWFObjectUtil.getPlayerVersion().major;
+                        if (fmv == "9") {
+                            g_swf = "game2v9.swf";
+                            g_version = "9";
+                        }
+                    }
+                } catch (err) {
+                }
+
+                var flashvars = {
+                    s: "<?= $game['g_id'].'_'.$game['user_id'] ?>",
+                    <?php if(isset($_SESSION['PHPSESSID'])) { echo "sid: \"{$_SESSION['PHPSESSID']}\",\n"; } else { echo 'nu: "",'."\n";} ?>
+                    // EMBED_BETA_VERSION
+                    // EMBED_FORCE_SECURE
+                    // EMBED_ADTEST
+                    // EMBED_CHALLENGE
+                    beta_version: "<?= get_swf_version($game['g_swf']) ?>",
+                    onsplodercom: "true",
+                    modified: <?= rand() ?>,
+                    <?php if(isset($_SESSION['PHPSESSID'])) { echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\""; } ?>
+                }
+
+                var params = {
+                    menu: "false",
+                    quality: "high",
+                    scale: "noscale",
+                    salign: "tl",
+                    bgcolor: "#333333",
+                    wmode: "direct",
+                    allowScriptAccess: "always",
+                    base: "https://sploder.xyz"
+                };
+
+                swfobject.embedSWF("/swf/" + g_swf, "flashcontent", "640", "480", g_version, "/swfobject/expressInstall.swf", flashvars, params);
+
+            </script>
+
+            <div class="sharebar">
+                <a href="/make/index.php"><img style="float: left;" src="/chrome/social_bar_make.gif" width="210" height="36" alt="make a game" /></a>
+                <div class="share_buttons"><a class="facebook" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.sploder.com%2Fgames%2Fmembers%2Fgeoff%2Fplay%2Fgenetic-lab-explosion%2F%3Fref%3Dfb" onclick="javascript:window.open(this.href,
+      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;" title="share this on facebook"></a>&nbsp;<a class="twitter" href="https://twitter.com/intent/tweet?text=Playing%20Genetic%20Lab%20Explosion%20by%20geoff%20on%20%40sploder%20-%20&url=https%3A%2F%2Fwww.sploder.com%2Fgames%2Fmembers%2Fgeoff%2Fplay%2Fgenetic-lab-explosion%2F%3Fref%3Dtw" onclick="javascript:window.open(this.href,
+      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;" title="tweet this!"></a></div></div>
+            <?php
+            if(isset($game['description']))
+                echo '<p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">' . $game['description'] . '</p>'
+            ?>
+
+            <script type="text/javascript">
+                us_config = {
+                    container: 'messages',
+                    venue: 'game-<?= $game['g_id'] ?>',
+                    venue_container: 'venue',
+                    venue_type: 'game',
+                    owner: '<?= $game['author'] ?>',
+                    username: '<?php if(isset($_SESSION['username'])) { echo $_SESSION['username']; }?>',
+                    ip_address: '',
+                    timestamp: '<?= time() ?>',
+                    auth: '',
+                    use_avatar: true,
+                    venue_anchor_link: true,
+                    show_messages: true,
+                }
+
+                window.onload = function () {
+                    var n;
+                    n = document.createElement('link');
+                    n.rel = 'stylesheet';
+                    n.type = 'text/css';
+                    n.href = '/css/venue5.css';
+                    document.getElementsByTagName('head')[0].appendChild(n);
+                    n = document.createElement('script');
+                    n.type = 'text/javascript';
+                    n.src =  '/comments/venue7.js';
+                    document.getElementsByTagName('head')[0].appendChild(n);
+                    if (window.addthis) addthis.button('#btn1', addthis_ui_config, addthis_share_config);
+                }
+            </script>
+
+            <a id="messages_top"></a>
+            <div id="messages"></div>
+            <div id="venue" class="mprofvenue"></div>
+            <script type="text/javascript" src="/comments/venue7.js"></script>
+            <div class="spacer">&nbsp;</div>
+
+            <br>
+            <?php
+                $db = connectToDatabase();
+                $sql = "SELECT g_id, date, title, author, views FROM games WHERE author = :author AND isprivate = 0 AND ispublished = 1 AND isdeleted = 0 ORDER BY date DESC LIMIT 11";
+                $statement = $db->prepare($sql);
+                $statement->execute([
+                    ':author' => $game['author']
+                ]);
+                $result = $statement->fetchAll();
+                // remove game if id is same as current game
+                foreach($result as $key => $value){
+                    if($value['g_id'] == $game['g_id']){
+                        unset($result[$key]);
+                    }
+                }
+                $total_more_games = count($result);
+                if($total_more_games == 11) unset($result[11]);
+                if($total_more_games != 0) {
+
+            ?>
+
+            <div class="bucket moregames">
+
+
+                    <h5>More games by <a href="/members/index.php?u=<?= $game['author']?>"><?= $game['author'] ?></a></h5>
+
+                <ul class="ratings_list">
+                    <?php
+                    //show games
+                    foreach($result as $more_game){
+                        echo '<li><a href="play.php?id='.$more_game['g_id'].'">'.$more_game['title'].'</a>&nbsp; <span class="viewscomments">'.date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['date'])).' &middot; '.$more_game['views'].' views</span></li>';
+                    }
+                    ?>
+
+
+                </ul>
+            </div>
+            <?php } ?>
+            <div class="spacer">&nbsp;</div></div>
+        <div id="sidebar">
+
+
+            <div class="gametypeinfo"><p>This is a game made with Sploder Revival's <a href="../make/<?= get_creator_type('url',$game['g_swf']) ?>.php"><?= get_creator_type('name',$game['g_swf']) ?> game creator</a>.</p></div>
+
+
+
+            <div class="skyscraper">
+
+            </div>
+
+            <br /><br />
+            <?php
+            include('../php/includes/votes.php');
+            $votes = get_votes($game['g_id']);
+            $total = $votes['count'];
+            if($total!=0){
+                $average = round($votes['avg'], 1);
+            ?>
+
+            <div class="promo gamerating">
+                <div xmlns:v="https://rdf.data-vocabulary.org/#" typeof="v:Review-aggregate">
+                    <span property="v:itemreviewed"><?= $game['title'] ?></span>
+                    <span rel="v:rating">
+                    <span typeof="v:Rating">
+                    Rating:
+                        <span property="v:average" datatype="xsd:string"><?= $average ?></span>
+                        /
+                        <span property="v:best" datatype="xsd:string">5</span>
+                    </span>
+                </span>
+                    based on
+                    <span property="v:votes" datatype="xsd:string"><?= $total ?></span> rating<?php if($total!=1){echo 's';} ?>
+                </div>
+                <div class="spacer"></div>
+            </div>
+            <?php } ?>
+
+
+            <br /><br /><br />
+            <div class="spacer">&nbsp;</div>
+        </div>
+        <div class="spacer">&nbsp;</div>
+        <?php include('../content/footernavigation.php'); ?>
+
+</body>
+</html>
