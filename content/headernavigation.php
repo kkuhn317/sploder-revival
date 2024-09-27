@@ -1,7 +1,7 @@
 <big><big><br>THIS IS IN EXTREME ALPHA. DO NOT USE. Instead, use <a href="https://github.com/Sploder-Saptarshi/Sploder-Launcher">this</a> for a better experience.</big></big>
 <?php
 if(!session_id()) session_start();
-include_once('/var/www/html/database/connect.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/database/connect.php');
 $db1 = connectToDatabase('members');
 $thing = "SELECT boostpoints FROM members WHERE username=:user";
 $thing2 = $db1->prepare($thing);

@@ -48,7 +48,9 @@ window.onload = function() {
 </script>
 
 <?php
+if(isset($_GET['err'])){
 	$err = $_GET['err'];
+}
 	if(isset($err)){
     if($err=="no"){?>
 		<p class="alert">The username and/or password was incorrect!</p>
