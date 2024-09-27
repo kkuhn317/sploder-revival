@@ -181,7 +181,7 @@ swfobject.embedSWF("../swf/creator2_b17.swf", "flashcontent", "860", "540", "10.
         </script>
 
 </head>
-<?php include('content/addressbar.php'); ?>
+<?php include('../content/addressbar.php'); ?>
 <body id="creator" class="platformer" >
 <?php include('../content/headernavigation.php'); ?>
 
