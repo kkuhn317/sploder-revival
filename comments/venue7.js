@@ -333,7 +333,7 @@ function us_renderMessage (m, inner) {
 
     h += '<cite>';
     if (us_config['use_avatar']) {
-        h += '<span class="us_author"><a href="/games/members/' + m.creator_name + '/"><img src="https://sploder.xyz/php/avatarproxy.php' + '?u=' + m.creator_name + '" width="24" height="24" border="0" />' + m.creator_name + '</a></span>';
+        h += '<span class="us_author"><a href="/games/members/' + m.creator_name + '/"><img src="/php/avatarproxy.php' + '?u=' + m.creator_name + '" width="24" height="24" border="0" />' + m.creator_name + '</a></span>';
     } else {
         h += '<span class="us_author">' + m.creator_name + '</span>';
     }
@@ -442,7 +442,7 @@ function us_renderPagination () {
 }
 
 function us_setStatus (msg, show_icon) {
-    var icon = (show_icon) ? '<img src="https://sploder.xyz/chrome/loading_icon.gif" width="24" height="12" /> ' : '';
+    var icon = (show_icon) ? '<img src="/chrome/loading_icon.gif" width="24" height="12" /> ' : '';
     if (msg && msg.length > 0) $us_content_status.innerHTML = '<p class="us_prompt">' + icon + msg + '</p>';
     else $us_content_status.innerHTML = '';
 }
