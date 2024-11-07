@@ -25,9 +25,9 @@ if(!this.JSON){JSON=function(){function f(n){return n<10?'0'+n:n;}
 
 // END JSON
 
-if (window.location.href.indexOf('sploder') == -1) {
-    window.location.href = 'https://sploder.xyz';
-}
+//if (window.location.href.indexOf('sploder') == -1) {
+//    window.location.href = 'https://sploder.xyz';
+//}
 
 function us_getPathToSelf() {
     var myName = /(^|[\/\\])venue7\.js(\?|$)/;
