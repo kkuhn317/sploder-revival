@@ -123,7 +123,6 @@ function get_swf_version($g_Swf){
                     bgcolor: "#333333",
                     wmode: "direct",
                     allowScriptAccess: "always",
-                    base: "https://sploder.xyz"
                 };
 
                 swfobject.embedSWF("/swf/" + g_swf, "flashcontent", "640", "480", g_version, "/swfobject/expressInstall.swf", flashvars, params);
