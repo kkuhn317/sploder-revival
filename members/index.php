@@ -35,19 +35,42 @@ $db = connectToDatabase();
 
 $publicgames = " AND isdeleted=0 AND ispublished=1 AND isprivate=0";
 
-$friends = $db->query("SELECT id FROM friends WHERE user1='$username'")->fetchAll();
-$totalgames = $db->query("SELECT g_id FROM games WHERE author='$username' $publicgames")->rowCount();
+// Fetch friends
+$friendsStmt = $db->prepare("SELECT id FROM friends WHERE user1 = :username");
+$friendsStmt->execute([':username' => $username]);
+$friends = $friendsStmt->fetchAll();
 
-$result = $db->query("SELECT userid,level,perms,joindate,lastlogin FROM members WHERE username='$username'")->fetchAll();
+// Fetch total games
+$totalGamesStmt = $db->prepare("SELECT g_id FROM games WHERE author = :username $publicgames");
+$totalGamesStmt->execute([':username' => $username]);
+$totalgames = $totalGamesStmt->rowCount();
+
+// Fetch user details
+$userDetailsStmt = $db->prepare("SELECT userid, level, perms, joindate, lastlogin FROM members WHERE username = :username");
+$userDetailsStmt->execute([':username' => $username]);
+$result = $userDetailsStmt->fetchAll();
 $exists = isset($result[0]['userid']) ? 1 : 0;
 $user_id = $exists ? $result[0]['userid'] : null;
 
-$plays = $db->query("SELECT COUNT(1) FROM leaderboard WHERE pubkey IN (SELECT g_id FROM games WHERE author='$username' $publicgames)")->fetch()[0];
-$playtime = gmdate("i:s", round($db->query("SELECT SUM(gtm) FROM leaderboard WHERE pubkey IN (SELECT g_id FROM games WHERE author='$username' $publicgames)")->fetch()[0] / max(1, $plays)));
+// Fetch total plays
+$playsStmt = $db->prepare("SELECT COUNT(1) FROM leaderboard WHERE pubkey IN (SELECT g_id FROM games WHERE author = :username $publicgames)");
+$playsStmt->execute([':username' => $username]);
+$plays = $playsStmt->fetchColumn();
 
-$votes = $db->query("SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author='$username' $publicgames)")->fetch()[0];
+// Fetch total playtime
+$playtimeStmt = $db->prepare("SELECT SUM(gtm) FROM leaderboard WHERE pubkey IN (SELECT g_id FROM games WHERE author = :username $publicgames)");
+$playtimeStmt->execute([':username' => $username]);
+$playtime = gmdate("i:s", round($playtimeStmt->fetchColumn() / max(1, $plays)));
 
-$difficulty = min(100, round($db->query("SELECT AVG(difficulty) FROM games WHERE author='$username' $publicgames")->fetch()[0] * 10));
+// Fetch total votes
+$votesStmt = $db->prepare("SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = :username $publicgames)");
+$votesStmt->execute([':username' => $username]);
+$votes = $votesStmt->fetchColumn();
+
+// Fetch average difficulty
+$difficultyStmt = $db->prepare("SELECT AVG(difficulty) FROM games WHERE author = :username $publicgames");
+$difficultyStmt->execute([':username' => $username]);
+$difficulty = min(100, round($difficultyStmt->fetchColumn() * 10));
 
 //Get feedback in percentage by calculating average vote of games (0-5)
 if ($result[0]['lastlogin'] > (time() - 30)) {
