@@ -7,3 +7,4 @@ playgrounds
 vendor
 users
 src/.env
+pgdata
