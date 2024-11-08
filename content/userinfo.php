@@ -46,7 +46,30 @@ function display_user_info($username){
     <div class="spacer">&nbsp;</div>
 				</div>
 			</div>
+            <div class="mprofgroup mprofsection">
+    <h4><a href="#" onclick="setClass('mprof_activity', 'shown'); return false;" title="Things this member has accomplished">Actions</a></h4>
+    <div class="mprofcontent hidden" id="mprof_activity">
+        <dl class="mprofdata">
+            <dt>Votes cast:</dt>
+            <dd>??</dd>
+            <dt>Comments made:</dt>
+            <dd>?? <a href="/messages/?creator=<?=$username?>">view &raquo;</a></dd>
+            <dt>Vote average:</dt>
+            <dd style="position: relative; width: 96px; height: 24px; background-color: #666;" title="Average vote this member has cast on others' games">
+                <div style="background: #ffec00; width: 1px; height: 24px;">&nbsp;</div>
+                <div style="width: 96px; height: 24px; position: absolute; top: 0; left: 0; z-index: 2; background-image: url('/chrome/starmask.png');">&nbsp;
+                </div>
+            </dd>
+            <dt>Tributes made:</dt>
+            <dd>??</dd>
+            <dt>Group Memberships:</dt>
+            <dd>??</dd>
+            <dt>Group Ownerships:</dt>
+            <dd>??</dd>
+        </dl>
+        <div class="spacer">&nbsp;</div>
+    </div>
+</div>
     <?php
 }
 ?>
-
