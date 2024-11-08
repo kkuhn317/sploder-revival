@@ -1,7 +1,7 @@
 <?php
 //Check whether session is already started, if not start
-$status = session_status();
-if($status == PHP_SESSION_NONE){
+$session_status = session_status();
+if($session_status == PHP_SESSION_NONE){
     //There is no active session
     session_start();
 }
