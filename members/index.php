@@ -104,20 +104,15 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
 				<img src="../php/userstatus.php?u=<?php echo $username ?>" width="80" height="25" alt="online status" />
 				<?php
 				$result[0]['perms'] = $result[0]['perms'] ?? '';
-				if (str_contains($result[0]['perms'], 'E')) {
-				echo '<img src="/chrome/role_editor.gif" width="24" height="28" alt="editor" title="editor" />';
-				} else {
-				echo '<img src="/chrome/role_empty.gif" width="24" height="28" alt="empty" title="empty" />';
-				}
-				if (str_contains($result[0]['perms'], 'R')) {
-				echo '<img src="/chrome/role_reviewer.gif" width="24" height="28" alt="reviewer" title="reviewer" />';
-				} else {
-					echo '<img src="/chrome/role_empty.gif" width="24" height="28" alt="empty" title="empty" />';
-				}
-				if (str_contains($result[0]['perms'], 'M')) {
-				echo '<img src="/chrome/role_moderator.gif" width="24" height="28" alt="moderator" title="moderator" />';
-				} else {
-					echo '<img src="/chrome/role_empty.gif" width="24" height="28" alt="empty" title="empty" />';
+				$roles = [
+					'E' => 'editor',
+					'R' => 'reviewer',
+					'M' => 'moderator'
+				];
+
+				foreach ($roles as $key => $role) {
+					$icon = str_contains($result[0]['perms'], $key) ? "role_$role" : "role_empty";
+					echo "<img src=\"/chrome/{$icon}.gif\" width=\"24\" height=\"28\" alt=\"$role\" title=\"$role\" />";
 				}
 				?>
 			</div>
@@ -127,7 +122,13 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
 				<dt>Joined:</dt>
 				<dd><?php echo time_elapsed_string("@".$result[0]['joindate']) ?></dd>
 				<dt>Last visit:</dt>
-				<dd><?php echo time_elapsed_string("@".$result[0]['lastlogin']) ?></dd>
+				<dd>
+					<?php 
+					$lastLoginTime = $result[0]['lastlogin'];
+					// 30 second buffer
+					echo (time() - $lastLoginTime < 30) ? 'just now' : time_elapsed_string("@".$lastLoginTime);
+					?>
+				</dd>
 			</dl>
 		</div>
 	</div>
