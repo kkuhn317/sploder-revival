@@ -11,6 +11,19 @@
 			 
 			</div>
 			<script type="text/javascript">
+			window.onload = function () {
+				var n;
+				n = document.createElement('link');
+				n.rel = 'stylesheet';
+				n.type = 'text/css';
+				n.href = '../css/venue5.css';
+				document.getElementsByTagName('head')[0].appendChild(n);
+				n = document.createElement('script');
+				n.type = 'text/javascript';
+				n.src = 'https://web.archive.org/web/20140608214730/http://sploder.us/dashboard6.js';
+				document.getElementsByTagName('head')[0].appendChild(n);
+				if (onload2) onload2();
+			  }
 			  onload2 = function () {
 				var n;
 				n = document.createElement('link');
