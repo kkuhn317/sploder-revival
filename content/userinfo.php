@@ -87,21 +87,15 @@ function display_user_info($username){
 
     $validTributesCount = 0;
 
-    foreach ($games as $game) {
-        // Extract the username from the game title
-        $titleParts = explode(' ', $game['title']);
-        $username = end($titleParts);
-
-        // Check if the username is valid
-        $userStmt = $db->prepare("SELECT COUNT(*) FROM members WHERE username = :username");
-        $userStmt->execute([':username' => $username]);
-        $isValidUser = $userStmt->fetchColumn() > 0;
-
-        // If the username is valid, count this tribute
-        if ($isValidUser) {
-            $validTributesCount++;
-        }
-    }
+    // Fetch all games that start with "Tribute to" and have a valid username in one query
+    $stmt = $db->prepare("
+        SELECT g.g_id, g.title 
+        FROM games g
+        JOIN members m ON g.title LIKE CONCAT('Tribute to ', m.username, '%')
+        WHERE g.title LIKE 'Tribute to %' $publicgames
+    ");
+    $stmt->execute();
+    $validTributesCount = $stmt->rowCount();
     // All hail GitHub Copilot!! Someone please switch this to a more optimized method by probably caching or something
 
 
