@@ -182,9 +182,9 @@ if($totalgames == "0"){echo $username." has not published any games so far! :(";
 	$o = isset($_GET['o']) ? $_GET['o'] : "0";
 	$offset = 12;
 
-	$queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 0 ORDER BY "g_id" DESC';
+	$queryString = 'SELECT * FROM games WHERE author=:username '.$publicgames.' ORDER BY "g_id" DESC';
 	if (isset($_GET['game'])) {
-		$queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 0 AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
+		$queryString = 'SELECT * FROM games WHERE author=:username '.$publicgames.' AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
 	}
 
 	$statement = $db->prepare($queryString);
@@ -198,7 +198,7 @@ if($totalgames == "0"){echo $username." has not published any games so far! :(";
 	$statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
 
 	$result = $statement->fetchAll();
-	$qTotal = "SELECT count(1) FROM games WHERE author=:username AND isdeleted = 0" . (isset($_GET['game']) ? ' AND SIMILARITY(title, :game) > 0.3' : '') . ' LIMIT 12 OFFSET ' . $o;
+	$qTotal = "SELECT count(1) FROM games WHERE author=:username ".$publicgames. (isset($_GET['game']) ? ' AND SIMILARITY(title, :game) > 0.3' : '') . ' LIMIT 12 OFFSET ' . $o;
 	$staTotal = $db->prepare($qTotal);
 	$staTotal->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
 
