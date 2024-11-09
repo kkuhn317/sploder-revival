@@ -76,17 +76,6 @@ function display_user_info($username){
     $vote_avg_percentage = ($vote_avg / $max_score) * 96;
 
 
-    // Tributes made algorithm: Any game that starts with "Tribute to" and has a VALID
-    // username of a user that has registered on the web site. It must check whether the
-    // username is actually valid or not. If not, do not add to the count.
-    
-    // Fetch all games that start with "Tribute to"
-    $stmt = $db->prepare("SELECT g_id, title FROM games WHERE title LIKE 'Tribute to %' $publicgames");
-    $stmt->execute();
-    $games = $stmt->fetchAll();
-
-    $validTributesCount = 0;
-
     // Fetch all games that start with "Tribute to" and have a valid username in one query
     $stmt = $db->prepare("
         SELECT g.g_id, g.title 
