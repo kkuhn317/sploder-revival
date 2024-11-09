@@ -80,7 +80,7 @@ function display_user_info($username){
     $stmt = $db->prepare("
         SELECT g.g_id, g.title 
         FROM games g
-        JOIN members m ON g.title LIKE CONCAT('Tribute to ', m.username, '%')
+        JOIN members m ON g.title ILIKE CONCAT('Tribute to ', m.username, '%')
         WHERE g.title LIKE 'Tribute to %' $publicgames
     ");
     $stmt->execute();
