@@ -113,6 +113,26 @@ function display_user_info($username){
         <div class="spacer">&nbsp;</div>
     </div>
 </div>
+<div class="mprofgroup mprofsection">
+			<h4><a href="#" onclick="setClass('mprof_reactions', 'shown'); return false;" title="How other members react to this member.">Reactions</a></h4>
+			<div class="mprofcontent hidden" id="mprof_reactions">
+				<dl class="mprofdata">
+					<dt>5-star faves:</dt>
+					<dd>??</dd>
+					<dt>Comments received:</dt>
+					<dd>??</dd>
+					<dt>Favorites <span style="color: #ff6666;">&hearts;</span>:</dt>
+					<dd>??</dd>
+					<dt>Tributes received:</dt>
+					<dd>??</dd>
+					<dt>Comment rating:</dt>
+					<dd>?? (display up to 3 decimal places)</dd>
+					<dt>Contests won:</dt>
+					<dd>??</dd>
+				</dl>
+				<div class="spacer">&nbsp;</div>
+			</div>
+		</div>
     <?php
 }
 ?>
