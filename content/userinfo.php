@@ -4,6 +4,7 @@ function display_user_info($username){
     if(!isset($db)){
         $db = connectToDatabase();
     }
+    $publicgames = " AND isdeleted=0 AND ispublished=1 AND isprivate=0";
     $sql = "SELECT * FROM user_info WHERE username = :username";
     $statement = $db->prepare($sql);
     $statement->execute([':username' => $username]);
@@ -80,7 +81,7 @@ function display_user_info($username){
     // username is actually valid or not. If not, do not add to the count.
     
     // Fetch all games that start with "Tribute to"
-    $stmt = $db->prepare("SELECT g_id, title FROM games WHERE title LIKE 'Tribute to %'");
+    $stmt = $db->prepare("SELECT g_id, title FROM games WHERE title LIKE 'Tribute to %' $publicgames");
     $stmt->execute();
     $games = $stmt->fetchAll();
 
