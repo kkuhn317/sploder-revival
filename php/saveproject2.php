@@ -35,7 +35,10 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
 			$result = $statement->fetchAll();
             $id = $result[0]['g_id'];
             $new_game = true;
-
+            // Set xml2 "id" attribute to the new game id
+            $xml2->attributes()['id'] = $id;
+            // Save XML to $xml
+            $xml = $xml2->asXML();
 		}
 
 
