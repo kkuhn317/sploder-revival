@@ -178,7 +178,13 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
 <h4 class="mprofgames">Games by <?php echo $username ?></h4>
 			<div id="viewpage">
 			<div class="set"><?php 
-if($totalgames == "0"){echo $username." has not published any games so far! :(";} else {
+if($totalgames == "0"){
+	?>
+	<p class="prompt">No games found!</p>
+	<div class="spacer">&nbsp;</div>
+	<?php
+
+} else {
 	$o = isset($_GET['o']) ? $_GET['o'] : "0";
 	$offset = 12;
 
