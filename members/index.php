@@ -104,20 +104,15 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
 				<img src="../php/userstatus.php?u=<?php echo $username ?>" width="80" height="25" alt="online status" />
 				<?php
 				$result[0]['perms'] = $result[0]['perms'] ?? '';
-				if (str_contains($result[0]['perms'], 'E')) {
-				echo '<img src="/chrome/role_editor.gif" width="24" height="28" alt="editor" title="editor" />';
-				} else {
-				echo '<img src="/chrome/role_empty.gif" width="24" height="28" alt="empty" title="empty" />';
-				}
-				if (str_contains($result[0]['perms'], 'R')) {
-				echo '<img src="/chrome/role_reviewer.gif" width="24" height="28" alt="reviewer" title="reviewer" />';
-				} else {
-					echo '<img src="/chrome/role_empty.gif" width="24" height="28" alt="empty" title="empty" />';
-				}
-				if (str_contains($result[0]['perms'], 'M')) {
-				echo '<img src="/chrome/role_moderator.gif" width="24" height="28" alt="moderator" title="moderator" />';
-				} else {
-					echo '<img src="/chrome/role_empty.gif" width="24" height="28" alt="empty" title="empty" />';
+				$roles = [
+					'E' => 'editor',
+					'R' => 'reviewer',
+					'M' => 'moderator'
+				];
+
+				foreach ($roles as $key => $role) {
+					$icon = str_contains($result[0]['perms'], $key) ? "role_$role" : "role_empty";
+					echo "<img src=\"/chrome/{$icon}.gif\" width=\"24\" height=\"28\" alt=\"$role\" title=\"$role\" />";
 				}
 				?>
 			</div>
@@ -127,7 +122,13 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
 				<dt>Joined:</dt>
 				<dd><?php echo time_elapsed_string("@".$result[0]['joindate']) ?></dd>
 				<dt>Last visit:</dt>
-				<dd><?php echo time_elapsed_string("@".$result[0]['lastlogin']) ?></dd>
+				<dd>
+					<?php 
+					$lastLoginTime = $result[0]['lastlogin'];
+					// 30 second buffer
+					echo (time() - $lastLoginTime < 30) ? 'just now' : time_elapsed_string("@".$lastLoginTime);
+					?>
+				</dd>
 			</dl>
 		</div>
 	</div>
@@ -177,13 +178,19 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
 <h4 class="mprofgames">Games by <?php echo $username ?></h4>
 			<div id="viewpage">
 			<div class="set"><?php 
-if($totalgames == "0"){echo $username." has not published any games so far! :(";} else {
+if($totalgames == "0"){
+	?>
+	<p class="prompt">No games found!</p>
+	<div class="spacer">&nbsp;</div>
+	<?php
+
+} else {
 	$o = isset($_GET['o']) ? $_GET['o'] : "0";
 	$offset = 12;
 
-	$queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 0 ORDER BY "g_id" DESC';
+	$queryString = 'SELECT * FROM games WHERE author=:username '.$publicgames.' ORDER BY "g_id" DESC';
 	if (isset($_GET['game'])) {
-		$queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 0 AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
+		$queryString = 'SELECT * FROM games WHERE author=:username '.$publicgames.' AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
 	}
 
 	$statement = $db->prepare($queryString);
@@ -197,7 +204,7 @@ if($totalgames == "0"){echo $username." has not published any games so far! :(";
 	$statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
 
 	$result = $statement->fetchAll();
-	$qTotal = "SELECT count(1) FROM games WHERE author=:username AND isdeleted = 0" . (isset($_GET['game']) ? ' AND SIMILARITY(title, :game) > 0.3' : '') . ' LIMIT 12 OFFSET ' . $o;
+	$qTotal = "SELECT count(1) FROM games WHERE author=:username ".$publicgames. (isset($_GET['game']) ? ' AND SIMILARITY(title, :game) > 0.3' : '') . ' LIMIT 12 OFFSET ' . $o;
 	$staTotal = $db->prepare($qTotal);
 	$staTotal->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
 

@@ -142,7 +142,7 @@ function get_swf_version($g_Swf){
             <script type="text/javascript">
                 us_config = {
                     container: 'messages',
-                    venue: 'game-<?= $game['g_id'] ?>',
+                    venue: 'game-<?= $game['g_id'] .'-'. $game['author'] ?>',
                     venue_container: 'venue',
                     venue_type: 'game',
                     owner: '<?= $game['author'] ?>',
