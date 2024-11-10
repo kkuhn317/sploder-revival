@@ -4,3 +4,5 @@ html.zip
 .idea
 node_modules
 playgrounds
+vendor
+users
