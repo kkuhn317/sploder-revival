@@ -12,10 +12,10 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
 		$ispublished = 0;
         $id = 0;
         $new_game = false;
+        include('../database/connect.php');
+        $db = connectToDatabase();
         if(isset($_GET['projid'])) $id = (int)filter_var($_GET['projid'], FILTER_SANITIZE_NUMBER_INT);
 		if (!isset($_GET['projid'])) {
-            include('../database/connect.php');
-            $db = connectToDatabase();
             $qs = "INSERT INTO games (author, user_id, title, date, description, g_swf, ispublished, isdeleted, isprivate, comments) 
             VALUES (:username, :user_id, :title, :date, :description, :g_swf, :ispublished, :isdeleted, :isprivate, :comments)
             RETURNING g_id;";
@@ -39,7 +39,17 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
             $xml2->attributes()['id'] = $id;
             // Save XML to $xml
             $xml = $xml2->asXML();
-		}
+		} else {
+            // Check whether user owns the game
+            $qs = "SELECT author FROM games WHERE g_id = :g_id";
+            $statement = $db->prepare($qs);
+            $statement->execute([':g_id' => $id]);
+            $result = $statement->fetchAll();
+            if($result[0]['author'] != $author) {
+                echo '<message result="failed" message="Haxxor detected!"/>';
+                exit();
+            }
+        }
 
 
         $project_path = "../users/user" . $_SESSION['userid'] . "/projects/proj" . $id . "/";
