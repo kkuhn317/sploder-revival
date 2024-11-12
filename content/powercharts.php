@@ -1,3 +1,5 @@
+<!--
+<div class="bucket">
 <h3>Power Charts!</h3>
 
 
@@ -49,4 +51,9 @@
   <li class="odd"><a class="graph_avatar lev_11" href="/games/members/x101/play/tom-loses-a-dorito-behind-the-sofa/" title="Tom Loses A Dorito Behind The Sofa by x101"><img src="https://avatars.sploder.com/a/x/1/x101_24.png" width="24" height="24" alt="x101" /><span class="graph_legend"><strong>Tom Loses A Dorito Behind The Sofa</strong> by x101</span></a></li>
 
 </ul>
+  <p>Check out great games as they are rated by other members!</p>
+</div>
+</div>
 
+TODO: Power Charts
+-->
