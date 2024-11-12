@@ -1,5 +1,10 @@
 <?php
-session_start();
+//Check whether session is already started, if not start the session
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    //There is no active session
+    session_start();
+}
+
 if(isset($_SESSION['username'])){
     if(!isset($status)) {
         $status = "online";

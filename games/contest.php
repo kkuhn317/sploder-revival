@@ -135,123 +135,18 @@ $db = connectToDatabase();
         </div>-->
    
 
-            <br style="clear: both;" /><br /><div class="bucket trending">
+            <br style="clear: both;" /><br />
+            
+            <?php include('../content/trendinggames.php'); ?>
 
-                <ul>
-
-                    <li><a href="/games/tags/rpg/">RPG Games</a></li>
-
-                    <li><a href="/games/tags/defense/">Defense Games</a></li>
-
-                    <li><a href="/games/tags/girls/">Girls Games</a></li>
-
-                    <li><a href="/games/tags/crafting/">Crafting Games</a></li>
-
-                    <li><a href="/games/tags/puzzle/">Puzzle Games</a></li>
-
-                    <li><a href="/games/tags/2player/">2 Player Games</a></li>
-
-                    <li><a href="/games/tags/strategy/">Strategy Games</a></li>
-
-                    <li><a href="/games/tags/zombie/">Zombie Games</a></li>
-
-                    <li><a href="/games/tags/simulator/">Simulator Games</a></li>
-
-                    <li><a href="/games/tags/funny/">Funny Games</a></li>
-
-                    <li><a href="/games/tags/easy/">Easy Games</a></li>
-
-                    <li><a href="/games/tags/impossible/">Impossible Games</a></li>
-
-                    <li><a href="/games/tags/crush/">Crush Games</a></li>
-
-                    <li><a href="/games/tags/scary/">Scary Games</a></li>
-
-                    <li><a href="/games/tags/pets/">Pets Games</a></li>
-
-                    <li><a href="/games/tags/kingdom/">Kingdom Games</a></li>
-
-                    <li><a href="/games/tags/anime/">Anime Games</a></li>
-
-                    <li><a href="/games/tags/bird/">Bird Games</a></li>
-
-                    <li><a href="/games/tags/quiz/">Quiz Games</a></li>
-
-                    <li><a href="/games/tags/racing/">Racing Games</a></li>
-
-                </ul>
-
-            </div><div class="spacer">&nbsp;</div></div>
+            <div class="spacer">&nbsp;</div></div>
         <div id="sidebar">
 
 
-            <div class="bucket">
-                <div class="art_title">
-                    <img class="sideimage" src="https://cdn.sploder.com/images/gator_fire.png" width="243" height="130" alt="AARRRGH!" />
-                    <h3><span class="highlight">HOT</span> Games Now!</h3>
-                </div>
-                <ul class="ratings_list">
-                </ul>
-            </div>
+           <?php include('../content/hotgames.php'); ?>
 
 
-
-
-            <div class="adslot" style="width: 336px; height: 280px;">
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- Sploder Sidebar ROS Middle 336x280 -->
-                <ins class="adsbygoogle"
-                     style="display:inline-block;width:336px;height:280px"
-                     data-ad-client="ca-pub-3994856696311428"
-                     data-ad-slot="3271461693"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-
-
-
-            <div class="bucket">
-
-                <div class="art_title">
-
-                    <img class="sideimage" src="https://cdn.sploder.com/images/smiley.png" width="200" height="100" alt="smile!" />
-
-                    <h3>Sploder's Friendliest</h3>
-
-                </div>
-
-                <ul class="avatars_list">      <li class="venue even iconsmall"><a href="/games/members/freshprince7/" title="freshprince7"><img src="https://avatars.sploder.com/a/f/r/freshprince7_48.png" width="48" height="48" /> freshprince7</a></li>
-
-                    <li class="venue odd iconsmall"><a href="/games/members/blupromises/" title="blupromises"><img src="https://avatars.sploder.com/a/b/l/blupromises_48.png" width="48" height="48" /> blupromises</a></li>
-
-                    <li class="venue even iconsmall"><a href="/games/members/okbeats/" title="okbeats"><img src="https://avatars.sploder.com/a/o/k/okbeats_48.png" width="48" height="48" /> okbeats</a></li>
-
-                    <li class="venue odd iconsmall"><a href="/games/members/shadross/" title="shadross"><img src="https://avatars.sploder.com/a/s/h/shadross_48.png" width="48" height="48" /> shadross</a></li>
-
-                    <li class="venue even iconsmall"><a href="/games/members/kingoffangdams/" title="kingoffangdams"><img src="https://avatars.sploder.com/a/k/i/kingoffangdams_48.png" width="48" height="48" /> kingoffangdams</a></li>
-
-                    <li class="venue odd iconsmall"><a href="/games/members/ninosimz/" title="ninosimz"><img src="https://avatars.sploder.com/a/n/i/ninosimz_48.png" width="48" height="48" /> ninosimz</a></li>
-
-                    <li class="venue even iconsmall"><a href="/games/members/sto4/" title="sto4"><img src="https://avatars.sploder.com/a/s/t/sto4_48.png" width="48" height="48" /> sto4</a></li>
-
-                    <li class="venue odd iconsmall"><a href="/games/members/theluckydiamond/" title="theluckydiamond"><img src="https://avatars.sploder.com/a/t/h/theluckydiamond_48.png" width="48" height="48" /> theluckydiamond</a></li>
-
-                    <li class="venue even iconsmall"><a href="/games/members/juniortennis7/" title="juniortennis7"><img src="https://avatars.sploder.com/a/j/u/juniortennis7_48.png" width="48" height="48" /> juniortennis7</a></li>
-
-                    <li class="venue odd iconsmall"><a href="/games/members/beast4321/" title="beast4321"><img src="https://avatars.sploder.com/a/b/e/beast4321_48.png" width="48" height="48" /> beast4321</a></li>
-
-                    <li class="venue even iconsmall"><a href="/games/members/bangsadaysh/" title="bangsadaysh"><img src="https://avatars.sploder.com/a/b/a/bangsadaysh_48.png" width="48" height="48" /> bangsadaysh</a></li>
-
-                    <li class="venue odd iconsmall"><a href="/games/members/muchgames/" title="muchgames"><img src="https://avatars.sploder.com/a/m/u/muchgames_48.png" width="48" height="48" /> muchgames</a></li>
-
-
-
-                </ul>
-
-                <p>Here are some of Sploder's friendliest members! Watch this space daily for more!</p>
-
-            </div>
+           <?php include('../content/friendliest.php'); ?>
 
 
             <br /><br /><br />

@@ -180,54 +180,10 @@ header('Location: dashboard/index.php');
 <br /><br />
 
 
+<?php include('content/mostpopulargames.php'); ?>
+<?php include('content/trendinggames.php'); ?>
 
-<div id="viewpage"><div class="set wideset"><h4 style="margin-bottom: 12px;">Most Popular Games</h4><div class="grid"><div class="game vignette"><div class="photo"><a href="games/members/chloride/play/adventure-zone-1/"><img src="/users/group1330/user1330862_20121120092156/thumbs/proj5070625.png" alt="Adventure Zone 1 - by chloride, 6285views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/liammead/play/ruins-ii/"><img src="/users/group445/user445717_20100117010807/thumbs/proj5093330.png" alt="Ruins II - by liammead, 4090views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/chloride/play/atraction/"><img src="/users/group1330/user1330862_20121120092156/thumbs/proj5080251.png" alt="Atraction - by chloride, 2714views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/vaxen2/play/slender-man-vii/"><img src="/users/group596/user596686_20100720210831/thumbs/proj5030768.png" alt="Slender Man VII - by vaxen2, 2335views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/daniel567/play/one-day-at-sploder-town/"><img src="/users/group1404/user1404406_20130209160623/thumbs/proj5071176.png" alt="One day at Sploder Town - by daniel567, 2307views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/vaxen2/play/breach-ii/"><img src="/users/group596/user596686_20100720210831/thumbs/proj5064299.png" alt="Breach II - by vaxen2, 2135views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/vaxen2/play/the-impossible-game/"><img src="/users/group596/user596686_20100720210831/thumbs/proj5024743.png" alt="The Impossible Game - by vaxen2, 2127views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/vaxen2/play/sploder-star-champions/"><img src="/users/group596/user596686_20100720210831/thumbs/proj5105075.png" alt="Sploder Star Champions - by vaxen2, 2104views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/123qwe9000studer/play/slender-man-vs-herobrine-3/"><img src="/users/group1246/user1246932_20120805195133/thumbs/proj5092233.png" alt="slender man vs herobrine 3 - by 123qwe9000studer, 2049views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/defensified/play/explosive-ordinance/"><img src="/users/group1038/user1038090_20120106182150/thumbs/proj5132881.png" alt="Explosive Ordinance - by defensified, 1918views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/thebluesun/play/red-ball-super-hard/"><img src="/users/group1318/user1318973_20121108024949/thumbs/proj5079001.png" alt="RED BALL Super Hard - by thebluesun, 1827views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/vaxen2/play/breach-ii-demo/"><img src="/users/group596/user596686_20100720210831/thumbs/proj5066265.png" alt="Breach II Demo - by vaxen2, 1207views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/phantomflame/play/through-the-body-of-gumball/"><img src="/users/group1398/user1398452_20130202184607/thumbs/proj5067473.png" alt="through the body of gumball - by phantomflame, 1190views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/woohoo32/play/tom-and-jerry/"><img src="/users/group1187/user1187320_20120604155207/thumbs/proj5089616.png" alt="Tom And Jerry - by woohoo32, 1095views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/religious2/play/make-a-pizza-3d/"><img src="/users/group1270/user1270952_20120908151331/thumbs/proj5115433.png" alt="Make a pizza 3D - by religious2, 1009views" /></a></div><div class="spacer">&nbsp;</div></div><div class="game vignette"><div class="photo"><a href="games/members/religious2/play/why-kids-shouldnt-skydive/"><img src="/users/group1270/user1270952_20120908151331/thumbs/proj5096769.png" alt="Why Kids shouldnt skydive - by religious2, 849views" /></a></div><div class="spacer">&nbsp;</div></div><br /><br /><div class="more"><a href="games/">More Games &raquo;</a></div></div><div class="spacer">&nbsp;</div></div></div><div class="bucket trending">
-
-    <ul>
-
-	<li><a href="/games/tags/rpg/">RPG Games</a></li>
-
-	<li><a href="/games/tags/defense/">Defense Games</a></li>
-
-	<li><a href="/games/tags/girls/">Girls Games</a></li>
-
-	<li><a href="/games/tags/crafting/">Crafting Games</a></li>
-
-	<li><a href="/games/tags/puzzle/">Puzzle Games</a></li>
-
-	<li><a href="/games/tags/2player/">2 Player Games</a></li>
-
-	<li><a href="/games/tags/strategy/">Strategy Games</a></li>
-
-	<li><a href="/games/tags/zombie/">Zombie Games</a></li>
-
-	<li><a href="/games/tags/simulator/">Simulator Games</a></li>
-
-	<li><a href="/games/tags/funny/">Funny Games</a></li>
-
-	<li><a href="/games/tags/easy/">Easy Games</a></li>
-
-	<li><a href="/games/tags/impossible/">Impossible Games</a></li>
-
-	<li><a href="/games/tags/crush/">Crush Games</a></li>
-
-	<li><a href="/games/tags/scary/">Scary Games</a></li>
-
-	<li><a href="/games/tags/pets/">Pets Games</a></li>
-
-	<li><a href="/games/tags/kingdom/">Kingdom Games</a></li>
-
-	<li><a href="/games/tags/anime/">Anime Games</a></li>
-
-	<li><a href="/games/tags/bird/">Bird Games</a></li>
-
-	<li><a href="/games/tags/quiz/">Quiz Games</a></li>
-
-	<li><a href="/games/tags/racing/">Racing Games</a></li>
-
-    </ul>
-
-</div><br style="clear: both;" />
+<br style="clear: both;" />
 
 
 
@@ -243,17 +199,9 @@ header('Location: dashboard/index.php');
 
 	<div class="spacer">&nbsp;</div>
 
-<br /><div class="bucket membercontest_winner">
-
-		<div class="member_badge">
-
-		    <a class="button" href="/games/members/heroicdude/">
-
-			<img src="https://avatars.sploder.com/a/h/e/heroicdude_96.png" width="72" height="72" />
-
-		    </a>
-
-		</div><p class="winner_name"><a class="button" href="/games/members/heroicdude/">real</a></p><hr /><div class="winnerstat"><div class="stat">2.8k</div><p>Total Plays</p></div><div class="winnerstat"><div class="stat">549</div><p>Total Friends</p></div><h3>Member of the Day!</h3><h4>December 22nd, 2020</h4><div class="spacer">&nbsp;</div></div><div class="newfeatures">
+<br />
+<?php include('content/hotgames.php') ?>
+<div class="newfeatures">
 
 
 
@@ -269,15 +217,9 @@ header('Location: dashboard/index.php');
 
 
 
-</div><div class="bucket">
-
+</div>
 <?php include('content/powercharts.php') ?>
 
-	<p>Check out great games as they are rated by other members!</p>
-
-    </div>
-
-</div>
 				
 				
 				<br /><br /><br />
