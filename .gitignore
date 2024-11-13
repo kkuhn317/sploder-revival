@@ -6,3 +6,4 @@ node_modules
 playgrounds
 vendor
 users
+src/.env
