@@ -1,15 +1,12 @@
 <?php
 function connectToDatabase($table = null) {
-    $host = 'ep-blue-band-a2dl3erw.eu-central-1.aws.neon.tech';
-    $port = '5432';
-    $database = 'sploder';
-    //$username = 'sploder';
-    //$password = 'sploderwasdabest-database';
-    $username = 'sploder_owner';
-    $password = 'hVAgHfj0tE6e';
-    $sslmode = 'require';
+    $host = getenv("POSTGRES_HOST");
+    $port = getenv("POSTGRES_PORT");
+    $database = getenv("POSTGRES_DB");
+    $username = getenv("POSTGRES_USERNAME");
+    $password = getenv("POSTGRES_PASSWORD");
+    $sslmode = getenv("POSTGRES_SSLMODE");
     $dsn = "pgsql:host=$host;port=$port;dbname=$database;user=$username;password=$password;sslmode=$sslmode";
-
     try {
         $connection = new PDO($dsn);
         return $connection;
