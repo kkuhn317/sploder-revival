@@ -14,7 +14,7 @@ if (!$captcha) {
 
 $ip = getVisitorIp();
 
-$secretKey = "0x4AAAAAAALIZJX1PLgCVr158KcVHSUtLBg";
+$secretKey = getenv("CF_TURNSTILE_SECRET_KEY");;
 
 
 
