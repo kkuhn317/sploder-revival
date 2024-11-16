@@ -5,6 +5,7 @@
                 <li><a href="pending.php">Pending deletion</a></li>
                 <li><a href="ipcheck.php">IP check</a></li>
                 <li><a href="banned.php">Banned members</a></li>
+                <li><a href="logs.php">Moderation logs</a></li>
                 
 
 			    </ul>
