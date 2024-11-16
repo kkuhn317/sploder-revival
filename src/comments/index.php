@@ -101,7 +101,7 @@ else if ($a == "post") {
     if(checkBan($creator_name)){
         // set header to 403 (forbidden) and echo a message
         http_response_code(403);
-        die("You are banned");
+        die("You are banned and will not be able to send any comments.");
     }
     if($creator_name!=null){
 
@@ -120,6 +120,12 @@ else if ($a == "post") {
 }
 else if ($a == "like"){
     if($_SESSION['username']!=null){
+        include('../content/checkban.php');
+        if(checkBan($creator_name)){
+            // set header to 403 (forbidden) and echo a message
+            http_response_code(403);
+            die("You are banned and will not be able to send any comments.");
+        }
         $posts = file_get_contents("php://input");
         $formatter = explode("&",$posts);
         $id = substr($formatter[0], 3);
@@ -166,6 +172,12 @@ else if ($a == "like"){
 
 else if ($a == "unlike"){
     if($_SESSION['username']!=null){
+        include('../content/checkban.php');
+        if(checkBan($creator_name)){
+            // set header to 403 (forbidden) and echo a message
+            http_response_code(403);
+            die("You are banned and will not be able to send any comments.");
+        }
         $posts = file_get_contents("php://input");
         $formatter = explode("&",$posts);
         $id = substr($formatter[0], 3);
