@@ -22,6 +22,7 @@ RUN apt-get update \
   unzip \
   zip \
   zlib1g-dev \
+  vim \
   && apt-get clean
 
 RUN pecl install imagick \

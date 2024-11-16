@@ -3,18 +3,6 @@ session_Start();
 if(isset($_SESSION['username'])){
   header('Location: dashboard/index.php');
 }
-
-$env_filename = __DIR__."/.env";
-if(file_exists($env_filename)) {
-  $env = file_get_contents($env_filename);
-  $lines = explode("\n",$env);
-  foreach($lines as $line){
-    preg_match("/([^#]+)\=(.*)/",$line,$matches);
-    if(isset($matches[2])){
-      putenv(trim($line));
-    }
-  }
-}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
