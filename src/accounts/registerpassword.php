@@ -140,9 +140,10 @@ window.onload = function() {
 			</tr>
 			<tr><td colspan="3"><hr/></td></tr>
 						<tr>
-				<td colspan="3">
+				<td colspan="3" style="display: none;">
 					<div class="checkholder">
-						<input name="social" type="checkbox" class="checkbutton" value="1" checked="checked"/>
+						<!-- TODO: ACTUALLY USE THIS CHECKBOX -->
+						<input style="display:none" name="social" type="checkbox" class="checkbutton" value="1" checked="checked"/>
 					</div>
 					<p>Allow comments and friending on my profile.</p>
 				</td>
