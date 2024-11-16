@@ -159,7 +159,8 @@ window.onload = function() {
 			<tr>
 				<td colspan="3" class="recaptcha">
 					<div>
-                    <div class="cf-turnstile" data-theme="dark" data-sitekey="0x4AAAAAAALIZMUwcwQ8MyhY"></div>
+						<!-- TODO: CHANGE SITEKEY ASAP TO CORRECT ONE -->
+                    <div class="cf-turnstile" data-theme="dark" data-sitekey="1x00000000000000000000AA"></div>
 					</div>
 				</td>
 			</tr>
