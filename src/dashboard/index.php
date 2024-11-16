@@ -111,7 +111,7 @@ $level = $result3[0]['level']
 			<div class="spacer">&nbsp;</div>
 			<?php include('../content/checkban.php') ?>
 			<?php if(checkBan($username)){ ?>
-			<div class="promo"><b>NOTICE: </b>Your account access has been limited. A moderator has disallowed you from making games, comments or giving awards.</div>
+			<div class="promo"><b>NOTICE: </b>Your account access has been limited. A moderator has disallowed you from publishing games, making comments or giving awards.</div>
 			<?php } ?>
 			<?php include('../content/friendgamelist.php'); ?>
 			<?php include('../content/dashboardmessages.php'); ?>
