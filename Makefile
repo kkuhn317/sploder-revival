@@ -20,6 +20,7 @@ help:
 	@echo "  make dev.bash.db     - enter the db container"
 	@echo "  make clean           - cleans docker images and temporary files"
 build:
+	composer install
 	${CONTAINER_CMD} build . -t sploder-revival
 dev:
 	$(MAKE) dev.down
