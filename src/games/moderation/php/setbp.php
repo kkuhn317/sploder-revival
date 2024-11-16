@@ -22,6 +22,16 @@ if($statement->execute([
     ':boostpoints'=>$_POST['bp'],
     ':username'=>$username
 ])){
+    // Get boost points
+    $sql = "SELECT boostpoints FROM members WHERE username=:username";
+    $statement = $db->prepare($sql);
+    $statement->execute([
+        ':username'=>$username
+    ]);
+    $oldbp = $statement->fetchColumn();
+
+    include('log.php');
+    logModeration('set boost points', 'from ' . $oldbp . ' to ' . $_POST['bp'] . ' for ' . $username, 2);
     header("Location: ../index.php?msg=Boost points set successfully");
 } else {
     header("Location: ../index.php?err=There was an error while setting the boost points");

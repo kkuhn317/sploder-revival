@@ -24,4 +24,6 @@ $statement->execute([
 $bp = $statement->fetchColumn();
 
 // Send header with boost points
+include('log.php');
+logModeration('checked boost points', 'of ' . $username . ' which is ' . $bp, 1);
 header("Location: ../index.php?bp=".$bp);
