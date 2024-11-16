@@ -14,7 +14,10 @@ if (!$captcha) {
 
 $ip = getVisitorIp();
 
-$secretKey = getenv("CF_TURNSTILE_SECRET_KEY");;
+//$secretKey = getenv("CF_TURNSTILE_SECRET_KEY");
+
+// Pass all requests to allow local testing
+$secretKey = "1x0000000000000000000000000000000AA";
 
 
 
