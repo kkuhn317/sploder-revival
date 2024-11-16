@@ -34,7 +34,7 @@ if(str_contains($perms['perms'], 'M')){
 
 // Check whether user is already banned
 
-include('../content/checkban.php');
+include(__DIR__.'/../../../content/checkban.php');
 if(checkBan($username)){
     header("Location: ../index.php?err=User is already banned");
     die();
@@ -49,6 +49,8 @@ if($statement->execute([
     ':bandate'=>$bandate,
     ':autounbandate'=>$autounbandate
 ])){
+    include('log.php');
+    logModeration('banned', $username . ' for ' . $_POST['time'] . " days because of " . $reason, 3);
     header("Location: ../index.php?msg=User banned successfully");
 } else {
     header("Location: ../index.php?err=There was an error while banning the user");

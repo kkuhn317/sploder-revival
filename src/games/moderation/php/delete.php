@@ -18,6 +18,15 @@ function getIdFromUrl($url) {
     return null;
 }
 
+function getGameName ($g_id){
+    include_once('../../../database/connect.php');
+    $db = connectToDatabase();
+    $sql = "SELECT title FROM games WHERE g_id=:id";
+    $statement = $db->prepare($sql);
+    $statement->execute([':id' => $g_id]);
+    return $statement->fetchColumn();
+}
+
 
 $gameId = getIdFromUrl($url);
 
@@ -72,6 +81,12 @@ if ($count >= 3) {
         $statement->execute([':id' => $gameId]);
 
         $db->commit();
+        $title = getGameName($gameId);
+
+        include_once('log.php');
+        logModeration('made a delete request', 'on ' . $title . ' and deleted it because of ' . $reason, 3);
+
+
         header("Location: ../".$page."?msg=Game deleted successfully");
     } catch (Exception $e) {
         $db->rollBack();
@@ -89,6 +104,10 @@ if ($count >= 3) {
     $statement->execute([':g_id' => $gameId]);
     $count = $statement->fetchColumn();
 
+    $title = getGameName($gameId);
+
+    include_once('log.php');
+    logModeration('made a delete request', 'on ' . $title . ' because of ' . $reason, 3);
     header("Location: ../".$page."?msg=Game deletion request submitted successfully. Total requests: ".$count."/3");
 }
 
