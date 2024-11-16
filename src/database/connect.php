@@ -1,4 +1,6 @@
 <?php
+require_once(__DIR__.'./../config/env.php');
+
 function connectToDatabase($table = null) {
     $host = getenv("POSTGRES_HOST");
     $port = getenv("POSTGRES_PORT");
