@@ -97,6 +97,12 @@ else if ($a == "post") {
     $t=time();
     $score = 0;
     $creator_name = $_SESSION['username'];
+    include('../content/checkban.php');
+    if(checkBan($creator_name)){
+        // set header to 403 (forbidden) and echo a message
+        http_response_code(403);
+        die("You are banned");
+    }
     if($creator_name!=null){
 
         $qs = "INSERT INTO comments (venue,thread_id,creator_name,body,score,timestamp) VALUES (:venue,:thread_id,:creator_name,:body,:score,:timestamp)";

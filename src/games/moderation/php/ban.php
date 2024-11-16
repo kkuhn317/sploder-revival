@@ -31,6 +31,15 @@ if(str_contains($perms['perms'], 'M')){
     header("Location: ../index.php?err=You cannot ban a moderator");
     die();
 }
+
+// Check whether user is already banned
+
+include('../content/checkban.php');
+if(checkBan($username)){
+    header("Location: ../index.php?err=User is already banned");
+    die();
+}
+
 $sql = "INSERT INTO banned_members (username, banned_by, reason, bandate, autounbandate) VALUES (:username, :banned_by, :reason, :bandate, :autounbandate)";
 $statement = $db->prepare($sql);
 if($statement->execute([
