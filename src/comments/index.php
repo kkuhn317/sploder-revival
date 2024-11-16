@@ -3,7 +3,7 @@ error_reporting(E_ERROR);
 ini_set('display_errors', 1);
 session_start();
 $a = $_GET['a'];
-include('../database/connect.php');
+include_once('../database/connect.php');
 $db = connectToDatabase();
 function time_elapsed_string($datetime, $full = false) {
     $now = new DateTime;
@@ -97,7 +97,7 @@ else if ($a == "post") {
     $t=time();
     $score = 0;
     $creator_name = $_SESSION['username'];
-    include('../content/checkban.php');
+    include_once('../content/checkban.php');
     if(checkBan($creator_name)){
         // set header to 403 (forbidden) and echo a message
         http_response_code(403);
@@ -120,7 +120,7 @@ else if ($a == "post") {
 }
 else if ($a == "like"){
     if($_SESSION['username']!=null){
-        include('../content/checkban.php');
+        include_once('../content/checkban.php');
         if(checkBan($creator_name)){
             // set header to 403 (forbidden) and echo a message
             http_response_code(403);
@@ -172,7 +172,7 @@ else if ($a == "like"){
 
 else if ($a == "unlike"){
     if($_SESSION['username']!=null){
-        include('../content/checkban.php');
+        include_once('../content/checkban.php');
         if(checkBan($creator_name)){
             // set header to 403 (forbidden) and echo a message
             http_response_code(403);
