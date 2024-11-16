@@ -27,7 +27,7 @@ via discord at @malware8148 or email <a href="mailto:malware8148@skiff.com">malw
 
 
 
-<p class="note">For each visitor to our site, our web server automatically recognizes the visitor's referrer for authentication and security purposes. Your IP address is NOT LOGGED on our servers.</p>
+<p class="note">For each visitor to our site, our web server automatically recognizes the visitor's referrer for authentication and security purposes. Your IP address is LOGGED on our servers.</p>
 
 
 

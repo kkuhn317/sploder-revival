@@ -25,6 +25,14 @@ $_SESSION['userid']=$result3[0]['userid'];
 session_regenerate_id();
 $_SESSION['PHPSESSID'] = session_id();
 $t=time();
+include('getip.php');
+$ip = getVisitorIp();
+$qs = "UPDATE members SET ip_address=:ip_address WHERE username=:username";
+$statement = $db->prepare($qs);
+$statement->execute([
+    ':ip_address'=>$ip,
+    ':username'=>$_SESSION['username']
+]);
 $qs = "UPDATE members SET lastlogin=:t WHERE username=:username";
 $statement = $db->prepare($qs);
 $statement->execute([
