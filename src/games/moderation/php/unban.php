@@ -3,7 +3,7 @@
 include('verify.php');
 $username = $_REQUEST['username'];
 
-include('../content/checkban.php');
+include(__DIR__.'/../../../content/checkban.php');
 if(!checkBan($username)){
     header("Location: ../index.php?err=User not banned");
     die();
@@ -14,6 +14,8 @@ $statement = $db->prepare($sql);
 if($statement->execute([
     ':username'=>$username,
 ])){
+    include('log.php');
+    logModeration('unbanned', $username, 1);
     header("Location: ../index.php?msg=User unbanned successfully");
 } else {
     header("Location: ../index.php?err=There was an error while unbanning the user");
