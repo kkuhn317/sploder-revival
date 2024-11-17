@@ -12,7 +12,7 @@ $username = $_SESSION['username'];
 include(__DIR__ . '/../../../database/connect.php');
 $db = getDatabase();
 $qs = "SELECT perms FROM members WHERE username=:username";
-$perms = $db->queryFirst($qs, [
+$perms = $db->queryFirstColumn($qs, 0, [
     ':username'=>$username
 ]);
 
