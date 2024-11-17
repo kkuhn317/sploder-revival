@@ -20,11 +20,9 @@ function getIdFromUrl($url) {
 
 function getGameName ($g_id){
     include_once('../../../database/connect.php');
-    $db = connectToDatabase();
+    $db = getDatabase();
     $sql = "SELECT title FROM games WHERE g_id=:id";
-    $statement = $db->prepare($sql);
-    $statement->execute([':id' => $g_id]);
-    return $statement->fetchColumn();
+    return $db->queryFirstColumn($sql, 0, [':id' => $g_id]);
 }
 
 
