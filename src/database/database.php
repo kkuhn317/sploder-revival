@@ -1,0 +1,39 @@
+<?php
+interface IDatabase {
+  /**
+   * Executes a $query with $parameters and returns the results
+   * @param $query
+   * @param $parameters
+   * @return array
+   */
+  public function query(string $query, array $parameters = []): array;
+
+  /**
+   * Executes a $query with $parameters and returns if the query succeeded or not
+   *
+   * @param $query
+   * @param $parameters
+   * @return bool
+   */
+  public function execute(string $query, array $parameters = []): bool;
+}
+
+class Database implements IDatabase {
+   private PDO $connection;
+
+  function __construct(PDO $connection) {
+    $this->connection = $connection;
+  }
+
+  function query(string $query, array $parameters = []): array {
+    $statement = $this->connection->prepare($query);
+    $statement->execute($parameters);
+    return $statement->fetchAll();
+  }
+
+  function execute(string $query, array $parameters = []): bool {
+    $statement = $this->connection->prepare($query);
+    return $statement->execute($parameters);
+  }
+}
+?>
