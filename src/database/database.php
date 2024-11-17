@@ -9,6 +9,14 @@ interface IDatabase {
   public function query(string $query, array $parameters = []): array;
 
   /**
+   * Executes a $query with $parameters and returns the first result
+   * @param $query
+   * @param $parameters
+   * @return array
+   */
+  public function queryFirst(string $query, array $parameters = []): mixed;
+
+  /**
    * Executes a $query with $parameters and returns if the query succeeded or not
    *
    * @param $query
@@ -29,6 +37,12 @@ class Database implements IDatabase {
     $statement = $this->connection->prepare($query);
     $statement->execute($parameters);
     return $statement->fetchAll();
+  }
+
+  function queryFirst(string $query, array $parameters = []): mixed {
+    $statement = $this->connection->prepare($query);
+    $statement->execute($parameters);
+    return $statement->fetch();
   }
 
   function execute(string $query, array $parameters = []): bool {
