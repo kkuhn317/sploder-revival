@@ -43,7 +43,7 @@ $version = file_get_contents('currentversion.txt');
     </a>
 	<a onclick="start_download()" href="#">
 	<li>
-		Update
+		Download
 	</li>
     </a>
 </ul><br><br><br><br>
