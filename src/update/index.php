@@ -1,3 +1,7 @@
+<?php 
+$version = file_get_contents('currentversion.txt');
+
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -26,10 +30,7 @@
 <div id="new_status" class="get_started">
 
 <h4>Welcome to the Sploder Launcher Upgrade wizard</h4>
-<p> Sploder Launcher has updated to version x.x.x. To continue using Sploder Launcher, you must upgrade.<br>
-Changelog:<br>
-• Test
-
+<p> Sploder Launcher has updated to version <code><?= $version ?></code>.<br>To continue using Sploder Launcher, you must upgrade.<br><br>
 </p>
 
 <ul class="actions">
