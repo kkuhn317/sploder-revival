@@ -373,7 +373,7 @@ ul.actions li {
 	margin: 0 0 20px 0;
 	border-radius: 6px;
 	padding: 16px;
-	line-height: 4px;
+	line-height: 0px;
 	background: linear-gradient(to bottom, #000 0%,#000 50%,#234 100%);
 }
 
