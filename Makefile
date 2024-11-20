@@ -7,6 +7,7 @@ else
 endif
 
 LOCAL_URL = http://127.0.0.1:8010
+CONTAINER_CMD = docker
 
 help:
 	@echo "Available commands:"
@@ -15,30 +16,36 @@ help:
 	@echo "  make dev.watch       - same as dev, but does not detach the docker container"
 	@echo "  make dev.down        - stops the docker container if running"
 	@echo "  make dev.bootsrap    - restores the database dump into the PostgreSQL container"
+	@echo "  make dev.bash.site   - enter the sploder revival container"
+	@echo "  make dev.bash.db     - enter the db container"
 	@echo "  make clean           - cleans docker images and temporary files"
 build:
-	docker build . -t sploder-revival
+	${CONTAINER_CMD} build . -t sploder-revival
 dev:
 	$(MAKE) dev.down
 	@if [ "$(WATCH)" = "true" ]; then \
-		(sleep 1; ${OPEN_CMD} ${LOCAL_URL}; ) & docker compose -f docker-compose-dev.yaml up; \
+		(sleep 1; ${OPEN_CMD} ${LOCAL_URL}; ) & ${CONTAINER_CMD} compose -f ${CONTAINER_CMD}-compose-dev.yaml up; \
 	else \
-		docker compose -f docker-compose-dev.yaml up -d && ${OPEN_CMD} ${LOCAL_URL}; \
+		${CONTAINER_CMD} compose -f ${CONTAINER_CMD}-compose-dev.yaml up -d && ${OPEN_CMD} ${LOCAL_URL}; \
 	fi
 dev.watch:
 	$(MAKE) dev WATCH=true
 dev.down:
-	docker compose -f docker-compose-dev.yaml down
+	${CONTAINER_CMD} compose -f ${CONTAINER_CMD}-compose-dev.yaml down
 dev.bootstrap:
 	$(MAKE) dev.down
-	docker compose -f docker-compose-dev.yaml up -d
-	docker exec -it sploder_postgres /bin/bash -c "pg_restore -U sploder_owner -d sploder --clean --create /docker-entrypoint-initdb.d/backup.bak"
+	${CONTAINER_CMD} compose -f ${CONTAINER_CMD}-compose-dev.yaml up -d
+	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "pg_restore -U sploder_owner -d sploder --clean --create /docker-entrypoint-initdb.d/backup.bak"
 	echo "bootstrap complete, run `make dev` or `make dev.watch` to begin development"
 	$(MAKE) dev.down
+dev.bash.site:
+	${CONTAINER_CMD} exec -it sploder_revival /bin/bash
+dev.bash.db:
+	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash
 
 clean:
-	docker container  rm --force sploder-revival
-	docker image rm --force sploder-revival
-	docker image prune -a -f
-	docker container prune -f
-	docker volume prune -f
+	${CONTAINER_CMD} container  rm --force sploder-revival
+	${CONTAINER_CMD} image rm --force sploder-revival
+	${CONTAINER_CMD} image prune -a -f
+	${CONTAINER_CMD} container prune -f
+	${CONTAINER_CMD} volume prune -f
