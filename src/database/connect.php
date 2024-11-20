@@ -1,6 +1,6 @@
 <?php
-require_once(__DIR__.'./../config/env.php');
-require_once('./database.php');
+require_once(__DIR__.'/../config/env.php');
+require_once(__DIR__.'/database.php');
 
 /**
  * @deprecated use "getDatabase" moving forward, as this will be deleted
