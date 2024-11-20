@@ -3,8 +3,6 @@ session_Start();
 if(isset($_SESSION['username'])){
   header('Location: dashboard/index.php');
 }
-
-
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
