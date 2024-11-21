@@ -1,6 +1,6 @@
 <?php
 // Remove pending deletions older than 14 days
-        $db->query("DELETE FROM pending_deletions WHERE timestamp < NOW() - INTERVAL '14 days'");
+        $db->execute("DELETE FROM pending_deletions WHERE timestamp < NOW() - INTERVAL '14 days'");
         // Get pending games and display name, thumbnail, username
         $games = $db->query("SELECT games.g_id, games.date, MIN(pending_deletions.timestamp) as deletion_date, g_swf, author, title, userid, reason, views 
           FROM pending_deletions
