@@ -140,9 +140,10 @@ window.onload = function() {
 			</tr>
 			<tr><td colspan="3"><hr/></td></tr>
 						<tr>
-				<td colspan="3">
+				<td colspan="3" style="display: none;">
 					<div class="checkholder">
-						<input name="social" type="checkbox" class="checkbutton" value="1" checked="checked"/>
+						<!-- TODO: ACTUALLY USE THIS CHECKBOX -->
+						<input style="display:none" name="social" type="checkbox" class="checkbutton" value="1" checked="checked"/>
 					</div>
 					<p>Allow comments and friending on my profile.</p>
 				</td>
@@ -159,7 +160,11 @@ window.onload = function() {
 			<tr>
 				<td colspan="3" class="recaptcha">
 					<div>
-                    <div class="cf-turnstile" data-theme="dark" data-sitekey="0x4AAAAAAALIZMUwcwQ8MyhY"></div>
+						<!-- TODO: CHANGE SITEKEY ASAP TO CORRECT ONE -->
+						 <?php
+						 require_once('../config/env.php');
+						 ?>
+                    <div class="cf-turnstile" data-theme="dark" data-sitekey="<?= getenv("CF_TURNSTILE_SITE_KEY") ?>"></div>
 					</div>
 				</td>
 			</tr>
