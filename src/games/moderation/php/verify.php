@@ -19,3 +19,4 @@ $perms = $db->queryFirstColumn($qs, 0, [
 if(!str_contains($perms[0], 'M')){
     die("Haxxor detected");
 }
+$db_old = connectToDatabase();

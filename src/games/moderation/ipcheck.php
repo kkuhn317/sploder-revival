@@ -42,14 +42,14 @@ error_reporting(E_ALL);
         <?php
         $username = $_POST['username'];
         $sql = "SELECT ip_address FROM members WHERE username = :username";
-        $statement = $db->prepare($sql);
+        $statement = $db_old->prepare($sql);
         $statement->execute([
             ':username'=>$username
         ]);
         $ip_address = $statement->fetchColumn();
         if($ip_address){
             $sql = "SELECT username FROM members WHERE ip_address = :ip_address AND username != :username";
-            $statement = $db->prepare($sql);
+            $statement = $db_old->prepare($sql);
             $statement->execute([
                 ':ip_address'=>$ip_address,
                 ':username'=>$username

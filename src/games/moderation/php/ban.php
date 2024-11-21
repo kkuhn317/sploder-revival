@@ -10,7 +10,7 @@ $autounbandate = time() + $_POST['time']*24*60*60;
 
 // Check whether the user exists
 $sql = "SELECT COUNT(*) FROM members WHERE username=:username";
-$statement = $db->prepare($sql);
+$statement = $db_old->prepare($sql);
 $statement->execute([
     ':username'=>$username
 ]);
@@ -22,7 +22,7 @@ if($count==0){
 
 // Check whether user banned is not a moderator
 $sql = "SELECT perms FROM members WHERE username=:username";
-$statement = $db->prepare($sql);
+$statement = $db_old->prepare($sql);
 $statement->execute([
     ':username'=>$username
 ]);
@@ -41,7 +41,7 @@ if(checkBan($username)){
 }
 
 $sql = "INSERT INTO banned_members (username, banned_by, reason, bandate, autounbandate) VALUES (:username, :banned_by, :reason, :bandate, :autounbandate)";
-$statement = $db->prepare($sql);
+$statement = $db_old->prepare($sql);
 if($statement->execute([
     ':username'=>$username,
     ':banned_by'=>$banned_by,

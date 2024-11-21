@@ -44,7 +44,7 @@ table {
             $offset = 0;
         }
         $sql = "SELECT * FROM moderation_logs ORDER BY time DESC LIMIT 100 OFFSET :offset";
-        $statement = $db->prepare($sql);
+        $statement = $db_old->prepare($sql);
         $statement->execute(
             [
                 ':offset' => $offset

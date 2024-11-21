@@ -5,7 +5,7 @@ $username = $_POST['username'];
 
 // Check whether user actually exists
 $sql = "SELECT COUNT(*) FROM members WHERE username=:username";
-$statement = $db->prepare($sql);
+$statement = $db_old->prepare($sql);
 $statement->execute([
     ':username'=>$username
 ]);
@@ -17,7 +17,7 @@ if($count==0){
 
 // Get boost points
 $sql = "SELECT boostpoints FROM members WHERE username=:username";
-$statement = $db->prepare($sql);
+$statement = $db_old->prepare($sql);
 $statement->execute([
     ':username'=>$username
 ]);
