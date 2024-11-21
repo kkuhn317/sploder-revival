@@ -1,5 +1,5 @@
 <?php
-
+include('getip.php');
 function error_found(){
     header("Location: register.php?err=unk");
   }
@@ -12,9 +12,9 @@ if (!$captcha) {
   exit;
 }
 
-$secretKey = "0x4AAAAAAALIZJX1PLgCVr158KcVHSUtLBg";
-$ip = $_SERVER['REMOTE_ADDR'];
-
+$ip = getVisitorIp();
+require_once('../config/env.php');
+$secretKey = getenv("CF_TURNSTILE_SECRET_KEY");
 
 $url_path = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
    $data = array('secret' => $secretKey, 'response' => $captcha, 'remoteip' => $ip);
@@ -96,7 +96,8 @@ if($status=="alert"){
             ':isolate' => $isolate,
             ':level' => '1',
             ':boostpoints' => '250',
-            ':lastpagechange' => '0'
+            ':lastpagechange' => '0',
+            ':ip_address' => $ip
         ]);
         session_destroy();
         header('Location: registersuccess.php');
@@ -106,7 +107,7 @@ if($status=="alert"){
 } elseif ($status=="green"){
     $length = strlen($username);
     if((2 < $length) && ($length < 17)){
-        $qs = "INSERT INTO members (username, password, joindate, lastlogin, isolate, level, boostpoints, lastpagechange) VALUES (:username, :password, :join, :lastlogin, :isolate, :level, :boostpoints, :lastpagechange)";
+        $qs = "INSERT INTO members (username, password, joindate, lastlogin, isolate, level, boostpoints, lastpagechange, ip_address) VALUES (:username, :password, :join, :lastlogin, :isolate, :level, :boostpoints, :lastpagechange, :ip_address)";
         $statement = $db->prepare($qs);
         $statement->execute([
             ':username' => $username,
@@ -116,7 +117,8 @@ if($status=="alert"){
             ':isolate' => $isolate,
             ':level' => '1',
             ':boostpoints' => '250',
-            ':lastpagechange' => '0'
+            ':lastpagechange' => '0',
+            ':ip_address' => $ip
         ]);
         session_destroy();
         header('Location: registersuccess.php');
