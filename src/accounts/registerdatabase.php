@@ -13,13 +13,8 @@ if (!$captcha) {
 }
 
 $ip = getVisitorIp();
-
-//$secretKey = getenv("CF_TURNSTILE_SECRET_KEY");
-
-// Pass all requests to allow local testing
-$secretKey = "1x0000000000000000000000000000000AA";
-
-
+require_once('../config/env.php');
+$secretKey = getenv("CF_TURNSTILE_SECRET_KEY");
 
 $url_path = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
    $data = array('secret' => $secretKey, 'response' => $captcha, 'remoteip' => $ip);

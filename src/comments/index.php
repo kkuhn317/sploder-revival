@@ -3,7 +3,7 @@ error_reporting(E_ERROR);
 ini_set('display_errors', 1);
 session_start();
 $a = $_GET['a'];
-include_once('../database/connect.php');
+require_once('../database/connect.php');
 $db = connectToDatabase();
 function time_elapsed_string($datetime, $full = false) {
     $now = new DateTime;

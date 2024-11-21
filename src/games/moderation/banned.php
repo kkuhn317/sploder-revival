@@ -39,10 +39,7 @@ table {
        <h2>List of all banned members</h2>
 
        <?php
-         $sql = "SELECT username, reason, banned_by, bandate, autounbandate FROM banned_members";
-            $statement = $db->prepare($sql);
-            $statement->execute();
-            $bans = $statement->fetchAll();
+         require_once('content/getbans.php');
             if(count($bans) == 0){
                 echo "<p>No members are currently banned</p>";
             } else {

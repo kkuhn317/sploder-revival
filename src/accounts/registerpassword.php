@@ -161,7 +161,10 @@ window.onload = function() {
 				<td colspan="3" class="recaptcha">
 					<div>
 						<!-- TODO: CHANGE SITEKEY ASAP TO CORRECT ONE -->
-                    <div class="cf-turnstile" data-theme="dark" data-sitekey="1x00000000000000000000AA"></div>
+						 <?php
+						 require_once('../config/env.php');
+						 ?>
+                    <div class="cf-turnstile" data-theme="dark" data-sitekey="<?= getenv("CF_TURNSTILE_SITE_KEY") ?>"></div>
 					</div>
 				</td>
 			</tr>
