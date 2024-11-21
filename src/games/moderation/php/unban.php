@@ -10,7 +10,7 @@ if(!checkBan($username)){
 }
 
 $sql = "DELETE FROM banned_members WHERE username=:username";
-$statement = $db->prepare($sql);
+$statement = $db_old->prepare($sql);
 if($statement->execute([
     ':username'=>$username,
 ])){

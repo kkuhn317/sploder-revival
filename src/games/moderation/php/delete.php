@@ -40,7 +40,7 @@ if ($gameId === null) {
 
 // Check whether the game exists in the database
 $sql = "SELECT COUNT(*) FROM games WHERE g_id=:id";
-$statement = $db->prepare($sql);
+$statement = $db_old->prepare($sql);
 $statement->execute([':id' => $gameId]);
 $count = $statement->fetchColumn();
 
@@ -51,7 +51,7 @@ if ($count == 0) {
 
 
 $sql = "SELECT deleter FROM pending_deletions WHERE g_id=:g_id";
-$statement = $db->prepare($sql);
+$statement = $db_old->prepare($sql);
 $statement->execute([':g_id' => $gameId]);
 $deleter = $statement->fetchColumn();
 
@@ -62,7 +62,7 @@ if($deleter == $_SESSION['username']){
 
 // Check pending deletions
 $sql = "SELECT COUNT(*) FROM pending_deletions WHERE g_id=:g_id";
-$statement = $db->prepare($sql);
+$statement = $db_old->prepare($sql);
 $statement->execute([':g_id' => $gameId]);
 $count = $statement->fetchColumn();
 
@@ -71,11 +71,11 @@ if ($count >= 3) {
     $db->beginTransaction();
     try {
         $sql = "DELETE FROM pending_deletions WHERE g_id=:g_id";
-        $statement = $db->prepare($sql);
+        $statement = $db_old->prepare($sql);
         $statement->execute([':g_id' => $gameId]);
 
         $sql = "DELETE FROM games WHERE g_id=:id";
-        $statement = $db->prepare($sql);
+        $statement = $db_old->prepare($sql);
         $statement->execute([':id' => $gameId]);
 
         $db->commit();
@@ -93,12 +93,12 @@ if ($count >= 3) {
 } else {
     // Insert new deletion request
     $sql = "INSERT INTO pending_deletions (g_id, timestamp, deleter, reason) VALUES (:g_id, NOW(), :deleter, :reason)";
-    $statement = $db->prepare($sql);
+    $statement = $db_old->prepare($sql);
     $statement->execute([':g_id' => $gameId, ':deleter' => $_SESSION['username'], ':reason' => $reason]);
 
     // Count total number of deletion requests
     $sql = "SELECT COUNT(*) FROM pending_deletions WHERE g_id=:g_id";
-    $statement = $db->prepare($sql);
+    $statement = $db_old->prepare($sql);
     $statement->execute([':g_id' => $gameId]);
     $count = $statement->fetchColumn();
 
