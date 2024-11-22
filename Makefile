@@ -36,6 +36,7 @@ dev.down:
 dev.bootstrap:
 	$(MAKE) dev.down
 	${CONTAINER_CMD} compose -f ${CONTAINER_CMD}-compose-dev.yaml up -d
+	sleep 1
 	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "pg_restore -U sploder_owner -d sploder --clean --create /docker-entrypoint-initdb.d/backup.bak"
 	echo "bootstrap complete, run `make dev` or `make dev.watch` to begin development"
 	$(MAKE) dev.down
