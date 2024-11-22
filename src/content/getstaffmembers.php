@@ -9,15 +9,18 @@ $names = $db->query($sql);
 $staff = ['moderators' => [], 'reviewers' => [], 'editors' => []]; // Array of staff members
 
 foreach ($names as $name) {
-    if (str_contains($name['perms'], 'M')) {
-        // Add the name to the moderators array and not set moderator array equal to it
-        $staff['moderators'][] = $name['username'];
-    }
-    if (str_contains($name['perms'], 'R')) {
-        $staff['reviewers'][] = $name['username'];
-    }
-    if (str_contains($name['perms'], 'E')) {
-        $staff['editors'][] = $name['username'];
+    foreach (str_split($name['perms']) as $perm) {
+        switch ($perm) {
+            case 'M':
+                $staff['moderators'][] = $name['username'];
+                break;
+            case 'R':
+                $staff['reviewers'][] = $name['username'];
+                break;
+            case 'E':
+                $staff['editors'][] = $name['username'];
+                break;
+        }
     }
 }
 function renderStaffList($staffList)
