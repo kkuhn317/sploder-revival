@@ -9,7 +9,8 @@ $names = $db->query($sql);
 $staff = ['moderators' => [], 'reviewers' => [], 'editors' => []]; // Array of staff members
 
 foreach ($names as $name) {
-    foreach (str_split($name['perms']) as $perm) {
+    $permArray = str_split($name['perms']);
+    foreach ($permArray as $perm) {
         switch ($perm) {
             case 'M':
                 $staff['moderators'][] = $name['username'];
