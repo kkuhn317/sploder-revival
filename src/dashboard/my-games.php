@@ -134,7 +134,7 @@ if(isset($_GET['game']) && $_GET['game'] == null){
 			</div>
 		  </div>
 		  <div id="sidebar">
-            <h1>GAME BUZZ INCOMPLETE</h1>
+            <!-- TODO: <h1>GAME BUZZ INCOMPLETE</h1> -->
 			<br>
 			<br>
 			<br>

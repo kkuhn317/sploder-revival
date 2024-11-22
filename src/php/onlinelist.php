@@ -45,8 +45,8 @@ if (!self.__WB_pmw) { self.__WB_pmw = function(obj) { this.__WB_source = obj; re
                     } elseif ($result3[$i]['status']=="playing"){
                         $status="playing";
                     }
-                        if(file_get_contents('../avatar/a/'.$result3[$i]['username'].'.png')){$avt= "../avatar/a/".$result3[$i]['username'].'.png';}else{$avt= '../avatar/a/fb/noob.png';}
-                        echo '<li><a href="../members/index.php?u='.$result3[$i]['username'].'"><img src="'.$avt.'" alt="'.$result3[$i]['username'].'" border="0" style="width:24px;height:24px;margin:-6px 8px" />'.$result3[$i]['username'].'</a><img style="margin-left:30px" class="status" src="../images/status_'.$status.'.gif" width="11" height="11"/></li>';
+                        
+                        echo '<li><a href="../members/index.php?u='.$result3[$i]['username'].'"><img src="../php/avatarproxy.php?u='.$result3[$i]['username'].'" alt="'.$result3[$i]['username'].'" border="0" style="width:24px;height:24px;margin:-6px 8px" />'.$result3[$i]['username'].'</a><img style="margin-left:30px" class="status" src="../images/status_'.$status.'.gif" width="11" height="11"/></li>';
                     }
                     
                     
