@@ -4,7 +4,8 @@ include('verify.php');
 $url = $_REQUEST['url'];
 $page = $_REQUEST['return'];
 // Get the game id from the URL by parsing it and getting the 'id' parameter
-function getIdFromUrl($url) {
+function getIdFromUrl($url)
+{
     // Parse the URL and extract the query string
     $parsedUrl = parse_url($url);
     $queryString = $parsedUrl['query'] ?? '';
@@ -18,7 +19,8 @@ function getIdFromUrl($url) {
     return null;
 }
 
-function getGameName ($g_id){
+function getGameName($g_id)
+{
     include_once('../../../database/connect.php');
     $db = getDatabase();
     $sql = "SELECT title FROM games WHERE g_id=:id";
@@ -28,13 +30,13 @@ function getGameName ($g_id){
 
 $gameId = getIdFromUrl($url);
 
-if (isset($_POST['reason'])){
+if (isset($_POST['reason'])) {
     $reason = $_POST['reason'];
 } else {
     $reason = "Delete request from pending deletion page";
 }
 if ($gameId === null) {
-    header("Location: ../".$page."?err=Invalid game URL, ".$gameId." ".$url);
+    header("Location: ../" . $page . "?err=Invalid game URL, " . $gameId . " " . $url);
     die();
 }
 
@@ -45,7 +47,7 @@ $statement->execute([':id' => $gameId]);
 $count = $statement->fetchColumn();
 
 if ($count == 0) {
-    header("Location: ../".$page."?err=Game does not exist");
+    header("Location: ../" . $page . "?err=Game does not exist");
     die();
 }
 
@@ -55,8 +57,8 @@ $statement = $db_old->prepare($sql);
 $statement->execute([':g_id' => $gameId]);
 $deleter = $statement->fetchColumn();
 
-if($deleter == $_SESSION['username']){
-    header("Location: ../".$page."?err=You have already requested deletion of this game. Please wait for another moderator.");
+if ($deleter == $_SESSION['username']) {
+    header("Location: ../" . $page . "?err=You have already requested deletion of this game. Please wait for another moderator.");
     die();
 }
 
@@ -85,10 +87,10 @@ if ($count >= 3) {
         logModeration('made a delete request', 'on ' . $title . ' and deleted it because of ' . $reason, 3);
 
 
-        header("Location: ../".$page."?msg=Game deleted successfully");
+        header("Location: ../" . $page . "?msg=Game deleted successfully");
     } catch (Exception $e) {
         $db->rollBack();
-        header("Location: ../".$page."?err=Failed to delete game");
+        header("Location: ../" . $page . "?err=Failed to delete game");
     }
 } else {
     // Insert new deletion request
@@ -106,8 +108,5 @@ if ($count >= 3) {
 
     include_once('log.php');
     logModeration('made a delete request', 'on ' . $title . ' because of ' . $reason, 3);
-    header("Location: ../".$page."?msg=Game deletion request submitted successfully. Total requests: ".$count."/3");
+    header("Location: ../" . $page . "?msg=Game deletion request submitted successfully. Total requests: " . $count . "/3");
 }
-
-
-?>
