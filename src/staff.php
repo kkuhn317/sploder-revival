@@ -63,7 +63,7 @@ ini_set('display_errors', 1);
     Please treat them with respect, and they will do the same for you!</p>
 
 
-
+<?php require_once('content/getstaffmembers.php') ?>
 <p>Our <strong>editors</strong> work tirelessly to find and feature good games. Our <strong>moderators</strong> follow the comments and games to make sure they 
 
     are appropriate for a general audience, and make sure everyone is treated nicely on Sploder. Our <strong>reviewers</strong> write reviews to help us all learn what 
@@ -71,9 +71,17 @@ ini_set('display_errors', 1);
 makes a good game. Feel free to comment here to communicate directly with our staff.</p>
 
 
-<div class="memberboard"><h4>Editors</h4><ul class="contentpromo memberlist"></ul><div class="spacer">&nbsp;</div></div><div class="memberboard rightcol"><h4>Moderators</h4><ul class="contentpromo memberlist"></ul><div class="spacer">&nbsp;</div></div><div class="spacer">&nbsp;</div><hr />
-
-			<!-- SWFHTTPRequest - for browsers that don't support CORS -->
+<div class="memberboard"><h4>Editors</h4><ul class="contentpromo memberlist">
+<?php 
+renderStaffList($staff['editors']);
+?>
+</ul><div class="spacer">&nbsp;</div></div>
+<div class="memberboard rightcol"><h4>Moderators</h4><ul class="contentpromo memberlist">
+<?php 
+renderStaffList($staff['moderators']);
+?>
+</ul><div class="spacer">&nbsp;</div></div><div class="spacer">&nbsp;</div><hr />
+		<!-- SWFHTTPRequest - for browsers that don't support CORS -->
 
 			<!--
 			<div id="communicator" style="position: fixed; top: 1px; left: 1px;">
@@ -93,7 +101,11 @@ makes a good game. Feel free to comment here to communicate directly with our st
 			<div id="sidebar">
 				
 			    
-				<div class="memberboard"><h4>Reviewers</h4><ul class="contentpromo memberlist"></ul><div class="spacer">&nbsp;</div></div>
+				<div class="memberboard"><h4>Reviewers</h4><ul class="contentpromo memberlist">
+				<?php 
+				renderStaffList($staff['reviewers']);
+				?>
+				</ul><div class="spacer">&nbsp;</div></div>
 				
 				
 				<br /><br /><br />
