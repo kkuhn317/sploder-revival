@@ -93,7 +93,7 @@
 
             <div class="textform">
                 <?php
-                $err = $_GET['err'];
+                $err = $_GET['err'] ?? null;
                 $errorMsg = '';
 
                 if (isset($err)) {
