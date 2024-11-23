@@ -9,10 +9,12 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 $db = getDatabase();
 
-$user = $db->queryFirst("SELECT password,userid FROM members WHERE username=:user LIMIT 1", 
+$user = $db->queryFirst(
+  "SELECT password,userid FROM members WHERE username=:user LIMIT 1",
   [
-        ':user' => mb_strtolower($username)
-  ]);
+    ':user' => mb_strtolower($username)
+  ]
+);
 
 if ($user == null || !password_verify($password, $user['password'])) {
   header('Location: login.php?err=no');
@@ -20,13 +22,13 @@ if ($user == null || !password_verify($password, $user['password'])) {
 }
 
 session_start();
-$_SESSION['loggedin']="true";
-$_SESSION['username']=mb_strtolower($username);
-$_SESSION['userid']=$user['userid'];
+$_SESSION['loggedin'] = "true";
+$_SESSION['username'] = mb_strtolower($username);
+$_SESSION['userid'] = $user['userid'];
 
 session_regenerate_id();
 $_SESSION['PHPSESSID'] = session_id();
-$t=time();
+$t = time();
 
 $query = "
 UPDATE members 
@@ -37,9 +39,8 @@ SET
 WHERE username=:username
 ";
 $db->execute($query, [
-  ':t'=>$t,
-  ':username'=>$_SESSION['username']
+  ':t' => $t,
+  ':username' => $_SESSION['username']
 ]);
 
 header('Location: ../accounts/account.php');
-?>
