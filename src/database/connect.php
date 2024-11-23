@@ -1,5 +1,15 @@
 <?php
-function connectToDatabase($table = null) {
+require_once(__DIR__ . '/../config/env.php');
+require_once(__DIR__ . '/database.php');
+
+/**
+ * @deprecated use "getDatabase" moving forward, as this will be deleted
+ *
+ * Returns a connection to the Postgres database
+ * @return PDO
+ */
+function connectToDatabase($table = null): PDO
+{
     $host = getenv("POSTGRES_HOST");
     $port = getenv("POSTGRES_PORT");
     $database = getenv("POSTGRES_DB");
@@ -15,4 +25,12 @@ function connectToDatabase($table = null) {
         return null;
     }
 }
-?>
+
+/**
+ * Retrieves a connection to the Postgres Database
+ * @return IDatabase
+ */
+function getDatabase(): IDatabase
+{
+    return new Database(connectToDatabase());
+}

@@ -7,14 +7,16 @@ services:
     depends_on:
      - "db"
     environment:
-     POSTGRES_HOST: db
-     POSTGRES_PORT: 5432
-     POSTGRES_DB: sploder
-     POSTGRES_USERNAME: sploder_owner
-     POSTGRES_PASSWORD: geoff
-     POSTGRES_SSLMODE: disable
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: sploder
+      POSTGRES_USERNAME: sploder_owner
+      POSTGRES_PASSWORD: geoff
+      POSTGRES_SSLMODE: disable
+      CF_TURNSTILE_SECRET_KEY: 1x0000000000000000000000000000000AA
+      CF_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
   db:
-    image: postgres:14
+    image: postgres:17
     container_name: sploder_postgres
     environment:
       POSTGRES_DB: sploder
