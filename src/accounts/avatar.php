@@ -206,8 +206,6 @@
             url += "-" + colors[i] + "-" + styles[i]
         }
         url += "-1";
-        //finalURL = "https://www.avatar.nem-creator.com/" + url;
-        //$("#newURL").val(finalURL);
         $("#newURL").val("...");
         localStorage.setItem("type", type);
         localStorage.setItem("styles", JSON.stringify(styles));
