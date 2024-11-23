@@ -11,8 +11,7 @@ $names = $db->query($sql);
 // Echo each name in the format of name,nextname
 // Last name does not have a comma
 $output = "";
-foreach($names as $name) {
+foreach ($names as $name) {
     $output .= $name['username'] . ",";
 }
 echo rtrim($output, ",");
-?>

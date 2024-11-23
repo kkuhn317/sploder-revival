@@ -6,11 +6,10 @@ $username = $_POST['username'];
 // Check whether username exists
 $sql = "SELECT COUNT(*) FROM members WHERE username=:username";
 $statement = $db_old->prepare($sql);
-$statement->execute([
-    ':username'=>$username
+$statement->execute([':username' => $username
 ]);
 $count = $statement->fetchColumn();
-if($count==0){
+if ($count == 0) {
     header("Location: ../index.php?err=User does not exist");
     die();
 }
@@ -18,15 +17,14 @@ if($count==0){
 // Set boost points
 $sql = "UPDATE members SET boostpoints = :boostpoints WHERE username=:username";
 $statement = $db_old->prepare($sql);
-if($statement->execute([
-    ':boostpoints'=>$_POST['bp'],
-    ':username'=>$username
-])){
+if ($statement->execute([
+    ':boostpoints' => $_POST['bp'],
+    ':username' => $username
+])) {
     // Get boost points
     $sql = "SELECT boostpoints FROM members WHERE username=:username";
     $statement = $db_old->prepare($sql);
-    $statement->execute([
-        ':username'=>$username
+    $statement->execute([':username' => $username
     ]);
     $oldbp = $statement->fetchColumn();
 
