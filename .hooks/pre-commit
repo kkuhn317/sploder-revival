@@ -3,7 +3,7 @@ FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g' | gre
 [ -z "$FILES" ] && exit 0
 
 # Fix known issues
-echo "$FILES" | xargs ./vendor/bin/phpcbf --standard=PSR12
+echo "$FILES" | xargs ./vendor/bin/phpcbf
 
 # Add back the modified/prettified files to staging
 echo "$FILES" | xargs git add
