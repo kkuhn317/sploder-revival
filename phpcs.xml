@@ -1,0 +1,3 @@
+<ruleset name="sploder_revival_standards">
+    <rule ref="PSR2"/>
+</ruleset>

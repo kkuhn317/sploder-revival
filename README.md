@@ -6,6 +6,8 @@ PHP Backend code used to power the Sploder Revival
 
 To run the Sploder Revival, you will need to ensure you have the following installed:
 
+Also, to ensure formatting is done correctly, please run `make dev.hook` to install the necessary hooks as well as `composer install`.
+
 ### Docker Installation Method
 
 - [Composer](https://getcomposer.org/download/)

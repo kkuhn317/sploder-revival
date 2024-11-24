@@ -1,4 +1,4 @@
-.PHONY: help build dev dev.watch dev.down dev.bootstrap clean
+.PHONY: help build dev dev.watch dev.down dev.bootstrap dev.bash.site dev.bash.db dev.hook clean
 
 ifeq ($(OS),Windows_NT)
   OPEN_CMD = start
@@ -13,6 +13,7 @@ help:
 	@echo "Available commands:"
 	@echo "  make build           - build the sploder-revival docker image"
 	@echo "  make dev             - executes the docker-compose-dev file with the PostgreSQL boostrap"
+	@echo "  make dev.hook        - install the pre-commit hook for formatting"
 	@echo "  make dev.watch       - same as dev, but does not detach the docker container"
 	@echo "  make dev.down        - stops the docker container if running"
 	@echo "  make dev.bootsrap    - restores the database dump into the PostgreSQL container"
@@ -29,6 +30,9 @@ dev:
 	else \
 		${CONTAINER_CMD} compose -f docker-compose-dev.yaml up -d && ${OPEN_CMD} ${LOCAL_URL}; \
 	fi
+dev.hook:
+	cp .hooks/pre-commit .git/hooks/pre-commit
+	chmod u+x .git/hooks/pre-commit
 dev.watch:
 	$(MAKE) dev WATCH=true
 dev.down:
