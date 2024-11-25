@@ -17,12 +17,12 @@ div.member_chooser {
 }
 
 div.member_chooser h4 {
-    
+
     font-size: 18px !important;
     margin-top: 0;
     border: none !important;
     color: #999 !important;
-    
+
 }
 
 div.member_chooser label {
@@ -31,12 +31,12 @@ div.member_chooser label {
 }
 
 div.member_chooser input {
-    
+
     border: 2px solid #9BACCE;
     font-size: 15px;
     width: 200px;
     margin-left: 10px;
-    
+
 }
 
 div.member_chooser ul {
@@ -49,7 +49,7 @@ div.member_chooser ul li {
     padding: 10px 0;
     margin: 0;
     list-style-type: none;
-    position: relative;    
+    position: relative;
 }
 
 div.member_chooser ul li a {
@@ -76,8 +76,8 @@ div#icon_editor #prompt {
     width: 100%;
     height: 240px;
     position: absolute;
-	left: 0;
-	top: 0;
+    left: 0;
+    top: 0;
     background-color: #000000;
     filter:alpha(opacity=75);
     -moz-opacity: 0.75;
@@ -145,8 +145,8 @@ div#icon_editor div.control {
 }
 
 div #icon_editor div.textcontrol {
-	height: 80px;
-	clear: both;
+    height: 80px;
+    clear: both;
 }
 
 div#icon_editor div.control label {

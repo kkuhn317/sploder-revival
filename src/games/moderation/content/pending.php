@@ -1,4 +1,5 @@
 <?php
+
 // Remove pending deletions older than 14 days
 $sql = "DELETE FROM pending_deletions WHERE timestamp < NOW() - INTERVAL '14 days'";
 $statement = $db_old->prepare($sql);

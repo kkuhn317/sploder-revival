@@ -1,4 +1,5 @@
 <?php
+
 include('../../content/logincheck.php');
 include('../../database/connect.php');
 

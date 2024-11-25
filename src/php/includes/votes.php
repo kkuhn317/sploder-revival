@@ -1,6 +1,8 @@
 <?php
+
 include_once('../database/connect.php');
-function get_votes($g_id) {
+function get_votes($g_id)
+{
     $db = connectToDatabase();
     $sql = "SELECT AVG(score) as avg, COUNT(*) as count FROM votes WHERE g_id = :g_id";
     $statement = $db->prepare($sql);
@@ -20,7 +22,7 @@ function vote_check($username, $g_id): bool
         ':g_id' => $g_id
     ]);
     $result = $statement->fetchAll();
-    if(count($result) > 0){
+    if (count($result) > 0) {
         return true;
     } else {
         return false;

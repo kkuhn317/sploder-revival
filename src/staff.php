@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -84,8 +84,8 @@ ini_set('display_errors', 1);
                 <h4>Editors</h4>
                 <ul class="contentpromo memberlist">
                     <?php
-					renderStaffList($staff['editors']);
-					?>
+                    renderStaffList($staff['editors']);
+                    ?>
                 </ul>
                 <div class="spacer">&nbsp;</div>
             </div>
@@ -93,8 +93,8 @@ ini_set('display_errors', 1);
                 <h4>Moderators</h4>
                 <ul class="contentpromo memberlist">
                     <?php
-					renderStaffList($staff['moderators']);
-					?>
+                    renderStaffList($staff['moderators']);
+                    ?>
                 </ul>
                 <div class="spacer">&nbsp;</div>
             </div>
@@ -103,13 +103,13 @@ ini_set('display_errors', 1);
             <!-- SWFHTTPRequest - for browsers that don't support CORS -->
 
             <!--
-			<div id="communicator" style="position: fixed; top: 1px; left: 1px;">
-				<div id="swfhttpobj"></div>
-				<script type="text/javascript">
-				       swfobject.embedSWF('https://sploder.us/swfhttprequest.swf', 'swfhttpobj', '1', '1', '9', '/swfobject/expressInstall.swf', null, { allowScriptAccess: 'always', bgcolor: '#000000' });
-				</script>
-			</div>
-			-->
+            <div id="communicator" style="position: fixed; top: 1px; left: 1px;">
+                <div id="swfhttpobj"></div>
+                <script type="text/javascript">
+                       swfobject.embedSWF('https://sploder.us/swfhttprequest.swf', 'swfhttpobj', '1', '1', '9', '/swfobject/expressInstall.swf', null, { allowScriptAccess: 'always', bgcolor: '#000000' });
+                </script>
+            </div>
+            -->
 
 
             <a id="messages_top"></a>
@@ -125,8 +125,8 @@ ini_set('display_errors', 1);
                 <h4>Reviewers</h4>
                 <ul class="contentpromo memberlist">
                     <?php
-					renderStaffList($staff['reviewers']);
-					?>
+                    renderStaffList($staff['reviewers']);
+                    ?>
                 </ul>
                 <div class="spacer">&nbsp;</div>
             </div>

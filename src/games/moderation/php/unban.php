@@ -11,9 +11,11 @@ if (!checkBan($username)) {
 
 $sql = "DELETE FROM banned_members WHERE username=:username";
 $statement = $db_old->prepare($sql);
-if ($statement->execute([
+if (
+    $statement->execute([
     ':username' => $username,
-])) {
+    ])
+) {
     include('log.php');
     logModeration('unbanned', $username, 1);
     header("Location: ../index.php?msg=User unbanned successfully");

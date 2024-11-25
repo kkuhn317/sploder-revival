@@ -7,29 +7,31 @@ $currentpage = "index.php";
 
 function time_elapsed_string($datetime, $full = false)
 {
-	$now = new DateTime;
-	$ago = new DateTime($datetime);
-	$diff = $now->diff($ago);
+    $now = new DateTime();
+    $ago = new DateTime($datetime);
+    $diff = $now->diff($ago);
 
-	$string = array(
-		'y' => 'year',
-		'm' => 'month',
-		'd' => 'day',
-		'h' => 'hour',
-		'i' => 'minute',
-		's' => 'second'
-	);
+    $string = array(
+        'y' => 'year',
+        'm' => 'month',
+        'd' => 'day',
+        'h' => 'hour',
+        'i' => 'minute',
+        's' => 'second'
+    );
 
-	foreach ($string as $k => &$v) {
-		if ($diff->$k) {
-			$v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-		} else {
-			unset($string[$k]);
-		}
-	}
+    foreach ($string as $k => &$v) {
+        if ($diff->$k) {
+            $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+        } else {
+            unset($string[$k]);
+        }
+    }
 
-	if (!$full) $string = array_slice($string, 0, 1);
-	return $string ? implode(', ', $string) . ' ago' : 'just now';
+    if (!$full) {
+        $string = array_slice($string, 0, 1);
+    }
+    return $string ? implode(', ', $string) . ' ago' : 'just now';
 }
 
 $db = connectToDatabase();
@@ -75,12 +77,12 @@ $difficulty = min(100, round($difficultyStmt->fetchColumn() * 10));
 
 //Get feedback in percentage by calculating average vote of games (0-5)
 if ($result[0]['lastlogin'] > (time() - 30)) {
-	$result[0]['lastlogin'] = time();
+    $result[0]['lastlogin'] = time();
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -110,18 +112,18 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
                             <img src="../php/userstatus.php?u=<?php echo $username ?>" width="80" height="25"
                                 alt="online status" />
                             <?php
-							$result[0]['perms'] = $result[0]['perms'] ?? '';
-							$roles = [
-								'E' => 'editor',
-								'R' => 'reviewer',
-								'M' => 'moderator'
-							];
+                            $result[0]['perms'] = $result[0]['perms'] ?? '';
+                            $roles = [
+                                'E' => 'editor',
+                                'R' => 'reviewer',
+                                'M' => 'moderator'
+                            ];
 
-							foreach ($roles as $key => $role) {
-								$icon = str_contains($result[0]['perms'], $key) ? "role_$role" : "role_empty";
-								echo "<img src=\"/chrome/{$icon}.gif\" width=\"24\" height=\"28\" alt=\"$role\" title=\"$role\" />";
-							}
-							?>
+                            foreach ($roles as $key => $role) {
+                                $icon = str_contains($result[0]['perms'], $key) ? "role_$role" : "role_empty";
+                                echo "<img src=\"/chrome/{$icon}.gif\" width=\"24\" height=\"28\" alt=\"$role\" title=\"$role\" />";
+                            }
+                            ?>
                         </div>
                         <dl>
                             <dt><strong>Level</strong></dt>
@@ -131,10 +133,10 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
                             <dt>Last visit:</dt>
                             <dd>
                                 <?php
-								$lastLoginTime = $result[0]['lastlogin'];
-								// 30 second buffer
-								echo (time() - $lastLoginTime < 30) ? 'just now' : time_elapsed_string("@" . $lastLoginTime);
-								?>
+                                $lastLoginTime = $result[0]['lastlogin'];
+                                // 30 second buffer
+                                echo (time() - $lastLoginTime < 30) ? 'just now' : time_elapsed_string("@" . $lastLoginTime);
+                                ?>
                             </dd>
                         </dl>
                     </div>
@@ -176,8 +178,8 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
                         <div class="spacer">&nbsp;</div>
                     </div>
                     <?php include('../content/userinfo.php');
-					display_user_info($username);
-					?>
+                    display_user_info($username);
+                    ?>
 
 
 
@@ -186,86 +188,85 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
             <h4 class="mprofgames">Games by <?php echo $username ?></h4>
             <div id="viewpage">
                 <div class="set"><?php
-									if ($totalgames == "0") {
-									?>
+                if ($totalgames == "0") {
+                    ?>
                     <p class="prompt">No games found!</p>
                     <div class="spacer">&nbsp;</div>
                     <?php
+                } else {
+                    $o = isset($_GET['o']) ? $_GET['o'] : "0";
+                    $offset = 12;
 
-									} else {
-										$o = isset($_GET['o']) ? $_GET['o'] : "0";
-										$offset = 12;
+                    $queryString = 'SELECT * FROM games WHERE author=:username ' . $publicgames . ' ORDER BY "g_id" DESC';
+                    if (isset($_GET['game'])) {
+                        $queryString = 'SELECT * FROM games WHERE author=:username ' . $publicgames . ' AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
+                    }
 
-										$queryString = 'SELECT * FROM games WHERE author=:username ' . $publicgames . ' ORDER BY "g_id" DESC';
-										if (isset($_GET['game'])) {
-											$queryString = 'SELECT * FROM games WHERE author=:username ' . $publicgames . ' AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
-										}
+                    $statement = $db->prepare($queryString);
+                    $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
 
-										$statement = $db->prepare($queryString);
-										$statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
+                    $result = $statement->fetchAll();
+                    $total = count($result);
 
-										$result = $statement->fetchAll();
-										$total = count($result);
+                    $queryString = $queryString . ' LIMIT 12 OFFSET ' . $o;
+                    $statement = $db->prepare($queryString);
+                    $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
 
-										$queryString = $queryString . ' LIMIT 12 OFFSET ' . $o;
-										$statement = $db->prepare($queryString);
-										$statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
+                    $result = $statement->fetchAll();
+                    $qTotal = "SELECT count(1) FROM games WHERE author=:username " . $publicgames . (isset($_GET['game']) ? ' AND SIMILARITY(title, :game) > 0.3' : '') . ' LIMIT 12 OFFSET ' . $o;
+                    $staTotal = $db->prepare($qTotal);
+                    $staTotal->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
 
-										$result = $statement->fetchAll();
-										$qTotal = "SELECT count(1) FROM games WHERE author=:username " . $publicgames . (isset($_GET['game']) ? ' AND SIMILARITY(title, :game) > 0.3' : '') . ' LIMIT 12 OFFSET ' . $o;
-										$staTotal = $db->prepare($qTotal);
-										$staTotal->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
+                    $resultTotal = $staTotal->fetchAll();
+                    $resultTotal = $resultTotal[0][0];
 
-										$resultTotal = $staTotal->fetchAll();
-										$resultTotal = $resultTotal[0][0];
+                    $f = '20';
+                    if (count($result) == "0") {
+                        echo 'This game was not found.<div class="spacer">&nbsp;</div>';
+                    }
+                    for ($i = 0; $i < count($result); $i++) {
+                        if ($result[$i]['g_id'] == null) {
+                            break;
+                        };
+                        echo '<div class="game">';
 
-										$f = '20';
-										if (count($result) == "0") {
-											echo 'This game was not found.<div class="spacer">&nbsp;</div>';
-										}
-										for ($i = 0; $i < count($result); $i++) {
-											if ($result[$i]['g_id'] == null) {
-												break;
-											};
-											echo '<div class="game">';
-
-											echo '<div class="photo">';
-											echo '<a href="/games/play.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0"><img src="/users/user' . $user_id . '/images/proj' . $result[$i]['g_id'] . '/thumbnail.png" width="80" height="80"/></a>';
-											echo '</div>';
-						?>
+                        echo '<div class="photo">';
+                        echo '<a href="/games/play.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0"><img src="/users/user' . $user_id . '/images/proj' . $result[$i]['g_id'] . '/thumbnail.png" width="80" height="80"/></a>';
+                        echo '</div>';
+                        ?>
                     <p class="gamedate"><?= date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($result[$i]['date'])) ?>
                     </p>
-                    <?php
-											echo '<h4><a href="/games/play.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0">' . urldecode($result[$i]['title']) . '</a></h4>';
-											echo '<p class="gamevote"><img src="/chrome/rating0.gif" width="64" height="12" border="0" alt="0 stars"/> 0 votes</p><p class="gameviews">' . $result[$i]['views'] . ' views</p>';
-											echo '<div class="spacer">&nbsp;</div>';
-											echo '</div>';
-										}
+                        <?php
+                        echo '<h4><a href="/games/play.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0">' . urldecode($result[$i]['title']) . '</a></h4>';
+                        echo '<p class="gamevote"><img src="/chrome/rating0.gif" width="64" height="12" border="0" alt="0 stars"/> 0 votes</p><p class="gameviews">' . $result[$i]['views'] . ' views</p>';
+                        echo '<div class="spacer">&nbsp;</div>';
+                        echo '</div>';
+                    }
 
-										/*for ($i = 0; $i < count($result); $i++) {
-				echo '<div class="game"><div class="photo"><a href="../games/playgame.php?id=916&g_swf=7&title=Martie Echito  A Taste Of Americana&pub=0"><img src="/projects/proj916/thumbnail.png" width="80" height="80"/></a></div><p class="gamedate">6&middot;1&middot;23</p><h4><a href="/play_game.php?id=916&g_swf=7&title=Martie Echito  A Taste Of Americana&pub=0&p=0">Martie Echito  A Taste Of Americana</a></h4><input title="Delete" style="width:30px" value="Delete">&nbsp;<input title="Boost" style="width:25px" class="boost_button" value="Boost">&nbsp;<input title="Challenge" style="width:45px" class="challenge_button" value="Challenge"><div class="spacer">&nbsp;</div></div>';
-			}*/
-									}
+                    /*for ($i = 0; $i < count($result); $i++) {
+                echo '<div class="game"><div class="photo"><a href="../games/playgame.php?id=916&g_swf=7&title=Martie Echito  A Taste Of Americana&pub=0"><img src="/projects/proj916/thumbnail.png" width="80" height="80"/></a></div><p class="gamedate">6&middot;1&middot;23</p><h4><a href="/play_game.php?id=916&g_swf=7&title=Martie Echito  A Taste Of Americana&pub=0&p=0">Martie Echito  A Taste Of Americana</a></h4><input title="Delete" style="width:30px" value="Delete">&nbsp;<input title="Boost" style="width:25px" class="boost_button" value="Boost">&nbsp;<input title="Challenge" style="width:45px" class="challenge_button" value="Challenge"><div class="spacer">&nbsp;</div></div>';
+            }*/
+                }
 
-					?>
+                ?>
                     <div class="spacer">&nbsp;</div>
                 </div>
                 <?php if (isset($total)) {
-					include('../content/pages.php');
-				} ?>
+                    include('../content/pages.php');
+                } ?>
 
 
 
                 <!-- SWFHTTPRequest - for browsers that don't support CORS -->
 
                 <!--
-			<div id="communicator" style="position: fixed; top: 1px; left: 1px;">
-				<div id="swfhttpobj"></div>
-				<script type="text/javascript">
-				       swfobject.embedSWF('https://sploder.us/swfhttprequest.swf', 'swfhttpobj', '1', '1', '9', '/swfobject/expressInstall.swf', null, { allowScriptAccess: 'always', bgcolor: '#000000' });
-				</script>
-			</div>
-			-->
+            <div id="communicator" style="position: fixed; top: 1px; left: 1px;">
+                <div id="swfhttpobj"></div>
+                <script type="text/javascript">
+                       swfobject.embedSWF('https://sploder.us/swfhttprequest.swf', 'swfhttpobj', '1', '1', '9', '/swfobject/expressInstall.swf', null, { allowScriptAccess: 'always', bgcolor: '#000000' });
+                </script>
+            </div>
+            -->
 
                 <!-- End SWFHTTPRequest -->
 

@@ -1,4 +1,5 @@
 <?php
+
 include('getip.php');
 function error_found()
 {

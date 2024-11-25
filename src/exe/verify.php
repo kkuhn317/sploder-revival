@@ -1,4 +1,5 @@
 <?php
+
 $PHPSESSID = $_GET['PHPSESSID'];
 if ($PHPSESSID == "demo") {
     echo '1';

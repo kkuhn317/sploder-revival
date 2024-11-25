@@ -1,9 +1,9 @@
 /* @override
-	http://sploder.home/css/sploder_v2p20.css
-	https://www.sploder.com/css/sploder_v2p10.min.css
-	https://www.sploder.com/css/sploder_simple_v01.css
-	https://www.sploder.com/css/sploder_simple_v02.css
-	https://www.sploder.com/css/sploder_simple_v03.css */
+    http://sploder.home/css/sploder_v2p20.css
+    https://www.sploder.com/css/sploder_v2p10.min.css
+    https://www.sploder.com/css/sploder_simple_v01.css
+    https://www.sploder.com/css/sploder_simple_v02.css
+    https://www.sploder.com/css/sploder_simple_v03.css */
 
 
 /* @group top level */
@@ -45,9 +45,9 @@ h1, h2, h3, h4, h5
 }
 
 input, textarea {
-	color: #75acff;
-	font-family: "courier new", monospace;
-	font-weight: bold;
+    color: #75acff;
+    font-family: "courier new", monospace;
+    font-weight: bold;
 }
 
 hr
@@ -115,18 +115,18 @@ hr
 }
 
 #tools {
-	position: absolute;
-	bottom:  14px;
-	right: 4px;
-	font-size: 14px;
+    position: absolute;
+    bottom:  14px;
+    right: 4px;
+    font-size: 14px;
 }
 
 #tools a {
-	color: #f6f;
+    color: #f6f;
 }
 
 #tools a:hover {
-	color: #f9f;
+    color: #f9f;
 }
 
 #page
@@ -152,8 +152,8 @@ hr
 }
 
 #content p:first-of-type {
-	font-size: 120%; 
-	line-height: 160%;
+    font-size: 120%;
+    line-height: 160%;
 }
 
 #footer
@@ -234,19 +234,19 @@ a img
 }
 
 .subdued {
-	color: #789;
+    color: #789;
 }
 
 .subdued a {
-	color: #9ab;
+    color: #9ab;
 }
 
 .centered {
-	text-align: center;
+    text-align: center;
 }
 
 .centered > .postbutton {
-	margin: auto;
+    margin: auto;
 }
 
 .note
@@ -333,33 +333,33 @@ span.hide
 }
 
 ul.actions {
-	margin: 20px 0;
-	padding: 0;
+    margin: 20px 0;
+    padding: 0;
 }
 
 ul.actions li {
-	list-style-type: none;
-	border: 1px solid #345;
-	margin: 0 0 20px 0;
-	border-radius: 6px;
-	padding: 16px;
-	line-height: 26px;
-	background: linear-gradient(to bottom, #000 0%,#000 50%,#234 100%);
+    list-style-type: none;
+    border: 1px solid #345;
+    margin: 0 0 20px 0;
+    border-radius: 6px;
+    padding: 16px;
+    line-height: 26px;
+    background: linear-gradient(to bottom, #000 0%,#000 50%,#234 100%);
 }
 
 ul.actions li:hover {
-	border-color: #456;
+    border-color: #456;
 }
 
 ul.actions li p {
-	font-size: 12px;
-	padding: 0;
-	margin: 0;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
 }
 
 ul.actions li a {
-	display: block;
-	font-size: 16px;
+    display: block;
+    font-size: 16px;
 }
 
 /* @end */
@@ -367,29 +367,29 @@ ul.actions li a {
 /* @group form styles */
 
 form table {
-	width:  100%;
-	border-top: 1px solid #345;
-	border-bottom: 1px solid #345;
-	padding: 20px 0;
+    width:  100%;
+    border-top: 1px solid #345;
+    border-bottom: 1px solid #345;
+    padding: 20px 0;
 }
 
 form td {
-	padding: 10px 0 0 0;
+    padding: 10px 0 0 0;
 }
 
 form tr > td:first-of-type {
-	width: 120px;
-	font-weight: bold;
-	color: #789;
+    width: 120px;
+    font-weight: bold;
+    color: #789;
 }
 
 form td p {
-	line-height: 26px;
-	font-size: 14px;
-	font-weight: normal;
-	margin: 0;
-	display: table-cell;
-	color: #cde;
+    line-height: 26px;
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
+    display: table-cell;
+    color: #cde;
 }
 
 
@@ -416,7 +416,7 @@ input.checkbutton
 
 input.postbutton
 {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 15px;
     color: #ec0;
@@ -440,9 +440,9 @@ input.postbutton
 }
 
 form td .checkbutton {
-	display: block;
-	float: left;
-	margin: 0 10px 0;
+    display: block;
+    float: left;
+    margin: 0 10px 0;
 }
 
 input,
@@ -458,137 +458,137 @@ textarea
 }
 
 form input {
-	width: calc(100% - 20px);
+    width: calc(100% - 20px);
 }
 
 form input.username_input {
-	width: calc(100% - 40px);
+    width: calc(100% - 40px);
 }
 
 form input::-webkit-input-placeholder {
-	color: #678;
-	font-style: italic;
-	font-weight: normal;
-	text-indent: 6px;
+    color: #678;
+    font-style: italic;
+    font-weight: normal;
+    text-indent: 6px;
 }
 
 form input::-moz-placeholder {
-	color: #678;
-	font-style: italic;
-	font-weight: normal;
-	text-indent: 6px;
+    color: #678;
+    font-style: italic;
+    font-weight: normal;
+    text-indent: 6px;
 }
 
 
 form input.checkbutton {
-	width: auto;
+    width: auto;
 }
 
 form div.checkholder {
-	border: 1px solid black;
-	float: left;
+    border: 1px solid black;
+    float: left;
 }
 
 form input.postbutton {
-	display: inline;
-	width: auto;
-	line-height: 24px;
-	height: 40px;
-	margin-bottom: 10px;
+    display: inline;
+    width: auto;
+    line-height: 24px;
+    height: 40px;
+    margin-bottom: 10px;
 }
 
 label {
-	font-size: 14px;
-	line-height: 28px;
+    font-size: 14px;
+    line-height: 28px;
 }
 
 p input {
-	margin-bottom: 16px;
+    margin-bottom: 16px;
 }
 
 p input.postbutton {
-	margin-top: 20px;
-	float: right;
+    margin-top: 20px;
+    float: right;
 }
 
 input.postbutton:hover {
-	cursor: pointer;
-	border-color: #bcd;
+    cursor: pointer;
+    border-color: #bcd;
 }
 
 td.recaptcha {
-	text-align: center;
-	padding: 30px 0;
+    text-align: center;
+    padding: 30px 0;
 }
 
 div.recaptcha > div,
 td.recaptcha > div {
-	width: 302px;
-	margin: auto;
+    width: 302px;
+    margin: auto;
 }
 
 .profileform {
-	margin-top: 50px;
+    margin-top: 50px;
 }
 
 .profileform tr td:first-of-type {
-	width: 70px;
+    width: 70px;
 }
 .profileform textarea {
-	width: calc(100% - 20px);
-	height: 5em;
+    width: calc(100% - 20px);
+    height: 5em;
 }
 
 .buttons {
-	margin-top: 50px;
-	text-align: center;
+    margin-top: 50px;
+    text-align: center;
 }
 
 
 span.button a,
 div.button a
 {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	border: 1px solid #567;
-	background: url(//cdn.sploder.com/chrome/button_bkgd_small.jpg) repeat-x top;
-	padding: 8px 12px;
-	margin-left: 10px;
-	white-space: nowrap;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	color: #cde;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    border: 1px solid #567;
+    background: url(//cdn.sploder.com/chrome/button_bkgd_small.jpg) repeat-x top;
+    padding: 8px 12px;
+    margin-left: 10px;
+    white-space: nowrap;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #cde;
 }
 
 span.button a:hover,
 div.button a:hover
 {
-	color: #fff;
-	border: 1px solid #bcd;
-	text-decoration: none;
+    color: #fff;
+    border: 1px solid #bcd;
+    text-decoration: none;
 }
 
 ul.reset_userlist {
-	margin: 0 0 30px 0;
-	padding: 0;
+    margin: 0 0 30px 0;
+    padding: 0;
 }
 
 ul.reset_userlist li {
-	list-style-type: none;
-	font-size: 18px;
+    list-style-type: none;
+    font-size: 18px;
 }
 
 ul.reset_userlist li a {
-	display: block;
-	border: 1px solid #345;
-	padding: 20px;
-	border-radius: 6px;
-	text-align: center;
-	background: linear-gradient(to bottom, #000 0%,#000 50%,#234 100%);
+    display: block;
+    border: 1px solid #345;
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+    background: linear-gradient(to bottom, #000 0%,#000 50%,#234 100%);
 }
 
 ul.reset_userlist li a:hover {
-	border-color: #567;
+    border-color: #567;
 }
 
 
@@ -605,17 +605,17 @@ body.gamepage #content div.sharebar div.share_buttons
 {
     float: right;
     text-align: right;
-    width: 128px; 
-    height: 30px; 
-    border-right: 1px solid #999; 
+    width: 128px;
+    height: 30px;
+    border-right: 1px solid #999;
     padding: 6px 4px 0 0;
 }
 
 div.share_buttons a
 {
-    display: inline-block; 
-    width: 24px; 
-    height: 24px; 
+    display: inline-block;
+    width: 24px;
+    height: 24px;
     background: url('../chrome/sharing_icons2.png') transparent 0 0 no-repeat;
 }
 
@@ -653,32 +653,32 @@ div.share_buttons a.googleplus:hover
 
 @media only screen and (max-width:700px) {
 
-	body {
-		width: 100&;
-	}
+    body {
+        width: 100&;
+    }
 
-	#title {
-		margin-left: 10px;
-	}
+    #title {
+        margin-left: 10px;
+    }
 
-	#main {
-		width: 100%;
-	}
+    #main {
+        width: 100%;
+    }
 
-	#page {
-	    width: 100%;
-	    margin: 0;
-	    padding: 19px 0;
-	    border-left: none;
-	    border-right: none;
-	    -moz-box-shadow: none;
-	    -webkit-box-shadow: none;
-	    box-shadow: none;
-	    border-radius: 0;
-	}
+    #page {
+        width: 100%;
+        margin: 0;
+        padding: 19px 0;
+        border-left: none;
+        border-right: none;
+        -moz-box-shadow: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 0;
+    }
 
-	#content {
-	    margin: 20px 30px 30px 30px;
-	}
+    #content {
+        margin: 20px 30px 30px 30px;
+    }
 
 }

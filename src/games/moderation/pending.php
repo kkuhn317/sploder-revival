@@ -27,10 +27,10 @@
         <?php include('content/subnav.php'); ?>
 
         <div id="content" style="width:940px;">
-            <?php if (isset($_GET['err'])): ?>
+            <?php if (isset($_GET['err'])) : ?>
             <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
             <?php endif; ?>
-            <?php if (isset($_GET['msg'])): ?>
+            <?php if (isset($_GET['msg'])) : ?>
             <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
             <?php endif; ?>
 
@@ -38,14 +38,13 @@
             <p>Games that have been inactive for 14 days will be removed from this list.</p>
 
             <?php
-      require_once('content/pending.php');
+            require_once('content/pending.php');
 
-      ?>
-            <?php if (count($games) != 0): ?>
+            ?>
+            <?php if (count($games) != 0) : ?>
             <div id="viewpage">
                 <div style="width:915px;" class="set">
-                    <?php foreach ($games as $game): ?>
-
+                    <?php foreach ($games as $game) : ?>
                     <div class="game">
                         <div class="photo">
                             <a
@@ -76,9 +75,9 @@
 
 
             </div>
-            <?php else:
-        echo "<p>No games pending deletion</p>";
-      endif; ?>
+            <?php else :
+                echo "<p>No games pending deletion</p>";
+            endif; ?>
 
             <div class="spacer">&nbsp;</div>
         </div>

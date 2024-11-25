@@ -17,10 +17,12 @@ if ($count == 0) {
 // Set boost points
 $sql = "UPDATE members SET boostpoints = :boostpoints WHERE username=:username";
 $statement = $db_old->prepare($sql);
-if ($statement->execute([
+if (
+    $statement->execute([
     ':boostpoints' => $_POST['bp'],
     ':username' => $username
-])) {
+    ])
+) {
     // Get boost points
     $sql = "SELECT boostpoints FROM members WHERE username=:username";
     $statement = $db_old->prepare($sql);

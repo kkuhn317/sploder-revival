@@ -1,6 +1,6 @@
 <?php
 if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
-?>
+    ?>
 <style>
 .topnav .search-container {
     float: none !important;
@@ -50,28 +50,28 @@ if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
     <div class="search-container">
         <form action="/php/url.php" method="post">
             <?php
-        $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https')
-          === FALSE ? 'http' : 'https';
-        $host     = $_SERVER['HTTP_HOST'];
-        $script   = $_SERVER['SCRIPT_NAME'];
-        $params   = $_SERVER['QUERY_STRING'];
-        if ($params == "") {
-          $currentUrl = 'https://' . 'sploder.xyz' . $script;
-          $currentUrl1 = 'https://' . 'sploder.xyz' . $script . '?';
-        } else {
-          $currentUrl = 'https://' . 'sploder.xyz' . $script . '?' . $params;
-          $currentUrl1 = 'https://' . 'sploder.xyz' . $script . '?' . $params;
-        }
+            $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https')
+            === false ? 'http' : 'https';
+            $host     = $_SERVER['HTTP_HOST'];
+            $script   = $_SERVER['SCRIPT_NAME'];
+            $params   = $_SERVER['QUERY_STRING'];
+            if ($params == "") {
+                $currentUrl = 'https://' . 'sploder.xyz' . $script;
+                $currentUrl1 = 'https://' . 'sploder.xyz' . $script . '?';
+            } else {
+                $currentUrl = 'https://' . 'sploder.xyz' . $script . '?' . $params;
+                $currentUrl1 = 'https://' . 'sploder.xyz' . $script . '?' . $params;
+            }
 
-        ?>
+            ?>
             <input class="urlmessage" style="" type="text" value="<?php echo $currentUrl; ?>" name="url">
             <input style="" value="<?php echo $currentUrl1; ?>" type="hidden" name="back">
             <?php if ($_GET["urlerr"] == 1) {
-          echo '<p style="margin-top:45px;" class="urlmessage">You must enter a valid sploder.us.to url!</p><br><br><br>';
-        } ?>
+                echo '<p style="margin-top:45px;" class="urlmessage">You must enter a valid sploder.us.to url!</p><br><br><br>';
+            } ?>
             <?php if ($_GET["err404"] == 1) {
-          echo '<p style="margin-top:45px;" class="urlmessage">This URL does not exist!</p><br><br><br>';
-        } ?>
+                echo '<p style="margin-top:45px;" class="urlmessage">This URL does not exist!</p><br><br><br>';
+            } ?>
 
         </form>
         <br><br><br>
