@@ -40,13 +40,15 @@ if (checkBan($username)) {
 
 $sql = "INSERT INTO banned_members (username, banned_by, reason, bandate, autounbandate) VALUES (:username, :banned_by, :reason, :bandate, :autounbandate)";
 $statement = $db_old->prepare($sql);
-if ($statement->execute([
+if (
+    $statement->execute([
     ':username' => $username,
     ':banned_by' => $banned_by,
     ':reason' => $reason,
     ':bandate' => $bandate,
     ':autounbandate' => $autounbandate
-])) {
+    ])
+) {
     include('log.php');
     logModeration('banned', $username . ' for ' . $_POST['time'] . " days because of " . $reason, 3);
     header("Location: ../index.php?msg=User banned successfully");

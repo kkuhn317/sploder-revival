@@ -1,29 +1,31 @@
 <big><big><br>THIS IS IN EXTREME ALPHA. DO NOT USE. Instead, use <a
             href="https://github.com/Sploder-Saptarshi/Sploder-Launcher">this</a> for a better experience.</big></big>
 <?php
-if (!session_id()) session_start();
+if (!session_id()) {
+    session_start();
+}
 include_once($_SERVER['DOCUMENT_ROOT'] . '/database/connect.php');
 $db1 = connectToDatabase('members');
 $thing = "SELECT boostpoints FROM members WHERE username=:user";
 $thing2 = $db1->prepare($thing);
 $thing2->execute(
-	[
-		':user' => isset($_SESSION['username']) ? $_SESSION['username'] : null
-	]
+    [
+        ':user' => isset($_SESSION['username']) ? $_SESSION['username'] : null
+    ]
 );
 $bp = $thing2->fetchAll();
 function format_num($num, $precision = 0)
 {
-	if ($num >= 1000 && $num < 1000000) {
-		$n_format = number_format($num / 1000, $precision) . 'k';
-	} else if ($num >= 1000000 && $num < 1000000000) {
-		$n_format = number_format($num / 1000000, $precision) . 'm';
-	} else if ($num >= 1000000000) {
-		$n_format = number_format($num / 1000000000, $precision) . 'b';
-	} else {
-		$n_format = $num;
-	}
-	return $n_format;
+    if ($num >= 1000 && $num < 1000000) {
+        $n_format = number_format($num / 1000, $precision) . 'k';
+    } elseif ($num >= 1000000 && $num < 1000000000) {
+        $n_format = number_format($num / 1000000, $precision) . 'm';
+    } elseif ($num >= 1000000000) {
+        $n_format = number_format($num / 1000000000, $precision) . 'b';
+    } else {
+        $n_format = $num;
+    }
+    return $n_format;
 }
 ?>
 <div id="main" style="width:980px;">
@@ -33,10 +35,10 @@ function format_num($num, $precision = 0)
                         class="hide">Games at Sploder</span></a></h1>
         </div>
         <div id="tools"><?php
-						if (isset($_SESSION['loggedin'])) {
-							echo '<div class="boostpoints">' . format_num(floor($bp[0]['boostpoints'])) . '</div>';
-						}
-						?>
+        if (isset($_SESSION['loggedin'])) {
+            echo '<div class="boostpoints">' . format_num(floor($bp[0]['boostpoints'])) . '</div>';
+        }
+        ?>
             <ul>
 
                 <li id="parentslink">
@@ -47,11 +49,10 @@ function format_num($num, $precision = 0)
 
                 <li>
                     <?php
-					if (!isset($_SESSION['loggedin'])) {
+                    if (!isset($_SESSION['loggedin'])) {
+                        echo '<a href="/accounts/login.php">Log in</a>';
 
-						echo '<a href="/accounts/login.php">Log in</a>';
-
-					?>
+                        ?>
 
 
                 </li>
@@ -62,7 +63,7 @@ function format_num($num, $precision = 0)
                 </li>
 
             </ul>
-            <?php } else { ?>
+                    <?php } else { ?>
             <b><?php echo $_SESSION['username'] ?></b>
             <li id="dashboard">
 
@@ -81,8 +82,8 @@ function format_num($num, $precision = 0)
 
             </li>
             </ul>
-            <?php }
-		?>
+                    <?php }
+                    ?>
         </div>
         <ul id="topnav">
             <li id="nav1"><a href="/games/featured.php">Play Games</a></li>

@@ -1,4 +1,5 @@
-function start_download() {
+function start_download()
+{
     const progressBar = document.getElementById('progress-bar');
 
 
@@ -6,7 +7,9 @@ function start_download() {
 
     fetch(downloadUrl)
         .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             const progressContainer = document.getElementById('progress-container');
             progressContainer.style.display = 'block';
             const contentLength = +response.headers.get('Content-Length');
@@ -16,7 +19,8 @@ function start_download() {
 
             return new ReadableStream({
                 start(controller) {
-                    function push() {
+                    function push()
+                    {
                         reader.read().then(({ done, value }) => {
                             if (done) {
                                 controller.close();
@@ -42,7 +46,7 @@ function start_download() {
                             receivedLength += value.length;
 
                             const percentComplete = (receivedLength / contentLength) * 100;
-                            progressBar.style.width = `${percentComplete}%`;
+                            progressBar.style.width = `${percentComplete} % `;
 
                             controller.enqueue(value);
                             push();

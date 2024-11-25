@@ -1,4 +1,5 @@
 <?php
+
 function getVisitorIp()
 {
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {

@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include('../../database/connect.php');
 $db = connectToDatabase('friend_requests');

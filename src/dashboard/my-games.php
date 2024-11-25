@@ -22,7 +22,7 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -72,7 +72,9 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
             <p>You've made <?= $total_games ?> games, with a total of ? views so far.
             <form action="<?= $currentpage ?>" method="GET"><label for="title">Search by title: &nbsp;</label><input
                     style="width:98.5%;height:26px" placeholder="My awesome game"
-                    value="<?php if (isset($_GET['game'])) echo $_GET['game'] ?>" class="urlthing" type="text" id="game"
+                    value="<?php if (isset($_GET['game'])) {
+                        echo $_GET['game'];
+                           } ?>" class="urlthing" type="text" id="game"
                     name="game" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                     maxlength="100" /><br><br><br></form>
             <div class="set">
@@ -114,7 +116,7 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
                     if ($game['g_id'] == null) {
                         break;
                     }
-                ?>
+                    ?>
                 <div class="game">
                     <div class="photo">
                         <a href="../games/play.php?&id=<?= $game['g_id'] ?>">
@@ -131,7 +133,7 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
                     <input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">
                     <div class="spacer">&nbsp;</div>
                 </div>
-                <?php
+                    <?php
                 }
                 ?>
 

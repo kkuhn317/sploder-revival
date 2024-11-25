@@ -31,10 +31,10 @@ error_reporting(E_ALL);
         <?php include('content/subnav.php'); ?>
 
         <div id="content" style="width:940px">
-            <?php if (isset($_GET['err'])): ?>
+            <?php if (isset($_GET['err'])) : ?>
             <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
             <?php endif; ?>
-            <?php if (isset($_GET['msg'])): ?>
+            <?php if (isset($_GET['msg'])) : ?>
             <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
             <?php endif; ?>
             <h2>List of all actions performed by moderators</h2>
@@ -60,19 +60,18 @@ error_reporting(E_ALL);
                     // Depending on level, add a color, more level means higher danger
                     if ($log['level'] == 1) {
                         $log['color'] = 'lime';
-                    } else if ($log['level'] == 2) {
+                    } elseif ($log['level'] == 2) {
                         $log['color'] = 'orange';
-                    } else if ($log['level'] == 3) {
+                    } elseif ($log['level'] == 3) {
                         $log['color'] = 'red';
                     } else {
                         $log['color'] = 'gray';
                     }
 
-                ?>
+                    ?>
                 <li><?= $log['time'] ?>: <u><?= $log['moderator'] ?></u> <span
                         style="color: <?= $log['color'] ?>;"><?= $log['action'] ?></span> <?= $log['on'] ?></li>
-                <?php
-
+                    <?php
                 }
 
 

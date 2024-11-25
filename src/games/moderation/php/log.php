@@ -1,4 +1,5 @@
 <?php
+
 function logModeration($action, $on, $level)
 {
     if (!isset($db)) {

@@ -1,7 +1,7 @@
 <?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -210,14 +210,14 @@
                         <p>Make your own platformer game with this game maker. Add ninjas, dragons, and other bad guys
                             and battle them with swords, guns, and other cool weapons.</p>
                         <?php
-						if (isset($_SESSION['username'])) {
-							$url = "../exe/generate.php?URL=https://sploder.xyz/swf/creator2_b17.swf||userid=" . $_SESSION['userid'] . "|username=" . $_SESSION['username'] . "|creationdate=" . time() . "|PHPSESSID=" . $_SESSION['PHPSESSID'] . "&PHPSESSID=" . $_SESSION['PHPSESSID'] . ">";
-						} else {
-							session_destroy();
-							$url = "../exe/generate.php?URL=https://sploder.xyz/swf/creator2_b17.swf||userid=demo|username=demo|creationdate=20070102003743|PHPSESSID=demo&PHPSESSID=demo";
-						}
-						include('../content/noflash.php')
-						?>
+                        if (isset($_SESSION['username'])) {
+                            $url = "../exe/generate.php?URL=https://sploder.xyz/swf/creator2_b17.swf||userid=" . $_SESSION['userid'] . "|username=" . $_SESSION['username'] . "|creationdate=" . time() . "|PHPSESSID=" . $_SESSION['PHPSESSID'] . "&PHPSESSID=" . $_SESSION['PHPSESSID'] . ">";
+                        } else {
+                            session_destroy();
+                            $url = "../exe/generate.php?URL=https://sploder.xyz/swf/creator2_b17.swf||userid=demo|username=demo|creationdate=20070102003743|PHPSESSID=demo&PHPSESSID=demo";
+                        }
+                        include('../content/noflash.php')
+                        ?>
                     </div>
                 </div>
             </div>

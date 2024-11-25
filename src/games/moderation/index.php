@@ -21,10 +21,10 @@
         <?php include('content/subnav.php'); ?>
 
         <div id="content">
-            <?php if (isset($_GET['err'])): ?>
+            <?php if (isset($_GET['err'])) : ?>
             <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
             <?php endif; ?>
-            <?php if (isset($_GET['msg'])): ?>
+            <?php if (isset($_GET['msg'])) : ?>
             <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
             <?php endif; ?>
             <h2>Ban member</h2>
@@ -104,10 +104,10 @@
 
             </form>
             <?php if (isset($_GET['bp'])) {
-        echo "<h2>Results</h2>";
-        echo "<p>Boost points: " . $_GET['bp'] . "</p>";
-      }
-      ?>
+                echo "<h2>Results</h2>";
+                echo "<p>Boost points: " . $_GET['bp'] . "</p>";
+            }
+            ?>
             <br /><br /><br />
             <div class="spacer">&nbsp;</div>
         </div>

@@ -26,10 +26,10 @@ error_reporting(E_ALL);
         <?php include('content/subnav.php'); ?>
 
         <div id="content">
-            <?php if (isset($_GET['err'])): ?>
+            <?php if (isset($_GET['err'])) : ?>
             <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
             <?php endif; ?>
-            <?php if (isset($_GET['msg'])): ?>
+            <?php if (isset($_GET['msg'])) : ?>
             <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
             <?php endif; ?>
             <h2>Check all usernames sharing the same IP address</h2>
@@ -39,9 +39,9 @@ error_reporting(E_ALL);
                 <input type="text" name="username" placeholder="Enter username" required />
                 <input type="submit" value="Check" />
             </form>
-            <?php if (isset($_POST['username'])): ?>
+            <?php if (isset($_POST['username'])) : ?>
             <h2>Results</h2>
-            <?php
+                <?php
                 $username = $_POST['username'];
                 $sql = "SELECT ip_address FROM members WHERE username = :username";
                 $statement = $db_old->prepare($sql);
@@ -53,8 +53,8 @@ error_reporting(E_ALL);
                     $sql = "SELECT username FROM members WHERE ip_address = :ip_address AND username != :username";
                     $statement = $db_old->prepare($sql);
                     $statement->execute([
-                        ':ip_address' => $ip_address,
-                        ':username' => $username
+                    ':ip_address' => $ip_address,
+                    ':username' => $username
                     ]);
                     $usernames = $statement->fetchAll();
                     if (count($usernames) == 0) {

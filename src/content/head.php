@@ -9,7 +9,7 @@
 
 <?php
 if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
-	echo '<script src="/chrome/loader.js"></script><link rel="canonical" href="https://sploder.xyz/" />';
+    echo '<script src="/chrome/loader.js"></script><link rel="canonical" href="https://sploder.xyz/" />';
 }
 ?>
 

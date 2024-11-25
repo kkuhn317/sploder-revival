@@ -1,11 +1,12 @@
 <?php
+
 $s = $_GET['s'];
 //generic puppeteer stuff
 require_once('../../vendor/autoload.php');
 
 use Nesk\Puphpeteer\Puppeteer;
 
-$puppeteer = new Puppeteer;
+$puppeteer = new Puppeteer();
 $browser = $puppeteer->launch();
 
 $page = $browser->newPage();

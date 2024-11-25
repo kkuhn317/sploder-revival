@@ -59,28 +59,26 @@ $db = connectToDatabase();
         <?php
             // Contest status, 0 = results, 1 = nominations, 2 = voting
             $day = date("w");
-            if($day == 1 || $day == 2) {
-                $status = 1;
-            }
-            elseif($day == 3 || $day == 4 || $day == 5) {
-                $status = 2;
-            }
-            else {
-                $status = 0;
-            }
-            if($status == 2){
-                $qs = "SELECT games.g_id, games.title, games.author, games.user_id
+        if ($day == 1 || $day == 2) {
+            $status = 1;
+        } elseif ($day == 3 || $day == 4 || $day == 5) {
+            $status = 2;
+        } else {
+            $status = 0;
+        }
+        if ($status == 2) {
+            $qs = "SELECT games.g_id, games.title, games.author, games.user_id
                 FROM (
                     SELECT id
                     FROM contest_votes
                     LIMIT 32
                 ) AS recent_contests
                 JOIN games ON recent_contests.id = games.g_id LIMIT 32;";
-                $statement = $db->prepare($qs);
-                $statement->execute();
-                $result = $statement->fetchAll();
-            } else {
-                $qs = "SELECT games.g_id, games.title, games.author, games.user_id
+            $statement = $db->prepare($qs);
+            $statement->execute();
+            $result = $statement->fetchAll();
+        } else {
+            $qs = "SELECT games.g_id, games.title, games.author, games.user_id
                 FROM (
                     SELECT contest_id, g_id
                     FROM contest_winner
@@ -88,34 +86,33 @@ $db = connectToDatabase();
                     LIMIT 24
                 ) AS recent_contests
                 JOIN games ON recent_contests.g_id = games.g_id ORDER BY contest_id DESC LIMIT 24;";
-                $statement = $db->prepare($qs);
-                $statement->execute();
-                $result = $statement->fetchAll();
-            }
+            $statement = $db->prepare($qs);
+            $statement->execute();
+            $result = $statement->fetchAll();
+        }
                 // Display everything
-                if(count($result) > 0){
-                echo '<div id="viewpage">';
-                echo '<div class="set wideset">';
-                if($status == 2){
+        if (count($result) > 0) {
+            echo '<div id="viewpage">';
+            echo '<div class="set wideset">';
+            if ($status == 2) {
                     echo '<h4 style="margin-bottom: 12px;">This Week\'s Contest Nominees</h4>';
-                } else {
-                    echo '<h4 style="margin-bottom: 12px;">Past Contest Winners</h4>';
-                }
-                echo '<div class="grid">';
-
-                foreach($result as $row) {
-                    echo '<div class="game vignette">';
-                    echo '<div class="photo">';
-                    echo '<a href="/games/play.php?id='.$row['g_id'].'"><img src="https://sploder.xyz/users/user'.$row['user_id'].'/images/proj'.$row['g_id'].'/thumbnail.png" alt="'.$row['title'].' by '.$row['author'].'" title="'.$row['title'].' by '.$row['author'].'" onerror="r(this)" /></a>';
-                    echo '</div>';
-                    echo '<div class="spacer">&nbsp;</div>';
-                    echo '</div>';
-                }
-                echo '<div class="spacer">&nbsp;</div>';
-                echo '</div></div></div>';
-                
+            } else {
+                echo '<h4 style="margin-bottom: 12px;">Past Contest Winners</h4>';
             }
-        
+                    echo '<div class="grid">';
+
+            foreach ($result as $row) {
+                echo '<div class="game vignette">';
+                echo '<div class="photo">';
+                echo '<a href="/games/play.php?id=' . $row['g_id'] . '"><img src="https://sploder.xyz/users/user' . $row['user_id'] . '/images/proj' . $row['g_id'] . '/thumbnail.png" alt="' . $row['title'] . ' by ' . $row['author'] . '" title="' . $row['title'] . ' by ' . $row['author'] . '" onerror="r(this)" /></a>';
+                echo '</div>';
+                echo '<div class="spacer">&nbsp;</div>';
+                        echo '</div>';
+            }
+                    echo '<div class="spacer">&nbsp;</div>';
+                    echo '</div></div></div>';
+        }
+
         ?>
         <!--<h4 style="margin-bottom: 12px;">This Week's Contest Nominees</h4>
         <div class="grid">

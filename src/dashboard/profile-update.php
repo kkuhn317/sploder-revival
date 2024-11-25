@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 // Get the form data
 $username = $_SESSION['username'];

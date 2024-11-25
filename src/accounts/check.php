@@ -1,8 +1,8 @@
 <?php
+
 require_once('../database/connect.php');
 
-if (session_status() === PHP_SESSION_ACTIVE)
-{
+if (session_status() === PHP_SESSION_ACTIVE) {
     session_destroy();
 }
 
@@ -14,15 +14,15 @@ $password = $_POST['password'] ?? null;
 $db = getDatabase();
 
 $user = $db->queryFirst(
-  "SELECT password,userid FROM members WHERE username=:user LIMIT 1",
-  [
+    "SELECT password,userid FROM members WHERE username=:user LIMIT 1",
+    [
     ':user' => mb_strtolower($username)
-  ]
+    ]
 );
 
 if ($user == null || !password_verify($password, $user['password'])) {
-  header('Location: login.php?err=no');
-  return;
+    header('Location: login.php?err=no');
+    return;
 }
 
 session_start();

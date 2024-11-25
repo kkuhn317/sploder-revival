@@ -1,4 +1,5 @@
 <?php
+
 $url = $_POST["url"];
 $domain = substr($url, 0, 20);
 $back = str_replace("&urlerr=1", "", str_replace("&err404=1", "", $_POST["back"]));

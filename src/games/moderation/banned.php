@@ -31,10 +31,10 @@ error_reporting(E_ALL);
         <?php include('content/subnav.php'); ?>
 
         <div id="content">
-            <?php if (isset($_GET['err'])): ?>
+            <?php if (isset($_GET['err'])) : ?>
             <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
             <?php endif; ?>
-            <?php if (isset($_GET['msg'])): ?>
+            <?php if (isset($_GET['msg'])) : ?>
             <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
             <?php endif; ?>
             <h2>List of all banned members</h2>

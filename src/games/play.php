@@ -4,51 +4,86 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
 <?php
-function get_game_info($game_id){
+function get_game_info($game_id)
+{
     include('../database/connect.php');
     $db = connectToDatabase();
     $qs = "SELECT * FROM games WHERE g_id=:game_id";
     $statement = $db->prepare($qs);
-    $statement->execute( [ ':game_id' => $game_id ] );
+    $statement->execute([ ':game_id' => $game_id ]);
     $result = $statement->fetchAll();
     return $result[0];
 }
-function get_creator_type($type, $g_swf){
-    if($type == 'name'){
-        switch ($g_swf){
-            case '1': return 'classic'; break;
-            case '2': return 'platformer'; break;
-            case '3': return '3d adventure'; break;
-            case '5': return 'physics'; break;
-            case '7': return 'arcade'; break;
+function get_creator_type($type, $g_swf)
+{
+    if ($type == 'name') {
+        switch ($g_swf) {
+            case '1':
+                return 'classic';
+            break;
+            case '2':
+                return 'platformer';
+            break;
+            case '3':
+                return '3d adventure';
+            break;
+            case '5':
+                return 'physics';
+            break;
+            case '7':
+                return 'arcade';
+            break;
         }
     } else {
-        switch ($g_swf){
-            case '1': return 'shooter'; break;
-            case '2': return 'plat'; break;
-            case '3': return 'algo'; break;
-            case '5': return 'ppg'; break;
-            case '7': return 'arcade'; break;
+        switch ($g_swf) {
+            case '1':
+                return 'shooter';
+            break;
+            case '2':
+                return 'plat';
+            break;
+            case '3':
+                return 'algo';
+            break;
+            case '5':
+                return 'ppg';
+            break;
+            case '7':
+                return 'arcade';
+            break;
         }
     }
 }
-function get_swf_version($g_Swf){
-    switch ($g_Swf){
-        case '1': return 'idk'; break;
-        case '2': return '20.swf?fix=3'; break;
-        case '3': return 'idk'; break;
-        case '5': return 'idk'; break;
-        case '7': return 'idk'; break;
+function get_swf_version($g_Swf)
+{
+    switch ($g_Swf) {
+        case '1':
+            return 'idk';
+        break;
+        case '2':
+            return '20.swf?fix=3';
+        break;
+        case '3':
+            return 'idk';
+        break;
+        case '5':
+            return 'idk';
+        break;
+        case '7':
+            return 'idk';
+        break;
     }
 }
     $game = get_game_info($_GET['id']);
-    if(!isset($game['title'])){die("Invalid game ID");}
+if (!isset($game['title'])) {
+    die("Invalid game ID");
+}
     $status = "playing";
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <?php include('../content/head.php') ?>
@@ -69,7 +104,7 @@ function get_swf_version($g_Swf){
 
         <div id="content">
             <h3><?= $game['title'] ?></h3>
-            <h4 class="subtitle">By <a href="games/members/<?= $game['author'] ?>/"><?= $game['author'] ?></a> :: <?= date('l F j\t\h, Y',strtotime($game['date'])) ?></h4>
+            <h4 class="subtitle">By <a href="games/members/<?= $game['author'] ?>/"><?= $game['author'] ?></a> :: <?= date('l F j\t\h, Y', strtotime($game['date'])) ?></h4>
             <div class="vote"" id="contestwidget"><div style="margin-top:-15px; width: 150px; height:45px; overflow: hidden;" id="contestflash">&nbsp;</div></div>
             <div id="venue" style="margin: 6px 0 0 20px; float: right;"></div>
             <script>
@@ -103,8 +138,12 @@ function get_swf_version($g_Swf){
                 }
 
                 var flashvars = {
-                    s: "<?= $game['g_id'].'_'.$game['user_id'] ?>",
-                    <?php if(isset($_SESSION['PHPSESSID'])) { echo "sid: \"{$_SESSION['PHPSESSID']}\",\n"; } else { echo 'nu: "",'."\n";} ?>
+                    s: "<?= $game['g_id'] . '_' . $game['user_id'] ?>",
+                    <?php if (isset($_SESSION['PHPSESSID'])) {
+                        echo "sid: \"{$_SESSION['PHPSESSID']}\",\n";
+                    } else {
+                        echo 'nu: "",' . "\n";
+                    } ?>
                     // EMBED_BETA_VERSION
                     // EMBED_FORCE_SECURE
                     // EMBED_ADTEST
@@ -112,7 +151,9 @@ function get_swf_version($g_Swf){
                     beta_version: "<?= get_swf_version($game['g_swf']) ?>",
                     onsplodercom: "true",
                     modified: <?= rand() ?>,
-                    <?php if(isset($_SESSION['PHPSESSID'])) { echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\""; } ?>
+                    <?php if (isset($_SESSION['PHPSESSID'])) {
+                        echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";
+                    } ?>
                 }
 
                 var params = {
@@ -135,18 +176,21 @@ function get_swf_version($g_Swf){
       '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;" title="share this on facebook"></a>&nbsp;<a class="twitter" href="https://twitter.com/intent/tweet?text=Playing%20Genetic%20Lab%20Explosion%20by%20geoff%20on%20%40sploder%20-%20&url=https%3A%2F%2Fwww.sploder.com%2Fgames%2Fmembers%2Fgeoff%2Fplay%2Fgenetic-lab-explosion%2F%3Fref%3Dtw" onclick="javascript:window.open(this.href,
       '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;" title="tweet this!"></a></div></div>
             <?php
-            if(isset($game['description']))
-                echo '<p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">' . $game['description'] . '</p>'
+            if (isset($game['description'])) {
+                echo '<p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">' . $game['description'] . '</p>';
+            }
             ?>
 
             <script type="text/javascript">
                 us_config = {
                     container: 'messages',
-                    venue: 'game-<?= $game['g_id'] .'-'. $game['author'] ?>',
+                    venue: 'game-<?= $game['g_id'] . '-' . $game['author'] ?>',
                     venue_container: 'venue',
                     venue_type: 'game',
                     owner: '<?= $game['author'] ?>',
-                    username: '<?php if(isset($_SESSION['username'])) { echo $_SESSION['username']; }?>',
+                    username: '<?php if (isset($_SESSION['username'])) {
+                        echo $_SESSION['username'];
+                               }?>',
                     ip_address: '',
                     timestamp: '<?= time() ?>',
                     auth: '',
@@ -186,16 +230,17 @@ function get_swf_version($g_Swf){
                 ]);
                 $result = $statement->fetchAll();
                 // remove game if id is same as current game
-                foreach($result as $key => $value){
-                    if($value['g_id'] == $game['g_id']){
+                foreach ($result as $key => $value) {
+                    if ($value['g_id'] == $game['g_id']) {
                         unset($result[$key]);
                     }
                 }
                 $total_more_games = count($result);
-                if($total_more_games == 11) unset($result[11]);
-                if($total_more_games != 0) {
-
-            ?>
+                if ($total_more_games == 11) {
+                    unset($result[11]);
+                }
+                if ($total_more_games != 0) {
+                    ?>
 
             <div class="bucket moregames">
 
@@ -205,20 +250,20 @@ function get_swf_version($g_Swf){
                 <ul class="ratings_list">
                     <?php
                     //show games
-                    foreach($result as $more_game){
-                        echo '<li><a href="play.php?id='.$more_game['g_id'].'">'.$more_game['title'].'</a>&nbsp; <span class="viewscomments">'.date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['date'])).' &middot; '.$more_game['views'].' views</span></li>';
+                    foreach ($result as $more_game) {
+                        echo '<li><a href="play.php?id=' . $more_game['g_id'] . '">' . $more_game['title'] . '</a>&nbsp; <span class="viewscomments">' . date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['date'])) . ' &middot; ' . $more_game['views'] . ' views</span></li>';
                     }
                     ?>
 
 
                 </ul>
             </div>
-            <?php } ?>
+                <?php } ?>
             <div class="spacer">&nbsp;</div></div>
         <div id="sidebar">
 
 
-            <div class="gametypeinfo"><p>This is a game made with Sploder Revival's <a href="../make/<?= get_creator_type('url',$game['g_swf']) ?>.php"><?= get_creator_type('name',$game['g_swf']) ?> game creator</a>.</p></div>
+            <div class="gametypeinfo"><p>This is a game made with Sploder Revival's <a href="../make/<?= get_creator_type('url', $game['g_swf']) ?>.php"><?= get_creator_type('name', $game['g_swf']) ?> game creator</a>.</p></div>
 
 
 
@@ -231,9 +276,9 @@ function get_swf_version($g_Swf){
             include('../php/includes/votes.php');
             $votes = get_votes($game['g_id']);
             $total = $votes['count'];
-            if($total!=0){
+            if ($total != 0) {
                 $average = round($votes['avg'], 1);
-            ?>
+                ?>
 
             <div class="promo gamerating">
                 <div xmlns:v="https://rdf.data-vocabulary.org/#" typeof="v:Review-aggregate">
@@ -247,7 +292,9 @@ function get_swf_version($g_Swf){
                     </span>
                 </span>
                     based on
-                    <span property="v:votes" datatype="xsd:string"><?= $total ?></span> rating<?php if($total!=1){echo 's';} ?>
+                    <span property="v:votes" datatype="xsd:string"><?= $total ?></span> rating<?php if ($total != 1) {
+                        echo 's';
+                                                                   } ?>
                 </div>
                 <div class="spacer"></div>
             </div>

@@ -1,4 +1,5 @@
 <?php
+
 function checkBan($username)
 {
     if (!isset($db)) {

@@ -9,7 +9,7 @@ if (isset($_SESSION['username'])) {
     if (!isset($status)) {
         $status = "online";
     }
-?>
+    ?>
 <script>
 fetch("/php/idlecheck.php")
 

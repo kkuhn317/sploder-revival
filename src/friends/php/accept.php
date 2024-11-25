@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -37,8 +38,6 @@ if (!isset($exists[0]['id'])) {
 
 
     if (isset($exists[0]['request_id'])) {
-
-
         $db = connectToDatabase('friend_requests');
         $qs2 = "DELETE FROM friend_requests WHERE (sender_username=:sender_id AND receiver_username = :receiver_username) OR (receiver_username=:sender_id AND sender_username = :receiver_username)";
         $statement2 = $db->prepare($qs2);

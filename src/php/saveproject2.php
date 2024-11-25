@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
@@ -14,7 +15,9 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $new_game = false;
     include('../database/connect.php');
     $db = connectToDatabase();
-    if (isset($_GET['projid'])) $id = (int)filter_var($_GET['projid'], FILTER_SANITIZE_NUMBER_INT);
+    if (isset($_GET['projid'])) {
+        $id = (int)filter_var($_GET['projid'], FILTER_SANITIZE_NUMBER_INT);
+    }
     if (!isset($_GET['projid'])) {
         $qs = "INSERT INTO games (author, user_id, title, date, description, g_swf, ispublished, isdeleted, isprivate, comments) 
             VALUES (:username, :user_id, :title, :date, :description, :g_swf, :ispublished, :isdeleted, :isprivate, :comments)
@@ -59,4 +62,6 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     }
     file_put_contents($project_path . "unpublished.xml", $xml);
     echo '<message result="success" id="proj' . $id . '" message="' . $id . '"/>';
-} else echo '<message result="failed" message="The session ID is incorrect! Log out and log in again."/>';
+} else {
+    echo '<message result="failed" message="The session ID is incorrect! Log out and log in again."/>';
+}

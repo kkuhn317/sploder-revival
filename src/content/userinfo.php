@@ -15,23 +15,23 @@ function display_user_info($username)
     if (empty($row['description']) && empty($row['hobbies']) && empty($row['sports']) && empty($row['games']) && empty($row['movies']) && empty($row['bands']) && empty($row['respect'])) {
         $showAbout = false;
     }
-?>
+    ?>
 <script type="text/javascript">
 function setClass(id, c) {
     var e = document.getElementById(id);
     if (e) e.className = c;
 }
 </script>
-<?php if ($showAbout) { ?>
+    <?php if ($showAbout) { ?>
 <div class="mprofgroup mprofsection">
     <h4><a href="#" onclick="setClass('mprof_about', 'shown'); return false;">About <?= $username ?></a></h4>
     <div class="mprofcontent hidden" id="mprof_about">
         <?php
-                if ($row['description'] != '') {
-                    echo '<p class="intro">
+        if ($row['description'] != '') {
+            echo '<p class="intro">
     <img class="p_avatar" src="/php/avatarproxy.php?u="' . $username . ' width="48" height="48" alt="member speaking"/>
     ' . nl2br(htmlspecialchars($row['description'])) . '</p>';
-                }
+        }
                 $fields = [
                     'hobbies' => 'Hobbies',
                     'sports' => 'Favorite Sports',
@@ -53,9 +53,9 @@ function setClass(id, c) {
         <div class="spacer">&nbsp;</div>
     </div>
 </div>
-<?php } ?>
+    <?php } ?>
 
-<?php
+    <?php
 
     // Get required data for votes, comments, vote average, tributes, group memberships, and group ownerships
     // TODO: Group Memberships, Group Ownerships, Comment view page
@@ -119,7 +119,7 @@ function setClass(id, c) {
     </div>
 </div>
 
-<?php
+    <?php
 
     // Get required data for reactions
 
@@ -196,6 +196,6 @@ function setClass(id, c) {
         <div class="spacer">&nbsp;</div>
     </div>
 </div>
-<?php
+    <?php
 }
 ?>
