@@ -57,7 +57,7 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
         <div id="subnav">
             <ul class="nav_dashboard">
                 <li><a href="/">Home</a></li>
-                <li><a href="my-games.php" class="active">My Games</a></li>
+                <li><a href="" class="active">My Games</a></li>
                 <li><a href="profile-edit.php">Profile</a></li>
                 <li><a href="/friends/index.php">Friends</a></li>
                 <li><a href="groups/">Groups</a></li>
@@ -79,8 +79,8 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
                     maxlength="100" /><br><br><br></form>
             <div class="set">
                 <?php
-                $o = isset($_GET['o']) ? $_GET['o'] : "0";
-                $offset = 12;
+                    $o = isset($_GET['o']) ? $_GET['o'] : "0";
+                    $offset = 12;
 
                 $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 0 ORDER BY "g_id" DESC';
                 if (isset($_GET['game'])) {
@@ -161,4 +161,3 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
         <?php include('../content/footernavigation.php') ?>
 </body>
 
-</html>
