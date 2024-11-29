@@ -1,6 +1,21 @@
 # sploder-revival
 
-PHP Backend code used to power the Sploder Revival
+PHP Backend code used to power the Sploder Revival.
+
+## Flash & Security Notice
+
+In order to use the Sploder Revival (in a usable state, not via [Ruffle](https://ruffle.rs/)), you will need to install a working version of Flash Player. We recommend downloading either of these:
+
+- [CleanFlash](https://gitlab.com/cleanflash/installer) A modified Chinese Flash Player without adware. Flash in China still receives security updates for Windows and macOS.
+- [Adobe Flash Player](https://archive.org/details/flashplayer_old) Official version of Flash Player available in all other regions. No longer updated after December of 2020.
+
+As well as a Flash/CleanFlash compatible browser:
+
+- [Waterfox Classic](https://classic.waterfox.net/)
+- [Pale Moon](https://www.palemoon.org/)
+- [K-Meleon](http://kmeleonbrowser.org/forum/read.php?19,154431)
+
+Note that Flash has been discontinued since January 2021, and that using a Flash compatible browser and Flash itself should be exercised with caution outside of Sploder Revival usage.
 
 ## Prerequisites
 
