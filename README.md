@@ -23,6 +23,8 @@ To run the Sploder Revival, you will need to ensure you have the following insta
 
 Also, to ensure formatting is done correctly, please run `make dev.hook` to install the necessary hooks as well as `composer install`.
 
+Further, whenever you have updated the schema of the database, please run `make dev.backup.db`, which will update the schema of the database from the Dockerfile. If you are running an manual installation, please ensure you run the following Postgres command into `/db/sploder.sql` when you update the database: `pg_dump -U sploder_owner -d sploder --format=p --schema-only --create > /db/sploder.sql`
+
 ### Docker Installation Method
 
 - [Composer](https://getcomposer.org/download/)
