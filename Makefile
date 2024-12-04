@@ -1,4 +1,4 @@
-.PHONY: help build dev dev.watch dev.down dev.bootstrap dev.bash.site dev.bash.db dev.hook clean
+.PHONY: help build dev dev.watch dev.down dev.bootstrap dev.bash.site dev.bash.db dev.backup.db dev.hook clean
 
 ifeq ($(OS),Windows_NT)
   OPEN_CMD = start
@@ -19,6 +19,7 @@ help:
 	@echo "  make dev.bootsrap    - restores the database dump into the PostgreSQL container"
 	@echo "  make dev.bash.site   - enter the sploder revival container"
 	@echo "  make dev.bash.db     - enter the db container"
+	@echo "  make dev.backup.db   - creates a schema backup of the database into the mounted folder"
 	@echo "  make clean           - cleans docker images and temporary files"
 build:
 	composer install
@@ -48,7 +49,8 @@ dev.bash.site:
 	${CONTAINER_CMD} exec -it sploder_revival /bin/bash
 dev.bash.db:
 	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash
-
+dev.backup.db:
+	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "pg_dump -U sploder_owner -d sploder --format=p --schema-only --create > /docker-entrypoint-initdb.d/sploder.sql"
 clean:
 	${CONTAINER_CMD} container  rm --force sploder-revival
 	${CONTAINER_CMD} image rm --force sploder-revival

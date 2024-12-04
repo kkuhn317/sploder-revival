@@ -23,7 +23,7 @@ services:
       POSTGRES_USER: sploder_owner
       POSTGRES_PASSWORD: geoff
     volumes:
-      - ./db/mydb_dump.bak:/docker-entrypoint-initdb.d/backup.bak  # Mount the backup file into the container
+      - ./db:/docker-entrypoint-initdb.d  # Mount the backup file into the container
       - ./pgdata:/var/lib/postgresql/data  # Persistent storage for the database
     ports:
       - "5432:5432"
