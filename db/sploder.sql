@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.2 (Debian 17.2-1.pgdg120+1)
--- Dumped by pg_dump version 17.2 (Debian 17.2-1.pgdg120+1)
+-- Dumped from database version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
+-- Dumped by pg_dump version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,7 +21,7 @@ SET row_security = off;
 -- Name: sploder; Type: DATABASE; Schema: -; Owner: sploder
 --
 
-CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'C.UTF-8';
 
 
 ALTER DATABASE sploder OWNER TO sploder;
@@ -588,6 +588,20 @@ ALTER TABLE ONLY public.members
 
 ALTER TABLE ONLY public.user_info
     ADD CONSTRAINT username_user_info UNIQUE (username);
+
+
+--
+-- Name: DATABASE sploder; Type: ACL; Schema: -; Owner: postgres
+--
+
+GRANT ALL ON DATABASE sploder TO sploder;
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: pg_database_owner
+--
+
+GRANT ALL ON SCHEMA public TO sploder;
 
 
 --
