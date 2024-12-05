@@ -14,4 +14,4 @@ $statement2->execute(
 include("../../content/webhook.php");
 log_data("Friend Request Revoked", $_SESSION['username'] . " has revoked a friend request to " . $_GET['u'], 1);
 
-header('Location: ../index.php')
+header('Location: ../index.php');
