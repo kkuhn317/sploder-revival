@@ -12,7 +12,7 @@ require_once('../database/connect.php');
 $db = getDatabase();
 
 if ($id == "0") {
-    $qs = "INSERT INTO graphics (version, userid, isprivate, ispublished) VALUES (1, :userid, true, false) RETURNING id";
+    $qs = "INSERT INTO graphics (version, userid, isprivate, ispublished) VALUES (0, :userid, true, false) RETURNING id";
     $id = $db->queryFirstColumn($qs,0,[
         ':userid' => $userid
     ]);
@@ -27,13 +27,14 @@ if($result == $userid){
     if ($type == "thumbnail") {
         file_put_contents("gif/" . $id . ".gif", $rawdata);
     } elseif ($type == "sprite") {
-        $qs = "UPDATE graphics SET ispublished=1 WHERE id=:id";
-        $db->execute($qs, [
+        $isprivate = $_GET['isprivate'] == "1" ? true : false;
+        $qs = "UPDATE graphics SET ispublished=true, isprivate=:isprivate, version=version+1 WHERE id=:id RETURNING version";
+        $version = $db->queryFirstColumn($qs,0,[
+            ':isprivate' => $isprivate,
             ':id' => $id
         ]);
-        $result = $statement->fetchAll();
 
-        file_put_contents("png/" . $id . "_6.png", $rawdata);
+        file_put_contents("png/" . $id . "_". $version .".png", $rawdata);
     } elseif ($type == "project") {
         file_put_contents("prj/" . $id . ".prj", $rawdata);
     }
