@@ -32,9 +32,7 @@ let opener = _____WB$wombat$assign$function_____("opener");
 
 try {
 
-var net_result = ' <div class="users_online">
-    <ul><?php
-
+var net_result = ' <div class="users_online"><ul><?php
     for ($i = 0; $i < $total; $i++) {
         if ($result3[$i]['status'] == "online") {
             if ($result3[$i]['lastpagechange'] > $pagechange) {
@@ -53,9 +51,7 @@ var net_result = ' <div class="users_online">
 
 
 
-    ?></ul>
-    <div class="spacer">&nbsp;</div>
-</div>';
+    ?></ul><div class="spacer">&nbsp;</div></div>';
 
 if (document && document.getElementById) {
 
