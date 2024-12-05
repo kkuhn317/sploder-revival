@@ -69,7 +69,7 @@ if (intval($responseKeys["success"]) !== 1) {
 
         $result2 = $statement2->fetchAll();
         include('../database/connect.php');
-        $db = connectToDatabase('members');
+        $db = connectToDatabase();
         #$qs = "UPDATE sploder SET isprivate=" . $isprivate . " WHERE g_id = " . $id;
         $qs2 = "SELECT username FROM members WHERE username=:user LIMIT 1";
         $statement2 = $db->prepare($qs2);
