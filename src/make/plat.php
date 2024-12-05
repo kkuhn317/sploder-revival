@@ -94,7 +94,7 @@
 
         }
 
-        popUpWindow("/php/player.php?PHPSESSID=&m=" + movieID + "&u=" + userID + "&c=" + creationDate, Math.floor(screen
+        popUpWindow("/php/player.php?m=" + movieID + "&u=" + userID + "&c=" + creationDate, Math.floor(screen
             .width / 2) - (wide / 2), Math.floor(screen.height / 2) - 200, wide, 400);
 
     }
@@ -113,7 +113,7 @@
 
         }
 
-        popUpWindow("/publish.php?PHPSESSID=&s=" + pubkey + "#kickdown", Math.floor(screen.width / 2) - (wide / 2), Math
+        popUpWindow("publish.php?s=" + pubkey + "#kickdown", Math.floor(screen.width / 2) - (wide / 2), Math
             .floor(screen.height / 2) - 270, wide, 540);
 
     }
