@@ -172,7 +172,7 @@
             v: "1"
         };
 
-        swfobject.embedSWF("../swf/pixeleditor06.swf", "flashcontent", "720", "550", "10.1.53", "/swfobject/expressInstall.swf",
+        swfobject.embedSWF("../swf/pixeleditor05.swf", "flashcontent", "720", "550", "10.1.53", "/swfobject/expressInstall.swf",
             flashvars, params);
         -->
     </script>
