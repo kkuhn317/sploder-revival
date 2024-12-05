@@ -111,7 +111,7 @@ require_once(__DIR__ . '/php/materials.php');
             <li><a href="../dashboard/my-games.php">My Games</a></li>
             <li><a href="../dashboard/profile-edit.php">Profile</a></li>
             <li><a href="../friends/index.php">Friends</a></li>
-            <li><a href="groups/">Groups</a></li>
+            <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
             <li><a href="" class="active">Awards</a></li>
             <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
             <li><a href="my-graphics.php">Graphics</a></li>

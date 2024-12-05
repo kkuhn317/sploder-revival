@@ -53,7 +53,7 @@
                 <li><a href="my-games.php">My Games</a></li>
                 <li><a href="" class="active">Profile</a></li>
                 <li><a href="/friends/index.php">Friends</a></li>
-                <li><a href="groups/">Groups</a></li>
+                <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
                 <li><a href="/awards/index.php">Awards</a></li>
                 <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
                 <li><a href="my-graphics.php">Graphics</a></li>

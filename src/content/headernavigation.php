@@ -63,7 +63,7 @@ function format_num($num, $precision = 0)
                 </li>
 
             </ul>
-                    <?php } else { ?>
+            <?php } else { ?>
             <b><?php echo $_SESSION['username'] ?></b>
             <li id="dashboard">
 
@@ -82,13 +82,13 @@ function format_num($num, $precision = 0)
 
             </li>
             </ul>
-                    <?php }
+            <?php }
                     ?>
         </div>
         <ul id="topnav">
             <li id="nav1"><a href="/games/featured.php">Play Games</a></li>
             <li id="nav2"><a href="/make/index.php">Make a Game</a></li>
-            <li id="nav3"><a href="/games/egd/">EGD</a></li>
+            <!-- TODO: Challenges <li id="nav3"><a href="/games/challenges/">Challenges</a></li> -->
             <li id="nav4"><a href="/games/members/">Members</a></li>
             <li id="nav5"><a href="/games/contest.php">Contest</a></li>
         </ul>
