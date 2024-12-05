@@ -25,6 +25,13 @@ $result = $db->queryFirstColumn($qs,0,[
 ]);
 if($result == $userid){
     if ($type == "thumbnail") {
+        // Check image dimensions if it is 80px by 80px to see if they are valid
+        $image = imagecreatefromstring($rawdata);
+        $width = imagesx($image);
+        $height = imagesy($image);
+        if ($width != 80 || $height != 80) {
+            die('<message result="error" message="Invalid dimensions! Please note that inappropriate graphics and graphics not made by the creator is strictly forbidden."/>');
+        }
         file_put_contents("gif/" . $id . ".gif", $rawdata);
     } elseif ($type == "sprite") {
         $isprivate = $_GET['isprivate'] == "1" ? true : false;
@@ -33,7 +40,6 @@ if($result == $userid){
             ':isprivate' => $isprivate,
             ':id' => $id
         ]);
-
         file_put_contents("png/" . $id . "_". $version .".png", $rawdata);
     } elseif ($type == "project") {
         file_put_contents("prj/" . $id . ".prj", $rawdata);
