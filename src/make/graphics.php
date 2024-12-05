@@ -12,8 +12,8 @@
 
 
     <script type="text/javascript">
-        <!--
-        var userid = "demo";
+        
+        var userid = "<?php echo isset($_SESSION['username']) ? $_SESSION['userid'] : 'demo'; ?>";
 
         var page_start_time = (new Date()).getTime();
 
@@ -174,7 +174,7 @@
 
         swfobject.embedSWF("../swf/pixeleditor05.swf", "flashcontent", "720", "550", "10.1.53", "/swfobject/expressInstall.swf",
             flashvars, params);
-        -->
+        
     </script>
 
 
@@ -231,43 +231,8 @@
             <div class="spacer">&nbsp;</div>
         </div>
         <div class="spacer">&nbsp;</div>
-        <div id="footer">
-            
-            <div class="spacer">&nbsp;</div>
-        </div>
-        <div class="spacer">&nbsp;</div>
-    </div>
-    </div>
-    <div id="bottomnav">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about.php">About</a></li>
-            <li><a href="/parents-teachers.php">Parents</a></li>
-            <li><a href="/contact.php">Contact Us</a></li>
-            <li><a href="/termsofservice.php">Terms of Service</a></li>
-            <li><a href="/privacypolicy.php">Privacy Policy</a></li>
-            <li><a href="https://discord.gg/E9RmT3TXBa">Discord (Unofficial)</a></li>
-        </ul>
-    </div>
+        <?php require('../content/footernavigation.php'); ?>
 
-
-
-
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-92552-8']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') +
-                '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
 
 </body>
 
