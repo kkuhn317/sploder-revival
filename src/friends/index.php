@@ -40,7 +40,7 @@ ini_set('display_errors', 1);
                 <li><a href="../dashboard/my-games.php">My Games</a></li>
                 <li><a href="../dashboard/profile-edit.php">Profile</a></li>
                 <li><a href="" class="active">Friends</a></li>
-                <li><a href="groups/">Groups</a></li>
+                <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
                 <li><a href="/awards/index.php">Awards</a></li>
                 <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
                 <li><a href="my-graphics.php">Graphics</a></li>
