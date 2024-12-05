@@ -232,20 +232,7 @@
         </div>
         <div class="spacer">&nbsp;</div>
         <div id="footer">
-            <div class="adslot" style="width: 728px; height: 90px;">
-                <script type="text/javascript">
-                    <!--
-                    google_ad_client = "ca-pub-3994856696311428";
-                    /* 728x90, creator page */
-                    google_ad_slot = "0844648245";
-                    google_ad_width = 728;
-                    google_ad_height = 90;
-                    //
-                    -->
-                </script>
-                <script type="text/javascript" src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
-                </script>
-            </div>
+            
             <div class="spacer">&nbsp;</div>
         </div>
         <div class="spacer">&nbsp;</div>
