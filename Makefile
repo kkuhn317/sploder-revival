@@ -39,6 +39,7 @@ dev.watch:
 dev.down:
 	${CONTAINER_CMD} compose -f docker-compose-dev.yaml down
 dev.bootstrap:
+	@echo "---BOOTSTRAP START---";
 	$(MAKE) dev.down
 	${CONTAINER_CMD} compose -f docker-compose-dev.yaml up -d
 	sleep 1
@@ -52,7 +53,7 @@ dev.bash.db:
 dev.backup.db:
 	$(MAKE) dev.down
 	${CONTAINER_CMD} compose -f docker-compose-dev.yaml up -d
-	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "pg_dump -U postgres -d sploder --format=p --schema-only --create > /docker-entrypoint-initdb.d/sploder.sql"
+	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "pg_dump -U sploder -d sploder --format=p --schema-only --create > /docker-entrypoint-initdb.d/sploder.sql"
 	$(MAKE) dev.down
 clean:
 	${CONTAINER_CMD} container  rm --force sploder-revival
