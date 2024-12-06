@@ -1,16 +1,5 @@
 <?php
-// Get required data...
-session_start();
-$s_array = explode("_", $_GET['s']);
-$id = end($s_array);
-require_once('../database/connect.php');
-$db = getDatabase();
-$qs = "SELECT author,title,description FROM games WHERE g_id = :id";
-$result = $db->queryFirst($qs, [':id' => $id]);
-if ($_SESSION['username'] != $result['author']) {
-    header('Location: /?s=' . $_GET['s']);
-}
-print_r($result);
+require_once('content/publish.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -23,14 +12,16 @@ print_r($result);
     <?php //require('../content/swfobject.php'); 
     ?>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
-    <script type="text/javascript" language="Javascript">
+    <script type="text/javascript" src="content/publish.js"></script>
+    <script>
+        id = <?= $id ?>;
     </script>
 </head>
 
 <body bgcolor="#FFFFFF">
     <div id="show" style="width: 590px;"><a name="kickdown" style="height:1px; overflow:hidden;"></a>
         <div class="showcontent">
-            <h4><?= $result['title'] ?></h4>
+            <h4><?= $game['title'] ?></h4>
             <div class="gameobject" style="width: 508px; height: 381px;">
                 <div id="flashcontent">
                     <br /><br /><br /><br /><br /><br />
@@ -39,12 +30,56 @@ print_r($result);
                     <br /><br /><br /><br /><br /><br />
                 </div>
             </div>
+            <script type="text/javascript">
+                var g_swf = "game<?= $game['g_swf'] ?>.swf";
+                var g_version = "10";
 
+                try {
+                    if (g_swf == "game2.swf") {
+                        var fmv = deconcept.SWFObjectUtil.getPlayerVersion().major;
+                        if (fmv == "9") {
+                            g_swf = "game2v9.swf";
+                            g_version = "9";
+                        }
+                    }
+                } catch (err) {}
+
+                var flashvars = {
+                    s: "<?= $game['user_id'] . '_' . $game['g_id'] ?>",
+                    <?php if (isset($_SESSION['PHPSESSID'])) {
+                        echo "sid: \"{$_SESSION['PHPSESSID']}\",\n";
+                    } else {
+                        echo 'nu: "",' . "\n";
+                    } ?>
+                    // EMBED_BETA_VERSION
+                    // EMBED_FORCE_SECURE
+                    // EMBED_ADTEST
+                    // EMBED_CHALLENGE
+                    beta_version: "<?= get_swf_version($game['g_swf']) ?>",
+                    onsplodercom: "true",
+                    modified: <?= rand() ?>,
+                    <?php if (isset($_SESSION['PHPSESSID'])) {
+                        echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";
+                    } ?>
+                }
+
+                var params = {
+                    menu: "false",
+                    quality: "high",
+                    scale: "noscale",
+                    salign: "tl",
+                    bgcolor: "#333333",
+                    wmode: "direct",
+                    allowScriptAccess: "always",
+                };
+
+                swfobject.embedSWF("/swf/" + g_swf, "flashcontent", "508", "381", g_version, "/swfobject/expressInstall.swf", flashvars, params);
+            </script>
             <div style="display:none;" id="message" class="prompt"></div>
             <br id="promptBr">
-            <p class="description" id="descriptionBox" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0;<?php if ($result['description'] == null) {
+            <p class="description" id="descriptionBox" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0;<?php if ($game['description'] == null) {
                                                                                                                                         echo 'display:none;';
-                                                                                                                                    } ?>"><?= $result['description'] ?></p>
+                                                                                                                                    } ?>"><?= nl2br($game['description']) ?></p>
             <br><br>
             <div class="buttons" style="padding: 0;">
                 <span class="button firstbutton"><a style="cursor:pointer;" onclick="showDescription()">Describe &raquo;</a></span>&nbsp;
@@ -52,138 +87,41 @@ print_r($result);
 
             <br>
 
-            <script>
-                function showDescription() {
-                    document.getElementById('description').style.display = 'block';
-                }
-
-                function hideDescription() {
-                    document.getElementById('description').style.display = 'none';
-                }
-
-                function showDescriptionBox() {
-                    document.getElementById('descriptionBox').style.display = 'block';
-                }
-
-                function hideDescriptionBox() {
-                    document.getElementById('descriptionBox').style.display = 'none';
-                }
-
-                function sendDescription() {
-                    var description = document.getElementById('descriptionTextarea').value;
-                    if (!/^[a-zA-Z0-9 !@#$%^&*()_+{}|:"<>?`\-=\[\]\\;\',.\/]*$/.test(description)) {
-                        setMessageType('alert');
-                        document.getElementById('message').innerHTML = 'Description contains invalid characters. Please use only alphabets, numbers, spaces and standard symbols.';
-                        showMessage();
-                        return;
-                    }
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'description.php', true);
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    xhr.send('id=<?= $id ?>&description=' + description);
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState == 4) {
-                            if (xhr.status == 200) {
-                                document.getElementsByClassName('description')[0].innerHTML = description;
-                                hideDescription();
-                                setMessageType('prompt');
-                                document.getElementById('message').innerHTML = 'Game Description saved.';
-                                if (description.length > 0) {
-                                    showDescriptionBox();
-                                } else {
-                                    hideDescriptionBox();
-                                }
-                            } else {
-                                setMessageType('alert');
-                                document.getElementById('message').innerHTML = 'Failed to save description. Please try again later.';
-                            }
-                            showMessage();
-                        }
-                    }
-                }
-
-                function sendTags() {
-                    var tags = document.getElementById('tagsText').value;
-                    // Check whether each tag is valid
-                    // For a tag to be valid, it must be less than 30 characters long
-                    // It also must have only letters and numbers
-                    var tagArray = tags.split(' ');
-                    for (var i = 0; i < tagArray.length; i++) {
-                        // If a tag is empty, remove it from the array
-                        if (tagArray[i] == '') {
-                            tagArray.splice(i, 1);
-                            i--;
-                            continue;
-                        }
-                        if (tagArray[i].length > 30) {
-                            setMessageType('alert');
-                            document.getElementById('message').innerHTML = 'Tags must be less than 30 characters long.';
-                            showMessage();
-                            return;
-                        }
-                        if (!/^[a-zA-Z0-9]*$/.test(tagArray[i])) {
-                            setMessageType('alert');
-                            document.getElementById('message').innerHTML = 'Tags must contain only letters and numbers. Use spaces to separate tags';
-                            showMessage();
-                            return;
-                        }
-                    }
-                    // There must not be more than 25 tags
-                    if (tagArray.length > 25) {
-                        setMessageType('alert');
-                        document.getElementById('message').innerHTML = 'You can only have up to 25 tags.';
-                        showMessage();
-                        return;
-                    }
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'tags.php', true);
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    xhr.send('id=<?= $id ?>&tags=' + tags);
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState == 4) {
-                            if (xhr.status == 200) {
-                                setMessageType('prompt');
-                                document.getElementById('message').innerHTML = 'Game Tags saved.';
-                            } else {
-                                setMessageType('alert');
-                                document.getElementById('message').innerHTML = 'Failed to save tags. Please try again later.';
-                            }
-                            showMessage();
-                        }
-                    }
-                }
-
-                function showMessage() {
-                    document.getElementById('promptBr').style.display = 'none';
-                    document.getElementById('message').style.display = 'block';
-                }
-
-                function setMessageType(type) {
-                    document.getElementById('message').className = type;
-                }
-            </script>
-
             <div style="display:none;" id="description">
                 <hr>
                 <p>Please enter a description for your game.</p>
-                <textarea id="descriptionTextarea" type="text" name="description" size="50" style="width: 300px; height: 200px;"><?= $result['description'] ?></textarea><br><br>
+                <textarea id="descriptionTextarea" type="text" name="description" size="50" style="width: 300px; height: 200px;"><?= br2nl($game['description']) ?></textarea><br><br>
                 <input onclick="sendDescription()" type="submit" value="Save Description" class="loginbutton postbutton">
                 <br><br>
             </div>
             <hr>
             <div id="kickdown" class="tagbox">
-                <p class="tags" style="text-align:justify !important;"><strong><span style="all: unset; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color:#0055FC;"><big>ONE MORE STEP!</big></span></strong>
-                    Please add some tags to describe your game
-                    (like <a class="tagcolor0">space</a>,
-                    <a class="tagcolor1">adventure</a>,
-                    <a class="tagcolor2">rpg</a>,
-                    <a class="tagcolor3">monster</a>,
-                    <a class="tagcolor0">alien</a>)
-                    . Use any words you like:
+                <p class="tags" style="text-align:justify !important;">
+                    <?php if (!isset($tags[0][0])) { ?>
+                        <strong><span style="all: unset; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color:#0055FC;"><big>ONE MORE STEP!</big></span></strong>
+                        Please add some tags to describe your game
+                        (like <a class="tagcolor0">space</a>,
+                        <a class="tagcolor1">adventure</a>,
+                        <a class="tagcolor2">rpg</a>,
+                        <a class="tagcolor3">monster</a>,
+                        <a class="tagcolor0">alien</a>).
+                        Use any words you like:
+                    <?php } else {
+                        require('../content/taglister.php');
+                    ?>
+                        Tags: <?= displayTags($tags, false) ?>
+                    <?php } ?>
                 </p>
-
                 <input type="hidden" name="id" value="<?= $id ?>">
-                <textarea type="text" id="tagsText" name="tags" size="50" style="width: 300px; height: 100px;"></textarea><br><br>
+                <textarea type="text" id="tagsText" name="tags" size="50" style="width: 300px; height: 100px;"><?php
+                                                                                                                if (isset($tags[0][0])) {
+                                                                                                                    $tagString = '';
+                                                                                                                    foreach ($tags as $tag) {
+                                                                                                                        $tagString .= $tag[0] . ' ';
+                                                                                                                    }
+                                                                                                                    $tagString = substr($tagString, 0, -1);
+                                                                                                                }
+                                                                                                                ?></textarea><br><br>
                 <input type="submit" onclick="sendTags()" value="Save Tags" class="loginbutton postbutton">
 
             </div>
@@ -191,10 +129,10 @@ print_r($result);
             <script type="text/javascript">
                 us_config = {
                     container: 'messages',
-                    venue: 'game-<?= $id . '-' . $result['author'] ?>',
+                    venue: 'game-<?= $id . '-' . $game['author'] ?>',
                     venue_container: 'venue',
                     venue_type: 'game',
-                    owner: '<?= $result['author'] ?>',
+                    owner: '<?= $game['author'] ?>',
                     username: '<?php if (isset($_SESSION['username'])) {
                                     echo $_SESSION['username'];
                                 } ?>',
@@ -224,18 +162,11 @@ print_r($result);
                 <div id="messages"></div>
                 <div id="venue" class="mprofvenue"></div>
             </div>
-
-
-
-
         </div>
         <div class="showbottom">
             <div class="showbottomright">&nbsp;</div>
         </div>
     </div><br /><br>
-    <script type="text/javascript">
-        if (so) so.write("flashcontent");
-    </script>
 </body>
 
 </html>

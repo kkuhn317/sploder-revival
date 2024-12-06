@@ -3,7 +3,7 @@ require('content/verify.php');
 $description = trim($_POST['description']);
 
 // Check whether the description contains characters other than alphabets, numbers, spaces and !@#$%^&*()_+{}|:"<>?`-=[]\;',./
-if (!preg_match('/^[a-zA-Z0-9 !@#$%^&*()_+{}|:"<>?`\-=\[\]\\;\',.\/]*$/', $description)) {
+if (!preg_match('/^[a-zA-Z0-9 !@#$%^&*()_+{}|:"<>?`\-=\[\]\\;\',.\/\n\r]*$/', $description)) {
     // Send 400
     http_response_code(400);
 }
@@ -12,6 +12,9 @@ if (!preg_match('/^[a-zA-Z0-9 !@#$%^&*()_+{}|:"<>?`\-=\[\]\\;\',.\/]*$/', $descr
 if ($description == '') {
     // Send 400
     $description = null;
+} else {
+    $description = preg_replace('/[\r\n]{2,}/', "\n", $description);
+    $description = nl2br($description);
 }
 
 // Update description in database
