@@ -18,13 +18,13 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: sploder; Type: DATABASE; Schema: -; Owner: sploder_owner
+-- Name: sploder; Type: DATABASE; Schema: -; Owner: postgres
 --
 
 CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
 
 
-ALTER DATABASE sploder OWNER TO sploder_owner;
+ALTER DATABASE sploder OWNER TO postgres;
 
 \connect sploder
 
@@ -59,7 +59,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: award_requests; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: award_requests; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.award_requests (
@@ -76,10 +76,10 @@ CREATE TABLE public.award_requests (
 );
 
 
-ALTER TABLE public.award_requests OWNER TO sploder_owner;
+ALTER TABLE public.award_requests OWNER TO postgres;
 
 --
--- Name: award_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder_owner
+-- Name: award_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 ALTER TABLE public.award_requests ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
@@ -93,7 +93,7 @@ ALTER TABLE public.award_requests ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTI
 
 
 --
--- Name: awards; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: awards; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.awards (
@@ -110,10 +110,10 @@ CREATE TABLE public.awards (
 );
 
 
-ALTER TABLE public.awards OWNER TO sploder_owner;
+ALTER TABLE public.awards OWNER TO postgres;
 
 --
--- Name: awards_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder_owner
+-- Name: awards_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 ALTER TABLE public.awards ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
@@ -127,7 +127,7 @@ ALTER TABLE public.awards ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- Name: awards_sent; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: awards_sent; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.awards_sent (
@@ -136,10 +136,10 @@ CREATE TABLE public.awards_sent (
 );
 
 
-ALTER TABLE public.awards_sent OWNER TO sploder_owner;
+ALTER TABLE public.awards_sent OWNER TO postgres;
 
 --
--- Name: banned_members; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: banned_members; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.banned_members (
@@ -151,10 +151,10 @@ CREATE TABLE public.banned_members (
 );
 
 
-ALTER TABLE public.banned_members OWNER TO sploder_owner;
+ALTER TABLE public.banned_members OWNER TO postgres;
 
 --
--- Name: comment_votes; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: comment_votes; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.comment_votes (
@@ -164,10 +164,10 @@ CREATE TABLE public.comment_votes (
 );
 
 
-ALTER TABLE public.comment_votes OWNER TO sploder_owner;
+ALTER TABLE public.comment_votes OWNER TO postgres;
 
 --
--- Name: comments; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: comments; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.comments (
@@ -181,10 +181,10 @@ CREATE TABLE public.comments (
 );
 
 
-ALTER TABLE public.comments OWNER TO sploder_owner;
+ALTER TABLE public.comments OWNER TO postgres;
 
 --
--- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder_owner
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 ALTER TABLE public.comments ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
@@ -198,7 +198,7 @@ ALTER TABLE public.comments ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- Name: contest_nominations; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: contest_nominations; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.contest_nominations (
@@ -207,10 +207,10 @@ CREATE TABLE public.contest_nominations (
 );
 
 
-ALTER TABLE public.contest_nominations OWNER TO sploder_owner;
+ALTER TABLE public.contest_nominations OWNER TO postgres;
 
 --
--- Name: contest_voter_usernames; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: contest_voter_usernames; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.contest_voter_usernames (
@@ -219,10 +219,10 @@ CREATE TABLE public.contest_voter_usernames (
 );
 
 
-ALTER TABLE public.contest_voter_usernames OWNER TO sploder_owner;
+ALTER TABLE public.contest_voter_usernames OWNER TO postgres;
 
 --
--- Name: contest_votes; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: contest_votes; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.contest_votes (
@@ -231,10 +231,10 @@ CREATE TABLE public.contest_votes (
 );
 
 
-ALTER TABLE public.contest_votes OWNER TO sploder_owner;
+ALTER TABLE public.contest_votes OWNER TO postgres;
 
 --
--- Name: contest_winner; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: contest_winner; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.contest_winner (
@@ -243,10 +243,10 @@ CREATE TABLE public.contest_winner (
 );
 
 
-ALTER TABLE public.contest_winner OWNER TO sploder_owner;
+ALTER TABLE public.contest_winner OWNER TO postgres;
 
 --
--- Name: friend_requests; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: friend_requests; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.friend_requests (
@@ -258,10 +258,10 @@ CREATE TABLE public.friend_requests (
 );
 
 
-ALTER TABLE public.friend_requests OWNER TO sploder_owner;
+ALTER TABLE public.friend_requests OWNER TO postgres;
 
 --
--- Name: friend_requests_request_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder_owner
+-- Name: friend_requests_request_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 ALTER TABLE public.friend_requests ALTER COLUMN request_id ADD GENERATED ALWAYS AS IDENTITY (
@@ -275,7 +275,7 @@ ALTER TABLE public.friend_requests ALTER COLUMN request_id ADD GENERATED ALWAYS 
 
 
 --
--- Name: friends; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: friends; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.friends (
@@ -286,10 +286,10 @@ CREATE TABLE public.friends (
 );
 
 
-ALTER TABLE public.friends OWNER TO sploder_owner;
+ALTER TABLE public.friends OWNER TO postgres;
 
 --
--- Name: friends_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder_owner
+-- Name: friends_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 ALTER TABLE public.friends ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
@@ -303,7 +303,7 @@ ALTER TABLE public.friends ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- Name: games; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: games; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.games (
@@ -323,10 +323,10 @@ CREATE TABLE public.games (
 );
 
 
-ALTER TABLE public.games OWNER TO sploder_owner;
+ALTER TABLE public.games OWNER TO postgres;
 
 --
--- Name: games_backup; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: games_backup; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.games_backup (
@@ -346,10 +346,10 @@ CREATE TABLE public.games_backup (
 );
 
 
-ALTER TABLE public.games_backup OWNER TO sploder_owner;
+ALTER TABLE public.games_backup OWNER TO postgres;
 
 --
--- Name: games_backup_g_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder_owner
+-- Name: games_backup_g_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 ALTER TABLE public.games_backup ALTER COLUMN g_id ADD GENERATED BY DEFAULT AS IDENTITY (
@@ -363,7 +363,7 @@ ALTER TABLE public.games_backup ALTER COLUMN g_id ADD GENERATED BY DEFAULT AS ID
 
 
 --
--- Name: games_g_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder_owner
+-- Name: games_g_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 ALTER TABLE public.games ALTER COLUMN g_id ADD GENERATED BY DEFAULT AS IDENTITY (
@@ -377,7 +377,7 @@ ALTER TABLE public.games ALTER COLUMN g_id ADD GENERATED BY DEFAULT AS IDENTITY 
 
 
 --
--- Name: leaderboard; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: leaderboard; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.leaderboard (
@@ -388,10 +388,10 @@ CREATE TABLE public.leaderboard (
 );
 
 
-ALTER TABLE public.leaderboard OWNER TO sploder_owner;
+ALTER TABLE public.leaderboard OWNER TO postgres;
 
 --
--- Name: members; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: members; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.members (
@@ -410,10 +410,10 @@ CREATE TABLE public.members (
 );
 
 
-ALTER TABLE public.members OWNER TO sploder_owner;
+ALTER TABLE public.members OWNER TO postgres;
 
 --
--- Name: members_userid_seq; Type: SEQUENCE; Schema: public; Owner: sploder_owner
+-- Name: members_userid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 ALTER TABLE public.members ALTER COLUMN userid ADD GENERATED ALWAYS AS IDENTITY (
@@ -427,7 +427,7 @@ ALTER TABLE public.members ALTER COLUMN userid ADD GENERATED ALWAYS AS IDENTITY 
 
 
 --
--- Name: moderation_logs; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: moderation_logs; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.moderation_logs (
@@ -439,10 +439,10 @@ CREATE TABLE public.moderation_logs (
 );
 
 
-ALTER TABLE public.moderation_logs OWNER TO sploder_owner;
+ALTER TABLE public.moderation_logs OWNER TO postgres;
 
 --
--- Name: pending_deletions; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: pending_deletions; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.pending_deletions (
@@ -453,10 +453,10 @@ CREATE TABLE public.pending_deletions (
 );
 
 
-ALTER TABLE public.pending_deletions OWNER TO sploder_owner;
+ALTER TABLE public.pending_deletions OWNER TO postgres;
 
 --
--- Name: user_info; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: user_info; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.user_info (
@@ -471,10 +471,10 @@ CREATE TABLE public.user_info (
 );
 
 
-ALTER TABLE public.user_info OWNER TO sploder_owner;
+ALTER TABLE public.user_info OWNER TO postgres;
 
 --
--- Name: votes; Type: TABLE; Schema: public; Owner: sploder_owner
+-- Name: votes; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.votes (
@@ -484,10 +484,10 @@ CREATE TABLE public.votes (
 );
 
 
-ALTER TABLE public.votes OWNER TO sploder_owner;
+ALTER TABLE public.votes OWNER TO postgres;
 
 --
--- Name: award_requests award_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: award_requests award_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.award_requests
@@ -495,7 +495,7 @@ ALTER TABLE ONLY public.award_requests
 
 
 --
--- Name: awards awards_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: awards awards_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.awards
@@ -503,7 +503,7 @@ ALTER TABLE ONLY public.awards
 
 
 --
--- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.comments
@@ -511,7 +511,7 @@ ALTER TABLE ONLY public.comments
 
 
 --
--- Name: contest_winner contest_g_id; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: contest_winner contest_g_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.contest_winner
@@ -519,7 +519,7 @@ ALTER TABLE ONLY public.contest_winner
 
 
 --
--- Name: games g_id; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: games g_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.games
@@ -527,7 +527,7 @@ ALTER TABLE ONLY public.games
 
 
 --
--- Name: games_backup g_id_backup; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: games_backup g_id_backup; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.games_backup
@@ -535,7 +535,7 @@ ALTER TABLE ONLY public.games_backup
 
 
 --
--- Name: games_backup games_backup_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: games_backup games_backup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.games_backup
@@ -543,7 +543,7 @@ ALTER TABLE ONLY public.games_backup
 
 
 --
--- Name: games games_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: games games_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.games
@@ -551,7 +551,7 @@ ALTER TABLE ONLY public.games
 
 
 --
--- Name: friends id; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: friends id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.friends
@@ -559,7 +559,7 @@ ALTER TABLE ONLY public.friends
 
 
 --
--- Name: friend_requests request_id; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: friend_requests request_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.friend_requests
@@ -567,7 +567,7 @@ ALTER TABLE ONLY public.friend_requests
 
 
 --
--- Name: members userid; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: members userid; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.members
@@ -575,7 +575,7 @@ ALTER TABLE ONLY public.members
 
 
 --
--- Name: members username; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: members username; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.members
@@ -583,7 +583,7 @@ ALTER TABLE ONLY public.members
 
 
 --
--- Name: user_info username_user_info; Type: CONSTRAINT; Schema: public; Owner: sploder_owner
+-- Name: user_info username_user_info; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.user_info
