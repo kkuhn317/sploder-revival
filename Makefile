@@ -42,15 +42,18 @@ dev.bootstrap:
 	$(MAKE) dev.down
 	${CONTAINER_CMD} compose -f docker-compose-dev.yaml up -d
 	sleep 1
-	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "pg_restore -U sploder_owner -d sploder --clean --create /docker-entrypoint-initdb.d/backup.bak"
-	echo "bootstrap complete, run `make dev` or `make dev.watch` to begin development"
+	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "chmod +x /docker-entrypoint-initdb.d/bootstrap.sh && /docker-entrypoint-initdb.d/bootstrap.sh"
+	@echo "---BOOTSTRAP COMPLETE---";
 	$(MAKE) dev.down
 dev.bash.site:
 	${CONTAINER_CMD} exec -it sploder_revival /bin/bash
 dev.bash.db:
 	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash
 dev.backup.db:
-	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "pg_dump -U sploder_owner -d sploder --format=p --schema-only --create > /docker-entrypoint-initdb.d/sploder.sql"
+	$(MAKE) dev.down
+	${CONTAINER_CMD} compose -f docker-compose-dev.yaml up -d
+	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "pg_dump -U postgres -d sploder --format=p --schema-only --create > /docker-entrypoint-initdb.d/sploder.sql"
+	$(MAKE) dev.down
 clean:
 	${CONTAINER_CMD} container  rm --force sploder-revival
 	${CONTAINER_CMD} image rm --force sploder-revival
