@@ -14,13 +14,14 @@ if ($id == "0") {
     $id = $db->queryFirstColumn($qs,0,[
         ':userid' => $userid
     ]);
+    $result = $userid;
+} else {
+    // Check whether the user owns the graphic
+    $qs = "SELECT userid FROM graphics WHERE id=:id";
+    $result = $db->queryFirstColumn($qs,0,[
+        ':id' => $id
+    ]);
 }
-
-// Check whether the user owns the graphic
-$qs = "SELECT userid FROM graphics WHERE id=:id";
-$result = $db->queryFirstColumn($qs,0,[
-    ':id' => $id
-]);
 if($result == $userid){
     if ($type == "thumbnail") {
         // Check image dimensions if it is 80px by 80px to see if they are valid
@@ -28,6 +29,11 @@ if($result == $userid){
         $width = imagesx($image);
         $height = imagesy($image);
         if ($width != 80 || $height != 80) {
+            // Remove the graphic from the database if it is not 80px by 80px
+            $qs = "DELETE FROM graphics WHERE id=:id";
+            $db->execute($qs,[
+                ':id' => $id
+            ]);
             die('<message result="error" message="Invalid dimensions! Please note that inappropriate graphics and graphics not made by the creator is strictly forbidden."/>');
         }
         file_put_contents("gif/" . $id . ".gif", $rawdata);
