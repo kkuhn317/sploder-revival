@@ -83,6 +83,30 @@ print_r($result);
 
                 function sendTags() {
                     var tags = document.getElementById('tagsText').value;
+                    // Check whether each tag is valid
+                    // For a tag to be valid, it must be less than 30 characters long
+                    // It also must have only letters and numbers
+                    var tagArray = tags.split(' ');
+                    for (var i = 0; i < tagArray.length; i++) {
+                        // If a tag is empty, remove it from the array
+                        if (tagArray[i] == '') {
+                            tagArray.splice(i, 1);
+                            i--;
+                            continue;
+                        }
+                        if (tagArray[i].length > 30) {
+                            setMessageType('alert');
+                            document.getElementById('message').innerHTML = 'Tags must be less than 30 characters long.';
+                            showMessage();
+                            return;
+                        }
+                        if (!/^[a-zA-Z0-9]*$/.test(tagArray[i])) {
+                            setMessageType('alert');
+                            document.getElementById('message').innerHTML = 'Tags must contain only letters and numbers. Use spaces to separate tags';
+                            showMessage();
+                            return;
+                        }
+                    }
                     var xhr = new XMLHttpRequest();
                     xhr.open('POST', 'tags.php', true);
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
