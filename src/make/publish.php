@@ -5,7 +5,7 @@ $s_array = explode("_", $_GET['s']);
 $id = end($s_array);
 require_once('../database/connect.php');
 $db = getDatabase();
-$qs = "SELECT author,title FROM games WHERE g_id = :id";
+$qs = "SELECT author,title,description FROM games WHERE g_id = :id";
 $result = $db->queryFirst($qs, [':id' => $id]);
 if ($_SESSION['username'] != $result['author']) {
     header('Location: /?s=' . $_GET['s']);
@@ -42,7 +42,9 @@ print_r($result);
 
             <div style="display:none;" id="message" class="prompt"></div>
             <br id="promptBr">
-            <p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">test</p>
+            <p class="description" id="descriptionBox" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0;<?php if ($result['description'] == null) {
+                                                                                                                                        echo 'display:none;';
+                                                                                                                                    } ?>"><?= $result['description'] ?></p>
             <br><br>
             <div class="buttons" style="padding: 0;">
                 <span class="button firstbutton"><a style="cursor:pointer;" onclick="showDescription()">Describe &raquo;</a></span>&nbsp;
@@ -59,8 +61,22 @@ print_r($result);
                     document.getElementById('description').style.display = 'none';
                 }
 
+                function showDescriptionBox() {
+                    document.getElementById('descriptionBox').style.display = 'block';
+                }
+
+                function hideDescriptionBox() {
+                    document.getElementById('descriptionBox').style.display = 'none';
+                }
+
                 function sendDescription() {
                     var description = document.getElementById('descriptionTextarea').value;
+                    if (!/^[a-zA-Z0-9 !@#$%^&*()_+{}|:"<>?`\-=\[\]\\;\',.\/]*$/.test(description)) {
+                        setMessageType('alert');
+                        document.getElementById('message').innerHTML = 'Description contains invalid characters. Please use only alphabets, numbers, spaces and standard symbols.';
+                        showMessage();
+                        return;
+                    }
                     var xhr = new XMLHttpRequest();
                     xhr.open('POST', 'description.php', true);
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -72,6 +88,11 @@ print_r($result);
                                 hideDescription();
                                 setMessageType('prompt');
                                 document.getElementById('message').innerHTML = 'Game Description saved.';
+                                if (description.length > 0) {
+                                    showDescriptionBox();
+                                } else {
+                                    hideDescriptionBox();
+                                }
                             } else {
                                 setMessageType('alert');
                                 document.getElementById('message').innerHTML = 'Failed to save description. Please try again later.';
@@ -107,6 +128,13 @@ print_r($result);
                             return;
                         }
                     }
+                    // There must not be more than 25 tags
+                    if (tagArray.length > 25) {
+                        setMessageType('alert');
+                        document.getElementById('message').innerHTML = 'You can only have up to 25 tags.';
+                        showMessage();
+                        return;
+                    }
                     var xhr = new XMLHttpRequest();
                     xhr.open('POST', 'tags.php', true);
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -138,7 +166,7 @@ print_r($result);
             <div style="display:none;" id="description">
                 <hr>
                 <p>Please enter a description for your game.</p>
-                <textarea id="descriptionTextarea" type="text" name="description" size="50" style="width: 300px; height: 200px;"></textarea><br><br>
+                <textarea id="descriptionTextarea" type="text" name="description" size="50" style="width: 300px; height: 200px;"><?= $result['description'] ?></textarea><br><br>
                 <input onclick="sendDescription()" type="submit" value="Save Description" class="loginbutton postbutton">
                 <br><br>
             </div>
@@ -193,10 +221,10 @@ print_r($result);
             </script>
 
             <div style="text-align:left;">
-            <div id="messages"></div>
-            <div id="venue" class="mprofvenue"></div>
+                <div id="messages"></div>
+                <div id="venue" class="mprofvenue"></div>
             </div>
-            
+
 
 
 
