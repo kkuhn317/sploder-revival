@@ -24,6 +24,11 @@ if (count($tags) > 25) {
     // Send 400
     http_response_code(400);
 }
+// There cannot be 2 tags with the same name
+if (count($tags) != count(array_unique($tags))) {
+    // Send 400
+    http_response_code(400);
+}
 
 // Update tags in database
 
