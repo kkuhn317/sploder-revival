@@ -5,7 +5,6 @@
     unset($queryParams['o']);
     $queryString = http_build_query($queryParams);
 
-    $perPage = 12;
     $totalPages = ceil($total / $perPage);
     $currentPage = isset($_GET['o']) ? (int)$_GET['o'] / $perPage + 1 : 1;
     $start = max(1, min($currentPage - 3, $totalPages - 6));

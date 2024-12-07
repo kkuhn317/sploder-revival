@@ -97,7 +97,8 @@ include('content/my-graphics.php');
                     <div class="spacer">&nbsp;</div>
                 </div>
             </div>
-            <?php include('../content/pages.php'); ?>
+            <?php include('../content/pages.php');
+            $perPage = 12; ?>
         </div>
         <div id="sidebar">
             <!-- TODO: <h1>GAME BUZZ INCOMPLETE</h1> -->
