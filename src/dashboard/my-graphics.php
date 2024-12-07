@@ -97,12 +97,12 @@ $currentpage = "my-graphics.php";
                     if ($total_games == "0") {
                         echo 'You have not made any graphics yet.<div class="spacer">&nbsp;</div>';
                     }
-                    $counter = 0;
-                    foreach ($result as $game) {
+                    
+                    foreach ($result as $counter => $game) {
                         if ($game['id'] == null) {
                             break;
                         }
-                        $counter = $counter + 1;
+                        $counter++;
                     ?><div class="game vignette">
                         <div class="photo">
                             <a><img src="/graphics/gif/<?= $game['id'] ?>.gif" width="80" height="80" /></a>
