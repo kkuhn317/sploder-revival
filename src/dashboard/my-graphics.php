@@ -3,21 +3,19 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include('../content/logincheck.php');
 $username = $_SESSION['username'];
+$userid = $_SESSION['userid'];
 include('../database/connect.php');
 $db = connectToDatabase();
-$qs2 = "SELECT g_id FROM games WHERE author=:user AND isdeleted=0";
+$qs2 = "SELECT COUNT(id) FROM graphics WHERE userid=:userid";
 $statement2 = $db->prepare($qs2);
 $statement2->execute(
     [
-        ':user' => $username
+        ':userid' => $userid
     ]
 );
 $result4 = $statement2->fetchAll();
-$total_games = count($result4);
-$currentpage = "my-games.php";
-if (isset($_GET['game']) && $_GET['game'] == null) {
-    unset($_GET['game']);
-}
+$total_games = $result4[0][0];
+$currentpage = "my-graphics.php";
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
@@ -39,12 +37,12 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
         visibility: hidden
     }
     </style>
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
     <script>
-    function delproj(id, title) {
+    function delproj(id) {
         let text;
-        if (confirm(("Are you sure you want to delete " + title)) == true) {
-            location.href = ("../php/delete.php?id=" + id);
+        if (confirm(("Are you sure you want to delete this graphic?")) == true) {
+            location.href = ("../php/delete_graphic.php?id=" + id);
         } else {}
     }
     </script>
@@ -69,81 +67,77 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
         </div>
         <div id="content">
             <h3>My Graphics</h3>
-            <p>You've made <?= $total_games ?> graphics so far, with a total of ? likes so far.
+            <p>You've made <?= $total_games ?> graphic<?= $total_games == 1 ? '' : 's' ?> so far, with a total of ?
+                like<?= $total_games == 1 ? '' : 's' ?> so far.
                 <a href="../make/graphics.php">Make
                     some graphics
                 </a> now!
             </p>
-            <div class="set">
-                <?php
-                $o = isset($_GET['o']) ? $_GET['o'] : "0";
-                $offset = 12;
+            <div id="viewpage">
+                <div class="set">
+                    <?php
+                    $o = isset($_GET['o']) ? $_GET['o'] : "0";
+                    $offset = 12;
 
-                $queryString = 'SELECT * FROM graphics WHERE author=:username AND isdeleted = 0 ORDER BY "g_id" DESC';
-                if (isset($_GET['game'])) {
-                    $queryString = 'SELECT * FROM graphics WHERE author=:username AND isdeleted = 0 AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
-                }
+                    $queryString = 'SELECT * FROM graphics WHERE userid=:userid ORDER BY id DESC';
 
-                $statement = $db->prepare($queryString);
-                $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
+                    $statement = $db->prepare($queryString);
+                    $statement->execute([':userid' => $userid]);
 
-                $result = $statement->fetchAll();
-                $total = count($result);
+                    $result = $statement->fetchAll();
+                    $total = count($result);
 
-                $queryString = $queryString . ' LIMIT 12 OFFSET ' . $o;
-                $statement = $db->prepare($queryString);
-                $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
+                    $queryString = $queryString . ' LIMIT 12 OFFSET ' . $o;
+                    $statement = $db->prepare($queryString);
+                    $statement->execute([':userid' => $userid]);
 
-                $result = $statement->fetchAll();
-                $qTotal = "SELECT count(1) FROM games WHERE author=:username AND isdeleted = 0" . (isset($_GET['game']) ? ' AND SIMILARITY(title, :game) > 0.3' : '') . ' LIMIT 12 OFFSET ' . $o;
-                $staTotal = $db->prepare($qTotal);
-                $staTotal->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
+                    $result = $statement->fetchAll();
 
-                $resultTotal = $staTotal->fetchAll();
-                $resultTotal = $resultTotal[0][0];
+                    $f = '20';
 
-                $f = '20';
-
-                if (count($result) == "0" &&  isset($_GET['game'])) {
-                    echo 'This game was not found.<div class="spacer">&nbsp;</div>';
-                } elseif (count($result) == "0") {
-                    echo 'You have not made any games yet.<div class="spacer">&nbsp;</div>';
-                }
-                foreach ($result as $game) {
-                    if ($game['g_id'] == null) {
-                        break;
+                    if ($total_games == "0") {
+                        echo 'You have not made any graphics yet.<div class="spacer">&nbsp;</div>';
                     }
-                ?>
-                <div class="game">
-                    <div class="photo">
-                        <a href="../games/play.php?&id=<?= $game['g_id'] ?>">
-                            <img src="/users/user<?= $_SESSION['userid'] ?>/images/proj<?= $game['g_id'] ?>/thumbnail.png"
-                                width="80" height="80" />
-                        </a>
+                    $counter = 0;
+                    foreach ($result as $game) {
+                        if ($game['id'] == null) {
+                            break;
+                        }
+                        $counter = $counter + 1;
+                    ?><div class="game vignette">
+                        <div class="photo">
+                            <a><img src="/graphics/gif/<?= $game['id'] ?>.gif" width="80" height="80" /></a>
+                            <div style="text-align: center;">
+                                <div style="height:5px" class="spacer">&nbsp;</div>
+                                0 likes<br>
+                                <input title=" Delete" type="button" onclick="delproj(<?= $game['id'] ?>)"
+                                    style="width:37px" value="Delete">&nbsp;
+                                <a href="tag-graphic.php?id=<?= $game['id'] ?>"><input title=" Tag" type="button"
+                                        style="width:25px" value="Tag"></a>
+                            </div>
+                        </div>
+
+
+                        <div class="spacer">&nbsp;</div><br>
+                        <div class="spacer">&nbsp;</div><br><br>
                     </div>
-                    <p class="gamedate"><?= date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($game['date'])) ?>
-                    </p>
-                    <h4><a href="../games/play.php?&id=<?= $game['g_id'] ?>"><?= urldecode($game['title']) ?></a>
-                    </h4>
-                    <input title="Delete" type="button"
-                        onclick="delproj(<?= $game['g_id'] ?>,'<?= urldecode($game['title']) ?>')" style="width:37px"
-                        value="Delete">&nbsp;
-                    <input title="Boost" style="width:27px" class="boost_button" value="Boost">&nbsp;
-                    <input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">
+                    <?php
+                        if ($counter % 4 == 0) {
+                            echo '<div class="spacer">&nbsp;</div>';
+                        }
+                    }
+                    ?>
+
+
+
+
                     <div class="spacer">&nbsp;</div>
+
+
                 </div>
-                <?php
-                }
-                ?>
-
-
-
-
-                <div class="spacer">&nbsp;</div>
-
-
             </div>
             <?php include('../content/pages.php'); ?>
+
         </div>
         <div id="sidebar">
             <!-- TODO: <h1>GAME BUZZ INCOMPLETE</h1> -->
