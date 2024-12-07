@@ -72,7 +72,6 @@ function format_num($num, $precision = 0)
             </li>
 
             <li id="account">
-
                 |&nbsp; <a href="/dashboard/my-games.php">My Games</a>
 
             </li>
