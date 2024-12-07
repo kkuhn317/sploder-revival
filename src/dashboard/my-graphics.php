@@ -5,16 +5,9 @@ include('../content/logincheck.php');
 $username = $_SESSION['username'];
 $userid = $_SESSION['userid'];
 include('../database/connect.php');
-$db = connectToDatabase();
-$qs2 = "SELECT COUNT(id) FROM graphics WHERE userid=:userid";
-$statement2 = $db->prepare($qs2);
-$statement2->execute(
-    [
-        ':userid' => $userid
-    ]
-);
-$result4 = $statement2->fetchAll();
-$total_games = $result4[0][0];
+$db = getDatabase();
+$qs = "SELECT COUNT(id) FROM graphics WHERE userid=:userid";
+$total_games = $db->queryFirstColumn($qs, 0, [':userid' => $userid]);
 $currentpage = "my-graphics.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
@@ -78,21 +71,9 @@ $currentpage = "my-graphics.php";
                     $o = isset($_GET['o']) ? $_GET['o'] : "0";
                     $offset = 12;
 
-                    $queryString = 'SELECT * FROM graphics WHERE userid=:userid ORDER BY id DESC';
-
-                    $statement = $db->prepare($queryString);
-                    $statement->execute([':userid' => $userid]);
-
-                    $result = $statement->fetchAll();
-                    $total = count($result);
-
-                    $queryString = $queryString . ' LIMIT 12 OFFSET ' . $o;
-                    $statement = $db->prepare($queryString);
-                    $statement->execute([':userid' => $userid]);
-
-                    $result = $statement->fetchAll();
-
-                    $f = '20';
+                    $queryString = 'SELECT * FROM graphics WHERE userid=:userid ORDER BY id DESC LIMIT 12 OFFSET ' . $o;
+                    $result = $db->query($queryString,[':userid' => $userid]);
+                    $total = $total_games;
 
                     if ($total_games == "0") {
                         echo 'You have not made any graphics yet.<div class="spacer">&nbsp;</div>';
