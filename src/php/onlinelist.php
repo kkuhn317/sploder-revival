@@ -32,30 +32,26 @@ let opener = _____WB$wombat$assign$function_____("opener");
 
 try {
 
-var net_result = ' <div class="users_online">
-    <ul><?php
-
-    for ($i = 0; $i < $total; $i++) {
-        if ($result3[$i]['status'] == "online") {
-            if ($result3[$i]['lastpagechange'] > $pagechange) {
-                $status = "online";
-            } else {
-                $status = "idle";
-            }
-        } elseif ($result3[$i]['status'] == "creating") {
-            $status = "making";
-        } elseif ($result3[$i]['status'] == "playing") {
-            $status = "playing";
+var net_result = ' <div class="users_online"><ul><?php
+for ($i = 0; $i < $total; $i++) {
+    if ($result3[$i]['status'] == "online") {
+        if ($result3[$i]['lastpagechange'] > $pagechange) {
+            $status = "online";
+        } else {
+            $status = "idle";
         }
-
-        echo '<li><a href="../members/index.php?u=' . $result3[$i]['username'] . '"><img src="../php/avatarproxy.php?u=' . $result3[$i]['username'] . '" alt="' . $result3[$i]['username'] . '" border="0" style="width:24px;height:24px;margin:-6px 8px" />' . $result3[$i]['username'] . '</a><img style="margin-left:30px" class="status" src="../images/status_' . $status . '.gif" width="11" height="11"/></li>';
+    } elseif ($result3[$i]['status'] == "creating") {
+        $status = "making";
+    } elseif ($result3[$i]['status'] == "playing") {
+        $status = "playing";
     }
 
+    echo '<li><a href="../members/index.php?u=' . $result3[$i]['username'] . '"><img src="../php/avatarproxy.php?u=' . $result3[$i]['username'] . '" alt="' . $result3[$i]['username'] . '" border="0" style="width:24px;height:24px;margin:-6px 8px" />' . $result3[$i]['username'] . '</a><img style="margin-left:30px" class="status" src="../images/status_' . $status . '.gif" width="11" height="11"/></li>';
+}
 
 
-    ?></ul>
-    <div class="spacer">&nbsp;</div>
-</div>';
+
+?></ul><div class="spacer">&nbsp;</div></div>';
 
 if (document && document.getElementById) {
 

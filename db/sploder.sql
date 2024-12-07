@@ -302,10 +302,6 @@ ALTER TABLE public.friends ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 );
 
 
---
--- Name: game_tags; Type: TABLE; Schema: public; Owner: sploder
---
-
 CREATE TABLE public.game_tags (
     g_id integer NOT NULL,
     tag text NOT NULL

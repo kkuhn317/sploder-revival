@@ -6,7 +6,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+    <?php require('../content/swfobject.php'); ?>
     <?php include('../content/head.php'); ?>
 
 
