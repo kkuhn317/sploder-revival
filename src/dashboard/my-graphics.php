@@ -16,7 +16,6 @@ $statement2->execute(
 $result4 = $statement2->fetchAll();
 $total_games = $result4[0][0];
 $currentpage = "my-graphics.php";
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
