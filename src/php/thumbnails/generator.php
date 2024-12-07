@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<script src="ruffle.js"></script>
-	<script>
-	window.RufflePlayer = window.RufflePlayer || {};
+    <script src="ruffle.js"></script>
+    <script>
+    window.RufflePlayer = window.RufflePlayer || {};
 window.RufflePlayer.config = {
     // Options affecting the whole page
     "publicPath": undefined,
@@ -26,19 +26,19 @@ window.RufflePlayer.config = {
     "salign": "TR",
     "scale": "noborder",
     "quality": "high",
-	
+    
     "preloader": false,
 };</script>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<meta http-equiv="expires" content="0" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	
-	<script type="text/javascript" src="swfobject.js"></script>
-	
-	<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
-	
-	
-	<script type="text/javascript">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    
+    <script type="text/javascript" src="swfobject.js"></script>
+    
+    <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+    
+    
+    <script type="text/javascript">
 <!--
 
 
@@ -91,21 +91,21 @@ function setup_exit() {
 
 function updateMovie (value) {
 
-	var InternetExplorer = navigator.appName.indexOf("Microsoft") != -1;
+    var InternetExplorer = navigator.appName.indexOf("Microsoft") != -1;
 
-	if (InternetExplorer) {
+    if (InternetExplorer) {
 
-		document.creator.SetVariable("/browsermanager:callvalue", value);
+        document.creator.SetVariable("/browsermanager:callvalue", value);
 
-		document.creator.TPlay("browsermanager");
+        document.creator.TPlay("browsermanager");
 
-	} else {
+    } else {
 
-		document.creator.SetVariable("/browsermanager:callvalue", value);
+        document.creator.SetVariable("/browsermanager:callvalue", value);
 
-		document.creator.TPlay("browsermanager");
+        document.creator.TPlay("browsermanager");
 
-	}
+    }
 
 }
 
@@ -114,7 +114,7 @@ function updateMovie (value) {
 setup_exit();
 
 var flashvars = {
-	s: "<?php echo $_GET['s'] ?>",
+    s: "<?php echo $_GET['s'] ?>",
 
 };
 

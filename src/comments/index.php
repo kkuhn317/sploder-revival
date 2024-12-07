@@ -1,12 +1,14 @@
 <?php
+
 error_reporting(E_ERROR);
 ini_set('display_errors', 1);
 session_start();
 $a = $_GET['a'];
 require_once('../database/connect.php');
 $db = connectToDatabase();
-function time_elapsed_string($datetime, $full = false) {
-    $now = new DateTime;
+function time_elapsed_string($datetime, $full = false)
+{
+    $now = new DateTime();
     $ago = new DateTime($datetime);
     $diff = $now->diff($ago);
     $diff->w = floor($diff->d / 7);
@@ -29,7 +31,9 @@ function time_elapsed_string($datetime, $full = false) {
         }
     }
 
-    if (!$full) $string = array_slice($string, 0, 1);
+    if (!$full) {
+        $string = array_slice($string, 0, 1);
+    }
     return $string ? implode(', ', $string) . ' ago' : 'just now';
 }
 
@@ -75,13 +79,9 @@ function extracted(?PDO $db): void
 
 if ($a == "read") {
     extracted($db);
-
-
-}
-else if ($a == "post") {
-
+} elseif ($a == "post") {
     $posts = file_get_contents("php://input");
-    $formatter = explode("&",$posts);
+    $formatter = explode("&", $posts);
     $message = htmlspecialchars((urldecode(substr($formatter[0], 2))), ENT_QUOTES, "UTF-8", false);
     $reply = substr($formatter[2], 4);
 
@@ -90,21 +90,20 @@ else if ($a == "post") {
     $statement2 = $db->prepare($qs2);
     $statement2->execute();
     $result2 = $statement2->fetchAll();
-    $msgid = (int)$result2[0][0]+1;
-    if($reply == 0){
+    $msgid = (int)$result2[0][0] + 1;
+    if ($reply == 0) {
         $reply = $msgid;
     }
-    $t=time();
+    $t = time();
     $score = 0;
     $creator_name = $_SESSION['username'];
     include_once('../content/checkban.php');
-    if(checkBan($creator_name)){
+    if (checkBan($creator_name)) {
         // set header to 403 (forbidden) and echo a message
         http_response_code(403);
         die("You are banned and will not be able to send any comments.");
     }
-    if($creator_name!=null){
-
+    if ($creator_name != null) {
         $qs = "INSERT INTO comments (venue,thread_id,creator_name,body,score,timestamp) VALUES (:venue,:thread_id,:creator_name,:body,:score,:timestamp)";
         $statement = $db->prepare($qs);
         $statement->execute([
@@ -117,39 +116,38 @@ else if ($a == "post") {
         ]);
         extracted($db);
     }
-}
-else if ($a == "like"){
-    if($_SESSION['username']!=null){
+} elseif ($a == "like") {
+    if ($_SESSION['username'] != null) {
         include_once('../content/checkban.php');
-        if(checkBan($creator_name)){
+        if (checkBan($creator_name)) {
             // set header to 403 (forbidden) and echo a message
             http_response_code(403);
             die("You are banned and will not be able to send any comments.");
         }
         $posts = file_get_contents("php://input");
-        $formatter = explode("&",$posts);
+        $formatter = explode("&", $posts);
         $id = substr($formatter[0], 3);
-        $cuser = $_SESSION['username'].',';
+        $cuser = $_SESSION['username'] . ',';
         // Has the user already voted down and is changing their vote?
         $qs2 = "SELECT vote FROM comment_votes WHERE id=:id";
         $statement2 = $db->prepare($qs2);
         $statement2->execute([
-            ':id'=>$id
+            ':id' => $id
         ]);
         $result2 = $statement2->fetchAll();
 
-        if(isset($result2[0]['vote']) && ($result2[0]['vote'] == -1)){
+        if (isset($result2[0]['vote']) && ($result2[0]['vote'] == -1)) {
             $sql = "UPDATE comment_votes SET vote=:vote WHERE id=:id AND username=:username";
             $statement = $db->prepare($sql);
             $statement->execute([
-                ':id'=>$id,
-                ':username'=>$_SESSION['username'],
-                ':vote'=>1
+                ':id' => $id,
+                ':username' => $_SESSION['username'],
+                ':vote' => 1
             ]);
             $sql = "UPDATE comments SET score=score+2 WHERE id=:id";
             $statement = $db->prepare($sql);
             $statement->execute([
-                ':id'=>$id
+                ':id' => $id
             ]);
         } elseif (!isset($result2[0]['vote'])) {
             $sql = "INSERT INTO comment_votes (id, username, vote) VALUES (:id, :username, :vote)";
@@ -165,42 +163,38 @@ else if ($a == "like"){
                 ':id' => $id
             ]);
         }
-
-    }}
-
-
-
-else if ($a == "unlike"){
-    if($_SESSION['username']!=null){
+    }
+} elseif ($a == "unlike") {
+    if ($_SESSION['username'] != null) {
         include_once('../content/checkban.php');
-        if(checkBan($creator_name)){
+        if (checkBan($creator_name)) {
             // set header to 403 (forbidden) and echo a message
             http_response_code(403);
             die("You are banned and will not be able to send any comments.");
         }
         $posts = file_get_contents("php://input");
-        $formatter = explode("&",$posts);
+        $formatter = explode("&", $posts);
         $id = substr($formatter[0], 3);
-        $cuser = $_SESSION['username'].',';
+        $cuser = $_SESSION['username'] . ',';
         // Has the user already voted up and is changing their vote?
         $qs2 = "SELECT vote FROM comment_votes WHERE id=:id";
         $statement2 = $db->prepare($qs2);
         $statement2->execute([
-            ':id'=>$id
+            ':id' => $id
         ]);
         $result2 = $statement2->fetchAll();
-        if(isset($result2[0]['vote']) && ($result2[0]['vote'] == '1')){
+        if (isset($result2[0]['vote']) && ($result2[0]['vote'] == '1')) {
             $sql = "UPDATE comment_votes SET vote=:vote WHERE id=:id AND username=:username";
             $statement = $db->prepare($sql);
             $statement->execute([
-                ':id'=>$id,
-                ':username'=>$_SESSION['username'],
-                ':vote'=>-1
+                ':id' => $id,
+                ':username' => $_SESSION['username'],
+                ':vote' => -1
             ]);
             $sql = "UPDATE comments SET score=score-2 WHERE id=:id";
             $statement = $db->prepare($sql);
             $statement->execute([
-                ':id'=>$id
+                ':id' => $id
             ]);
         } elseif (!isset($result2[0]['vote'])) {
             $sql = "INSERT INTO comment_votes (id, username, vote) VALUES (:id, :username, :vote)";
@@ -216,21 +210,18 @@ else if ($a == "unlike"){
                 ':id' => $id
             ]);
         }
-
     }
-
-}
-else if ($a == "delete"){
+} elseif ($a == "delete") {
     $posts = file_get_contents("php://input");
-    $formatter = explode("&",$posts);
+    $formatter = explode("&", $posts);
     $id = substr($formatter[0], 3);
     $qs2 = "SELECT creator_name, venue FROM comments WHERE id=:id";
     $statement2 = $db->prepare($qs2);
     $statement2->execute([
-        ':id'=>$id
+        ':id' => $id
     ]);
     $result2 = $statement2->fetchAll();
-    if($_SESSION['username'] != $result2[0]['creator_name']) {
+    if ($_SESSION['username'] != $result2[0]['creator_name']) {
         $qs2 = "SELECT author FROM games WHERE g_id=:g_id";
         $statement2 = $db->prepare($qs2);
         $statement2->execute([
@@ -241,16 +232,12 @@ else if ($a == "delete"){
             die("Malicious Request Detected");
         }
     }
-    if($_SESSION['username'] == $result2[0]['creator_name'] || $_SESSION['username'] == $result3[0]['author']) {
-
+    if ($_SESSION['username'] == $result2[0]['creator_name'] || $_SESSION['username'] == $result3[0]['author']) {
         $qs2 = "DELETE FROM comments WHERE id=:id";
         $statement = $db->prepare($qs2);
         $statement->execute([
-            ':id'=>$id
+            ':id' => $id
         ]);
         extracted($db);
-
-
     }
 }
-?>

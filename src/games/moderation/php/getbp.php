@@ -7,10 +7,10 @@ $username = $_POST['username'];
 $sql = "SELECT COUNT(*) FROM members WHERE username=:username";
 $statement = $db_old->prepare($sql);
 $statement->execute([
-    ':username'=>$username
+    ':username' => $username
 ]);
 $count = $statement->fetchColumn();
-if($count==0){
+if ($count == 0) {
     header("Location: ../index.php?err=User does not exist");
     die();
 }
@@ -19,11 +19,11 @@ if($count==0){
 $sql = "SELECT boostpoints FROM members WHERE username=:username";
 $statement = $db_old->prepare($sql);
 $statement->execute([
-    ':username'=>$username
+    ':username' => $username
 ]);
 $bp = $statement->fetchColumn();
 
 // Send header with boost points
 include('log.php');
 logModeration('checked boost points', 'of ' . $username . ' which is ' . $bp, 1);
-header("Location: ../index.php?bp=".$bp);
+header("Location: ../index.php?bp=" . $bp);

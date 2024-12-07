@@ -1,5 +1,7 @@
 <?php
-function getVisitorIp() {
+
+function getVisitorIp()
+{
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         // Check if IP is from shared internet
         $ip = $_SERVER['HTTP_CLIENT_IP'];

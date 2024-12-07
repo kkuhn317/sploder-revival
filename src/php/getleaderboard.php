@@ -1,10 +1,11 @@
 <?php
+
 /*
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 */
-$loc = explode("projects/proj",$_GET["loc"]);
+$loc = explode("projects/proj", $_GET["loc"]);
 $loc = (int)filter_var($loc[1], FILTER_SANITIZE_NUMBER_INT);
 include('../database/connect.php');
 $db = connectToDatabase();
@@ -16,13 +17,12 @@ $statement->execute(
     ]
 );
 $result = $statement->fetchAll();
-if(!isset($result[0]['username'])) die ("<empty />");
+if (!isset($result[0]['username'])) {
+    die("<empty />");
+}
 $string = "";
 foreach ($result as $row) {
-
-    $string .= '<score value="' . $row['gtm'] . '" username="' . $row['username'] ."\" />";
-
+    $string .= '<score value="' . $row['gtm'] . '" username="' . $row['username'] . "\" />";
 }
 
-echo $string
-?>
+echo $string;

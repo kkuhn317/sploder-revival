@@ -1,4 +1,5 @@
 <?php
+
 /* Discord Oauth v.4.1
  * This file contains the core functions of the oauth2 script.
  * @author : MarkisDev
@@ -6,10 +7,9 @@
  */
 
 # Starting session so we can store all the variables
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+if (!isset($_SESSION)) {
+    session_start();
+}
 # Setting the base url for API requests
 $GLOBALS['base_url'] = "https://discord.com";
 
@@ -33,8 +33,9 @@ function url($clientid, $redirect, $scope)
 # A function to initialize and store access token in SESSION to be used for other requests
 function init($redirect_url, $client_id, $client_secret, $bot_token = null)
 {
-    if ($bot_token != null)
+    if ($bot_token != null) {
         $GLOBALS['bot_token'] = $bot_token;
+    }
     $code = $_GET['code'];
     $state = $_GET['state'];
     # Check if $state == $_SESSION['state'] to verify if the login is legit | CHECK THE FUNCTION get_state($state) FOR MORE INFORMATION.
@@ -74,8 +75,8 @@ function get_user($email = null)
     $_SESSION['discrim'] = $results['discriminator'];
     $_SESSION['user_id'] = $results['id'];
     $_SESSION['user_avatar'] = $results['avatar'];
-    # Fetching email 
-    if ($email == True) {
+    # Fetching email
+    if ($email == true) {
         $_SESSION['email'] = $results['email'];
     }
 }
@@ -128,7 +129,7 @@ function get_connections()
 # Function to make user join a guild | (guilds.join scope)
 # Note : The bot has to be a member of the server with CREATE_INSTANT_INVITE permission.
 #        The bot DOES NOT have to be online, just has to be a bot application and has to be a member of the server.
-#        This is the basic function with no parameters, you can build on this to give the user a nickname, mute, deafen or assign a role.      
+#        This is the basic function with no parameters, you can build on this to give the user a nickname, mute, deafen or assign a role.
 function join_guild($guildid)
 {
     $data = json_encode(array("access_token" => $_SESSION['access_token']));
