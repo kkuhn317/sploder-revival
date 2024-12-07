@@ -2,13 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include('../content/logincheck.php');
-$username = $_SESSION['username'];
-$userid = $_SESSION['userid'];
-include('../database/connect.php');
-$db = getDatabase();
-$qs = "SELECT COUNT(id) FROM graphics WHERE userid=:userid";
-$total_games = $db->queryFirstColumn($qs, 0, [':userid' => $userid]);
-$currentpage = "my-graphics.php";
+include('content/my-graphics.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -68,13 +62,6 @@ $currentpage = "my-graphics.php";
             <div id="viewpage">
                 <div class="set">
                     <?php
-                    $o = isset($_GET['o']) ? $_GET['o'] : "0";
-                    $offset = 12;
-
-                    $queryString = 'SELECT * FROM graphics WHERE userid=:userid ORDER BY id DESC LIMIT 12 OFFSET ' . $o;
-                    $result = $db->query($queryString,[':userid' => $userid]);
-                    $total = $total_games;
-
                     if ($total_games == "0") {
                         echo 'You have not made any graphics yet.<div class="spacer">&nbsp;</div>';
                     }
@@ -107,17 +94,10 @@ $currentpage = "my-graphics.php";
                         }
                     }
                     ?>
-
-
-
-
                     <div class="spacer">&nbsp;</div>
-
-
                 </div>
             </div>
             <?php include('../content/pages.php'); ?>
-
         </div>
         <div id="sidebar">
             <!-- TODO: <h1>GAME BUZZ INCOMPLETE</h1> -->
