@@ -1,4 +1,5 @@
 <?php
+
 include('../database/connect.php');
 include('includes/votes.php');
 error_reporting(E_ALL);
@@ -9,7 +10,7 @@ session_id($_GET['PHPSESSID']);
 session_start();
 $username = $_SESSION['username'];
 $db = connectToDatabase();
-if(!vote_check($username, $g_id)) {
+if (!vote_check($username, $g_id)) {
     $sql = "INSERT INTO votes (g_id, username, score) VALUES (:g_id, :username, :score)";
 } else {
     $sql = "UPDATE votes SET score = :score WHERE g_id = :g_id AND username = :username";

@@ -1,10 +1,29 @@
 # sploder-revival
 
-PHP Backend code used to power the Sploder Revival
+PHP Backend code used to power the Sploder Revival.
+
+## Flash & Security Notice
+
+In order to use the Sploder Revival (in a usable state, not via [Ruffle](https://ruffle.rs/)), you will need to install a working version of Flash Player. We recommend downloading either of these:
+
+- [CleanFlash](https://gitlab.com/cleanflash/installer) A modified Chinese Flash Player without adware. Flash in China still receives security updates for Windows and macOS.
+- [Adobe Flash Player](https://archive.org/details/flashplayer_old) Official version of Flash Player available in all other regions. No longer updated after December of 2020.
+
+As well as a Flash/CleanFlash compatible browser:
+
+- [Waterfox Classic](https://classic.waterfox.net/)
+- [Pale Moon](https://www.palemoon.org/)
+- [K-Meleon](http://kmeleonbrowser.org/forum/read.php?19,154431)
+
+Note that Flash has been discontinued since January 2021, and that using a Flash compatible browser and Flash itself should be exercised with caution outside of Sploder Revival usage.
 
 ## Prerequisites
 
 To run the Sploder Revival, you will need to ensure you have the following installed:
+
+Also, to ensure formatting is done correctly, please run `make dev.hook` to install the necessary hooks as well as `composer install`.
+
+Further, whenever you have updated the schema of the database, please run `make dev.backup.db`, which will update the schema of the database from the Dockerfile. If you are running an manual installation, please ensure you run the following Postgres command into `/db/sploder.sql` when you update the database: `pg_dump -U sploder_owner -d sploder --format=p --schema-only --create > /db/sploder.sql`
 
 ### Docker Installation Method
 
@@ -40,6 +59,8 @@ make build # build the sploder-image
 ```
 
 After this, you will want to make sure you bootstrap the database for local development. This only needs to be ran once, or can be re-ran if you manually delete the database information.
+
+If you run dev.bootstrap, it will also create two users: `test` and `test2`, with the password `password`.
 
 ```shell
 make dev.bootstrap # RUN ONCE - bootstraps the backup database

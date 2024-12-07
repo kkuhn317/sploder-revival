@@ -1,0 +1,647 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
+-- Dumped by pg_dump version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: sploder; Type: DATABASE; Schema: -; Owner: sploder
+--
+
+CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'C.UTF-8';
+
+
+ALTER DATABASE sploder OWNER TO sploder;
+
+\connect sploder
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: award_requests; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.award_requests (
+    id integer NOT NULL,
+    username text NOT NULL,
+    membername text NOT NULL,
+    level integer NOT NULL,
+    category text,
+    style integer NOT NULL,
+    material integer NOT NULL,
+    icon integer NOT NULL,
+    color integer NOT NULL,
+    message text
+);
+
+
+ALTER TABLE public.award_requests OWNER TO sploder;
+
+--
+-- Name: award_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.award_requests ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.award_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: awards; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.awards (
+    id integer NOT NULL,
+    username text NOT NULL,
+    membername text NOT NULL,
+    level integer NOT NULL,
+    category text,
+    style integer NOT NULL,
+    material integer NOT NULL,
+    icon integer NOT NULL,
+    color integer NOT NULL,
+    message text
+);
+
+
+ALTER TABLE public.awards OWNER TO sploder;
+
+--
+-- Name: awards_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.awards ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.awards_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: awards_sent; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.awards_sent (
+    username text NOT NULL,
+    creationdate integer NOT NULL
+);
+
+
+ALTER TABLE public.awards_sent OWNER TO sploder;
+
+--
+-- Name: banned_members; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.banned_members (
+    username text NOT NULL,
+    banned_by text NOT NULL,
+    reason text NOT NULL,
+    bandate integer NOT NULL,
+    autounbandate integer NOT NULL
+);
+
+
+ALTER TABLE public.banned_members OWNER TO sploder;
+
+--
+-- Name: comment_votes; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.comment_votes (
+    id integer NOT NULL,
+    username text NOT NULL,
+    vote integer NOT NULL
+);
+
+
+ALTER TABLE public.comment_votes OWNER TO sploder;
+
+--
+-- Name: comments; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.comments (
+    venue text NOT NULL,
+    id integer NOT NULL,
+    thread_id integer NOT NULL,
+    creator_name text NOT NULL,
+    body text NOT NULL,
+    score integer NOT NULL,
+    "timestamp" integer NOT NULL
+);
+
+
+ALTER TABLE public.comments OWNER TO sploder;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.comments ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: contest_nominations; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.contest_nominations (
+    g_id integer NOT NULL,
+    nominator_username text NOT NULL
+);
+
+
+ALTER TABLE public.contest_nominations OWNER TO sploder;
+
+--
+-- Name: contest_voter_usernames; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.contest_voter_usernames (
+    id integer NOT NULL,
+    voter_username text NOT NULL
+);
+
+
+ALTER TABLE public.contest_voter_usernames OWNER TO sploder;
+
+--
+-- Name: contest_votes; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.contest_votes (
+    id integer NOT NULL,
+    votes integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.contest_votes OWNER TO sploder;
+
+--
+-- Name: contest_winner; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.contest_winner (
+    contest_id integer NOT NULL,
+    g_id integer NOT NULL
+);
+
+
+ALTER TABLE public.contest_winner OWNER TO sploder;
+
+--
+-- Name: friend_requests; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.friend_requests (
+    request_id integer NOT NULL,
+    sender_id integer NOT NULL,
+    receiver_id integer NOT NULL,
+    sender_username text NOT NULL,
+    receiver_username text NOT NULL
+);
+
+
+ALTER TABLE public.friend_requests OWNER TO sploder;
+
+--
+-- Name: friend_requests_request_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.friend_requests ALTER COLUMN request_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.friend_requests_request_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: friends; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.friends (
+    id integer NOT NULL,
+    user1 text NOT NULL,
+    user2 text NOT NULL,
+    bested boolean NOT NULL
+);
+
+
+ALTER TABLE public.friends OWNER TO sploder;
+
+--
+-- Name: friends_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.friends ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.friends_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: games; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.games (
+    g_id integer NOT NULL,
+    author text NOT NULL,
+    title text NOT NULL,
+    date date NOT NULL,
+    description text,
+    g_swf integer NOT NULL,
+    ispublished integer DEFAULT 0 NOT NULL,
+    isdeleted integer DEFAULT 0 NOT NULL,
+    isprivate integer DEFAULT 1 NOT NULL,
+    comments integer DEFAULT 0 NOT NULL,
+    user_id integer NOT NULL,
+    views integer DEFAULT 0 NOT NULL,
+    difficulty numeric DEFAULT 5 NOT NULL
+);
+
+
+ALTER TABLE public.games OWNER TO sploder;
+
+--
+-- Name: games_backup; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.games_backup (
+    g_id integer NOT NULL,
+    author text NOT NULL,
+    title text NOT NULL,
+    date date NOT NULL,
+    description text,
+    g_swf integer NOT NULL,
+    ispublished integer NOT NULL,
+    isdeleted integer NOT NULL,
+    isprivate integer NOT NULL,
+    comments integer NOT NULL,
+    user_id integer NOT NULL,
+    views integer NOT NULL,
+    difficulty numeric NOT NULL
+);
+
+
+ALTER TABLE public.games_backup OWNER TO sploder;
+
+--
+-- Name: games_backup_g_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.games_backup ALTER COLUMN g_id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.games_backup_g_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: games_g_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.games ALTER COLUMN g_id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.games_g_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: graphics; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.graphics (
+    id integer NOT NULL,
+    version integer NOT NULL,
+    userid integer NOT NULL,
+    isprivate boolean NOT NULL,
+    ispublished boolean NOT NULL
+);
+
+
+ALTER TABLE public.graphics OWNER TO sploder;
+
+--
+-- Name: graphics_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.graphics ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.graphics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: leaderboard; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.leaderboard (
+    username text NOT NULL,
+    pubkey integer NOT NULL,
+    gtm integer NOT NULL,
+    w boolean NOT NULL
+);
+
+
+ALTER TABLE public.leaderboard OWNER TO sploder;
+
+--
+-- Name: members; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.members (
+    userid integer NOT NULL,
+    username text NOT NULL,
+    password text NOT NULL,
+    joindate integer NOT NULL,
+    lastlogin integer NOT NULL,
+    perms text,
+    boostpoints integer NOT NULL,
+    lastpagechange integer NOT NULL,
+    isolate boolean NOT NULL,
+    level integer NOT NULL,
+    status text,
+    ip_address text
+);
+
+
+ALTER TABLE public.members OWNER TO sploder;
+
+--
+-- Name: members_userid_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.members ALTER COLUMN userid ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.members_userid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: moderation_logs; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.moderation_logs (
+    moderator text NOT NULL,
+    action text NOT NULL,
+    "on" text NOT NULL,
+    "time" time with time zone NOT NULL,
+    level integer NOT NULL
+);
+
+
+ALTER TABLE public.moderation_logs OWNER TO sploder;
+
+--
+-- Name: pending_deletions; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.pending_deletions (
+    g_id integer NOT NULL,
+    deleter text NOT NULL,
+    reason text,
+    "timestamp" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.pending_deletions OWNER TO sploder;
+
+--
+-- Name: user_info; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.user_info (
+    username text NOT NULL,
+    description text,
+    hobbies text,
+    sports text,
+    games text,
+    movies text,
+    bands text,
+    respect text
+);
+
+
+ALTER TABLE public.user_info OWNER TO sploder;
+
+--
+-- Name: votes; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.votes (
+    g_id integer NOT NULL,
+    username text NOT NULL,
+    score integer NOT NULL
+);
+
+
+ALTER TABLE public.votes OWNER TO sploder;
+
+--
+-- Name: award_requests award_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.award_requests
+    ADD CONSTRAINT award_requests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: awards awards_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.awards
+    ADD CONSTRAINT awards_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: contest_winner contest_g_id; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.contest_winner
+    ADD CONSTRAINT contest_g_id UNIQUE (g_id);
+
+
+--
+-- Name: games g_id; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.games
+    ADD CONSTRAINT g_id UNIQUE (g_id);
+
+
+--
+-- Name: games_backup g_id_backup; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.games_backup
+    ADD CONSTRAINT g_id_backup UNIQUE (g_id);
+
+
+--
+-- Name: games_backup games_backup_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.games_backup
+    ADD CONSTRAINT games_backup_pkey PRIMARY KEY (g_id);
+
+
+--
+-- Name: games games_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.games
+    ADD CONSTRAINT games_pkey PRIMARY KEY (g_id);
+
+
+--
+-- Name: graphics graphics_id; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.graphics
+    ADD CONSTRAINT graphics_id UNIQUE (id);
+
+
+--
+-- Name: friends id; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.friends
+    ADD CONSTRAINT id PRIMARY KEY (id);
+
+
+--
+-- Name: friend_requests request_id; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.friend_requests
+    ADD CONSTRAINT request_id PRIMARY KEY (request_id);
+
+
+--
+-- Name: members userid; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.members
+    ADD CONSTRAINT userid PRIMARY KEY (userid);
+
+
+--
+-- Name: members username; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.members
+    ADD CONSTRAINT username UNIQUE (username);
+
+
+--
+-- Name: user_info username_user_info; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.user_info
+    ADD CONSTRAINT username_user_info UNIQUE (username);
+
+
+--
+-- Name: graphics_userid; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX graphics_userid ON public.graphics USING btree (userid);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: pg_database_owner
+--
+
+GRANT ALL ON SCHEMA public TO sploder;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

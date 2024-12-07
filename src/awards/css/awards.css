@@ -28,10 +28,6 @@ div.award dt
 	font-weight: bold;
 	
 }
-div.award dd
-{
-	
-}
 
 div.award p
 {
@@ -158,4 +154,3 @@ div.award_64:hover dl
 div#profile_awards {
 	clear: both;
 	margin: 10px;
-}
