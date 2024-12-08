@@ -3,7 +3,7 @@
 // A functon that can take an array of string and return colored tags
 
 function displayTags($tagList, $hyperlink = true){
-    $colors = ["0", "1", "2", "3"];
+    $colors = ["0", "1", "2", "3"]; // There are 4 colors for tags on Sploder
     // Get total number of games for said tag
     require_once('../database/connect.php');
     $db = connectToDatabase();
