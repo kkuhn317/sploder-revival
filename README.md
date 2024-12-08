@@ -60,6 +60,8 @@ make build # build the sploder-image
 
 After this, you will want to make sure you bootstrap the database for local development. This only needs to be ran once, or can be re-ran if you manually delete the database information.
 
+If you run dev.bootstrap, it will also create two users: `test` and `test2`, with the password `password`.
+
 ```shell
 make dev.bootstrap # RUN ONCE - bootstraps the backup database
 ```
