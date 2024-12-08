@@ -7,7 +7,6 @@ $games = $db->query($qs);
 $perPage = 12;
 $qs = "SELECT COUNT(g_id) FROM games WHERE ispublished = 1 AND isprivate = 0";
 $total = $db->queryFirstColumn($qs);
-print_r($games);
 $currentpage = 'newest.php';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -36,7 +35,10 @@ $currentpage = 'newest.php';
             <p>This is a list of the newest games Sploder Revival members have created. Play them, have fun, and make
                 sure you
                 vote for your favorites! To see
-                the first games made on Sploder Revival, go to the <a href="?o=<?= $total-12 ?>">end of the list</a>.
+                the first games made on Sploder Revival, go to the <a
+                    href="?o=<?php if($total-$perPage<0){echo 0;}else{echo $total-$perPage;} ?>">end of
+                    the
+                    list</a>.
             </p>
             <div id="viewpage">
                 <div class="set">
