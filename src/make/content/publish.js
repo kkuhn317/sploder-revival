@@ -59,20 +59,19 @@ function sendTags() {
     // For a tag to be valid, it must be less than 30 characters long
     // It also must have only letters and numbers
     var tagArray = tags.split(' ');
-    for (var i = 0; i < tagArray.length; i++) {
+    for (const tag of tagArray) {
         // If a tag is empty, remove it from the array
-        if (tagArray[i] == '') {
-            tagArray.splice(i, 1);
-            i--;
+        if (tag == '') {
+            tagArray.splice(tagArray.indexOf(tag), 1);
             continue;
         }
-        if (tagArray[i].length > 30) {
+        if (tag.length > 30) {
             setMessageType('alert');
             document.getElementById('message').innerHTML = 'Tags must be less than 30 characters long.';
             showMessage();
             return;
         }
-        if (!/^[a-zA-Z0-9]*$/.test(tagArray[i])) {
+        if (!/^[a-zA-Z0-9]*$/.test(tag)) {
             setMessageType('alert');
             document.getElementById('message').innerHTML = 'Tags must contain only letters and numbers. Use spaces to separate tags';
             showMessage();
