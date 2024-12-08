@@ -9,65 +9,47 @@ function get_game_info($game_id)
     $result = $statement->fetchAll();
     return $result[0];
 }
+enum CreatorTypeName: string
+{
+    case SHOOTER = 'classic';
+    case PLATFORMER = 'platformer';
+    case ALGORITHM = '3d adventure';
+    case PHYSICS = 'physics';
+    case ARCADE = 'arcade';
+}
+
+enum CreatorTypeURL: string
+{
+    case SHOOTER = 'shooter';
+    case PLATFORMER = 'plat';
+    case ALGORITHM = 'algo';
+    case PHYSICS = 'ppg';
+    case ARCADE = 'arcade';
+}
+
 function get_creator_type($type, $g_swf)
 {
-    if ($type == 'name') {
-        switch ($g_swf) {
-            case '1':
-                return 'classic';
-                break;
-            case '2':
-                return 'platformer';
-                break;
-            case '3':
-                return '3d adventure';
-                break;
-            case '5':
-                return 'physics';
-                break;
-            case '7':
-                return 'arcade';
-                break;
-        }
-    } else {
-        switch ($g_swf) {
-            case '1':
-                return 'shooter';
-                break;
-            case '2':
-                return 'plat';
-                break;
-            case '3':
-                return 'algo';
-                break;
-            case '5':
-                return 'ppg';
-                break;
-            case '7':
-                return 'arcade';
-                break;
-        }
-    }
+    $mapping = [
+        '1' => ['name' => CreatorTypeName::SHOOTER, 'url' => CreatorTypeURL::SHOOTER],
+        '2' => ['name' => CreatorTypeName::PLATFORMER, 'url' => CreatorTypeURL::PLATFORMER],
+        '3' => ['name' => CreatorTypeName::ALGORITHM, 'url' => CreatorTypeURL::ALGORITHM],
+        '5' => ['name' => CreatorTypeName::PHYSICS, 'url' => CreatorTypeURL::PHYSICS],
+        '7' => ['name' => CreatorTypeName::ARCADE, 'url' => CreatorTypeURL::ARCADE],
+    ];
+
+    return $mapping[$g_swf][$type]->value;
+}
+enum SwfVersion: string
+{
+    case IDK = 'idk';
+    case VERSION_20 = '20';
 }
 function get_swf_version($g_Swf)
 {
-    switch ($g_Swf) {
-        case '1':
-            return 'idk';
-            break;
-        case '2':
-            return '20.swf?fix=4';
-            break;
-        case '3':
-            return 'idk';
-            break;
-        case '5':
-            return 'idk';
-            break;
-        case '7':
-            return 'idk';
-            break;
-    }
+    return match ($g_Swf) {
+        1, 3, 5, 7 => SwfVersion::IDK->value,
+        2 => SwfVersion::VERSION_20->value,
+    };
 }
 $game = get_game_info($id);
 if (!isset($game['title'])) {
