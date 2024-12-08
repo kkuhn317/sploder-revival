@@ -89,7 +89,7 @@ require_once('content/publish.php');
             <p class="description" id="descriptionBox" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0;<?php if ($game['description'] == null) {
                                                                                                     echo 'display:none;';
                                                                                                 } ?>">
-                <?= nl2br($game['description']) ?></p>
+                <?= nl2br(htmlspecialchars($game['description'])) ?></p>
             <br><br>
             <div class="buttons" style="padding: 0;">
                 <span class="button firstbutton"><a style="cursor:pointer;" onclick="showDescription()">Describe

@@ -35,7 +35,7 @@ function sendDescription() {
                 description = description.replace(/[\r\n\s]+$/, '');
                 // Change newline to <br>
                 description = description.replace(/\n/g, '<br>');
-                document.getElementsByClassName('description')[0].innerHTML = description;
+                document.getElementsByClassName('description')[0].innerHTML = escapeHtml(description);
                 hideDescription();
                 setMessageType('prompt');
                 document.getElementById('message').innerHTML = 'Game Description saved.';
@@ -118,4 +118,15 @@ function showMessage() {
 
 function setMessageType(type) {
     document.getElementById('message').className = type;
+}
+
+function escapeHtml(text) {
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
