@@ -63,7 +63,7 @@ function format_num($num, $precision = 0)
                 </li>
 
             </ul>
-            <?php } else { ?>
+                    <?php } else { ?>
             <b><?php echo $_SESSION['username'] ?></b>
             <li id="dashboard">
 
@@ -72,7 +72,6 @@ function format_num($num, $precision = 0)
             </li>
 
             <li id="account">
-
                 |&nbsp; <a href="/dashboard/my-games.php">My Games</a>
 
             </li>
@@ -82,7 +81,7 @@ function format_num($num, $precision = 0)
 
             </li>
             </ul>
-            <?php }
+                    <?php }
                     ?>
         </div>
         <ul id="topnav">
