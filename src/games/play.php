@@ -3,8 +3,13 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
+
 <?php
 require('../content/playgame.php');
+// Where does $id come frome??
+$game = get_game_info($_GET['id']);
+$status = "playing";
+$creator_type = to_creator_type($game['g_swf']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -73,7 +78,7 @@ require('../content/playgame.php');
                     // EMBED_FORCE_SECURE
                     // EMBED_ADTEST
                     // EMBED_CHALLENGE
-                    beta_version: "<?= get_swf_version($game['g_swf']) ?>",
+                    beta_version: "<?= creator_type->swf_version(); ?>",
                     onsplodercom: "true",
                     modified: <?= rand() ?>,
                     <?php if (isset($_SESSION['PHPSESSID'])) {
@@ -188,7 +193,7 @@ require('../content/playgame.php');
         <div id="sidebar">
 
 
-            <div class="gametypeinfo"><p>This is a game made with Sploder Revival's <a href="../make/<?= get_creator_type('url', $game['g_swf']) ?>.php"><?= get_creator_type('name', $game['g_swf']) ?> game creator</a>.</p></div>
+            <div class="gametypeinfo"><p>This is a game made with Sploder Revival's <a href="../make/<?= $creator_type->url() ?>.php"><?= $creator_type->name() ?> game creator</a>.</p></div>
 
 
 
