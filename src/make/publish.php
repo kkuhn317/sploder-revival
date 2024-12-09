@@ -63,7 +63,7 @@ require_once('content/publish.php');
                 // EMBED_FORCE_SECURE
                 // EMBED_ADTEST
                 // EMBED_CHALLENGE
-                beta_version: "<?= get_swf_version($game['g_swf']) ?>",
+                beta_version: "<?= $game['g_swf_version'] ?>",
                 onsplodercom: "true",
                 modified: 9999999,
                 <?php if (isset($_SESSION['PHPSESSID'])) {
@@ -90,7 +90,7 @@ require_once('content/publish.php');
                 style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0;<?php if ($game['description'] == null) {
                                                                                                                                             echo 'display:none;';
                                                                                                                                         } ?>">
-                <?= nl2br(htmlspecialchars($game['description'])) ?></p>
+                <?= nl2br(htmlspecialchars($game['description'] ?? '')) ?></p>
             <br><br>
             <div class="buttons" style="padding: 0;">
                 <span class="button firstbutton"><a style="cursor:pointer;" onclick="showDescription()">Describe

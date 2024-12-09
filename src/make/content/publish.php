@@ -18,7 +18,7 @@ $db = getDatabase();
 $qs = "SELECT author,title,description,g_id,user_id,g_swf,ispublished,isprivate FROM games WHERE g_id = :id";
 $game = $db->queryFirst($qs, [':id' => $id]);
 if ($_SESSION['username'] != $game['author']) {
-    header('Location: /?s=' . $_GET['s']);
+header('Location: /?s=' . $_GET['s']);
 }
 $qs = "SELECT tag FROM game_tags WHERE g_id = :id";
 $tags = $db->query($qs, [':id' => $id]);
@@ -26,3 +26,4 @@ $tags = $db->query($qs, [':id' => $id]);
 require('../content/playgame.php');
 $game = get_game_info($id);
 $status = "playing";
+$game['g_swf_version'] = to_creator_type($game['g_swf'])->swf_version();
