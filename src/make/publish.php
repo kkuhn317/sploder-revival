@@ -26,9 +26,9 @@ require_once('content/publish.php');
             if ($game['ispublished'] == 0) {
                 echo '<div class="alert">This is an unpublished game. Either publish it, or test it out in the creator.</div>';
             } else {
-            if ($game['isprivate'] == 1) {
-                echo '<div class="alert">This game is private, but you have the key!</div>';
-            }
+                if ($game['isprivate'] == 1) {
+                    echo '<div class="alert">This game is private, but you have the key!</div>';
+                }
             ?>
             <div class="gameobject" style="width: 508px; height: 381px;">
                 <div id="flashcontent">
@@ -65,7 +65,7 @@ require_once('content/publish.php');
                 // EMBED_CHALLENGE
                 beta_version: "<?= get_swf_version($game['g_swf']) ?>",
                 onsplodercom: "true",
-                modified: <?= rand() ?>,
+                modified: 9999999,
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                             echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";
                         } ?>
@@ -86,9 +86,10 @@ require_once('content/publish.php');
             </script>
             <div style="display:none;" id="message" class="prompt"></div>
             <br id="promptBr">
-            <p class="description" id="descriptionBox" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0;<?php if ($game['description'] == null) {
-                                                                                                    echo 'display:none;';
-                                                                                                } ?>">
+            <p class="description" id="descriptionBox"
+                style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0;<?php if ($game['description'] == null) {
+                                                                                                                                            echo 'display:none;';
+                                                                                                                                        } ?>">
                 <?= nl2br(htmlspecialchars($game['description'])) ?></p>
             <br><br>
             <div class="buttons" style="padding: 0;">
@@ -128,15 +129,16 @@ require_once('content/publish.php');
                     <?php } ?>
                 </p>
                 <input type="hidden" name="id" value="<?= $id ?>">
-                <textarea type="text" id="tagsText" name="tags" size="50" style="width: 300px; height: 100px;"><?php
-                                                                if (isset($tags[0][0])) {
-                                                                    $tagString = '';
-                                                                    foreach ($tags as $tag) {
-                                                                        $tagString .= $tag[0] . ' ';
-                                                                    }
-                                                                    $tagString = substr($tagString, 0, -1);
-                                                                }
-                                                                ?></textarea><br><br>
+                <textarea type="text" id="tagsText" name="tags" size="50"
+                    style="width: 300px; height: 100px;"><?php
+                                                                                                                    if (isset($tags[0][0])) {
+                                                                                                                        $tagString = '';
+                                                                                                                        foreach ($tags as $tag) {
+                                                                                                                            $tagString .= $tag[0] . ' ';
+                                                                                                                        }
+                                                                                                                        $tagString = substr($tagString, 0, -1);
+                                                                                                                    }
+                                                                                                                    ?></textarea><br><br>
                 <input type="submit" onclick="sendTags()" value="Save Tags" class="loginbutton postbutton">
 
             </div>
