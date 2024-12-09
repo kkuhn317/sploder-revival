@@ -689,6 +689,22 @@ CREATE INDEX graphics_userid ON public.graphics USING btree (userid);
 
 
 --
+-- Name: game_tags g_id_game_tags_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.game_tags
+    ADD CONSTRAINT g_id_game_tags_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) MATCH FULL NOT VALID;
+
+
+--
+-- Name: graphic_tags g_id_graphic_tags_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.graphic_tags
+    ADD CONSTRAINT g_id_graphic_tags_fkey FOREIGN KEY (g_id) REFERENCES public.graphics(id) MATCH FULL NOT VALID;
+
+
+--
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: pg_database_owner
 --
 
