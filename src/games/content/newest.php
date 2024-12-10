@@ -10,8 +10,8 @@ LEFT JOIN votes r ON g.g_id = r.g_id
 WHERE g.ispublished = 1 AND g.isprivate = 0 
 GROUP BY g.g_id 
 ORDER BY g.g_id DESC 
-LIMIT 12";
-$games = $db->query($qs);
+LIMIT 12 OFFSET :offset";
+$games = $db->query($qs,['offset' => $_GET['o']]);
 $perPage = 12;
 $qs = "SELECT COUNT(g_id) FROM games WHERE ispublished = 1 AND isprivate = 0";
 $total = $db->queryFirstColumn($qs);
