@@ -16,8 +16,18 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $private = $_GET['private'];
     $ispublished = 1;
     $id = (int)filter_var($_GET['projid'], FILTER_SANITIZE_NUMBER_INT);
-    include('../database/connect.php');
+    require_once('../database/connect.php');
     $db = connectToDatabase();
+    // Check if the user owns the game
+    $qs = "SELECT author FROM games WHERE g_id=:id";
+    $statement = $db->prepare($qs);
+    $statement->execute([
+        ':id' => $id
+    ]);
+    $result = $statement->fetchAll();
+    if ($result[0]['author'] != $_SESSION['username']) {
+        die('<message result="failed" message="You do not own this game!"/>');
+    }
     $qs = "UPDATE games SET ispublished=:ispublished, isprivate=:isprivate, comments=:comments WHERE g_id=:id";
     $statement = $db->prepare($qs);
     $statement->execute([

@@ -17,8 +17,8 @@
     <?php include('content/headernavigation.php'); ?>
     <div id="page">
         <?php include('content/subnav.php'); ?>
-		
-			<div id="content" style="width:92%"><h3>Credits</h3><p>This project would not have been possible without:
+        
+            <div id="content" style="width:92%"><h3>Credits</h3><p>This project would not have been possible without:
 
 
 <hr>
@@ -31,20 +31,20 @@
 <h2>TheEmeraldBlock TEB (TheEmeraldBlock TEB#0787): ex-developer; programming</h2>
 <br><br><br><br><br><br><br>
 <div class="spacer">&nbsp;</div></div>
-			<div id="sidebar">
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				<br /><br /><br />
-				<div class="spacer">&nbsp;</div>
-			</div>			
-			<div class="spacer">&nbsp;</div>
+            <div id="sidebar">
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <br /><br /><br />
+                <div class="spacer">&nbsp;</div>
+            </div>          
+            <div class="spacer">&nbsp;</div>
 <?php include('content/footernavigation.php') ?>
 
 </body>
