@@ -2,7 +2,7 @@
 
 # Drop and and recreate the database
 psql -U sploder -d postgres --command="drop database sploder;"
-psql -U sploder -d postgres -f /docker-entrypoint-initdb.d/sploder.sql
+psql -U sploder -d postgres -f /bootstrap/sploder.sql
 
 # Create some mock data to work with
 

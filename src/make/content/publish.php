@@ -1,4 +1,5 @@
 <?php
+
 // Define the br2nl function
 function br2nl($string)
 {
@@ -22,3 +23,6 @@ $qs = "SELECT tag FROM game_tags WHERE g_id = :id";
 $tags = $db->query($qs, [':id' => $id]);
 
 require('../content/playgame.php');
+$game = get_game_info($id);
+$status = "playing";
+$game['g_swf_version'] = to_creator_type($game['g_swf'])->swf_version();
