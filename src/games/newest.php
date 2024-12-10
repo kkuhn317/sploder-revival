@@ -1,14 +1,4 @@
-<?php session_start();
-// Get required data...
-require_once('../database/connect.php');
-$db = getDatabase();
-$qs = "SELECT author,title,description,g_id,user_id,g_swf,date,user_id,views FROM games WHERE ispublished = 1 AND isprivate = 0 ORDER BY g_id DESC LIMIT 12";
-$games = $db->query($qs);
-$perPage = 12;
-$qs = "SELECT COUNT(g_id) FROM games WHERE ispublished = 1 AND isprivate = 0";
-$total = $db->queryFirstColumn($qs);
-$currentpage = 'newest.php';
-$gamesCount = count($games);
+<?php require('content/newest.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -62,7 +52,7 @@ $gamesCount = count($games);
                     </p>
                     <?php
                         echo '<h4><a href="/games/play.php?&s=' . $games[$i]['user_id'] . '_' . $games[$i]['g_id'] . '&g_swf=' . $games[$i]['g_swf'] . '&title=' . $games[$i]['title'] . '&pub=0">' . urldecode($games[$i]['title']) . '</a></h4>';
-                        echo '<p class="gamevote"><img src="/chrome/rating0.gif" width="64" height="12" border="0" alt="0 stars"/> 0 votes</p><p class="gameviews">' . $games[$i]['views'] . ' views</p>';
+                        echo '<p class="gamevote"><img src="/chrome/rating'.($games[$i]['avg_rating']*10).'.gif" width="64" height="12" border="0" alt="'. $games[$i]['avg_rating'].' stars"/> '.$games[$i]['total_votes'].' vote'.($games[$i]['total_votes'] == 1 ? '' : 's').'</p><p class="gameviews">' . $games[$i]['views'] . ' view'.($games[$i]['views'] == 1 ? '' : 's').'</p>';
                         echo '<div class="spacer">&nbsp;</div>';
                         echo '</div>';
                     }}
