@@ -27,7 +27,7 @@
                 sure you
                 vote for your favorites! To see
                 the first games made on Sploder Revival, go to the <a
-                    href="?o=<?php if($total-$perPage<0){echo 0;}else{echo $total-$perPage;} ?>">end of
+                    href="?o=<?php echo max(0, floor(($total - 1) / $perPage) * $perPage); ?>">end of
                     the
                     list</a>.
             </p>
