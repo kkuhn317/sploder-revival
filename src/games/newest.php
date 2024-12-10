@@ -45,7 +45,7 @@
                         echo '<div class="game">';
 
                         echo '<div class="photo">';
-                        echo '<a href="/games/play.php?&s=' . $games[$i]['user_id'] . '_' . $games[$i]['g_id'] . '&g_swf=' . $games[$i]['g_swf'] . '&title=' . $games[$i]['title'] . '&pub=0"><img src="/users/user' . $games[$i]['user_id'] . '/images/proj' . $games[$i]['g_id'] . '/thumbnail.png" width="80" height="80"/></a>';
+                        echo '<a href="/games/play.php?&s=' . $games[$i]['user_id'] . '_' . $games[$i]['g_id'] . '&g_swf=' . $games[$i]['g_swf'] . '&title=' . $games[$i]['title'] . '"><img src="/users/user' . $games[$i]['user_id'] . '/images/proj' . $games[$i]['g_id'] . '/thumbnail.png" width="80" height="80"/></a>';
                         echo '</div>';
                     ?>
                     <p class="gamedate"><?= date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($games[$i]['date'])) ?>
