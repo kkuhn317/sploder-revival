@@ -1,16 +1,17 @@
 <?php
 
-require_once(__DIR__ . '/../config/env.php');
-require_once(__DIR__ . '/database.php');
+require_once(__DIR__ . '/idatabase.php');
+require_once(__DIR__ . '/databasemanager.php');
 
 /**
- * @deprecated use "getDatabase" moving forward, as this will be deleted
+ * @deprecated use "getDatabase" or "DatabaseManager::get()->getPostgresDatabase()" moving forward, as this will be deleted
  *
  * Returns a connection to the Postgres database
  * @return PDO
  */
 function connectToDatabase($table = null): PDO
 {
+    require_once(__DIR__ . '/../config/env.php');
     $host = getenv("POSTGRES_HOST");
     $port = getenv("POSTGRES_PORT");
     $database = getenv("POSTGRES_DB");
@@ -27,11 +28,14 @@ function connectToDatabase($table = null): PDO
     }
 }
 
+
+
 /**
  * Retrieves a connection to the Postgres Database
+ *
  * @return IDatabase
  */
 function getDatabase(): IDatabase
 {
-    return new Database(connectToDatabase());
+    return DatabaseManager::get()->getPostgresDatabase();
 }
