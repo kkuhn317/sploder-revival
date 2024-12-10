@@ -1,75 +1,46 @@
 <?php
 
-interface IDatabase
-{
-  /**
-   * Executes a $query with $parameters and returns the results
-   * @param $query
-   * @param $parameters
-   * @return array
-   */
-    public function query(string $query, array $parameters = []): array;
-
-  /**
-   * Executes a $query with $parameters and returns the first result
-   * @param $query
-   * @param $parameters
-   * @return array
-   */
-    public function queryFirst(string $query, array $parameters = []): mixed;
-
-  /**
-   * Executes a $query with $parameters and returns the first $column result
-   * @param $query
-   * @param $parameters
-   * @param $column
-   * @return array
-   */
-    public function queryFirstColumn(string $query, int $column = 0, array $parameters = []): mixed;
-
-  /**
-   * Executes a $query with $parameters and returns if the query succeeded or not
-   *
-   * @param $query
-   * @param $parameters
-   * @return bool
-   */
-    public function execute(string $query, array $parameters = []): bool;
-}
+require_once(__DIR__ . "/idatabase.php");
+require_once(__DIR__ . "/connectionmanager.php");
 
 class Database implements IDatabase
 {
-    private PDO $connection;
+    private readonly IConnectionManager $connection_manager;
 
-    function __construct(PDO $connection)
+    public function __construct(IConnectionManager $connection_manager)
     {
-        $this->connection = $connection;
+        $this->connection_manager = $connection_manager;
     }
 
-    function query(string $query, array $parameters = []): array
+    private function getConnection(): PDO
     {
-        $statement = $this->connection->prepare($query);
+        return $this->connection_manager->getConnection();
+    }
+
+    public function query(string $query, array $parameters = []): array
+    {
+        $statement = $this->getConnection()->prepare($query);
         $statement->execute($parameters);
         return $statement->fetchAll();
     }
 
-    function queryFirst(string $query, array $parameters = []): mixed
+    public function queryFirst(string $query, array $parameters = []): mixed
     {
-        $statement = $this->connection->prepare($query);
+        $statement = $this->getConnection()->prepare($query);
         $statement->execute($parameters);
         return $statement->fetch();
     }
 
-    function queryFirstColumn(string $query, int $column = 0, array $parameters = []): mixed
+    public function queryFirstColumn(string $query, int $column = 0, array $parameters = []): mixed
     {
-        $statement = $this->connection->prepare($query);
+        $statement = $this->getConnection()->prepare($query);
         $statement->execute($parameters);
         return $statement->fetchColumn($column);
     }
 
-    function execute(string $query, array $parameters = []): bool
+    public function execute(string $query, array $parameters = []): bool
     {
-        $statement = $this->connection->prepare($query);
+        $statement = $this->getConnection()->prepare($query);
         return $statement->execute($parameters);
     }
 }
