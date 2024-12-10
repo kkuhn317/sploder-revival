@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
+
 <?php
 session_start();
 require_once('../content/getgameid.php');
@@ -9,6 +10,10 @@ require('../content/playgame.php');
 if ($gameuserid != $game['user_id']) {
     die("Invalid game ID");
 }
+// Where does $id come frome??
+$game = get_game_info($id);
+$status = "playing";
+$creator_type = to_creator_type($game['g_swf']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -81,14 +86,15 @@ if ($gameuserid != $game['user_id']) {
                     } else {
                         echo 'nu: "",' . "\n";
                     } ?>
-                // EMBED_BETA_VERSION
-                // EMBED_FORCE_SECURE
-                // EMBED_ADTEST
-                // EMBED_CHALLENGE
-                beta_version: "<?= get_swf_version($game['g_swf']) ?>",
-                onsplodercom: "true",
-                modified: <?= rand() ?>,
-                <?php if (isset($_SESSION['PHPSESSID'])) {
+
+                    // EMBED_BETA_VERSION
+                    // EMBED_FORCE_SECURE
+                    // EMBED_ADTEST
+                    // EMBED_CHALLENGE
+                    beta_version: "<?= creator_type->swf_version(); ?>",
+                    onsplodercom: "true",
+                    modified: <?= rand() ?>,
+                    <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";
                     } ?>
             }
@@ -209,11 +215,9 @@ if ($gameuserid != $game['user_id']) {
         <div id="sidebar">
 
 
-            <div class="gametypeinfo">
-                <p>This is a game made with Sploder Revival's <a
-                        href="../make/<?= get_creator_type('url', $game['g_swf']) ?>.php"><?= get_creator_type('name', $game['g_swf']) ?>
-                        game creator</a>.</p>
-            </div>
+
+            <div class="gametypeinfo"><p>This is a game made with Sploder Revival's <a href="../make/<?= $creator_type->url() ?>.php"><?= $creator_type->name() ?> game creator</a>.</p></div>
+
 
 
 
