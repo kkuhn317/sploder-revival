@@ -52,6 +52,7 @@
                     </p>
                     <?php
                         echo '<h4><a href="/games/play.php?&s=' . $games[$i]['user_id'] . '_' . $games[$i]['g_id'] . '&g_swf=' . $games[$i]['g_swf'] . '&title=' . $games[$i]['title'] . '&pub=0">' . urldecode($games[$i]['title']) . '</a></h4>';
+                        echo '<h5><a href="/members/?u='.$games[$i]['author']. '">' . $games[$i]['author'] . '</a></h5>';
                         echo '<p class="gamevote"><img src="/chrome/rating'.($games[$i]['avg_rating']*10).'.gif" width="64" height="12" border="0" alt="'. $games[$i]['avg_rating'].' stars"/> '.$games[$i]['total_votes'].' vote'.($games[$i]['total_votes'] == 1 ? '' : 's').'</p><p class="gameviews">' . $games[$i]['views'] . ' view'.($games[$i]['views'] == 1 ? '' : 's').'</p>';
                         echo '<div class="spacer">&nbsp;</div>';
                         echo '</div>';
