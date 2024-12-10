@@ -53,6 +53,10 @@ $creator_type = to_creator_type($game['g_swf']);
             <script>
             window.g_id = <?= $game['g_id'] ?>;
             </script>
+            <?php if($game['isprivate'] == 1) { ?>
+            <br><br>
+            <div class="alert">This game is private but you have the key!</div>
+            <?php } ?>
             <script type="text/javascript" src="play.js"></script>
             <div class="gameobject">
                 <div id="flashcontent">
