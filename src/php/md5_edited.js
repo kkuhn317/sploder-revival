@@ -52,7 +52,7 @@ function md5_vm_test()
 function core_md5(x, len)
 {
   /* append padding */
-    x[len >> 5] |  = 0x80 << ((len) % 32);
+    x[len >> 5] |= 0x80 << ((len) % 32);
     x[(((len + 64) >>> 9) << 4) + 14] = len;
 
     var a = 1732584193;
@@ -215,7 +215,7 @@ function str2binl(str)
     var bin = Array();
     var mask = (1 << chrsz) - 1;
     for (var i = 0; i < str.length * chrsz; i += chrsz) {
-        bin[i >> 5] |  = (str.charCodeAt(i / chrsz) & mask) << (i % 32);
+        bin[i >> 5] |= (str.charCodeAt(i / chrsz) & mask) << (i % 32);
     }
     return bin;
 }

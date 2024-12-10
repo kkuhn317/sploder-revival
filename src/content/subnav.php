@@ -3,7 +3,7 @@
         <li><a href="/">Home</a></li>
         <!-- <li><a href="/games/featured/">Featured</a></li>
 					<li><a href="/games/boosts/">Boosts</a></li> -->
-        <li><a href="/games/">Newest</a></li>
+        <li><a href="/games/newest.php">Newest</a></li>
         <!--<li><a href="/games/reviews/">Reviews</a></li>
 					<li><a href="/games/tournaments/">Tournaments</a></li> -->
         <li><a href="/graphics/">Graphics</a></li>

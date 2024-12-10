@@ -8,6 +8,7 @@ $perPage = 12;
 $qs = "SELECT COUNT(g_id) FROM games WHERE ispublished = 1 AND isprivate = 0";
 $total = $db->queryFirstColumn($qs);
 $currentpage = 'newest.php';
+$gamesCount = count($games);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -44,24 +45,27 @@ $currentpage = 'newest.php';
                 <div class="set">
 
                     <?php
-                    for ($i = 0; $i < count($games); $i++) {
+                    if ($gamesCount == 0) {
+                        echo '<div class="prompt">No games found!</div>';
+                    } else {
+                    for ($i = 0; $i < $gamesCount; $i++) {
                         if ($games[$i]['g_id'] == null) {
                             break;
                         };
                         echo '<div class="game">';
 
                         echo '<div class="photo">';
-                        echo '<a href="/games/play.php?&pubkey=' . $games[$i]['user_id'] . '_' . $games[$i]['g_id'] . '&g_swf=' . $games[$i]['g_swf'] . '&title=' . $games[$i]['title'] . '&pub=0"><img src="/users/user' . $games[$i]['user_id'] . '/images/proj' . $games[$i]['g_id'] . '/thumbnail.png" width="80" height="80"/></a>';
+                        echo '<a href="/games/play.php?&s=' . $games[$i]['user_id'] . '_' . $games[$i]['g_id'] . '&g_swf=' . $games[$i]['g_swf'] . '&title=' . $games[$i]['title'] . '&pub=0"><img src="/users/user' . $games[$i]['user_id'] . '/images/proj' . $games[$i]['g_id'] . '/thumbnail.png" width="80" height="80"/></a>';
                         echo '</div>';
                     ?>
                     <p class="gamedate"><?= date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($games[$i]['date'])) ?>
                     </p>
                     <?php
-                        echo '<h4><a href="/games/play.php?&pubkey=' . $games[$i]['user_id'] . '_' . $games[$i]['g_id'] . '&g_swf=' . $games[$i]['g_swf'] . '&title=' . $games[$i]['title'] . '&pub=0">' . urldecode($games[$i]['title']) . '</a></h4>';
+                        echo '<h4><a href="/games/play.php?&s=' . $games[$i]['user_id'] . '_' . $games[$i]['g_id'] . '&g_swf=' . $games[$i]['g_swf'] . '&title=' . $games[$i]['title'] . '&pub=0">' . urldecode($games[$i]['title']) . '</a></h4>';
                         echo '<p class="gamevote"><img src="/chrome/rating0.gif" width="64" height="12" border="0" alt="0 stars"/> 0 votes</p><p class="gameviews">' . $games[$i]['views'] . ' views</p>';
                         echo '<div class="spacer">&nbsp;</div>';
                         echo '</div>';
-                    }
+                    }}
                     ?>
                     <div class="spacer">&nbsp;</div>
                 </div>

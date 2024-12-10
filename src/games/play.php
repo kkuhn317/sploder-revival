@@ -3,7 +3,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
 <?php
+session_start();
+require_once('../content/getgameid.php');
 require('../content/playgame.php');
+if ($gameuserid != $game['user_id']) {
+    die("Invalid game ID");
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -20,7 +25,7 @@ require('../content/playgame.php');
     <script type="text/javascript">
     var _sf_startpt = (new Date()).getTime()
     </script>
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
     <?php include('../content/ruffle.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
@@ -34,7 +39,7 @@ require('../content/playgame.php');
             <h3><?= $game['title'] ?></h3>
             <h4 class="subtitle">By <a href="games/members/<?= $game['author'] ?>/"><?= $game['author'] ?></a> ::
                 <?= date('l F j\t\h, Y', strtotime($game['date'])) ?></h4>
-            <div class="vote"" id=" contestwidget">
+            <div class="vote" id="contestwidget">
                 <div style="margin-top:-15px; width: 150px; height:45px; overflow: hidden;" id="contestflash">&nbsp;
                 </div>
             </div>
@@ -70,7 +75,7 @@ require('../content/playgame.php');
             } catch (err) {}
 
             var flashvars = {
-                s: "<?= $_GET['pubkey'] ?>",
+                s: "<?= $_GET['s'] ?>",
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "sid: \"{$_SESSION['PHPSESSID']}\",\n";
                     } else {
