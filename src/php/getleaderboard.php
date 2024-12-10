@@ -17,6 +17,7 @@ $statement->execute(
     ]
 );
 $result = $statement->fetchAll();
+print_r($result);
 if (!isset($result[0]['username'])) {
     die("<empty />");
 }
