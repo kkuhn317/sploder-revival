@@ -3,83 +3,13 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
-<?php
-function get_game_info($game_id)
-{
-    include('../database/connect.php');
-    $db = connectToDatabase();
-    $qs = "SELECT * FROM games WHERE g_id=:game_id";
-    $statement = $db->prepare($qs);
-    $statement->execute([ ':game_id' => $game_id ]);
-    $result = $statement->fetchAll();
-    return $result[0];
-}
-function get_creator_type($type, $g_swf)
-{
-    if ($type == 'name') {
-        switch ($g_swf) {
-            case '1':
-                return 'classic';
-            break;
-            case '2':
-                return 'platformer';
-            break;
-            case '3':
-                return '3d adventure';
-            break;
-            case '5':
-                return 'physics';
-            break;
-            case '7':
-                return 'arcade';
-            break;
-        }
-    } else {
-        switch ($g_swf) {
-            case '1':
-                return 'shooter';
-            break;
-            case '2':
-                return 'plat';
-            break;
-            case '3':
-                return 'algo';
-            break;
-            case '5':
-                return 'ppg';
-            break;
-            case '7':
-                return 'arcade';
-            break;
-        }
-    }
-}
-function get_swf_version($g_Swf)
-{
-    switch ($g_Swf) {
-        case '1':
-            return 'idk';
-        break;
-        case '2':
-            return '20.swf?fix=3';
-        break;
-        case '3':
-            return 'idk';
-        break;
-        case '5':
-            return 'idk';
-        break;
-        case '7':
-            return 'idk';
-        break;
-    }
-}
-    $game = get_game_info($_GET['id']);
-if (!isset($game['title'])) {
-    die("Invalid game ID");
-}
-    $status = "playing";
 
+<?php
+require('../content/playgame.php');
+// Where does $id come frome??
+$game = get_game_info($_GET['id']);
+$status = "playing";
+$creator_type = to_creator_type($game['g_swf']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -148,7 +78,7 @@ if (!isset($game['title'])) {
                     // EMBED_FORCE_SECURE
                     // EMBED_ADTEST
                     // EMBED_CHALLENGE
-                    beta_version: "<?= get_swf_version($game['g_swf']) ?>",
+                    beta_version: "<?= creator_type->swf_version(); ?>",
                     onsplodercom: "true",
                     modified: <?= rand() ?>,
                     <?php if (isset($_SESSION['PHPSESSID'])) {
@@ -263,7 +193,7 @@ if (!isset($game['title'])) {
         <div id="sidebar">
 
 
-            <div class="gametypeinfo"><p>This is a game made with Sploder Revival's <a href="../make/<?= get_creator_type('url', $game['g_swf']) ?>.php"><?= get_creator_type('name', $game['g_swf']) ?> game creator</a>.</p></div>
+            <div class="gametypeinfo"><p>This is a game made with Sploder Revival's <a href="../make/<?= $creator_type->url() ?>.php"><?= $creator_type->name() ?> game creator</a>.</p></div>
 
 
 
