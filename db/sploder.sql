@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
--- Dumped by pg_dump version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
+-- Dumped from database version 17.1 (Debian 17.1-1.pgdg120+1)
+-- Dumped by pg_dump version 17.1 (Debian 17.1-1.pgdg120+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -313,6 +313,32 @@ CREATE TABLE public.game_tags (
 
 
 ALTER TABLE public.game_tags OWNER TO sploder;
+
+--
+-- Name: game_views_anonymous; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.game_views_anonymous (
+    g_id integer NOT NULL,
+    ipaddress character varying(45) NOT NULL,
+    create_date timestamp NOT NULL default (now() at time zone 'utc')
+);
+
+
+ALTER TABLE public.game_views_anonymous OWNER TO sploder;
+
+--
+-- Name: game_views_members; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.game_views_members (
+    g_id integer NOT NULL,
+    userid integer NOT NULL,
+    create_date timestamp NOT NULL default (now() at time zone 'utc')
+);
+
+
+ALTER TABLE public.game_views_members OWNER TO sploder;
 
 --
 -- Name: games; Type: TABLE; Schema: public; Owner: sploder
@@ -642,6 +668,21 @@ ALTER TABLE ONLY public.game_tags
 ALTER TABLE ONLY public.graphic_tags
     ADD CONSTRAINT unique_graphic_tags UNIQUE (g_id, tag);
 
+--
+-- Name: game_views_anonymous uk_game_views_anonymous_g_id_ipaddress; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.game_views_anonymous
+    ADD CONSTRAINT uk_game_views_anonymous_g_id_ipaddress UNIQUE (g_id, ipaddress);
+
+
+--
+-- Name: game_views_members uk_game_views_members_g_id_userid; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.game_views_members
+    ADD CONSTRAINT uk_game_views_members_g_id_userid UNIQUE (g_id, userid);
+
 
 --
 -- Name: members userid; Type: CONSTRAINT; Schema: public; Owner: sploder
@@ -686,6 +727,45 @@ CREATE INDEX game_tags_tag ON public.game_tags USING btree (tag);
 --
 
 CREATE INDEX graphics_userid ON public.graphics USING btree (userid);
+
+
+--
+-- Name: game_tags g_id_game_tags_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.game_tags
+    ADD CONSTRAINT g_id_game_tags_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) MATCH FULL NOT VALID;
+
+
+--
+-- Name: graphic_tags g_id_graphic_tags_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.graphic_tags
+    ADD CONSTRAINT g_id_graphic_tags_fkey FOREIGN KEY (g_id) REFERENCES public.graphics(id) MATCH FULL NOT VALID;
+
+--
+-- Name: game_views_anonymous fk_game_views_anonymous_games_g_id; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.game_views_anonymous
+    ADD CONSTRAINT fk_game_views_anonymous_games_g_id FOREIGN KEY (g_id) REFERENCES public.games(g_id);
+
+
+--
+-- Name: game_views_members fk_game_views_members_games_g_id; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.game_views_members
+    ADD CONSTRAINT fk_game_views_members_games_g_id FOREIGN KEY (g_id) REFERENCES public.games(g_id);
+
+
+--
+-- Name: game_views_members fk_game_views_members_members_userid; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.game_views_members
+    ADD CONSTRAINT fk_game_views_members_members_userid FOREIGN KEY (userid) REFERENCES public.members(userid);
 
 
 --
