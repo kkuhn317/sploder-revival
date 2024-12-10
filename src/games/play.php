@@ -7,11 +7,12 @@ ini_set('display_errors', 1);
 session_start();
 require_once('../content/getgameid.php');
 require('../content/playgame.php');
+
+// Where does $id come frome??
+$game = get_game_info($id);
 if ($gameuserid != $game['user_id']) {
     die("Invalid game ID");
 }
-// Where does $id come frome??
-$game = get_game_info($id);
 $status = "playing";
 $creator_type = to_creator_type($game['g_swf']);
 ?>
@@ -87,14 +88,14 @@ $creator_type = to_creator_type($game['g_swf']);
                         echo 'nu: "",' . "\n";
                     } ?>
 
-                    // EMBED_BETA_VERSION
-                    // EMBED_FORCE_SECURE
-                    // EMBED_ADTEST
-                    // EMBED_CHALLENGE
-                    beta_version: "<?= creator_type->swf_version(); ?>",
-                    onsplodercom: "true",
-                    modified: <?= rand() ?>,
-                    <?php if (isset($_SESSION['PHPSESSID'])) {
+                // EMBED_BETA_VERSION
+                // EMBED_FORCE_SECURE
+                // EMBED_ADTEST
+                // EMBED_CHALLENGE
+                beta_version: "<?= $creator_type->swf_version(); ?>",
+                onsplodercom: "true",
+                modified: <?= rand() ?>,
+                <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";
                     } ?>
             }
@@ -216,7 +217,11 @@ $creator_type = to_creator_type($game['g_swf']);
 
 
 
-            <div class="gametypeinfo"><p>This is a game made with Sploder Revival's <a href="../make/<?= $creator_type->url() ?>.php"><?= $creator_type->name() ?> game creator</a>.</p></div>
+            <div class="gametypeinfo">
+                <p>This is a game made with Sploder Revival's <a
+                        href="../make/<?= $creator_type->url() ?>.php"><?= $creator_type->name() ?> game creator</a>.
+                </p>
+            </div>
 
 
 
