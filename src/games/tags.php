@@ -1,12 +1,5 @@
 <?php
-$perpage = 100;
-require_once('../database/connect.php');
-$db = getDatabase();
-// Select all distinct tags
-$qs = "SELECT DISTINCT tag FROM game_tags ORDER BY tag LIMIT $perpage OFFSET :offset";
-$tags = $db->query($qs, [':offset' => $_GET['offset'] ?? 0]);
-$qs = "SELECT COUNT(DISTINCT tag) as total_unique_tags FROM game_tags";
-$total = $db->queryFirstColumn($qs, 0);
+require_once('content/tags.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
