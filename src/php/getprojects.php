@@ -7,40 +7,60 @@ session_start();
 header("Content-type: text/xml");
 if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $author = $_SESSION["username"];
+    $num = $_GET['num'] ?? 10;
+    $start = $_GET['start'] ?? 0;
+    if(in_array(
+        $_GET['version'],
+        ["5", "3", "7"]
+    )){
+        $newFormat = true;
+    } else {
+        $newFormat = false;
+    }
     include('../database/connect.php');
     $db = connectToDatabase();
-    $queryString = 'SELECT * FROM games WHERE author = :author AND g_swf = :g_swf AND isdeleted = :isdeleted ORDER BY "g_id"';
+    $queryString = 'SELECT * FROM games WHERE author = :author AND g_swf = :g_swf AND isdeleted = :isdeleted ORDER BY g_id DESC';
+    if($newFormat){
+        $queryString .= " LIMIT :num OFFSET :start";
+    }
+    
+    $statement = $db->prepare($queryString);
+    $params = [
+        ':g_swf' => $_GET['version'],
+        ':author' => $author,
+        ':isdeleted' => '0'
+    ];
+
+    if ($newFormat) {
+        $params[':start'] = $start;
+        $params[':num'] = $num;
+    }
+
+    $statement->execute($params);
+    $result = $statement->fetchAll();
+    //print_r($result);
+    $resultTotal = count($result);
+    $queryString = "SELECT COUNT(g_id) FROM games WHERE author= :author AND g_swf = :g_swf AND isdeleted = :isdeleted";
     $statement = $db->prepare($queryString);
     $statement->execute([
         ':g_swf' => $_GET['version'],
         ':author' => $author,
         ':isdeleted' => '0'
     ]);
-    $result = $statement->fetchAll();
-    $resultTotal = count($result);
+    $totalGames = $statement->fetchColumn();
     $f = '20';
-    if (isset($_GET['start'])) {
-        $start = $_GET['start'];
-    }
-    $num = $resultTotal;
+    
 
 
-    if (
-        in_array(
-            $_GET['version'],
-            ["5", "3", "7"]
-        )
-    ) {
-        $string = '<projects total="' . $resultTotal . '" start="' . $start . '" num="' . $num . '">';
+    if ($newFormat) {
+        $string = '<projects total="' . $totalGames . '" start="' . $start . '" num="' . $num . '">';
     } else {
         $num = $resultTotal;
-        $string = '<projects total="' . $resultTotal . '">';
+        $string = '<projects total="' . $totalGames . '">';
     }
 
-    $i = $num - 1;
-    while ($i >= 0) {
-        $string .= '<project id="proj' . $result[$i]['g_id'] . '" src="proj' . $result[$i]['g_id'] . '.xml" title="' . $result[$i]['title'] . '" date="' . date("l, F jS, Y", strtotime($f . $result[$i]['date'])) . '" time="' . strtotime($f . $result[$i]['date']) . '" archived="0" />';
-        $i--;
+    foreach ($result as $project) {
+        $string .= '<project id="proj' . $project['g_id'] . '" src="proj' . $project['g_id'] . '.xml" title="' . $project['title'] . '" date="' . date("l, F jS, Y", strtotime($f . $project['date'])) . '" time="' . strtotime($f . $project['date']) . '" archived="0" />';
     }
     $string .= '</projects>';
     print($string);
