@@ -451,12 +451,8 @@
     <a name="t9"></a>
     <br />
     <h2>Complex Behaviors</h2>
-    <p></p>
-    <p><a href="#top">Back to Top</a></p>
-
-
     <a name="t9s1"></a>
-    <br />
+
     <h3>Locking Objects</h3>
     <p><img src="/images/help/help0010.gif" width="22" height="22" align="left" />When you lock an object in the
         creator, it not only locks its motion, it locks all modifiers attached to the object. So, you can start the
