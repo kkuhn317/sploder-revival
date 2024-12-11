@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Sploder Physics Puzzle Game Maker Help</title>
+    <title>Sploder</title>
     <style type="text/css" media="print">
     body {
         font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -138,7 +138,7 @@
     <img src="/images/physics-puzzle-maker.png" width="348" height="172" />
     <h1>User Guide</h1>
 
-    <p>Welcome to the Sploder&trade; Physics Puzzle game maker guide. This guide will help you to understand how to use
+    <p>Welcome to the Sploder Revival Physics Puzzle game maker guide. This guide will help you to understand how to use
         the game maker, and get you started making games.</p>
     <ul>
         <li><a href="#t1">Introduction</a></li>
@@ -199,8 +199,8 @@
         The Physics Puzzle Maker allows you to create small worlds that simulate realistic physics. You can create
         worlds with objects you can move, aim and drag around. You can add projectiles, crushable objects, and connect
         objects together with joints and springs. You can add scoring and penalties to your simulations to turn them
-        into games or puzzles. Since this is a Sploder&trade; game maker, you can publish and share your games on the <a
-            href="#" target="_blank">sploder.com</a> web site, just like the other creators.</p>
+        into games or puzzles. Since this is a Sploder Revival game maker, you can publish and share your games on the
+        sploder revival web site, just like the other creators.</p>
 
     <h3>Help as you Create</h3>
 
