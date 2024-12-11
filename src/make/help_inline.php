@@ -135,7 +135,9 @@
 
 <body>
     <a name="top"></a>
-    <img src="/images/physics-puzzle-maker.png" width="348" height="172" />
+    <div style="text-align: center;">
+        <img src="/images/physics-puzzle-maker.png" width="348" height="172" />
+    </div>
     <h1>User Guide</h1>
 
     <p>Welcome to the Sploder Revival Physics Puzzle game maker guide. This guide will help you to understand how to use
