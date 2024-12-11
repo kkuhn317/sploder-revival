@@ -7,9 +7,11 @@ $db = getDatabase();
 $qs2 = "SELECT userid FROM graphics WHERE id=:id";
 $userid = $db->queryFirstColumn($qs2,0,[':id' => $id
 ]);
-$qs = "DELETE FROM graphics WHERE id=:id";
+$qs1 = "DELETE FROM graphic_tags WHERE g_id=:id";
+$qs2 = "DELETE FROM graphics WHERE id=:id";
 if ($_SESSION["userid"] == $userid) {
-    $db->execute($qs,[':id' => $id]);
+    $db->execute($qs1,[':id' => $id]);
+    $db->execute($qs2, [':id' => $id]);
     // Delete files
     $file1 = '../graphics/gif/' . $id . '.gif';
     $file2 = '../graphics/png/' . $id . '_'; // All files with this prefix
@@ -23,5 +25,5 @@ if ($_SESSION["userid"] == $userid) {
     
     header('Location: ../dashboard/my-graphics.php');
 } else {
-    echo "There was an error while deleting your graphic.";
+    header('Location: ../dashboard/my-graphics.php?err=del');
 }
