@@ -34,7 +34,11 @@ if ($_GET['userid'] == $_SESSION['userid']) {
             // Search by tags
             $qs = "SELECT g_id FROM graphic_tags WHERE tag=:tag";
             $g_ids = $db->queryFirstColumn($qs, 0, [':tag' => $searchterm]);
-            $clause .= " AND id IN (".implode(",", $g_ids).")";
+            if (is_array($g_ids) && !empty($g_ids)) {
+                $clause .= " AND id IN (".implode(",", $g_ids).")";
+            } else {
+                $clause .= " AND 1=0"; // No results found
+            }
         }
     }
     $extrainfo = ""; // Use later to grab likes
@@ -42,7 +46,11 @@ if ($_GET['userid'] == $_SESSION['userid']) {
 
 $graphics_qs = "SELECT id,version$extrainfo FROM graphics WHERE $clause ORDER BY id DESC LIMIT :num OFFSET :start";
 $graphicsData = $db->query($graphics_qs, $params);
-
+$graphicsData = array_map(function($graphic) {
+    return array_filter($graphic, function($key) {
+        return !is_numeric($key);
+    }, ARRAY_FILTER_USE_KEY);
+}, $graphicsData);
 unset($params[':num']);
 unset($params[':start']);
 $total = $db->queryFirstColumn("SELECT COUNT(*) FROM graphics WHERE $clause", 0,$params);
