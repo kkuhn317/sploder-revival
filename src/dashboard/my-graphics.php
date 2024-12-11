@@ -53,7 +53,12 @@ include('content/my-graphics.php');
         </div>
         <div id="content">
             <h3>My Graphics</h3>
-            <p>You've made <?= $total_games ?> graphic<?= $total_games == 1 ? '' : 's' ?> so far, with a total of ?
+            <?php if(isset($_GET['err'])){ ?>
+            <div class="alert">There was an error deleting your graphic</div>
+            <?php } ?>
+            <p>You've made <?= $total_games ?>
+                graphic<?= $total_games == 1 ? '' : 's' ?> so far,
+                with a total of ?
                 like<?= $total_games == 1 ? '' : 's' ?> so far.
                 <a href="../make/graphics.php">Make
                     some graphics
