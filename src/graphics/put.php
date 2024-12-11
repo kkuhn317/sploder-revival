@@ -39,7 +39,7 @@ if ($result == $userid) {
         }
         file_put_contents("gif/" . $id . ".gif", $rawdata);
     } elseif ($type == "sprite") {
-        $isprivate = $_GET['isprivate'] == "1" ? true : false;
+        $isprivate = $_GET['isprivate'] == "1" ? 'true' : 'false';
         $qs = "UPDATE graphics SET ispublished=true, isprivate=:isprivate, version=version+1 WHERE id=:id RETURNING version";
         $version = $db->queryFirstColumn($qs, 0, [
             ':isprivate' => $isprivate,
