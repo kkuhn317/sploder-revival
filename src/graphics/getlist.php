@@ -10,6 +10,7 @@ require('../database/connect.php');
 $db = getDatabase();
 
 $clause = "ispublished=true AND isprivate=false";
+$order = "likes";
 $extrainfo = "";
 $params = [
     ':num' => $num,
@@ -20,6 +21,7 @@ if ($_GET['userid'] == $_SESSION['userid']) {
     $clause = isset($_GET['published']) ? "ispublished=true" : "1=1";
     $params[':userid'] = $_SESSION['userid'];
     $clause .= " AND userid=:userid";
+    $order = "id";
 } elseif($_GET['userid']==0) {
     if(isset($_GET['searchmode'])){
         $searchmode = $_GET['searchmode'];
@@ -47,15 +49,16 @@ if ($_GET['userid'] == $_SESSION['userid']) {
     } else{
         $extrainfo .= ", (SELECT username FROM members WHERE userid=graphics.userid) AS username";
     }
-    $extrainfo .= ""; // Use later to grab likes
+    $extrainfo .= ", (SELECT COUNT(*) FROM graphic_likes WHERE graphic_likes.g_id=graphics.id) AS likes"; // Use later to grab likes
 }
 
-$graphics_qs = "SELECT id,version$extrainfo FROM graphics WHERE $clause ORDER BY id DESC LIMIT :num OFFSET :start";
+$graphics_qs = "SELECT id,version$extrainfo FROM graphics WHERE $clause ORDER BY $order DESC LIMIT :num OFFSET :start";
 $graphicsData = $db->query($graphics_qs, $params);
 $graphicsData = array_map(function($graphic) {
-    return array_filter($graphic, function($key) {
-        return !is_numeric($key);
+    $filteredGraphic = array_filter($graphic, function($key) {
+        return !is_numeric($key) && $key !== 'likes';
     }, ARRAY_FILTER_USE_KEY);
+    return $filteredGraphic;
 }, $graphicsData);
 unset($params[':num']);
 unset($params[':start']);
