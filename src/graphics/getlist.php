@@ -32,10 +32,13 @@ if ($_GET['userid'] == $_SESSION['userid']) {
             $params[':userid'] = $userid;
         } else {
             // Search by tags
-            $qs = "SELECT g_id FROM graphic_tags WHERE tag=:tag";
-            $g_ids = $db->queryFirstColumn($qs, 0, [':tag' => $searchterm]);
-            if (is_array($g_ids) && !empty($g_ids)) {
-                $clause .= " AND id IN (".implode(",", $g_ids).")";
+            $qs = "SELECT g_id FROM graphic_tags WHERE SIMILARITY(tag, :tag) > 0.3";
+            $g_ids = $db->queryFirst($qs, [':tag' => $searchterm]);
+            // Remove duplicate keys in g_ids
+            $g_ids = array_unique($g_ids);
+            if (!empty($g_ids)) {
+                $g_ids = array_values($g_ids); // Extract values from associative array
+                $clause .= " AND id IN (".implode(",", array_map('intval', $g_ids)).")";
             } else {
                 $clause .= " AND 1=0"; // No results found
             }
