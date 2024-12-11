@@ -39,12 +39,15 @@ if ($_GET['userid'] == $_SESSION['userid']) {
             if (!empty($g_ids)) {
                 $g_ids = array_values($g_ids); // Extract values from associative array
                 $clause .= " AND id IN (".implode(",", array_map('intval', $g_ids)).")";
+                $extrainfo .= ", (SELECT username FROM members WHERE userid=graphics.userid) AS username";
             } else {
                 $clause .= " AND 1=0"; // No results found
             }
         }
+    } else{
+        $extrainfo .= ", (SELECT username FROM members WHERE userid=graphics.userid) AS username";
     }
-    $extrainfo = ""; // Use later to grab likes
+    $extrainfo .= ""; // Use later to grab likes
 }
 
 $graphics_qs = "SELECT id,version$extrainfo FROM graphics WHERE $clause ORDER BY id DESC LIMIT :num OFFSET :start";
