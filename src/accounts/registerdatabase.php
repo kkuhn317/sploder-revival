@@ -92,7 +92,7 @@ if (intval($responseKeys["success"]) !== 1) {
             }
             if ($status == "alert") {
                 if ($_SESSION['enteredusername'] == $result2[0]['username']) {
-                    $qs = "INSERT INTO members (username, password, joindate, lastlogin, isolate, level, boostpoints, lastpagechange) VALUES (:username, :password, :join, :lastlogin, :isolate, :level, :boostpoints, :lastpagechange)";
+                    $qs = "INSERT INTO members (username, password, joindate, lastlogin, isolate, level, boostpoints, lastpagechange, ip_address) VALUES (:username, :password, :join, :lastlogin, :isolate, :level, :boostpoints, :lastpagechange, :ip_address)";
                     $statement = $db->prepare($qs);
                     $statement->execute([
                         ':username' => $username,

@@ -54,6 +54,22 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
 
 
+--
+-- Name: add_user_notif(); Type: FUNCTION; Schema: public; Owner: sploder
+--
+
+CREATE FUNCTION public.add_user_notif() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    INSERT INTO user_notifs (userid) VALUES (NEW.userid);
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.add_user_notif() OWNER TO sploder;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -565,6 +581,18 @@ CREATE TABLE public.user_info (
 ALTER TABLE public.user_info OWNER TO sploder;
 
 --
+-- Name: user_notifs; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.user_notifs (
+    userid integer NOT NULL,
+    friend integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.user_notifs OWNER TO sploder;
+
+--
 -- Name: votes; Type: TABLE; Schema: public; Owner: sploder
 --
 
@@ -714,6 +742,14 @@ ALTER TABLE ONLY public.members
 
 
 --
+-- Name: user_notifs userid_user_notifs; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.user_notifs
+    ADD CONSTRAINT userid_user_notifs UNIQUE (userid);
+
+
+--
 -- Name: members username; Type: CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -748,6 +784,13 @@ CREATE INDEX game_tags_tag ON public.game_tags USING btree (tag);
 --
 
 CREATE INDEX graphics_userid ON public.graphics USING btree (userid);
+
+
+--
+-- Name: members sync_user_notifs; Type: TRIGGER; Schema: public; Owner: sploder
+--
+
+CREATE TRIGGER sync_user_notifs AFTER INSERT ON public.members FOR EACH ROW EXECUTE FUNCTION public.add_user_notif();
 
 
 --
@@ -804,6 +847,14 @@ ALTER TABLE ONLY public.graphic_tags
 
 ALTER TABLE ONLY public.graphic_likes
     ADD CONSTRAINT userid_graphic_likes_fkey FOREIGN KEY (userid) REFERENCES public.members(userid) MATCH FULL NOT VALID;
+
+
+--
+-- Name: user_notifs userid_user_notifs_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.user_notifs
+    ADD CONSTRAINT userid_user_notifs_fkey FOREIGN KEY (userid) REFERENCES public.members(userid);
 
 
 --
