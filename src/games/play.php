@@ -1,7 +1,11 @@
-
 <?php
+if (session_status() !== PHP_SESION_ACTIVE) {
+    session_start();
+}
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 ?>
 
 <?php
@@ -23,7 +27,7 @@ $creator_type = to_creator_type($game['g_swf']);
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 
     <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
     <?php include('../content/ruffle.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
