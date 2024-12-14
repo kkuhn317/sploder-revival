@@ -1,9 +1,13 @@
-<big><big><br>THIS IS IN EXTREME ALPHA. DO NOT USE. Instead, use <a
-            href="https://github.com/Sploder-Saptarshi/Sploder-Launcher">this</a> for a better experience.</big></big>
 <?php
-if (!session_id()) {
+if (!session_id() && session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+?>
+
+<big><big><br>THIS IS IN EXTREME ALPHA. DO NOT USE. Instead, use <a
+            href="https://github.com/Sploder-Saptarshi/Sploder-Launcher">this</a> for a better experience.</big></big>
+
+<?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/database/connect.php');
 $db1 = connectToDatabase('members');
 $thing = "SELECT boostpoints FROM members WHERE username=:user";
