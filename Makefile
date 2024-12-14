@@ -1,4 +1,4 @@
-.PHONY: help build dev dev.watch dev.down dev.bootstrap dev.bash.site dev.bash.db dev.backup.db dev.hook clean
+.PHONY: help build dev dev.watch dev.down dev.bootstrap dev.bash.site dev.bash.db dev.backup.db dev.hook clean test
 
 ifeq ($(OS),Windows_NT)
   OPEN_CMD = start
@@ -21,6 +21,7 @@ help:
 	@echo "  make dev.bash.db     - enter the db container"
 	@echo "  make dev.backup.db   - creates a schema backup of the database into the mounted folder"
 	@echo "  make clean           - cleans docker images and temporary files"
+	@echo "  make test            - runs the unit tests for the project"
 build:
 	composer install
 	${CONTAINER_CMD} build . -t sploder-revival
@@ -61,3 +62,5 @@ clean:
 	${CONTAINER_CMD} image prune -a -f
 	${CONTAINER_CMD} container prune -f
 	${CONTAINER_CMD} volume prune -f
+test:
+	./vendor/bin/phpunit
