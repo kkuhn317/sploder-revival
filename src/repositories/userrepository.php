@@ -11,4 +11,21 @@ class UserRepository implements IUserRepository
     {
         $this->db = $db;
     }
+
+    public function search(string $userName, int $limit = 180)
+    {
+        $qs = "
+SELECT
+    username,
+    SIMILARITY(username, :u) AS sim,
+    level
+FROM members
+WHERE SIMILARITY(username, :u) > 0.3 
+ORDER BY sim 
+DESC LIMIT :limit";
+        return $this->db->query($qs, [
+        ':u' => trim($userName ?? ''),
+        ':limit' => $limit,
+        ]);
+    }
 }
