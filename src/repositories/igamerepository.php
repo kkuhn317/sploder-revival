@@ -23,8 +23,19 @@ interface IGameRepository
 
   /**
    * Retrieves game data for playing a game
+   *
+   * @param $gameId
+   * @return game data associated with the game
    */
     public function getGameData(int $gameId): GameData;
+
+    /**
+     * Retrieves tags for a given game
+     *
+     * @param $gameId
+     * @return tags associated with the game
+     */
+    public function getGameTags(int $perPage, int $offset): GameTags;
 }
 
 class GameData
@@ -32,10 +43,23 @@ class GameData
     public readonly string $author;
     public readonly string $difficulty;
     public readonly float $avgScore;
+
     public function __construct(string $author, string $difficulty, float $avgScore)
     {
         $this->author = $author;
         $this->difficulty = $difficulty;
         $this->avgScore = $avgScore;
+    }
+}
+
+class GameTags
+{
+    public readonly array $tags;
+    public readonly float $total;
+
+    public function __construct(array $tags, int $total)
+    {
+        $this->tags = $tags;
+        $this->total = $total;
     }
 }

@@ -63,6 +63,19 @@ where g_id = :g_id
         return new GameData($gameInfo['author'], round($gameInfo['difficulty']), $avgScore);
     }
 
+    public function getGameTags(int $perPage, int $offset): GameTags
+    {
+        $tags = $this->db->query("SELECT DISTINCT tag FROM game_tags ORDER BY tag LIMIT :perpage OFFSET :offset", [
+        ':perpage', $perPage,
+        ':offset', $offset,
+        ]);
+
+      // Delete the below line and just get the length of $tags?
+        $total = $this->db->queryFirstColumn("SELECT COUNT(DISTINCT tag) as total_unique_tags FROM game_tags");
+
+        return new GameTags($tags, $total);
+    }
+
     public function getUserId(int $gameId): string
     {
         return $this->db->queryFirstColumn("SELECT user_Id FROM games WHERE g_id = :g_id", 0, [
