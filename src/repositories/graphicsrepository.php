@@ -12,7 +12,6 @@ class GraphicsRepository implements IGraphicsRepository
         $this->db = $db;
     }
 
-
     public function replaceTags(int $graphicId, array $tags): void
     {
         $this->db->execute("DELETE FROM graphic_tags WHERE g_id = :id", [
@@ -43,5 +42,25 @@ class GraphicsRepository implements IGraphicsRepository
         return $this->db->query("SELECT tag FROM graphic_tags WHERE g_id = :id", [
           ':id' => $graphicId,
         ]);
+    }
+
+    public function trackLike(int $graphicsId, int $loggedInUserId): void
+    {
+        $userId = $this->db->queryFirstColumn("SELECT userid FROM graphics WHERE id=:id", 0, [
+        'id' => $graphicsId
+        ]);
+
+        if ($userId !== $loggedInUserId) {
+            try {
+                $this->db->execute("
+INSERT INTO graphic_likes (userid, g_id) VALUES (:userid, :projid)
+on conflict do nothing", [
+                ':userid' => $loggedInUserId,
+                ':projid' => $graphicsId,
+                ]);
+            } catch (Exception $ex) {
+              // TODO: log this error, as the conflict should handle this
+            }
+        }
     }
 }

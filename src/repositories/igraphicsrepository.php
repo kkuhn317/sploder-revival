@@ -28,5 +28,9 @@ interface IGraphicsRepository
    * @param $graphicId
    * @return the array of tags
    */
-    public function getTags($graphicId): array;
+    function getTags($graphicId): array;
+  /**
+   * Insert a like for a specific graphics id and user
+   */
+    function trackLike(int $graphicsId, int $loggedInUserId): void;
 }
