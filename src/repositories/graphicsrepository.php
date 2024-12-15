@@ -11,4 +11,37 @@ class GraphicsRepository implements IGraphicsRepository
     {
         $this->db = $db;
     }
+
+
+    public function replaceTags(int $graphicId, array $tags): void
+    {
+        $this->db->execute("DELETE FROM graphic_tags WHERE g_id = :id", [
+          ':id' => $graphicId
+        ]);
+
+        if (!empty($tags)) {
+            $values = [];
+            $params = [':id' => $graphicId];
+            foreach ($tags as $index => $tag) {
+                $values[] = "(:id, :tag$index)";
+                $params[":tag$index"] = $tag;
+            }
+            $qs = "INSERT INTO graphic_tags (g_id, tag) VALUES " . implode(", ", $values);
+            $this->db->execute($qs, $params);
+        }
+    }
+
+    public function getUserId(int $graphicId): string
+    {
+        return $this->db->queryFirstColumn("SELECT userid FROM graphics WHERE id = :id", 0, [
+          ':id' => $graphicId
+        ]);
+    }
+
+    public function getTags($graphicId): array
+    {
+        return $this->db->query("SELECT tag FROM graphic_tags WHERE g_id = :id", [
+          ':id' => $graphicId,
+        ]);
+    }
 }
