@@ -137,6 +137,7 @@ require_once('content/publish.php');
                                                                                                                             $tagString .= $tag[0] . ' ';
                                                                                                                         }
                                                                                                                         $tagString = substr($tagString, 0, -1);
+                                                                                                                        echo $tagString;
                                                                                                                     }
                                                                                                                     ?></textarea><br><br>
                 <input type="submit" onclick="sendTags()" value="Save Tags" class="loginbutton postbutton">
