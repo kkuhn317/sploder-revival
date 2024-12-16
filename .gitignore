@@ -6,6 +6,7 @@ html.zip
 node_modules
 playgrounds
 src/users
+.phpunit.result.cache
 
 # Docker local development folders
 pgdata

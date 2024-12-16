@@ -1,6 +1,11 @@
 <?php
+if (session_status() !== PHP_SESION_ACTIVE) {
+    session_start();
+}
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 ?>
 
 <?php
@@ -45,6 +50,7 @@ $creator_type = to_creator_type($game['g_swf']);
             <h3><?= $game['title'] ?></h3>
             <h4 class="subtitle">By <a href="games/members/<?= $game['author'] ?>/"><?= $game['author'] ?></a> ::
                 <?= date('l F j\t\h, Y', strtotime($game['date'])) ?></h4>
+
             <div class="vote" id="contestwidget">
                 <div style="margin-top:-15px; width: 150px; height:45px; overflow: hidden;" id="contestflash">&nbsp;
                 </div>
@@ -85,7 +91,9 @@ $creator_type = to_creator_type($game['g_swf']);
             } catch (err) {}
 
             var flashvars = {
+
                 s: "<?= $_GET['s'] ?>",
+
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "sid: \"{$_SESSION['PHPSESSID']}\",\n";
                     } else {
@@ -96,7 +104,9 @@ $creator_type = to_creator_type($game['g_swf']);
                 // EMBED_FORCE_SECURE
                 // EMBED_ADTEST
                 // EMBED_CHALLENGE
+
                 beta_version: "<?= $creator_type->swf_version(); ?>",
+
                 onsplodercom: "true",
                 modified: <?= rand() ?>,
                 <?php if (isset($_SESSION['PHPSESSID'])) {
@@ -133,7 +143,7 @@ $creator_type = to_creator_type($game['g_swf']);
             </div>
             <?php
             if (isset($game['description'])) {
-                echo '<p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">' . $game['description'] . '</p>';
+                echo '<p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">' . htmlspecialchars($game['description']) . '</p>';
             }
             ?>
 
