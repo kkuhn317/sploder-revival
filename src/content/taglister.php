@@ -19,7 +19,7 @@ function displayTags($tagList, $hyperlink = true){
     $tagString = "";
     if($hyperlink){
         for($i = 0; $i < count($tagList); $i++){
-            $tagString .= "<a class=\"tagcolor{$colors[$i % 4]}\" href=\"games/tags/{$tagList[$i][0]}/\" title=\"{$tagList[$i][0]} - {$tagList[$i][1]} game" . ($tagList[$i][1] == 1 ? "" : "s") . ".\">{$tagList[$i][0]}</a> ";
+            $tagString .= "<a class=\"tagcolor{$colors[$i % 4]}\" href=\"game-tags.php?t={$tagList[$i][0]}\" title=\"{$tagList[$i][0]} - {$tagList[$i][1]} game" . ($tagList[$i][1] == 1 ? "" : "s") . ".\">{$tagList[$i][0]}</a> ";
         }
     } else {
         for($i = 0; $i < count($tagList); $i++){
