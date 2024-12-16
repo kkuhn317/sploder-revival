@@ -8,9 +8,9 @@ session_start();
 require_once('../content/getgameid.php');
 require('../content/playgame.php');
 
-// Where does $id come frome??
-$game = get_game_info($id);
-if ($gameuserid != $game['user_id']) {
+$game_id = get_game_id($_GET['s']);
+$game = get_game_info($game_id['id']);
+if ($game_id['userid'] != $game['user_id']) {
     die("Invalid game ID");
 }
 $status = "playing";
