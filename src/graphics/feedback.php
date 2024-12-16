@@ -1,0 +1,14 @@
+<?php
+
+session_start();
+
+require_once(__DIR__ . '/../repositories/repositorymanager.php');
+
+$graphicsRepository = RepositoryManager::get()->getGraphicsRepository();
+
+$id = $_GET['projid'];
+$a = $_GET['action'];
+
+if ($a == "like") {
+    $graphicsRepository->trackLike($id, $_SESSION['userid']);
+}

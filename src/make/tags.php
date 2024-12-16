@@ -10,6 +10,8 @@ foreach ($tags as $tag) {
         $tags = array_diff($tags, [$tag]);
         continue;
     }
+    // Change tag to lowercase 
+    $tag = strtolower($tag);
     if (strlen($tag) > 30) {
         // Send 400
         http_response_code(400);
