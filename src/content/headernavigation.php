@@ -1,9 +1,13 @@
-<big><big><br>THIS IS IN EXTREME ALPHA. DO NOT USE. Instead, use <a
-            href="https://github.com/Sploder-Saptarshi/Sploder-Launcher">this</a> for a better experience.</big></big>
 <?php
-if (!session_id()) {
+if (!session_id() && session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+?>
+
+<big><big><br>THIS IS IN EXTREME ALPHA. DO NOT USE. Instead, use <a
+            href="https://github.com/Sploder-Saptarshi/Sploder-Launcher">this</a> for a better experience.</big></big>
+
+<?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/database/connect.php');
 $db1 = connectToDatabase('members');
 $thing = "SELECT boostpoints FROM members WHERE username=:user";
@@ -63,7 +67,7 @@ function format_num($num, $precision = 0)
                 </li>
 
             </ul>
-            <?php } else { ?>
+                    <?php } else { ?>
             <b><?php echo $_SESSION['username'] ?></b>
             <li id="dashboard">
 
@@ -72,7 +76,6 @@ function format_num($num, $precision = 0)
             </li>
 
             <li id="account">
-
                 |&nbsp; <a href="/dashboard/my-games.php">My Games</a>
 
             </li>
@@ -82,7 +85,7 @@ function format_num($num, $precision = 0)
 
             </li>
             </ul>
-            <?php }
+                    <?php }
                     ?>
         </div>
         <ul id="topnav">

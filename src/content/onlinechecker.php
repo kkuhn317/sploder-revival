@@ -1,10 +1,9 @@
 <?php
-if(isset($_SESSION['username']))
-{
-    if(!isset($status)) {
+if (isset($_SESSION['username'])) {
+    if (!isset($status)) {
         $status = "online";
     }
-?>
+    ?>
 <script>
 fetch(__DIR__."/../php/idlecheck.php")
 function checkonline() 

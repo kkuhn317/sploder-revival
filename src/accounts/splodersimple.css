@@ -630,7 +630,7 @@ div.share_buttons a.googleplus:hover {
 @media only screen and (max-width:700px) {
 
     body {
-        width: 100px;
+        width: 100%;
         }
 
                 #title {
