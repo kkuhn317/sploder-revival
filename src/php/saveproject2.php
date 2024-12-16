@@ -1,3 +1,3 @@
 <?php
-$g_swf = 2;
 require('includes/saveproject.php');
+saveProject(2);
