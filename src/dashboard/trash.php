@@ -85,9 +85,9 @@ $currentpage = "trash.php";
             <form action="<?php echo $currentpage ?>" method="GET"><label for="title">Search by title:
                     &nbsp;</label><input style="width:98.5%;height:26px" placeholder="My deleted game" value="<?php if (isset($_GET['game'])) {
                                                                                                                                                                                                         echo $_GET['game'];
-                                                                                                              } ?>" class="urlthing" type="text" id="game" name="game"
-                    autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-                    maxlength="100" /><br><br><br></form>
+                                                                                                              } ?>"
+                    class="urlthing" type="text" id="game" name="game" autocomplete="off" autocorrect="off"
+                    autocapitalize="off" spellcheck="false" maxlength="100" /><br><br><br></form>
             <div class="set"><?php if ($totalgames == "0") {
                                     echo "You have not deleted any games so far!";
                              } else {
@@ -168,7 +168,8 @@ $currentpage = "trash.php";
 
 
             </div>
-            <?php include('../content/pages.php') ?>
+            <?php include('../content/pages.php');
+            $perPage = 12; ?>
 
         </div>
         <div class="spacer">&nbsp;</div>
