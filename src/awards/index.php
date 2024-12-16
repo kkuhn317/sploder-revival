@@ -6,10 +6,7 @@ require_once(__DIR__ . '/../database/connect.php');
 require_once(__DIR__ . '/php/functions.php');
 
 $level = getLevel();
-if ($level < 10) {
-    header("Location: ../index.php");
-    die();
-}
+
 
 require_once(__DIR__ . '/php/materials.php');
 ?>
@@ -127,7 +124,12 @@ require_once(__DIR__ . '/php/materials.php');
         </div>
         <div id="content">
             <h3>Manage My Awards</h3>
-            <?php if (isset($_GET['err'])) {
+            <?php
+            if ($level < 10) {
+                echo '<div class="alert">You must be at least level 10 or higher to use the awards system.</div>';
+            } else {
+            
+            if (isset($_GET['err'])) {
     $err = $_GET['err'];
     if ($err == "you") { ?>
             <div class="alert">You cannot award yourself!</div>
@@ -313,7 +315,7 @@ $maxAwards = maxAward($level);
                 </form>
             </div>
             <?php endif; ?>
-
+            <?php } ?>
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="sidebar">
