@@ -9,9 +9,15 @@ ini_set('display_errors', 1);
 ?>
 
 <?php
+session_start();
+require_once('../content/getgameid.php');
 require('../content/playgame.php');
-// Where does $id come frome??
-$game = get_game_info($_GET['id']);
+
+$game_id = get_game_id($_GET['s']);
+$game = get_game_info($game_id['id']);
+if ($game_id['userid'] != $game['user_id']) {
+    die("Invalid game ID");
+}
 $status = "playing";
 $creator_type = to_creator_type($game['g_swf']);
 ?>
@@ -44,7 +50,8 @@ $creator_type = to_creator_type($game['g_swf']);
             <h3><?= $game['title'] ?></h3>
             <h4 class="subtitle">By <a href="games/members/<?= $game['author'] ?>/"><?= $game['author'] ?></a> ::
                 <?= date('l F j\t\h, Y', strtotime($game['date'])) ?></h4>
-            <div class="vote"" id=" contestwidget">
+
+            <div class="vote" id="contestwidget">
                 <div style="margin-top:-15px; width: 150px; height:45px; overflow: hidden;" id="contestflash">&nbsp;
                 </div>
             </div>
@@ -52,6 +59,10 @@ $creator_type = to_creator_type($game['g_swf']);
             <script>
             window.g_id = <?= $game['g_id'] ?>;
             </script>
+            <?php if($game['isprivate'] == 1) { ?>
+            <br><br>
+            <div class="alert">This game is private but you have the key!</div>
+            <?php } ?>
             <script type="text/javascript" src="play.js"></script>
             <div class="gameobject">
                 <div id="flashcontent">
@@ -80,17 +91,22 @@ $creator_type = to_creator_type($game['g_swf']);
             } catch (err) {}
 
             var flashvars = {
-                s: "<?= $game['g_id'] . '_' . $game['user_id'] ?>",
+
+                s: "<?= $_GET['s'] ?>",
+
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "sid: \"{$_SESSION['PHPSESSID']}\",\n";
                     } else {
                         echo 'nu: "",' . "\n";
                     } ?>
+
                 // EMBED_BETA_VERSION
                 // EMBED_FORCE_SECURE
                 // EMBED_ADTEST
                 // EMBED_CHALLENGE
-                beta_version: "<?= creator_type->swf_version(); ?>",
+
+                beta_version: "<?= $creator_type->swf_version(); ?>",
+
                 onsplodercom: "true",
                 modified: <?= rand() ?>,
                 <?php if (isset($_SESSION['PHPSESSID'])) {
@@ -214,11 +230,13 @@ $creator_type = to_creator_type($game['g_swf']);
         <div id="sidebar">
 
 
+
             <div class="gametypeinfo">
                 <p>This is a game made with Sploder Revival's <a
                         href="../make/<?= $creator_type->url() ?>.php"><?= $creator_type->name() ?> game creator</a>.
                 </p>
             </div>
+
 
 
 

@@ -33,7 +33,7 @@ if (substr($md5, 0, -1) == $hash) {
     $statement = $db->prepare($sql);
     $statement->execute([
         ':username' => $_SESSION['username'],
-        ':pubkey' => $id[0],
+        ':pubkey' => $id[1],
         ':gtm' => $gtm,
         ':w' => $w
     ]);
@@ -42,7 +42,7 @@ if (substr($md5, 0, -1) == $hash) {
     $sql = "SELECT w, COUNT(*) as count FROM leaderboard WHERE pubkey = :g_id GROUP BY w;";
     $statement = $db->prepare($sql);
     $statement->execute([
-        ':g_id' => $id[0]
+        ':g_id' => $id[1]
     ]);
     $result2 = $statement->fetchAll();
     $result2['wins'] = $result2[0]['count'] ?? 0;
@@ -53,7 +53,7 @@ if (substr($md5, 0, -1) == $hash) {
     $statement = $db->prepare($sql);
     $statement->execute([
         ':difficulty' => difficulty($result2['wins'], $result2['loss']),
-        ':g_id' => $id[0]
+        ':g_id' => $id[1]
     ]);
 } else {
     echo "&success=false";

@@ -1,4 +1,5 @@
-<?php include(__DIR__ . '/../content/logincheck.php'); ?>
+<?php session_start(); ?>
+<?php header('Location: /games/newest.php'); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
@@ -219,4 +220,5 @@
         <div class="spacer">&nbsp;</div>
         <?php include('../content/footernavigation.php') ?>
 </body>
+
 </html>
