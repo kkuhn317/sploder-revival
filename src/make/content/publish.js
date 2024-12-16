@@ -65,6 +65,8 @@ function sendTags() {
             tagArray.splice(tagArray.indexOf(tag), 1);
             continue;
         }
+        // Change tag to lowercase
+        tag = tag.toLowerCase();
         if (tag.length > 30) {
             setMessageType('alert');
             document.getElementById('message').innerHTML = 'Tags must be less than 30 characters long.';

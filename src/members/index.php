@@ -236,7 +236,7 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
                         ?>
                     <p class="gamedate"><?= date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($result[$i]['date'])) ?>
                     </p>
-                        <?php
+                    <?php
                         echo '<h4><a href="/games/play.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0">' . urldecode($result[$i]['title']) . '</a></h4>';
                         echo '<p class="gamevote"><img src="/chrome/rating0.gif" width="64" height="12" border="0" alt="0 stars"/> 0 votes</p><p class="gameviews">' . $result[$i]['views'] . ' views</p>';
                         echo '<div class="spacer">&nbsp;</div>';
@@ -253,6 +253,7 @@ if ($result[0]['lastlogin'] > (time() - 30)) {
                 </div>
                 <?php if (isset($total)) {
                     include('../content/pages.php');
+                    $perPage = 12;
                 } ?>
 
 
