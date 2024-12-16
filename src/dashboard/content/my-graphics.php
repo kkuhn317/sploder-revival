@@ -1,10 +1,17 @@
 <?php
+
+function get_total_graphics(mixed $db, int $userid): int
+{
+    $qs = "SELECT COUNT(id) FROM graphics WHERE userid=:userid";
+    $total_graphics = $db->queryFirstColumn($qs, 0, [':userid' => $userid]);
+    return $total_graphics;
+}
+
 $username = $_SESSION['username'];
 $userid = $_SESSION['userid'];
 include('../database/connect.php');
 $db = getDatabase();
-$qs = "SELECT COUNT(id) FROM graphics WHERE userid=:userid";
-$total_games = $db->queryFirstColumn($qs, 0, [':userid' => $userid]);
+$total_games = get_total_graphics($db, $userid); // TODO: Pagination refactor
 $currentpage = "my-graphics.php";
 
 $o = isset($_GET['o']) ? $_GET['o'] : "0";
