@@ -254,7 +254,8 @@ CREATE TABLE public.friend_requests (
     sender_id integer NOT NULL,
     receiver_id integer NOT NULL,
     sender_username text NOT NULL,
-    receiver_username text NOT NULL
+    receiver_username text NOT NULL,
+    is_viewed boolean DEFAULT false NOT NULL
 );
 
 
