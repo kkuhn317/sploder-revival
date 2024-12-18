@@ -8,21 +8,67 @@ $num = $_GET['num']; // LIMIT to this value
 require('../database/connect.php');
 
 $db = getDatabase();
-$total = $db->queryFirstColumn('SELECT COUNT(*) FROM graphics', 0);
+
+$clause = "ispublished=true AND isprivate=false";
+$order = "likes";
+$extrainfo = "";
+$params = [
+    ':num' => $num,
+    ':start' => $start
+];
+
+if ($_GET['userid'] == $_SESSION['userid']) {
+    $clause = isset($_GET['published']) ? "ispublished=true" : "1=1";
+    $params[':userid'] = $_SESSION['userid'];
+    $clause .= " AND userid=:userid";
+    $order = "id";
+} elseif($_GET['userid']==0) {
+    if(isset($_GET['searchmode'])){
+        $searchmode = $_GET['searchmode'];
+        $searchterm = $_GET['searchterm'];
+        if($searchmode == "users"){
+            // Search by username according to corresponding userid
+            $qs = "SELECT userid FROM members WHERE username=:username";
+            $userid = $db->queryFirstColumn($qs, 0, [':username' => $searchterm]);
+            $clause .= " AND userid=:userid";
+            $params[':userid'] = $userid;
+        } else {
+            // Search by tags
+            $qs = "SELECT g_id FROM graphic_tags WHERE SIMILARITY(tag, :tag) > 0.3";
+            $g_ids = $db->queryFirst($qs, [':tag' => $searchterm]);
+            // Remove duplicate keys in g_ids
+            $g_ids = array_unique($g_ids);
+            if (!empty($g_ids)) {
+                $g_ids = array_values($g_ids); // Extract values from associative array
+                $clause .= " AND id IN (".implode(",", array_map('intval', $g_ids)).")";
+                $extrainfo .= ", (SELECT username FROM members WHERE userid=graphics.userid) AS username";
+            } else {
+                $clause .= " AND 1=0"; // No results found
+            }
+        }
+    } else{
+        $extrainfo .= ", (SELECT username FROM members WHERE userid=graphics.userid) AS username";
+    }
+    $extrainfo .= ", (SELECT COUNT(*) FROM graphic_likes WHERE graphic_likes.g_id=graphics.id) AS likes"; // Use later to grab likes
+}
+
+$graphics_qs = "SELECT id,version$extrainfo FROM graphics WHERE $clause ORDER BY $order DESC LIMIT :num OFFSET :start";
+$graphicsData = $db->query($graphics_qs, $params);
+$graphicsData = array_map(function($graphic) {
+    $filteredGraphic = array_filter($graphic, function($key) {
+        return !is_numeric($key) && $key !== 'likes';
+    }, ARRAY_FILTER_USE_KEY);
+    return $filteredGraphic;
+}, $graphicsData);
+unset($params[':num']);
+unset($params[':start']);
+$total = $db->queryFirstColumn("SELECT COUNT(*) FROM graphics WHERE $clause", 0,$params);
 
 $xml = new SimpleXMLElement('<graphics/>');
 $xml->addAttribute('start', $start);
 $xml->addAttribute('num', $num);
 $xml->addAttribute('total', $total);
 
-if ($_GET['userid'] == $_SESSION['userid']) {
-    $graphics_qs = "SELECT id,version FROM graphics WHERE userid=:userid ORDER BY id DESC LIMIT :num OFFSET :start";
-    $graphicsData = $db->query($graphics_qs, [
-    ':num' => $num,
-    ':start' => $start,
-    ':userid' => $_SESSION['userid']
-    ]);
-}
 foreach ($graphicsData as $graphic) {
     $g = $xml->addChild('g');
     foreach ($graphic as $key => $value) {
