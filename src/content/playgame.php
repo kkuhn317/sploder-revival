@@ -54,7 +54,7 @@ enum CreatorType: int implements ICreatorType
             CreatorType::PLATFORMER => "20",
             CreatorType::SHOOTER => "idk",
             CreatorType::ALGORITHM => "idk",
-            CreatorType::PHYSICS => "idk",
+            CreatorType::PHYSICS => "26s",
             CreatorType::ARCADE => "idk",
             CreatorType::UNDEFINED => throw new Exception("Undefined CreatorType used", 1),
             _ => throw new Exception("Unknown CreatorType " . $this, 1),
