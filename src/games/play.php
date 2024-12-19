@@ -1,15 +1,11 @@
 <?php
-if (session_status() !== PHP_SESION_ACTIVE) {
+if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-?>
-
-<?php
-session_start();
 require_once('../content/getgameid.php');
 require('../content/playgame.php');
 
