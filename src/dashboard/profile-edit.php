@@ -10,37 +10,37 @@
     <link rel="stylesheet" type="text/css" href="../css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="../css/members.css" />
     <style media="screen" type="text/css">
-    #swfhttpobj {
-        visibility: hidden
-    }
+        #swfhttpobj {
+            visibility: hidden
+        }
     </style>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 
     <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
+        var _sf_startpt = (new Date()).getTime()
     </script>
 
 
     <link href="/css/members.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" language="Javascript">
-    <!-- //
-    var flashLoaded = false;
+        <!-- //
+        var flashLoaded = false;
 
-    function doLoad() {
-        if (!flashLoaded) {
-            try {
-                so.write("flashcontent");
-            } catch (e) {}
-            flashLoaded = true;
+        function doLoad() {
+            if (!flashLoaded) {
+                try {
+                    so.write("flashcontent");
+                } catch (e) {}
+                flashLoaded = true;
+            }
         }
-    }
 
-    setTimeout("doLoad()", 2000);
+        setTimeout("doLoad()", 2000);
 
-    //
-    -->
+        //
+        -->
     </script>
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
 
@@ -112,19 +112,19 @@
         <div id="sidebar">
 
             <script type="text/javascript">
-            window.onload = function() {
-                var n;
-                n = document.createElement('link');
-                n.rel = 'stylesheet';
-                n.type = 'text/css';
-                n.href = '../css/venue5.css';
-                document.getElementsByTagName('head')[0].appendChild(n);
-                n = document.createElement('script');
-                n.type = 'text/javascript';
-                n.src = 'https://web.archive.org/web/20140608214730/http://sploder.us/dashboard6.js';
-                document.getElementsByTagName('head')[0].appendChild(n);
-                if (onload2) onload2();
-            }
+                window.onload = function() {
+                    var n;
+                    n = document.createElement('link');
+                    n.rel = 'stylesheet';
+                    n.type = 'text/css';
+                    n.href = '../css/venue5.css';
+                    document.getElementsByTagName('head')[0].appendChild(n);
+                    n = document.createElement('script');
+                    n.type = 'text/javascript';
+                    n.src = 'https://web.archive.org/web/20140608214730/http://sploder.us/dashboard6.js';
+                    document.getElementsByTagName('head')[0].appendChild(n);
+                    if (onload2) onload2();
+                }
             </script>
             <?php include('../content/onlinelist.php') ?>
 

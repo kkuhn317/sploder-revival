@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
@@ -9,11 +10,11 @@
     <link rel="stylesheet" type="text/css" href="splodersimple.css" />
 
 
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
 
 
     <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
+        var _sf_startpt = (new Date()).getTime()
     </script>
 
 
@@ -47,11 +48,11 @@
 
 
                 <script>
-                window.onload = function() {
+                    window.onload = function() {
 
-                    document.getElementById("login_username").focus();
+                        document.getElementById("login_username").focus();
 
-                }
+                    }
                 </script>
 
                 <?php
@@ -60,8 +61,8 @@
                 }
                 if (isset($err)) {
                     if ($err == "no") { ?>
-                <p class="alert">The username and/or password was incorrect!</p>
-                    <?php }
+                        <p class="alert">The username and/or password was incorrect!</p>
+                <?php }
                 } ?>
 
 

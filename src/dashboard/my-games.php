@@ -35,18 +35,18 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
     <link rel="stylesheet" type="text/css" href="../css/dashboard.css">
     <link rel="stylesheet" type="text/css" href="./css/notifications.css">
     <style media="screen" type="text/css">
-    #swfhttpobj {
-        visibility: hidden
-    }
+        #swfhttpobj {
+            visibility: hidden
+        }
     </style>
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
     <script>
-    function delproj(id, title) {
-        let text;
-        if (confirm(("Are you sure you want to delete " + title)) == true) {
-            location.href = ("../php/delete.php?id=" + id);
-        } else {}
-    }
+        function delproj(id, title) {
+            let text;
+            if (confirm(("Are you sure you want to delete " + title)) == true) {
+                location.href = ("../php/delete.php?id=" + id);
+            } else {}
+        }
     </script>
 </head>
 <?php include('../content/addressbar.php'); ?>
@@ -72,13 +72,13 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
             <p>You've made <?= $total_games ?> games, with a total of ? views so far.
             <form action="<?= $currentpage ?>" method="GET"><label for="title">Search by title: &nbsp;</label><input
                     style="width:98.5%;height:26px" placeholder="My awesome game" value="<?php if (isset($_GET['game'])) {
-                        echo $_GET['game'];
-                           } ?>" class="urlthing" type="text" id="game" name="game" autocomplete="off"
+                                                                                                echo $_GET['game'];
+                                                                                            } ?>" class="urlthing" type="text" id="game" name="game" autocomplete="off"
                     autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="100" /><br><br><br></form>
             <div class="set">
                 <?php
-                    $o = isset($_GET['o']) ? $_GET['o'] : "0";
-                    $offset = 12;
+                $o = isset($_GET['o']) ? $_GET['o'] : "0";
+                $offset = 12;
 
                 $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 0 ORDER BY "g_id" DESC';
                 if (isset($_GET['game'])) {
@@ -114,23 +114,23 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
                     if ($game['g_id'] == null) {
                         break;
                     }
-                    ?>
-                <div class="game">
-                    <div class="photo">
-                        <a href="../games/play.php?&id=<?= $game['g_id'] ?>">
-                            <img src="/users/user<?= $_SESSION['userid'] ?>/images/proj<?= $game['g_id'] ?>/thumbnail.png"
-                                width="80" height="80" />
-                        </a>
+                ?>
+                    <div class="game">
+                        <div class="photo">
+                            <a href="../games/play.php?&id=<?= $game['g_id'] ?>">
+                                <img src="/users/user<?= $_SESSION['userid'] ?>/images/proj<?= $game['g_id'] ?>/thumbnail.png"
+                                    width="80" height="80" />
+                            </a>
+                        </div>
+                        <p class="gamedate"><?= date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($game['date'])) ?></p>
+                        <h4><a href="../games/play.php?&id=<?= $game['g_id'] ?>"><?= urldecode($game['title']) ?></a></h4>
+                        <input title="Delete" type="button"
+                            onclick="delproj(<?= $game['g_id'] ?>,'<?= urldecode($game['title']) ?>')" style="width:37px"
+                            value="Delete">&nbsp;
+                        <input title="Boost" style="width:27px" class="boost_button" value="Boost">&nbsp;
+                        <input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">
+                        <div class="spacer">&nbsp;</div>
                     </div>
-                    <p class="gamedate"><?= date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($game['date'])) ?></p>
-                    <h4><a href="../games/play.php?&id=<?= $game['g_id'] ?>"><?= urldecode($game['title']) ?></a></h4>
-                    <input title="Delete" type="button"
-                        onclick="delproj(<?= $game['g_id'] ?>,'<?= urldecode($game['title']) ?>')" style="width:37px"
-                        value="Delete">&nbsp;
-                    <input title="Boost" style="width:27px" class="boost_button" value="Boost">&nbsp;
-                    <input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">
-                    <div class="spacer">&nbsp;</div>
-                </div>
                 <?php
                 }
                 ?>
