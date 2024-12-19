@@ -14,7 +14,7 @@ error_reporting(E_ALL);
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
 
 
-    <?php include('../../content/onlinecheck.php'); ?>
+    <?php include('../../content/onlinechecker.php'); ?>
 
 </head>
 <?php include('../../content/addressbar.php'); ?>
@@ -27,10 +27,10 @@ error_reporting(E_ALL);
 
         <div id="content">
             <?php if (isset($_GET['err'])) : ?>
-            <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
+                <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
             <?php endif; ?>
             <?php if (isset($_GET['msg'])) : ?>
-            <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
+                <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
             <?php endif; ?>
             <h2>Check all usernames sharing the same IP address</h2>
 
@@ -40,8 +40,8 @@ error_reporting(E_ALL);
                 <input type="submit" value="Check" />
             </form>
             <?php if (isset($_POST['username'])) : ?>
-            <h2>Results</h2>
-                <?php
+                <h2>Results</h2>
+            <?php
                 $username = $_POST['username'];
                 $sql = "SELECT ip_address FROM members WHERE username = :username";
                 $statement = $db_old->prepare($sql);
@@ -53,8 +53,8 @@ error_reporting(E_ALL);
                     $sql = "SELECT username FROM members WHERE ip_address = :ip_address AND username != :username";
                     $statement = $db_old->prepare($sql);
                     $statement->execute([
-                    ':ip_address' => $ip_address,
-                    ':username' => $username
+                        ':ip_address' => $ip_address,
+                        ':username' => $username
                     ]);
                     $usernames = $statement->fetchAll();
                     if (count($usernames) == 0) {

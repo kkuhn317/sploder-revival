@@ -40,7 +40,7 @@ $currentpage = "trash.php";
         visibility: hidden
     }
     </style>
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
     <script>
     function delproj(id, title) {
         let text;

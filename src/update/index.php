@@ -10,12 +10,8 @@ $version = file_get_contents('currentversion.txt');
 
     <link rel="stylesheet" type="text/css" href="update.css" />
 
-
-    <?php include('../content/onlinecheck.php'); ?>
-
-
     <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
+        var _sf_startpt = (new Date()).getTime()
     </script>
 
     <script src="update.js"></script>

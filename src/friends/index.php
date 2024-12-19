@@ -27,7 +27,7 @@ ini_set('display_errors', 1);
     <link href="/css/members.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" language="Javascript">
     </script>
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

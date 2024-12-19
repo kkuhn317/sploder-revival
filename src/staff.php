@@ -1,4 +1,6 @@
-<?php error_reporting(E_ALL);
+<?php
+session_start();
+error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
@@ -12,9 +14,9 @@ ini_set('display_errors', 1);
     <link rel="stylesheet" type="text/css" href="../css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="../css/members.css" />
     <style media="screen" type="text/css">
-    #swfhttpobj {
-        visibility: hidden
-    }
+        #swfhttpobj {
+            visibility: hidden
+        }
     </style>
     <?php include('content/ruffle.php'); ?>
 
@@ -22,13 +24,13 @@ ini_set('display_errors', 1);
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 
     <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
+        var _sf_startpt = (new Date()).getTime()
     </script>
 
 
     <link href="/css/members.css" rel="stylesheet" type="text/css" />
 
-    <?php include('content/onlinecheck.php'); ?>
+    <?php include('content/onlinechecker.php'); ?>
 </head>
 <?php include('content/addressbar.php'); ?>
 
@@ -56,10 +58,10 @@ ini_set('display_errors', 1);
 
 
             <script type="text/javascript">
-            swfobject.embedSWF('../swf/staffmembers.swf', 'spotlight', '570', '428', '8',
-                '/swfobject/expressInstall.swf', null, {
-                    bgcolor: ""
-                });
+                swfobject.embedSWF('../swf/staffmembers.swf', 'spotlight', '570', '428', '8',
+                    '/swfobject/expressInstall.swf', null, {
+                        bgcolor: ""
+                    });
             </script>
 
 
@@ -77,7 +79,8 @@ ini_set('display_errors', 1);
                 are appropriate for a general audience, and make sure everyone is treated nicely on Sploder. Our
                 <strong>reviewers</strong> write reviews to help us all learn what
 
-                makes a good game. Feel free to comment here to communicate directly with our staff.</p>
+                makes a good game. Feel free to comment here to communicate directly with our staff.
+            </p>
 
 
             <div class="memberboard">
