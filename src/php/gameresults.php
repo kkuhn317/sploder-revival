@@ -20,11 +20,10 @@ $   $w = $w == true;
     $id[1] = filter_var($id[1], FILTER_VALIDATE_INT);
     $md5 = `node md5_edited.js $id[0]_$id[1] $w $gtm`;
 if (substr($md5, 0, -1) == $hash) {
-    if ($_GET['PHPSESSID'] == "undefined") {
+    session_start();
+    if (!isset($_SESSION['username'])) {
         die("&success=true");
     }
-    session_id($_GET['PHPSESSID']);
-    session_start();
     include('../database/connect.php');
     $db = connectToDatabase();
     $sql = "INSERT INTO leaderboard
