@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
--- Dumped by pg_dump version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
+-- Dumped from database version 17.2 (Debian 17.2-1.pgdg120+1)
+-- Dumped by pg_dump version 17.2 (Debian 17.2-1.pgdg120+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -749,6 +749,97 @@ CREATE INDEX game_tags_tag ON public.game_tags USING btree (tag);
 --
 
 CREATE INDEX graphics_userid ON public.graphics USING btree (userid);
+
+
+--
+-- Name: idx_award_requests_membername; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_award_requests_membername ON public.award_requests USING btree (membername);
+
+
+--
+-- Name: idx_award_requests_username; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_award_requests_username ON public.award_requests USING btree (username);
+
+
+--
+-- Name: idx_award_requests_username_creationdate; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_award_requests_username_creationdate ON public.awards_sent USING btree (username, creationdate);
+
+
+--
+-- Name: idx_awards_membername; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_awards_membername ON public.awards USING btree (membername);
+
+
+--
+-- Name: idx_banned_members_autounbandate; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_banned_members_autounbandate ON public.banned_members USING btree (autounbandate);
+
+
+--
+-- Name: idx_banned_members_username; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_banned_members_username ON public.banned_members USING btree (username);
+
+
+--
+-- Name: idx_comment_votes; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_comment_votes ON public.comment_votes USING btree (username);
+
+
+--
+-- Name: idx_comments_creator_name; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_comments_creator_name ON public.comments USING btree (creator_name);
+
+
+--
+-- Name: idx_friend_requests_reciever_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_friend_requests_reciever_id ON public.friend_requests USING btree (receiver_id);
+
+
+--
+-- Name: idx_friend_requests_sender_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_friend_requests_sender_id ON public.friend_requests USING btree (sender_id);
+
+
+--
+-- Name: idx_friends_user1; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_friends_user1 ON public.friends USING btree (user1);
+
+
+--
+-- Name: idx_games_author; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_games_author ON public.games USING btree (author);
+
+
+--
+-- Name: idx_games_is_published_is_private; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_games_is_published_is_private ON public.games USING btree (ispublished, isprivate);
 
 
 --
