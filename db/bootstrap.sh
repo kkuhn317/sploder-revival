@@ -22,4 +22,4 @@ psql -U sploder -d sploder --command="\
 # DUMMY GRAPHIC
 psql -U sploder -d sploder --command="\
   insert into graphics (version, userid, isprivate, ispublished)\
-  values (0, 1, false, true); 
+  values (0, 1, false, true);"
