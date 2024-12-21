@@ -102,7 +102,7 @@ require_once(__DIR__ . '/php/materials.php');
 
     }
     </style>
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

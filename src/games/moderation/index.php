@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
 
 
-    <?php include('../../content/onlinecheck.php'); ?>
+    <?php include('../../content/onlinechecker.php'); ?>
 
 </head>
 <?php include('../../content/addressbar.php'); ?>
@@ -22,10 +22,10 @@
 
         <div id="content">
             <?php if (isset($_GET['err'])) : ?>
-            <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
+                <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
             <?php endif; ?>
             <?php if (isset($_GET['msg'])) : ?>
-            <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
+                <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
             <?php endif; ?>
             <h2>Ban member</h2>
             <p>The user will be prevented from making comments or creating new games.</p>

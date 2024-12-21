@@ -17,7 +17,7 @@ if (isset($_SESSION['username'])) {
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="/slider/nivo-slider.css" />
     <link rel="stylesheet" type="text/css" href="/slider/sploder/style_v2p10.css" />
-    <?php include('content/onlinecheck.php'); ?>
+    <?php include('content/onlinechecker.php'); ?>
 </head>
 <?php include('content/addressbar.php'); ?>
 
@@ -142,37 +142,37 @@ if (isset($_SESSION['username'])) {
 
 
         <script type="text/javascript">
-        var prev_img = null;
+            var prev_img = null;
 
-        $(window).load(function() {
+            $(window).load(function() {
 
-            var ss_bkgd = $('#slideshow_bkgd');
+                var ss_bkgd = $('#slideshow_bkgd');
 
-            $('#slider').nivoSlider({
+                $('#slider').nivoSlider({
 
-                pauseOnHover: true,
+                    pauseOnHover: true,
 
-                pauseTime: 6000,
+                    pauseTime: 6000,
 
-                afterChange: function() {
+                    afterChange: function() {
 
-                    ss_bkgd.css("background-position", "10px 10px");
+                        ss_bkgd.css("background-position", "10px 10px");
 
-                    ss_bkgd.css("background-image", "url(" + $('#slider').data('nivo:vars')
-                        .currentImage.data('src') + ")");
+                        ss_bkgd.css("background-image", "url(" + $('#slider').data('nivo:vars')
+                            .currentImage.data('src') + ")");
 
-                }
+                    }
 
-            })
+                })
 
-        });
+            });
         </script>
 
 
 
         <div id="content">
             <?php if ((isset($_GET['msg'])) && ($_GET['msg']) == "out") { ?>
-            <div class="prompt">You have been logged out of your account.</div>
+                <div class="prompt">You have been logged out of your account.</div>
             <?php } ?>
             <div class="homebuttons">
 

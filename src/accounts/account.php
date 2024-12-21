@@ -10,11 +10,11 @@
     <link rel="stylesheet" type="text/css" href="splodersimple.css" />
 
 
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
 
 
     <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
+        var _sf_startpt = (new Date()).getTime()
     </script>
 
 
