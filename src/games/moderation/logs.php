@@ -11,15 +11,15 @@ error_reporting(E_ALL);
 <head>
     <?php include('../../content/head.php'); ?>
     <style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
 
 
-    <?php include('../../content/onlinecheck.php'); ?>
+    <?php include('../../content/onlinechecker.php'); ?>
 
 </head>
 <?php include('../../content/addressbar.php'); ?>
@@ -32,10 +32,10 @@ error_reporting(E_ALL);
 
         <div id="content" style="width:940px">
             <?php if (isset($_GET['err'])) : ?>
-            <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
+                <p class="alert"><?= htmlspecialchars($_GET['err']) ?></p>
             <?php endif; ?>
             <?php if (isset($_GET['msg'])) : ?>
-            <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
+                <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
             <?php endif; ?>
             <h2>List of all actions performed by moderators</h2>
             <ul>
@@ -68,10 +68,10 @@ error_reporting(E_ALL);
                         $log['color'] = 'gray';
                     }
 
-                    ?>
-                <li><?= $log['time'] ?>: <u><?= $log['moderator'] ?></u> <span
-                        style="color: <?= $log['color'] ?>;"><?= $log['action'] ?></span> <?= $log['on'] ?></li>
-                    <?php
+                ?>
+                    <li><?= $log['time'] ?>: <u><?= $log['moderator'] ?></u> <span
+                            style="color: <?= $log['color'] ?>;"><?= $log['action'] ?></span> <?= $log['on'] ?></li>
+                <?php
                 }
 
 

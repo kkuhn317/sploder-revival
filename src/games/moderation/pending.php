@@ -15,7 +15,7 @@
     }
     </script>
 
-    <?php include('../../content/onlinecheck.php'); ?>
+    <?php include('../../content/onlinechecker.php'); ?>
 
 </head>
 <?php include('../../content/addressbar.php'); ?>

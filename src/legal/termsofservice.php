@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
@@ -9,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="/slider/nivo-slider.css" />
     <link rel="stylesheet" type="text/css" href="/slider/sploder/style_v2p10.css" />
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
 
@@ -155,7 +156,8 @@
             <p class="note">Sploder Revival&trade; cannot be held responsible for limitations placed on the system by
                 its service providers at the <a href="../credits.php">credits</a> list. This website runs
                 <em>purely</em> on donations and runs <em>no advertisements</em> in any fasion. All donations are used
-                to improve the quality of our service.</p>
+                to improve the quality of our service.
+            </p>
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="sidebar">

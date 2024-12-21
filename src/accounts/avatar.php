@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../css/sploder_v2p22.min.css" />
     <link rel="stylesheet" href="../css/friends2.css">
     <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
+        var _sf_startpt = (new Date()).getTime()
     </script>
     <script type="text/javascript" src="../common/jquery-3.7.1.min.js"></script>
 
@@ -21,7 +21,7 @@
     <!--[if IE 7]>
 <link rel="stylesheet" type="text/css"  href="/awards/css/ie7.css" />
 <![endif]-->
-    <?php include('../content/onlinecheck.php'); ?>
+    <?php include('../content/onlinechecker.php'); ?>
 
 
 </head>
@@ -155,116 +155,116 @@
 
 
     <script>
-    type = "classic";
+        type = "classic";
 
 
-    var styles = JSON.parse(localStorage.getItem("styles"));
-    if (styles == null) {
-        styles = [0, 0, 0, 0, 0, 0];
-        localStorage.setItem("styles", JSON.stringify(styles));
-    }
-    var styles_max = [9, 0, 0, 9, 9, 9];
-
-    var colors = JSON.parse(localStorage.getItem("colors"));
-    if (colors == null) {
-        colors = [0, 0, 0, 0, 0, 0];
-        localStorage.setItem("colors", JSON.stringify(colors));
-    }
-    var colors_max = [19, 19, 19, 19, 19, 19];
-
-    if (getUrlParameter("set") == "2") {
-        for (i = 0; i < styles.length; i++) {
-            $(".layer_0" + (i + 1)).css({
-                "background": "url(/avatar/avatar_0" + (i + 1) + "_96.png.1)"
-            });
+        var styles = JSON.parse(localStorage.getItem("styles"));
+        if (styles == null) {
+            styles = [0, 0, 0, 0, 0, 0];
+            localStorage.setItem("styles", JSON.stringify(styles));
         }
-        type = "premium";
-        $(".firstbutton a").text("Make a Classic Avatar »");
-        $(".firstbutton a").attr("href", "/accounts/avatar.php");
-        $("#content p").html(
-            'Make your own Sploder avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new creation. If you are bored of premium avatars, go back and create a <a href="/accounts/avatar.php">Classic Avatar!</a>'
-        );
-    }
+        var styles_max = [9, 0, 0, 9, 9, 9];
 
-    updateAvatar();
-
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    };
-
-    function updateAvatar() {
-        var url = type;
-        for (i = 0; i < styles.length; i++) {
-            $(".layer_0" + (i + 1)).css({
-                "background-position": "-" + colors[i] * 96 + "px -" + styles[i] * 96 + "px"
-            });
-            url += "-" + colors[i] + "-" + styles[i]
+        var colors = JSON.parse(localStorage.getItem("colors"));
+        if (colors == null) {
+            colors = [0, 0, 0, 0, 0, 0];
+            localStorage.setItem("colors", JSON.stringify(colors));
         }
-        url += "-1";
-        $("#newURL").val("...");
-        localStorage.setItem("type", type);
-        localStorage.setItem("styles", JSON.stringify(styles));
-        localStorage.setItem("colors", JSON.stringify(colors));
+        var colors_max = [19, 19, 19, 19, 19, 19];
 
-        $("#newURL").val("https://sploder.xyz/avatar/av.php?c=" + url);
-    };
-
-
-    async function fetchAsync(url) {
-        let response = await fetch(url);
-        let data = await response.json();
-        return data;
-    }
-    $("#control_save").click(function() {
-        fetchAsync($("#newURL").val());
-    });
-
-    $("#copyButton").click(function() {
-        var copyText = document.getElementById("newURL");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999);
-        document.execCommand("copy");
-        $(this).focus();
-    });
-
-    $(".controller").click(function() {
-        var controller = $(this).parent().attr("id").slice(-2) - 1;
-        if ($(this).attr("value") == "down") {
-            if (styles_max[controller] > styles[controller]) {
-                styles[controller] += 1;
-            } else {
-                styles[controller] = 0;
-            }
-        } else if ($(this).attr("value") == "up") {
-            if (styles[controller] > 0) {
-                styles[controller] -= 1;
-            } else {
-                styles[controller] = styles_max[controller];
-            }
-        } else if ($(this).attr("value") == "next") {
-            if (colors_max[controller] > colors[controller]) {
-                colors[controller] += 1;
-            } else {
-                colors[controller] = 0;
-            }
-        } else if ($(this).attr("value") == "prev") {
-            if (colors[controller] > 0) {
-                colors[controller] -= 1;
-            } else {
-                colors[controller] = colors_max[controller];
-            }
-        }
-        if ($(this).attr("value") == "reset") {
+        if (getUrlParameter("set") == "2") {
             for (i = 0; i < styles.length; i++) {
-                colors[i] = 0;
-                styles[i] = 0;
+                $(".layer_0" + (i + 1)).css({
+                    "background": "url(/avatar/avatar_0" + (i + 1) + "_96.png.1)"
+                });
             }
+            type = "premium";
+            $(".firstbutton a").text("Make a Classic Avatar »");
+            $(".firstbutton a").attr("href", "/accounts/avatar.php");
+            $("#content p").html(
+                'Make your own Sploder avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new creation. If you are bored of premium avatars, go back and create a <a href="/accounts/avatar.php">Classic Avatar!</a>'
+            );
         }
+
         updateAvatar();
-    });
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        function updateAvatar() {
+            var url = type;
+            for (i = 0; i < styles.length; i++) {
+                $(".layer_0" + (i + 1)).css({
+                    "background-position": "-" + colors[i] * 96 + "px -" + styles[i] * 96 + "px"
+                });
+                url += "-" + colors[i] + "-" + styles[i]
+            }
+            url += "-1";
+            $("#newURL").val("...");
+            localStorage.setItem("type", type);
+            localStorage.setItem("styles", JSON.stringify(styles));
+            localStorage.setItem("colors", JSON.stringify(colors));
+
+            $("#newURL").val("https://sploder.xyz/avatar/av.php?c=" + url);
+        };
+
+
+        async function fetchAsync(url) {
+            let response = await fetch(url);
+            let data = await response.json();
+            return data;
+        }
+        $("#control_save").click(function() {
+            fetchAsync($("#newURL").val());
+        });
+
+        $("#copyButton").click(function() {
+            var copyText = document.getElementById("newURL");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            $(this).focus();
+        });
+
+        $(".controller").click(function() {
+            var controller = $(this).parent().attr("id").slice(-2) - 1;
+            if ($(this).attr("value") == "down") {
+                if (styles_max[controller] > styles[controller]) {
+                    styles[controller] += 1;
+                } else {
+                    styles[controller] = 0;
+                }
+            } else if ($(this).attr("value") == "up") {
+                if (styles[controller] > 0) {
+                    styles[controller] -= 1;
+                } else {
+                    styles[controller] = styles_max[controller];
+                }
+            } else if ($(this).attr("value") == "next") {
+                if (colors_max[controller] > colors[controller]) {
+                    colors[controller] += 1;
+                } else {
+                    colors[controller] = 0;
+                }
+            } else if ($(this).attr("value") == "prev") {
+                if (colors[controller] > 0) {
+                    colors[controller] -= 1;
+                } else {
+                    colors[controller] = colors_max[controller];
+                }
+            }
+            if ($(this).attr("value") == "reset") {
+                for (i = 0; i < styles.length; i++) {
+                    colors[i] = 0;
+                    styles[i] = 0;
+                }
+            }
+            updateAvatar();
+        });
     </script>
 </body>
 
