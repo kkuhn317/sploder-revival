@@ -14,7 +14,6 @@ $statement2->execute(
 );
 $result4 = $statement2->fetchAll();
 $total_games = count($result4);
-$currentpage = "my-games.php";
 if (isset($_GET['game']) && $_GET['game'] == null) {
     unset($_GET['game']);
 }
@@ -73,8 +72,9 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
             <form action="<?= $currentpage ?>" method="GET"><label for="title">Search by title: &nbsp;</label><input
                     style="width:98.5%;height:26px" placeholder="My awesome game" value="<?php if (isset($_GET['game'])) {
                                                                                                 echo $_GET['game'];
-                                                                                            } ?>" class="urlthing" type="text" id="game" name="game" autocomplete="off"
-                    autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="100" /><br><br><br></form>
+                                                                                            } ?>" class="urlthing"
+                    type="text" id="game" name="game" autocomplete="off" autocorrect="off" autocapitalize="off"
+                    spellcheck="false" maxlength="100" /><br><br><br></form>
             <div class="set">
                 <?php
                 $o = isset($_GET['o']) ? $_GET['o'] : "0";
@@ -143,7 +143,7 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
 
             </div>
             <?php include('../content/pages.php');
-            $perPage = 12; ?>
+            addPagination($total ?? 0) ?>
 
             <div class="promo">Lost a game?<br><small><small>If you accidentally deleted a game, we may be able to
                         restore it. You can request to have it restored <a href="trash.php">here</a></small></small>

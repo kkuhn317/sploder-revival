@@ -11,8 +11,7 @@ $username = $_SESSION['username'];
 $userid = $_SESSION['userid'];
 include('../database/connect.php');
 $db = getDatabase();
-$total_games = get_total_graphics($db, $userid); // TODO: Pagination refactor
-$currentpage = "my-graphics.php";
+$total_games = get_total_graphics($db, $userid);
 
 $o = isset($_GET['o']) ? $_GET['o'] : "0";
 $offset = 12;

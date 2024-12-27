@@ -13,7 +13,7 @@ $gameTags = $gameRepository->getGameTags(100, $_GET['offset'] ?? 0);
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/tags.css" />
     <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
+        var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
 </head>
@@ -36,15 +36,20 @@ $gameTags = $gameRepository->getGameTags(100, $_GET['offset'] ?? 0);
                         echo displayTags($gameTags->tags, true);
                         ?>
                     </p>
-                    <?php require('../content/pages.php') ?>
+
+                    <?php require('../content/pages.php');
+                    addPagination($gameTags->total ?? 0, 100)
+                    ?>
                 </div>
                 <div class="spacer">&nbsp;</div>
             </div>
-            <div id="sidebar">
-                <br /><br /><br />
-                <div class="spacer">&nbsp;</div>
-            </div>
+        </div>
+        <div id="sidebar">
+            <br /><br /><br />
             <div class="spacer">&nbsp;</div>
-            <?php include('../content/footernavigation.php') ?>
+        </div>
+        <div class="spacer">&nbsp;</div>
+        <?php include('../content/footernavigation.php') ?>
 </body>
+
 </html>

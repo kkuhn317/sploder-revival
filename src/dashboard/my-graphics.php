@@ -19,18 +19,18 @@ include('content/my-graphics.php');
     <link rel="stylesheet" type="text/css" href="../css/dashboard.css">
     <link rel="stylesheet" type="text/css" href="./css/notifications.css">
     <style media="screen" type="text/css">
-    #swfhttpobj {
-        visibility: hidden
-    }
+        #swfhttpobj {
+            visibility: hidden
+        }
     </style>
     <?php include('../content/onlinechecker.php'); ?>
     <script>
-    function delproj(id) {
-        let text;
-        if (confirm(("Are you sure you want to delete this graphic?")) == true) {
-            location.href = ("../php/delete_graphic.php?id=" + id);
-        } else {}
-    }
+        function delproj(id) {
+            let text;
+            if (confirm(("Are you sure you want to delete this graphic?")) == true) {
+                location.href = ("../php/delete_graphic.php?id=" + id);
+            } else {}
+        }
     </script>
 </head>
 <?php include('../content/addressbar.php'); ?>
@@ -53,8 +53,8 @@ include('content/my-graphics.php');
         </div>
         <div id="content">
             <h3>My Graphics</h3>
-            <?php if(isset($_GET['err'])){ ?>
-            <div class="alert">There was an error deleting your graphic</div>
+            <?php if (isset($_GET['err'])) { ?>
+                <div class="alert">There was an error deleting your graphic</div>
             <?php } ?>
             <p>You've made <?= $total_games ?>
                 graphic<?= $total_games == 1 ? '' : 's' ?> so far,
@@ -70,29 +70,29 @@ include('content/my-graphics.php');
                     if ($total_games == "0") {
                         echo 'You have not made any graphics yet.<div class="spacer">&nbsp;</div>';
                     }
-                    
+
                     foreach ($result as $counter => $game) {
                         if ($game['id'] == null) {
                             break;
                         }
                         $counter++;
                     ?><div class="game vignette">
-                        <div class="photo">
-                            <a><img src="/graphics/gif/<?= $game['id'] ?>.gif" width="80" height="80" /></a>
-                            <div style="text-align: center;">
-                                <div style="height:5px" class="spacer">&nbsp;</div>
-                                0 likes<br>
-                                <input title=" Delete" type="button" onclick="delproj(<?= $game['id'] ?>)"
-                                    style="width:37px" value="Delete">&nbsp;
-                                <a href="tag-graphic.php?id=<?= $game['id'] ?>"><input title=" Tag" type="button"
-                                        style="width:25px" value="Tag"></a>
+                            <div class="photo">
+                                <a><img src="/graphics/gif/<?= $game['id'] ?>.gif" width="80" height="80" /></a>
+                                <div style="text-align: center;">
+                                    <div style="height:5px" class="spacer">&nbsp;</div>
+                                    0 likes<br>
+                                    <input title=" Delete" type="button" onclick="delproj(<?= $game['id'] ?>)"
+                                        style="width:37px" value="Delete">&nbsp;
+                                    <a href="tag-graphic.php?id=<?= $game['id'] ?>"><input title=" Tag" type="button"
+                                            style="width:25px" value="Tag"></a>
+                                </div>
                             </div>
+
+
+                            <div class="spacer">&nbsp;</div><br>
+                            <div class="spacer">&nbsp;</div><br><br>
                         </div>
-
-
-                        <div class="spacer">&nbsp;</div><br>
-                        <div class="spacer">&nbsp;</div><br><br>
-                    </div>
                     <?php
                         if ($counter % 4 == 0) {
                             echo '<div class="spacer">&nbsp;</div>';
@@ -103,7 +103,7 @@ include('content/my-graphics.php');
                 </div>
             </div>
             <?php include('../content/pages.php');
-            $perPage = 12; ?>
+            addPagination($total_games ?? 0) ?>
         </div>
         <div id="sidebar">
             <!-- TODO: <h1>GAME BUZZ INCOMPLETE</h1> -->
