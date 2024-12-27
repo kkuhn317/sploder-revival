@@ -4,7 +4,6 @@ ini_set('display_errors', 1);
 session_start();
 include('../database/connect.php');
 $username = $_GET['u'];
-$currentpage = "index.php";
 
 require_once('../content/timeelapsed.php');
 
@@ -52,5 +51,4 @@ $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.da
     ORDER BY g.g_id DESC 
     LIMIT 12 OFFSET :offset";
 $games = $db->query($qs, array_merge(['offset' => $_GET['o'] ?? 0], $userParam));
-$perPage = 12;
 $gamesCount = count($games);

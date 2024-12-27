@@ -1,5 +1,4 @@
 <?php
-$perpage = 12;
 $t = $_GET['t']; // Tag by user input
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -11,7 +10,7 @@ $t = $_GET['t']; // Tag by user input
     <?php include('../content/head.php') ?>
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
+        var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
 </head>
@@ -32,8 +31,9 @@ $t = $_GET['t']; // Tag by user input
             </p>
             <div id="viewpage">
                 <div class="set">
-
-                    <?php //require('../content/pages.php') ?>
+                    <?php require('../content/pages.php');
+                    addPagination($total ?? 0, 100) ?>
+                    ?>
                 </div>
             </div>
             <div class="spacer">&nbsp;
