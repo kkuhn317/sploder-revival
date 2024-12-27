@@ -64,7 +64,7 @@ require('logincheck.php');
                 if (isset($err)) {
                     if ($err == "no") { ?>
                 <p class="alert">The username and/or password was incorrect!</p>
-                <?php }
+                    <?php }
                 } ?>
 
 

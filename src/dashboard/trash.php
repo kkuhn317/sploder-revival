@@ -84,83 +84,83 @@ $totalgames = count($result4);
             <form action="<?php echo $currentpage ?>" method="GET"><label for="title">Search by title:
                     &nbsp;</label><input style="width:98.5%;height:26px" placeholder="My deleted game" value="<?php if (isset($_GET['game'])) {
                                                                                                                     echo $_GET['game'];
-                                                                                                                } ?>"
+                                                                                                              } ?>"
                     class="urlthing" type="text" id="game" name="game" autocomplete="off" autocorrect="off"
                     autocapitalize="off" spellcheck="false" maxlength="100" /><br><br><br></form>
             <div class="set"><?php if ($totalgames == "0") {
                                     echo "You have not deleted any games so far!";
-                                } else {
-                                    if (isset($_GET['o'])) {
-                                        $o = $_GET['o'];
-                                    } else {
-                                        $o = "0";
-                                    }
-                                    $offset = 12;
-                                    if (!isset($_GET['game'])) {
-                                        $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 ORDER BY "g_id" DESC';
-                                        $statement = $db->prepare($queryString);
-                                        $statement->execute([
-                                            ':username' => $username
-                                        ]);
-                                        $result = $statement->fetchAll();
-                                        $total = count($result);
-                                        $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 ORDER BY "g_id" DESC LIMIT 12 OFFSET ' . $o . '';
-                                        $statement = $db->prepare($queryString);
-                                        $statement->execute([
-                                            ':username' => $username
-                                        ]);
-                                        $result = $statement->fetchAll();
-                                        $qTotal = "SELECT count(1) FROM games WHERE author=:username AND isdeleted = 1 LIMIT 12 OFFSET " . $o . "";
-                                        $staTotal = $db->prepare($qTotal);
-                                        $staTotal->execute([
-                                            ':username' => $username
-                                        ]);
-                                        $resultTotal = $staTotal->fetchAll();
-                                        $resultTotal = $resultTotal[0][0];
-                                    } else {
-                                        $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
-                                        $statement = $db->prepare($queryString);
-                                        $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
-                                        $result = $statement->fetchAll();
-                                        $total = count($result);
-                                        $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC LIMIT 12 OFFSET ' . $o . '';
-                                        $statement = $db->prepare($queryString);
-                                        $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
-                                        $result = $statement->fetchAll();
-                                        $qTotal = "SELECT count(1) FROM games WHERE author=:username AND isdeleted = 1 AND SIMILARITY(title, :game) > 0.3 LIMIT 12 OFFSET " . $o . "";
-                                        $staTotal = $db->prepare($qTotal);
-                                        $staTotal->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
+                             } else {
+                                 if (isset($_GET['o'])) {
+                                     $o = $_GET['o'];
+                                 } else {
+                                     $o = "0";
+                                 }
+                                 $offset = 12;
+                                 if (!isset($_GET['game'])) {
+                                     $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 ORDER BY "g_id" DESC';
+                                     $statement = $db->prepare($queryString);
+                                     $statement->execute([
+                                         ':username' => $username
+                                     ]);
+                                     $result = $statement->fetchAll();
+                                     $total = count($result);
+                                     $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 ORDER BY "g_id" DESC LIMIT 12 OFFSET ' . $o . '';
+                                     $statement = $db->prepare($queryString);
+                                     $statement->execute([
+                                         ':username' => $username
+                                     ]);
+                                     $result = $statement->fetchAll();
+                                     $qTotal = "SELECT count(1) FROM games WHERE author=:username AND isdeleted = 1 LIMIT 12 OFFSET " . $o . "";
+                                     $staTotal = $db->prepare($qTotal);
+                                     $staTotal->execute([
+                                         ':username' => $username
+                                     ]);
+                                     $resultTotal = $staTotal->fetchAll();
+                                     $resultTotal = $resultTotal[0][0];
+                                 } else {
+                                     $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
+                                     $statement = $db->prepare($queryString);
+                                     $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
+                                     $result = $statement->fetchAll();
+                                     $total = count($result);
+                                     $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC LIMIT 12 OFFSET ' . $o . '';
+                                     $statement = $db->prepare($queryString);
+                                     $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
+                                     $result = $statement->fetchAll();
+                                     $qTotal = "SELECT count(1) FROM games WHERE author=:username AND isdeleted = 1 AND SIMILARITY(title, :game) > 0.3 LIMIT 12 OFFSET " . $o . "";
+                                     $staTotal = $db->prepare($qTotal);
+                                     $staTotal->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
 
-                                        $resultTotal = $staTotal->fetchAll();
-                                        $resultTotal = $resultTotal[0][0];
-                                    }
+                                     $resultTotal = $staTotal->fetchAll();
+                                     $resultTotal = $resultTotal[0][0];
+                                 }
 
 
-                                    $f = '20';
-                                    if (count($result) == "0" && $_GET['game'] != null) {
-                                        echo 'This game was not found.<div class="spacer">&nbsp;</div>';
-                                    }
+                                 $f = '20';
+                                 if (count($result) == "0" && $_GET['game'] != null) {
+                                     echo 'This game was not found.<div class="spacer">&nbsp;</div>';
+                                 }
 
-                                    for ($i = 0; $i < count($result); $i++) {
-                                        if ($result[$i]['g_id'] == null) {
-                                            break;
-                                        };
-                                        echo '<div class="game">';
-                                        $date = date_parse(substr_replace($result[$i]['date'], "20", 0, 0));
-                                        echo '<div class="photo">';
-                                        echo '<a href="/play_game.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0"><img src="/projects/proj' . $result[$i]['g_id'] . '/thumbnail.png" width="80" height="80"/></a>';
-                                        echo '</div>';
-                                        echo '<p class="gamedate">' . $date['month'] . '&middot;' . $date['day'] . '&middot;' . substr($date['year'], 2) . '</p>';
-                                        echo '<h4><a href="/play_game.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0">' . urldecode($result[$i]['title']) . '</a></h4>';
-                                        echo '<input title="Delete" type="button" onclick="delproj(' . $result[$i]['g_id'] . ',\'' . urldecode($result[$i]['title']) . '\')" style="width:37px" value="Delete">&nbsp;<input title="Restore" class="boost_button" type="button" onclick="resproj(' . $result[$i]['g_id'] . ',\'' . urldecode($result[$i]['title']) . '\')" style="width:41px" value="Restore">';
-                                        echo '<div class="spacer">&nbsp;</div>';
-                                        echo '</div>';
-                                    }
+                                 for ($i = 0; $i < count($result); $i++) {
+                                     if ($result[$i]['g_id'] == null) {
+                                         break;
+                                     };
+                                     echo '<div class="game">';
+                                     $date = date_parse(substr_replace($result[$i]['date'], "20", 0, 0));
+                                     echo '<div class="photo">';
+                                     echo '<a href="/play_game.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0"><img src="/projects/proj' . $result[$i]['g_id'] . '/thumbnail.png" width="80" height="80"/></a>';
+                                     echo '</div>';
+                                     echo '<p class="gamedate">' . $date['month'] . '&middot;' . $date['day'] . '&middot;' . substr($date['year'], 2) . '</p>';
+                                     echo '<h4><a href="/play_game.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0">' . urldecode($result[$i]['title']) . '</a></h4>';
+                                     echo '<input title="Delete" type="button" onclick="delproj(' . $result[$i]['g_id'] . ',\'' . urldecode($result[$i]['title']) . '\')" style="width:37px" value="Delete">&nbsp;<input title="Restore" class="boost_button" type="button" onclick="resproj(' . $result[$i]['g_id'] . ',\'' . urldecode($result[$i]['title']) . '\')" style="width:41px" value="Restore">';
+                                     echo '<div class="spacer">&nbsp;</div>';
+                                     echo '</div>';
+                                 }
 
-                                    /*for ($i = 0; $i < count($result); $i++) {
+                                 /*for ($i = 0; $i < count($result); $i++) {
                 echo '<div class="game"><div class="photo"><a href="../games/playgame.php?id=916&g_swf=7&title=Martie Echito  A Taste Of Americana&pub=0"><img src="/projects/proj916/thumbnail.png" width="80" height="80"/></a></div><p class="gamedate">6&middot;1&middot;23</p><h4><a href="/play_game.php?id=916&g_swf=7&title=Martie Echito  A Taste Of Americana&pub=0&p=0">Martie Echito  A Taste Of Americana</a></h4><input title="Delete" style="width:30px" value="Delete">&nbsp;<input title="Boost" style="width:25px" class="boost_button" value="Boost">&nbsp;<input title="Challenge" style="width:45px" class="challenge_button" value="Challenge"><div class="spacer">&nbsp;</div></div>';
             }*/
-                                }
+                             }
 
                                 ?>
                 <div class="spacer">&nbsp;</div>

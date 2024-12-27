@@ -36,6 +36,18 @@ interface IGameRepository
      * @return tags associated with the game
      */
     public function getGameTags(int $perPage, int $offset): GameTags;
+
+    /**
+     * Retrieves random games from the database
+     * @return random games
+     */
+    public function getRandomGames(): array;
+
+    /**
+     * Retrieves the contest winners from the database
+     * @return contest winners
+     */
+    public function getContestWinners(int $contestId): array;
 }
 
 class GameData

@@ -1,6 +1,7 @@
 <?php
 function addPagination(int $total = 0, int $perPage = 12): void
-{ ?>
+{
+    ?>
     <div class="pagination">
         <?php
         $params = $_SERVER['QUERY_STRING'];
@@ -34,5 +35,5 @@ function addPagination(int $total = 0, int $perPage = 12): void
         }
         ?>
     </div>
-<?php
+    <?php
 }

@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 // Get required data...
 require_once('../database/connect.php');
