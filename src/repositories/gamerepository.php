@@ -82,4 +82,27 @@ where g_id = :g_id
             ':g_id' => $gameId,
         ]);
     }
+
+    public function getRandomGames(): array
+    {
+        $query = "SELECT g_id, title, author, user_id FROM games WHERE ispublished = 1 AND isprivate = 0 ORDER BY RANDOM() LIMIT 6";
+        return $this->db->query($query);
+    }
+
+    public function getContestWinners(int $contestId): array
+    {
+        if ($contestId < 0) {
+            return [];
+        }
+
+        $query = "SELECT games.g_id, games.title, games.author, games.user_id
+		FROM (
+			SELECT contest_id, g_id
+			FROM contest_winner
+			ORDER BY contest_id
+			LIMIT 6 OFFSET (:id * 6)
+		) AS recent_contests
+		JOIN games ON recent_contests.g_id = games.g_id;";
+        return $this->db->query($query, ['id' => $contestId]);
+    }
 }

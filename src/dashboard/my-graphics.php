@@ -76,7 +76,7 @@ include('content/my-graphics.php');
                             break;
                         }
                         $counter++;
-                    ?><div class="game vignette">
+                        ?><div class="game vignette">
                             <div class="photo">
                                 <a><img src="/graphics/gif/<?= $game['id'] ?>.gif" width="80" height="80" /></a>
                                 <div style="text-align: center;">
@@ -93,7 +93,7 @@ include('content/my-graphics.php');
                             <div class="spacer">&nbsp;</div><br>
                             <div class="spacer">&nbsp;</div><br><br>
                         </div>
-                    <?php
+                        <?php
                         if ($counter % 4 == 0) {
                             echo '<div class="spacer">&nbsp;</div>';
                         }
