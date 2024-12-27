@@ -14,7 +14,7 @@
 
 
     <script type="text/javascript">
-        var _sf_startpt = (new Date()).getTime()
+    var _sf_startpt = (new Date()).getTime()
     </script>
 
 
@@ -39,27 +39,31 @@
         <div id="page">
             <div id="content">
                 <div id="new_status" class="get_started">
-
-                    <h4>Hi there <?php echo $_SESSION['username'] ?>! Let's get started&hellip;</h4>
+                    <h3>My Sploder</h3>
+                    <p>You are logged in as <?= $_SESSION['username'] ?>. Where do you want to go next?</p>
                     <ul class="actions">
                         <li>
-                            <a href="/accounts/avatar.php">Edit your Avatar</a>
-                            <p>Customize your avatar on Sploder Revival here!</p>
-                        </li>
-                        <li>
-                            <a href="/make/index.php">Make your own game</a>
-                            <p>Make your own games for your friends to play.</p>
-                        </li>
-                        <li>
-                            <a href="/">Proceed to your dashboard</a>
+                            <a href="/">Proceed to your dashboard &raquo;</a>
                             <p>When logged in, the Sploder Revival home page will display your dashboard.</p>
                         </li>
                         <li>
-                            <a href="/friends/index.php">Find friends</a>
-                            <p>Already know people on Sploder? Search for them here.</p>
+                            <a href="/make/index.php">Make your own game &raquo;</a>
+                            <p>Make your own games for your friends to play.</p>
                         </li>
                         <li>
-                            <a href="/games/featured.php">Play some games</a>
+                            <a href="/dashboard/profile-edit.php">Edit your profile &raquo;</a>
+                            <p>Change your public profile settings and details</p>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://forums.sploder.xyz">Visit the Community Forums &raquo;</a>
+                            <p>If you're 13 or older, you can join separately and participate in the forums.</p>
+                        </li>
+                        <li>
+                            <a href="/friends/index.php">Find friends &raquo;</a>
+                            <p>Already know people on Sploder Revival? Search for them here.</p>
+                        </li>
+                        <li>
+                            <a href="/games/featured.php">Play some games &raquo;</a>
                             <p>Start playing and rating other people's games.</p>
                         </li>
                     </ul>

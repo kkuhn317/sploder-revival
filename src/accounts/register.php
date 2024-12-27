@@ -1,4 +1,6 @@
-<?php session_start() ?>
+<?php
+require('logincheck.php');
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
@@ -13,54 +15,54 @@
     <link rel="stylesheet" type="text/css" href="/slider/sploder/style_v2p10.css" />
     <?php include('../content/onlinechecker.php'); ?>
     <script type="text/javascript" language="Javascript">
-        <!-- //
-        function CheckData() {
+    <!-- //
+    function CheckData() {
 
 
-            if (document.form.username.value.length <= 0) {
+        if (document.form.username.value.length <= 0) {
 
-                alert("Enter a username.");
+            alert("Enter a username.");
 
-                document.form.username.focus();
+            document.form.username.focus();
 
-                return false;
-
-            }
+            return false;
 
         }
 
-
-        var delayed_id;
-
-
-        function checkUsername() {
-
-            var img = document.getElementById("usernamecheck");
-
-            img.src = "/images/working.gif";
-
-            if (delayed_id > 0) clearTimeout(delayed_id);
-
-            delayed_id = setTimeout(performCheck, 2000);
-
-        }
+    }
 
 
-        function performCheck() {
-
-            var img = document.getElementById("usernamecheck");
-
-            var input = document.getElementById("username");
-
-            img.src = "/php/usernamecheck.php?u=" + input.value;
-
-            if (delayed_id > 0) clearTimeout(delayed_id);
-
-        }
+    var delayed_id;
 
 
-        //
-        -->
+    function checkUsername() {
+
+        var img = document.getElementById("usernamecheck");
+
+        img.src = "/images/working.gif";
+
+        if (delayed_id > 0) clearTimeout(delayed_id);
+
+        delayed_id = setTimeout(performCheck, 2000);
+
+    }
+
+
+    function performCheck() {
+
+        var img = document.getElementById("usernamecheck");
+
+        var input = document.getElementById("username");
+
+        img.src = "/php/usernamecheck.php?u=" + input.value;
+
+        if (delayed_id > 0) clearTimeout(delayed_id);
+
+    }
+
+
+    //
+    -->
 
     </script>
 
@@ -91,9 +93,9 @@
                 </p>
 
                 <script>
-                    window.onload = function() {
-                        document.getElementById("username").focus();
-                    }
+                window.onload = function() {
+                    document.getElementById("username").focus();
+                }
                 </script>
 
                 <div class="textform">
