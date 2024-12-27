@@ -1,5 +1,5 @@
 <?php
-
+require('logincheck.php');
 require_once('../database/connect.php');
 
 if (session_status() === PHP_SESSION_ACTIVE) {

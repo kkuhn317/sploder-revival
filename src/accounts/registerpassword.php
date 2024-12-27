@@ -1,5 +1,5 @@
 <?php
-session_start();
+require('logincheck.php');
 if (!isset($_SESSION['usermigrate'])) {
     header('Location: register.php?err=ses');
 }
@@ -18,88 +18,88 @@ if (!isset($_SESSION['usermigrate'])) {
     <link rel="stylesheet" type="text/css" href="/slider/sploder/style_v2p10.css" />
     <?php include('../content/onlinechecker.php'); ?>
     <script type="text/javascript" language="Javascript">
-        <!-- // 
-        function CheckData() {
+    <!-- // 
+    function CheckData() {
 
 
 
-            if (!document.form.tostest.checked) {
+        if (!document.form.tostest.checked) {
 
-                alert("You must agree to the terms of service.");
+            alert("You must agree to the terms of service.");
 
-                return false;
-
-            }
-
-
-
-
-
-            if (document.form.pass1.value.length < 8) {
-
-                alert("Enter a password at least 8 characters long.");
-
-                document.form.pass1.focus();
-
-                return false;
-
-            }
-
-
-
-
-            if (document.form.pass1.value !== document.form.pass2.value) {
-
-                alert("Your confirmed password does not match the entered password.");
-
-                document.form.pass2.focus();
-
-                return false;
-
-            }
-
-
-
-            return true;
+            return false;
 
         }
 
 
 
-        var delayed_id;
 
 
+        if (document.form.pass1.value.length < 8) {
 
-        function checkUsername() {
+            alert("Enter a password at least 8 characters long.");
 
-            var img = document.getElementById("usernamecheck");
+            document.form.pass1.focus();
 
-            img.src = "/images/working.gif";
-
-            if (delayed_id > 0) clearTimeout(delayed_id);
-
-            delayed_id = setTimeout(performCheck, 2000);
+            return false;
 
         }
 
 
 
-        function performCheck() {
 
-            var img = document.getElementById("usernamecheck");
+        if (document.form.pass1.value !== document.form.pass2.value) {
 
-            var input = document.getElementById("username");
+            alert("Your confirmed password does not match the entered password.");
 
-            img.src = "/php/usernamecheck.php?u=" + input.value;
+            document.form.pass2.focus();
 
-            if (delayed_id > 0) clearTimeout(delayed_id);
+            return false;
 
         }
 
 
 
-        //
-        -->
+        return true;
+
+    }
+
+
+
+    var delayed_id;
+
+
+
+    function checkUsername() {
+
+        var img = document.getElementById("usernamecheck");
+
+        img.src = "/images/working.gif";
+
+        if (delayed_id > 0) clearTimeout(delayed_id);
+
+        delayed_id = setTimeout(performCheck, 2000);
+
+    }
+
+
+
+    function performCheck() {
+
+        var img = document.getElementById("usernamecheck");
+
+        var input = document.getElementById("username");
+
+        img.src = "/php/usernamecheck.php?u=" + input.value;
+
+        if (delayed_id > 0) clearTimeout(delayed_id);
+
+    }
+
+
+
+    //
+    -->
 
     </script>
 
@@ -127,9 +127,9 @@ if (!isset($_SESSION['usermigrate'])) {
 
 
                 <script>
-                    window.onload = function() {
-                        document.getElementById("username").focus();
-                    }
+                window.onload = function() {
+                    document.getElementById("username").focus();
+                }
                 </script>
 
                 <div class="textform">
