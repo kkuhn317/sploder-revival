@@ -57,28 +57,18 @@ if (intval($responseKeys["success"]) !== 1) {
     }
     $t = time();
     if ($tostest == "1") {
-        $db = new PDO('sqlite:../database/originalmembers.db');
+        require('../database/connect.php');
 
-        $qs2 = "SELECT username FROM members WHERE username=:user LIMIT 1";
-        $statement2 = $db->prepare($qs2);
-        $statement2->execute(
-            [
-                ':user' => $username
-            ]
-        );
+        $originalMembersDb = getOriginalMembersDatabase();
+        $result2 = $originalMembersDb->query("SELECT username FROM members WHERE username=:user LIMIT 1", [
+            ':user' => $username
+        ]);
 
-        $result2 = $statement2->fetchAll();
-        include('../database/connect.php');
-        $db = connectToDatabase();
-        #$qs = "UPDATE sploder SET isprivate=" . $isprivate . " WHERE g_id = " . $id;
-        $qs2 = "SELECT username FROM members WHERE username=:user LIMIT 1";
-        $statement2 = $db->prepare($qs2);
-        $statement2->execute(
-            [
-                ':user' => $username
-            ]
-        );
-        $result3 = $statement2->fetchAll();
+        $db = getDatabase();
+        $result3 = $db->query("SELECT username FROM members WHERE username=:user LIMIT 1", [
+            ':user' => $username
+        ]);
+
         if (isset($result3[0]['username'])) {
             $status1 = "cant";
         } else {
@@ -93,8 +83,7 @@ if (intval($responseKeys["success"]) !== 1) {
             if ($status == "alert") {
                 if ($_SESSION['enteredusername'] == $result2[0]['username']) {
                     $qs = "INSERT INTO members (username, password, joindate, lastlogin, isolate, level, boostpoints, lastpagechange, ip_address) VALUES (:username, :password, :join, :lastlogin, :isolate, :level, :boostpoints, :lastpagechange, :ip_address)";
-                    $statement = $db->prepare($qs);
-                    $statement->execute([
+                    $db->execute($qs, [
                         ':username' => $username,
                         ':password' => $hashed,
                         ':join' => $t,
@@ -112,8 +101,7 @@ if (intval($responseKeys["success"]) !== 1) {
                 $length = strlen($username);
                 if ((2 < $length) && ($length < 17)) {
                     $qs = "INSERT INTO members (username, password, joindate, lastlogin, isolate, level, boostpoints, lastpagechange, ip_address) VALUES (:username, :password, :join, :lastlogin, :isolate, :level, :boostpoints, :lastpagechange, :ip_address)";
-                    $statement = $db->prepare($qs);
-                    $statement->execute([
+                    $db->execute($qs, [
                         ':username' => $username,
                         ':password' => $hashed,
                         ':join' => $t,

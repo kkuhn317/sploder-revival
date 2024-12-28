@@ -1,30 +1,21 @@
 <?php
 
+require_once("../database/connect.php");
+
+$originalMembersDb = getOriginalMembersDatabase();
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 $u = mb_strtolower($_GET['u']);
-$db = new PDO('sqlite:../database/originalmembers.db');
 #$qs = "UPDATE sploder SET isprivate=" . $isprivate . " WHERE g_id = " . $id;
-$qs2 = "SELECT username FROM members WHERE username=:user LIMIT 1";
-$statement2 = $db->prepare($qs2);
-$statement2->execute(
-    [
-        ':user' => mb_strtolower($u)
-    ]
-);
+$result2 = $originalMembersDb->query("SELECT username FROM members WHERE username=:user LIMIT 1", [
+    ':user' => mb_strtolower($u)
+]);
 
-$result2 = $statement2->fetchAll();
-include_once('../database/connect.php');
-$db = connectToDatabase('members');
-#$qs = "UPDATE sploder SET isprivate=" . $isprivate . " WHERE g_id = " . $id;
-$qs2 = "SELECT username FROM members WHERE username=:user LIMIT 1";
-$statement2 = $db->prepare($qs2);
-$statement2->execute(
-    [
-        ':user' => $u
-    ]
-);
-$result3 = $statement2->fetchAll();
+$db = getDatabase();
+$result3 = $db->query("SELECT username FROM members WHERE username=:user LIMIT 1", [
+    ':user' => $u
+]);
 if (isset($result3[0]['username'])) {
     $status1 = "cant";
 } else {

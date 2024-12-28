@@ -39,3 +39,13 @@ function getDatabase(): IDatabase
 {
     return DatabaseManager::get()->getPostgresDatabase();
 }
+
+/**
+ * Retrieves a connection to the SQLite Database for the original members
+ *
+ * @return IDatabase
+ */
+function getOriginalMembersDatabase(): IDatabase
+{
+    return DatabaseManager::get()->getOriginalMembersDatabase();
+}
