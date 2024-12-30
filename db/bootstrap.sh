@@ -19,6 +19,10 @@ psql -U sploder -d sploder --command="\
   insert into games (author, title, date, description, g_swf, user_id)\
   values ('test', 'gtest', timezone('utc', now()), 'foobar', 0, 1);"
 
+psql -U sploder -d sploder --command="\
+  insert into game_tags (g_id, tag)\
+  values (1, 'foobar');"
+
 # DUMMY GRAPHIC
 psql -U sploder -d sploder --command="\
   insert into graphics (version, userid, isprivate, ispublished)\
