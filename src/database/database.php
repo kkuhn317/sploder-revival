@@ -5,40 +5,41 @@ require_once(__DIR__ . "/connectionmanager.php");
 
 class Database implements IDatabase
 {
-    private readonly IConnectionManager $connection_manager;
+    private readonly IConnectionManager $connectionManager;
 
-    public function __construct(IConnectionManager $connection_manager)
+    public function __construct(IConnectionManager $connectionManager)
     {
-        $this->connection_manager = $connection_manager;
+        $this->connectionManager = $connectionManager;
     }
 
     private function getConnection(): PDO
     {
-        return $this->connection_manager->getConnection();
+        return $this->connectionManager->getConnection();
     }
 
-    public function query(string $query, array $parameters = []): array
+    public function query(string $query, array $parameters = null, $mode = 0): array
+    {
+        $connection =  $this->getConnection();
+        $statement = $this->getConnection()->prepare($query);
+        $statement->execute($parameters);
+        return $statement->fetchAll($mode);
+    }
+
+    public function queryFirst(string $query, array $parameters = null, $mode = 0): mixed
     {
         $statement = $this->getConnection()->prepare($query);
         $statement->execute($parameters);
-        return $statement->fetchAll();
+        return $statement->fetch($mode);
     }
 
-    public function queryFirst(string $query, array $parameters = []): mixed
-    {
-        $statement = $this->getConnection()->prepare($query);
-        $statement->execute($parameters);
-        return $statement->fetch();
-    }
-
-    public function queryFirstColumn(string $query, int $column = 0, array $parameters = []): mixed
+    public function queryFirstColumn(string $query, int $column = 0, array $parameters = null): mixed
     {
         $statement = $this->getConnection()->prepare($query);
         $statement->execute($parameters);
         return $statement->fetchColumn($column);
     }
 
-    public function execute(string $query, array $parameters = []): bool
+    public function execute(string $query, array $parameters = null): bool
     {
         $statement = $this->getConnection()->prepare($query);
         return $statement->execute($parameters);
