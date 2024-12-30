@@ -21,7 +21,6 @@ function saveProject(int $g_swf): void
         if (!isset($_GET['projid'])) {
             $title = urldecode($xml2->attributes()['title']);
             if($g_swf == 1){
-                $title = urldecode($title); // Shooter creator is a mess and double encodes the title
                 $xml2->attributes()['title'] = $title; // Fix the title in the XML as well... Screw geoff
             }
             $qs = "INSERT INTO games (author, user_id, title, date, description, g_swf, ispublished, isdeleted, isprivate, comments) 
