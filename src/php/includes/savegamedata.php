@@ -9,7 +9,7 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     if (checkBan($_SESSION['username'])) {
         die('<message result="failed" message="You are banned and will not be able to publish games."/>');
     }
-    $xml = $_POST['xml'];
+    $xml = $_POST['xml'] ?? file_get_contents('php://input');
     $xml2 = simplexml_load_string(strval($xml)) or die("INVALID XML FILE!!");
     $author = $_SESSION['username'];
     $comments = $_GET['comments'];
@@ -38,7 +38,7 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     ]);
     $project_path = "../users/user" . $_SESSION['userid'] . "/projects/proj" . $id . "/";
     file_put_contents($project_path . "game.xml", $xml);
-    echo '<message result="success" id="proj' . $id . '" pubkey="' . $_SESSION['userid'] . '_' . $id . '"/>';
+    echo '<message result="success" id="proj' . $id . '" pubkey="' . $_SESSION['userid'] . '_' . $id . '" message=""/>';
 } else {
     echo '<message result="failed" message="The session ID is incorrect! Log out and log in again."/>';
 }
