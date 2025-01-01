@@ -1,13 +1,13 @@
 <?php
-if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
-    ?>
+if (true || str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
+    require_once(__DIR__ . '/../config/env.php');
+    $domainName = getenv("DOMAIN_NAME");
+?>
 <style>
 .topnav .search-container {
     float: none !important;
     border-top: 0px !important;
     margin: 0px !important;
-
-
 }
 
 .topnav a,
@@ -37,8 +37,9 @@ if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
 
     border: 1px solid #ccc !important;
     font-size: 16px;
-    height: 26px;
+    height: 23px;
     line-height: 18px;
+    margin-top: -5px;
     margin: 0;
     font-family: "courier new", monospace;
     font-weight: bold;
@@ -50,28 +51,23 @@ if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
     <div class="search-container">
         <form action="/php/url.php" method="post">
             <?php
-            $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https')
-            === false ? 'http' : 'https';
-            $host     = $_SERVER['HTTP_HOST'];
-            $script   = $_SERVER['SCRIPT_NAME'];
-            $params   = $_SERVER['QUERY_STRING'];
-            if ($params == "") {
-                $currentUrl = 'https://' . 'sploder.xyz' . $script;
-                $currentUrl1 = 'https://' . 'sploder.xyz' . $script . '?';
-            } else {
-                $currentUrl = 'https://' . 'sploder.xyz' . $script . '?' . $params;
-                $currentUrl1 = 'https://' . 'sploder.xyz' . $script . '?' . $params;
-            }
+                $script   = $_SERVER['SCRIPT_NAME'];
+                $params   = $_SERVER['QUERY_STRING'];
+                if ($params == "") {
+                    $currentUrl = $domainName . $script;
+                } else {
+                    $currentUrl = $domainName . $script . '?' . $params;
+                }
 
-            ?>
+                ?>
             <input class="urlmessage" style="" type="text" value="<?php echo $currentUrl; ?>" name="url">
-            <input style="" value="<?php echo $currentUrl1; ?>" type="hidden" name="back">
-            <?php if ($_GET["urlerr"] == 1) {
-                echo '<p style="margin-top:45px;" class="urlmessage">You must enter a valid sploder.us.to url!</p><br><br><br>';
-            } ?>
-            <?php if ($_GET["err404"] == 1) {
-                echo '<p style="margin-top:45px;" class="urlmessage">This URL does not exist!</p><br><br><br>';
-            } ?>
+            <input style="" value="<?php echo $currentUrl . '?'; ?>" type="hidden" name="back">
+            <?php if ($_GET["urlerr"] ?? null == 1) {
+                    echo '<p style="margin-top:45px;" class="urlmessage">You must enter a valid ' . str_replace(['http://', 'https://'], "", $domainName) . ' url!</p><br><br><br>';
+                } ?>
+            <?php if ($_GET["errload"] ?? null == 1) {
+                    echo '<p style="margin-top:45px;" class="urlmessage">There was an error accessing this URL!</p><br><br><br>';
+                } ?>
 
         </form>
         <br><br><br>
