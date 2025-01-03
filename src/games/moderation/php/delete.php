@@ -1,6 +1,10 @@
 <?php
 
 include('verify.php');
+require_once("../../../database/connect.php");
+
+$db = getDatabase();
+
 $url = $_REQUEST['url'];
 $page = $_REQUEST['return'];
 
@@ -46,21 +50,18 @@ if ($gameId === null) {
 }
 
 // Check whether the game exists in the database
-$sql = "SELECT COUNT(*) FROM games WHERE g_id=:id";
-$statement = $db_old->prepare($sql);
-$statement->execute([':id' => $gameId]);
-$count = $statement->fetchColumn();
-
+$count = $db->queryFirstColumn("SELECT COUNT(*) FROM games WHERE g_id=:id", 0, [
+    ':id' => $gameId
+]);
 if ($count == 0) {
     header("Location: ../" . $page . "?err=Game does not exist");
     die();
 }
 
 
-$sql = "SELECT deleter FROM pending_deletions WHERE g_id=:g_id";
-$statement = $db_old->prepare($sql);
-$statement->execute([':g_id' => $gameId]);
-$deleter = $statement->fetchColumn();
+$deleter = $db->queryFirstColumn("SELECT deleter FROM pending_deletions WHERE g_id=:g_id", 0, [
+    ':g_id' => $gameId
+]);
 
 if ($deleter == $_SESSION['username']) {
     header("Location: ../" . $page . "?err=You have already requested deletion of this game. Please wait for another moderator.");
@@ -68,12 +69,12 @@ if ($deleter == $_SESSION['username']) {
 }
 
 // Check pending deletions
-$sql = "SELECT COUNT(*) FROM pending_deletions WHERE g_id=:g_id";
-$statement = $db_old->prepare($sql);
-$statement->execute([':g_id' => $gameId]);
-$count = $statement->fetchColumn();
+$count = $db->queryFirstColumn("SELECT COUNT(*) FROM pending_deletions WHERE g_id=:g_id", 0, [
+    ':g_id' => $gameId
+]);
 
 // Proceed if 3 moderators opt to delete the game
+// TODO: merge transaciton scope
 if ($count >= 3) {
     try {
         $db->useTransactionScope(function () use ($db, $gameId) {
@@ -94,15 +95,17 @@ if ($count >= 3) {
     }
 } else {
     // Insert new deletion request
-    $sql = "INSERT INTO pending_deletions (g_id, timestamp, deleter, reason) VALUES (:g_id, NOW(), :deleter, :reason)";
-    $statement = $db_old->prepare($sql);
-    $statement->execute([':g_id' => $gameId, ':deleter' => $_SESSION['username'], ':reason' => $reason]);
+    $db->execute("INSERT INTO pending_deletions
+        (g_id, timestamp, deleter, reason) 
+        VALUES (:g_id, NOW(), :deleter, :reason)", [
+        ':g_id' => $gameId,
+        ':deleter' => $_SESSION['username'],
+        ':reason' => $reason]);
 
     // Count total number of deletion requests
-    $sql = "SELECT COUNT(*) FROM pending_deletions WHERE g_id=:g_id";
-    $statement = $db_old->prepare($sql);
-    $statement->execute([':g_id' => $gameId]);
-    $count = $statement->fetchColumn();
+    $count = $db->queryFirstColumn("SELECT COUNT(*) FROM pending_deletions WHERE g_id=:g_id", 0, [
+        ':g_id' => $gameId
+    ]);
 
     $title = getGameName($gameId);
 

@@ -1,6 +1,10 @@
 <?php
 
 include('verify.php');
+require_once("../../../database/connect.php");
+
+$db = getDatabase();
+
 $username = $_REQUEST['username'];
 
 include(__DIR__ . '/../../../content/checkban.php');
@@ -9,11 +13,9 @@ if (!checkBan($username)) {
     die();
 }
 
-$sql = "DELETE FROM banned_members WHERE username=:username";
-$statement = $db_old->prepare($sql);
 if (
-    $statement->execute([
-    ':username' => $username,
+    $db->execute("DELETE FROM banned_members WHERE username=:username", [
+      ':username' => $username,
     ])
 ) {
     include('log.php');

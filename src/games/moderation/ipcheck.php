@@ -3,6 +3,10 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+require_once("../../database/connect.php");
+
+$db = getDatabase();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 
@@ -41,22 +45,16 @@ error_reporting(E_ALL);
             </form>
             <?php if (isset($_POST['username'])) : ?>
                 <h2>Results</h2>
-            <?php
+                <?php
                 $username = $_POST['username'];
-                $sql = "SELECT ip_address FROM members WHERE username = :username";
-                $statement = $db_old->prepare($sql);
-                $statement->execute([
+                $ip_address = $db->queryFirstColumn("SELECT ip_address FROM members WHERE username = :username", 0, [
                     ':username' => $username
                 ]);
-                $ip_address = $statement->fetchColumn();
                 if ($ip_address) {
-                    $sql = "SELECT username FROM members WHERE ip_address = :ip_address AND username != :username";
-                    $statement = $db_old->prepare($sql);
-                    $statement->execute([
-                        ':ip_address' => $ip_address,
-                        ':username' => $username
+                    $usernames = $db->query("SELECT username FROM members WHERE ip_address = :ip_address AND username != :username", [
+                    ':ip_address' => $ip_address,
+                    ':username' => $username
                     ]);
-                    $usernames = $statement->fetchAll();
                     if (count($usernames) == 0) {
                         echo "<p>No other usernames share the same IP address</p>";
                     } else {

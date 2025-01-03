@@ -1,8 +1,12 @@
-<?php include('php/verify.php'); ?>
+<?php
+include('php/verify.php');
+require_once("../../database/connect.php");
+?>
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+$db = getDatabase();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 
@@ -44,14 +48,12 @@ error_reporting(E_ALL);
                 if ($offset < 0) {
                     $offset = 0;
                 }
-                $sql = "SELECT * FROM moderation_logs ORDER BY time DESC LIMIT 100 OFFSET :offset";
-                $statement = $db_old->prepare($sql);
-                $statement->execute(
-                    [
+                $logs = $db->query("SELECT *
+                    FROM moderation_logs
+                    ORDER BY time DESC
+                    LIMIT 100 OFFSET :offset", [
                         ':offset' => $offset
-                    ]
-                );
-                $logs = $statement->fetchAll();
+                    ]);
 
                 // Display logs as a list
                 foreach ($logs as $log) {
@@ -68,10 +70,10 @@ error_reporting(E_ALL);
                         $log['color'] = 'gray';
                     }
 
-                ?>
+                    ?>
                     <li><?= $log['time'] ?>: <u><?= $log['moderator'] ?></u> <span
                             style="color: <?= $log['color'] ?>;"><?= $log['action'] ?></span> <?= $log['on'] ?></li>
-                <?php
+                    <?php
                 }
 
 
