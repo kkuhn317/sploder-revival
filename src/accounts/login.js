@@ -7,11 +7,11 @@ function storeUsername() {
 
 // Set username upon re-login
 function setUsername() {
-    // Try catch
     try {
         var username = localStorage.getItem('login_username');
         document.getElementById('login_username').value = username;
-        // Change control to password
-        document.getElementById('login_password').focus();
+        // If username is not null, focus on password
+        if (username != null)
+            document.getElementById('login_password').focus();
     }  catch (err) {}
 }
