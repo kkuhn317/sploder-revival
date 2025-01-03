@@ -9,22 +9,19 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $author = $_SESSION["username"];
     $num = $_GET['num'] ?? 10;
     $start = $_GET['start'] ?? 0;
-    if(in_array(
-        $_GET['version'],
-        ["5", "3", "7"]
-    )){
+    if (
+        in_array(
+            $_GET['version'],
+            ["5", "3", "7"]
+        )
+    ) {
         $newFormat = true;
     } else {
         $newFormat = false;
     }
-    include('../database/connect.php');
-    $db = connectToDatabase();
+    require_once('../database/connect.php');
+    $db = getDatabase();
     $queryString = 'SELECT * FROM games WHERE author = :author AND g_swf = :g_swf AND isdeleted = :isdeleted ORDER BY g_id DESC';
-    if($newFormat){
-        $queryString .= " LIMIT :num OFFSET :start";
-    }
-    
-    $statement = $db->prepare($queryString);
     $params = [
         ':g_swf' => $_GET['version'],
         ':author' => $author,
@@ -32,26 +29,26 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     ];
 
     if ($newFormat) {
+        $queryString .= " LIMIT :num OFFSET :start";
         $params[':start'] = $start;
         $params[':num'] = $num;
     }
 
-    $statement->execute($params);
-    $result = $statement->fetchAll();
+    $result = $db->query($queryString, $params);
     //print_r($result);
     $resultTotal = count($result);
-    $queryString = "SELECT COUNT(g_id) FROM games WHERE author= :author AND g_swf = :g_swf AND isdeleted = :isdeleted";
-    $statement = $db->prepare($queryString);
-    $statement->execute([
+
+    $totalGames = $db->queryFirstColumn("SELECT COUNT(g_id)
+        FROM games
+        WHERE author= :author
+        AND g_swf = :g_swf
+        AND isdeleted = :isdeleted", 0, [
         ':g_swf' => $_GET['version'],
         ':author' => $author,
         ':isdeleted' => '0'
-    ]);
-    $totalGames = $statement->fetchColumn();
+        ]);
+
     $f = '20';
-    
-
-
     if ($newFormat) {
         $string = '<projects total="' . $totalGames . '" start="' . $start . '" num="' . $num . '">';
     } else {

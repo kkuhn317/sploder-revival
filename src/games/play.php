@@ -55,7 +55,7 @@ $creator_type = to_creator_type($game['g_swf']);
             <script>
             window.g_id = <?= $game['g_id'] ?>;
             </script>
-            <?php if($game['isprivate'] == 1) { ?>
+            <?php if ($game['isprivate'] == 1) { ?>
             <br><br>
             <div class="alert">This game is private but you have the key!</div>
             <?php } ?>
@@ -92,9 +92,9 @@ $creator_type = to_creator_type($game['g_swf']);
 
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "sid: \"{$_SESSION['PHPSESSID']}\",\n";
-                    } else {
-                        echo 'nu: "",' . "\n";
-                    } ?>
+                } else {
+                    echo 'nu: "",' . "\n";
+                } ?>
 
                 // EMBED_BETA_VERSION
                 // EMBED_FORCE_SECURE
@@ -107,7 +107,7 @@ $creator_type = to_creator_type($game['g_swf']);
                 modified: <?= rand() ?>,
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";
-                    } ?>
+                } ?>
             }
 
             var params = {
@@ -152,7 +152,7 @@ $creator_type = to_creator_type($game['g_swf']);
                 owner: '<?= $game['author'] ?>',
                 username: '<?php if (isset($_SESSION['username'])) {
                         echo $_SESSION['username'];
-                               }?>',
+                           }?>',
                 ip_address: '',
                 timestamp: '<?= time() ?>',
                 auth: '',
@@ -184,13 +184,18 @@ $creator_type = to_creator_type($game['g_swf']);
 
             <br>
             <?php
-                $db = connectToDatabase();
-                $sql = "SELECT g_id, date, title, author, views FROM games WHERE author = :author AND isprivate = 0 AND ispublished = 1 AND isdeleted = 0 ORDER BY date DESC LIMIT 11";
-                $statement = $db->prepare($sql);
-                $statement->execute([
+                $db = getDatabase();
+
+                $result = $db->query("SELECT g_id, date, title, author, views
+                    FROM games
+                    WHERE author = :author
+                    AND isprivate = 0
+                    AND ispublished = 1
+                    AND isdeleted = 0
+                    ORDER BY date DESC LIMIT 11", [
                     ':author' => $game['author']
-                ]);
-                $result = $statement->fetchAll();
+                    ]);
+
                 // remove game if id is same as current game
                 foreach ($result as $key => $value) {
                     if ($value['g_id'] == $game['g_id']) {
@@ -220,7 +225,7 @@ $creator_type = to_creator_type($game['g_swf']);
 
                 </ul>
             </div>
-            <?php } ?>
+                <?php } ?>
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="sidebar">

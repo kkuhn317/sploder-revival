@@ -128,59 +128,57 @@ require_once(__DIR__ . '/php/materials.php');
             if ($level < 10) {
                 echo '<div class="alert">You must be at least level 10 or higher to use the awards system.</div>';
             } else {
-            
-            if (isset($_GET['err'])) {
-    $err = $_GET['err'];
-    if ($err == "you") { ?>
+                if (isset($_GET['err'])) {
+                    $err = $_GET['err'];
+                    if ($err == "you") { ?>
             <div class="alert">You cannot award yourself!</div>
-            <?php } elseif ($err == "no") { ?>
+                    <?php } elseif ($err == "no") { ?>
             <div class="alert">That user does not exist!</div>
-            <?php } elseif ($err == "sent") { ?>
+                    <?php } elseif ($err == "sent") { ?>
             <div class="alert">You have already sent an award request to that user!</div>
-            <?php } elseif ($err == "suc") { ?>
+                    <?php } elseif ($err == "suc") { ?>
             <div class="prompt">Award sent successfully!</div>
-            <?php } elseif ($err == "level") { ?>
+                    <?php } elseif ($err == "level") { ?>
             <div class="alert">That user is already your friend!</div>
-            <?php } elseif ($err == "before") { ?>
+                    <?php } elseif ($err == "before") { ?>
             <div class="alert">That user revoked the award before you could accept it!</div>
-            <?php }
-} ?>
+                    <?php }
+                } ?>
             <h4>Pending Awards To You</h4>
-            <?php
-$db = connectToDatabase();
-$sql = "SELECT * FROM award_requests WHERE membername = :username ORDER BY id DESC";
-$statement = $db->prepare($sql);
-$statement->execute([':username' => $_SESSION['username']]);
-$pendingawards = $statement->fetchAll();
+                <?php
+                $db = getDatabase();
+                $sql = "SELECT * FROM award_requests WHERE membername = :username ORDER BY id DESC";
+                $pendingawards = $db->query($sql, [
+                ':username' => $_SESSION['username']
+                ]);
 
+                ?>
 
-?>
-
-            <?php if (count($pendingawards) == 0) { ?>
+                <?php if (count($pendingawards) == 0) { ?>
             <p>You don't have any pending awards</p>
-            <?php } else {
-    foreach ($pendingawards as $award) {
-        $membername = $award['username'];
-        $level = $award['level'];
-        $category = $award['category'];
+                <?php } else {
+                    foreach ($pendingawards as $award) {
+                        $membername = $award['username'];
+                        $level = $award['level'];
+                        $category = $award['category'];
 
-        if ($category == "") {
-            $category = " ";
-        } else {
-            $category = " " . $category . " ";
-        }
-        $style = $award['style'];
-        $material = $award['material'];
-        $icon = $award['icon'];
-        $color = $award['color'];
-        if ($style == 7 || $material == 7 || $icon == 7 || $color == 7) {
-            $shinestyle = "";
-        } else {
-            $shinestyle = "style=\"display: none;\"";
-        }
-        $message = htmlspecialchars($award['message']);
-        $awardid = $award['id'];
-        ?>
+                        if ($category == "") {
+                            $category = " ";
+                        } else {
+                            $category = " " . $category . " ";
+                        }
+                        $style = $award['style'];
+                        $material = $award['material'];
+                        $icon = $award['icon'];
+                        $color = $award['color'];
+                        if ($style == 7 || $material == 7 || $icon == 7 || $color == 7) {
+                            $shinestyle = "";
+                        } else {
+                            $shinestyle = "style=\"display: none;\"";
+                        }
+                        $message = htmlspecialchars($award['message']);
+                        $awardid = $award['id'];
+                        ?>
             <div class="award">
                 <div class="award_option"><span><a href="php/decline.php?id=<?= $awardid ?>">Decline</a> | <a
                             href="php/accept.php?id=<?= $awardid ?>">Accept</a></span></div>
@@ -208,56 +206,56 @@ $pendingawards = $statement->fetchAll();
                     </dl>
                 </div>
             </div>
-            <?php } ?>
+                    <?php } ?>
 
-            <?php }
+                <?php }
 // Check whether user has at least 1 award
-$sql = "SELECT COUNT(*) FROM awards WHERE membername = :username LIMIT 1";
-$statement = $db->prepare($sql);
-$statement->execute([':username' => $_SESSION['username']]);
-$result = $statement->fetchAll();
-if ($result[0][0] > 0) {
-    ?>
+                $sql = "SELECT COUNT(*) FROM awards WHERE membername = :username LIMIT 1";
+                $result = $db->query($sql, [
+                ':username' => $_SESSION['username']
+                ]);
+
+                if ($result[0][0] > 0) {
+                    ?>
 
             <br><span style="float:right" class="button"><a href="all.php">View all my awards</a></span><br><br>
-            <?php
-}
-$sql = "SELECT * FROM award_requests WHERE username = :username ORDER BY id DESC";
-$statement = $db->prepare($sql);
-$statement->execute([':username' => $_SESSION['username']]);
-$pendingawards = $statement->fetchAll();
+                            <?php
+                }
+                $sql = "SELECT * FROM award_requests WHERE username = :username ORDER BY id DESC";
+                $pendingawards = $db->query($sql, [
+                ':username' => $_SESSION['username']
+                ]);
 
-
-?>
-            <?php if (count($pendingawards) != 0) { ?>
+                ?>
+                <?php if (count($pendingawards) != 0) { ?>
             <h4>Pending Awards made by You</h4>
 
 
             <!-- START AWARD REQUESTS -->
-            <?php
+                    <?php
 
-    foreach ($pendingawards as $award) {
-        $membername = $award['membername'];
-        $level = $award['level'];
-        $category = $award['category'];
+                    foreach ($pendingawards as $award) {
+                        $membername = $award['membername'];
+                        $level = $award['level'];
+                        $category = $award['category'];
 
-        if ($category == "") {
-            $category = " ";
-        } else {
-            $category = " " . $category . " ";
-        }
-        $style = $award['style'];
-        $material = $award['material'];
-        $icon = $award['icon'];
-        $color = $award['color'];
-        if ($style == 7 || $material == 7 || $icon == 7 || $color == 7) {
-            $shinestyle = "";
-        } else {
-            $shinestyle = "style=\"display: none;\"";
-        }
-        $message = htmlspecialchars($award['message']);
-        $awardid = $award['id'];
-        ?>
+                        if ($category == "") {
+                            $category = " ";
+                        } else {
+                            $category = " " . $category . " ";
+                        }
+                        $style = $award['style'];
+                        $material = $award['material'];
+                        $icon = $award['icon'];
+                        $color = $award['color'];
+                        if ($style == 7 || $material == 7 || $icon == 7 || $color == 7) {
+                            $shinestyle = "";
+                        } else {
+                            $shinestyle = "style=\"display: none;\"";
+                        }
+                        $message = htmlspecialchars($award['message']);
+                        $awardid = $award['id'];
+                        ?>
             <div class="award">
                 <div class="award_option"><span><a href="php/revoke.php?id=<?= $awardid ?>">Revoke</a></span></div>
                 <div id="avatar" style="overflow: hidden; height: 48px">
@@ -285,23 +283,23 @@ $pendingawards = $statement->fetchAll();
                 </div>
             </div>
 
-            <?php } ?>
+                    <?php } ?>
             <!-- END AWARD REQUESTS -->
 
-            <?php } ?>
-            <?php
-$maxAwards = maxAward($level);
-?>
+                <?php } ?>
+                <?php
+                $maxAwards = maxAward($level);
+                ?>
 
 
             <h4>Make an Award</h4>
-            <?php if ($maxAwards > 0) : ?>
+                <?php if ($maxAwards > 0) : ?>
             <p>You can make <?= $maxAwards ?> more award<?= $maxAwards == 1 ? '' : 's' ?> today.</p>
-            <?php else : ?>
+                <?php else : ?>
             <p>You cannot make any more awards today.</p>
-            <?php endif; ?>
+                <?php endif; ?>
 
-            <?php if ($maxAwards > 0) : ?>
+                <?php if ($maxAwards > 0) : ?>
             <div class="friend_chooser">
 
                 <h4>Find a member to make an award for:</h4>
@@ -314,7 +312,7 @@ $maxAwards = maxAward($level);
                         class="postbutton" value="Make" />
                 </form>
             </div>
-            <?php endif; ?>
+                <?php endif; ?>
             <?php } ?>
             <div class="spacer">&nbsp;</div>
         </div>

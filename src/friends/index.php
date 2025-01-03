@@ -1,7 +1,11 @@
 <?php error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
-<?php include('../content/logincheck.php'); ?>
+<?php
+include('../content/logincheck.php');
+require_once('../database/connect.php');
+$db = getDatabase();
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
@@ -67,16 +71,13 @@ ini_set('display_errors', 1);
             } ?>
             <h4>New Friend Requests</h4>
             <?php
-            include_once('../database/connect.php');
-            $db = connectToDatabase('friend_requests');
-            $qs = "SELECT sender_username FROM friend_requests WHERE receiver_id=:sender_id ORDER BY request_id DESC";
-            $state = $db->prepare($qs);
-            $state->execute(
-                [
+            $result = $db->query("SELECT sender_username
+                FROM friend_requests
+                WHERE receiver_id=:sender_id
+                ORDER BY request_id DESC", [
                     ':sender_id' => $_SESSION['userid']
-                ]
-            );
-            $result = $state->fetchAll();
+            ]);
+
             for ($i = 0; $i < count($result); $i++) {
                 if (file_exists('../avatar/a/' . $result[$i]['sender_username'] . '.png')) {
                     $avt = $result[$i]['sender_username'];
@@ -91,14 +92,12 @@ ini_set('display_errors', 1);
             ?>
             <h4>Sent Requests</h4>
             <?php
-            $qs = "SELECT receiver_username FROM friend_requests WHERE sender_id=:sender_id ORDER BY request_id DESC";
-            $state = $db->prepare($qs);
-            $state->execute(
-                [
+            $result = $db->query("SELECT receiver_username
+                FROM friend_requests
+                WHERE sender_id=:sender_id
+                ORDER BY request_id DESC", [
                     ':sender_id' => $_SESSION['userid']
-                ]
-            );
-            $result = $state->fetchAll();
+                ]);
             for ($i = 0; $i < count($result); $i++) {
                 if (file_exists('../avatar/a/' . $result[$i]['receiver_username'] . '.png')) {
                     $avt = $result[$i]['receiver_username'];
@@ -123,26 +122,20 @@ ini_set('display_errors', 1);
                 </form>
             </div>
             <?php
-            $db = connectToDatabase('friends');
-            $qs1 = "SELECT user1,user2 FROM friends WHERE (bested=true) AND (user1=:sender_id) ORDER BY id DESC LIMIT 30";
-            $state1 = $db->prepare($qs1);
-            $state1->execute(
-                [
+
+            $bestedfriends = db->query("SELECT user1,user2 FROM friends WHERE (bested=true) AND (user1=:sender_id) ORDER BY id DESC LIMIT 30", [
                     ':sender_id' => $_SESSION['username']
-                ]
-            );
-            $bestedfriends = $state1->fetchAll();
+                ]);
             $newLimit = 30 - count($bestedfriends);
 
 
-            $qs = "SELECT user1,user2 FROM friends WHERE (bested = false) AND (user1=:sender_id) ORDER BY id DESC LIMIT $newLimit";
-            $state = $db->prepare($qs);
-            $state->execute(
-                [
+            $acceptedfriends = $db->query("SELECT user1, user2
+                FROM friends
+                WHERE (bested = false)
+                AND (user1=:sender_id)
+                ORDER BY id DESC LIMIT $newLimit", [
                     ':sender_id' => $_SESSION['username']
-                ]
-            );
-            $acceptedfriends = $state->fetchAll();
+                ]);
 
             if ((count($acceptedfriends) + count($bestedfriends)) != 0) {
                 echo '<h4>Recent Friends</h4><div id="friends">';

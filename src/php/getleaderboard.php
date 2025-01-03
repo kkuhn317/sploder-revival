@@ -8,15 +8,13 @@ error_reporting(E_ALL);
 $loc = explode("projects/proj", $_GET["loc"]);
 $loc = (int)filter_var($loc[1], FILTER_SANITIZE_NUMBER_INT);
 include('../database/connect.php');
-$db = connectToDatabase();
-$queryString = 'SELECT * FROM leaderboard WHERE pubkey = :pubkey AND w = true ORDER BY gtm LIMIT 16';
-$statement = $db->prepare($queryString);
-$statement->execute(
-    [
+$db = getDatabase();
+$result = $db->query("SELECT *
+    FROM leaderboard
+    WHERE pubkey = :pubkey
+    AND w = true ORDER BY gtm LIMIT 16", [
         ':pubkey' => $loc
-    ]
-);
-$result = $statement->fetchAll();
+    ]);
 print_r($result);
 if (!isset($result[0]['username'])) {
     die("<empty />");

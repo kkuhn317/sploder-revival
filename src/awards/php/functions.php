@@ -5,11 +5,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+require_once(__DIR__ . "/../../database/connect.php");
+
 // Common functions for awards
 function getLevel()
 {
-    // Get user level
     $db = getDatabase();
+    // Get user level
     $qs = "SELECT level FROM members WHERE username = :username";
     return $db->queryFirstColumn($qs, 0, [
       ':username' => $_SESSION['username'],
@@ -46,25 +48,29 @@ function getMaxCustomization($level, $isEditor)
     }
     return "[" . $maxCustomization . "," . $maxCustomization . "," . $maxCustomization . "," . $maxCustomization . "," . $maxCustomization . "," . $maxCustomization . "]";
 }
+
 function reduceAward()
 {
-
-    $db = connectToDatabase();
-    $sql = "INSERT INTO awards_sent (username, creationdate) VALUES (:username, :creationdate)";
-    $statement = $db->prepare($sql);
-    // set creation date to current epoch time
+    $db = getDatabase();
     $creationdate = time();
-    $statement->execute([':username' => $_SESSION['username'], ':creationdate' => $creationdate]);
+    return $db->execute("INSERT INTO awards_sent
+        (username, creationdate)
+        VALUES (:username, :creationdate)", [
+            ':username' => $_SESSION['username'],
+            ':creationdate' => $creationdate]);
 }
+
 function maxAward($level)
 {
-    $db = connectToDatabase();
+    $db = getDatabase();
     // Get total number of awards sent in a day
-    $sql = "SELECT COUNT(*) FROM awards_sent WHERE username = :username AND creationdate > :creationdate";
-    $statement = $db->prepare($sql);
-    $statement->execute([':username' => $_SESSION['username'], ':creationdate' => time() - 86400]);
-    $result = $statement->fetchAll();
-    $maxAwards = $result[0][0];
+    $maxAwards = $db->queryFirstColumn("SELECT COUNT(*)
+        FROM awards_sent
+        WHERE username = :username
+        AND creationdate > :creationdate", 0, [
+            ':username' => $_SESSION['username'],
+            ':creationdate' => time() - 86400]);
+
     // If null, change to 0
     if ($maxAwards == null) {
         $maxAwards = 0;

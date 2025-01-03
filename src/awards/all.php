@@ -126,21 +126,22 @@ if ($level < 10) {
         <div id="content">
             <h3>All My Awards</h3>
             <?php
-            $db = connectToDatabase();
+            $db = getDatabase();
             // Get total number of awards
-            $sql = "SELECT COUNT(*) FROM awards WHERE membername = :membername";
-            $statement = $db->prepare($sql);
-            $statement->execute([':membername' => $_SESSION['username']]);
-            $result = $statement->fetchAll();
-            $total = $result[0][0];
+            $total = $db->queryFirstColumn("SELECT COUNT(*)
+                FROM awards 
+                WHERE membername = :membername", 0, [
+                    ':membername' => $_SESSION['username']]);
+
             // Get award data
             // TODO: LIMIT to 50 and add pagination support to avoid hammering database
             // Higher amount of material takes priority
             // Higher amount of style takes priority after material
-            $sql = "SELECT * FROM awards WHERE membername = :membername ORDER BY style DESC, material DESC, color DESC, icon DESC";
-            $statement = $db->prepare($sql);
-            $statement->execute([':membername' => $_SESSION['username']]);
-            $result = $statement->fetchAll();
+            $result = $db->query("SELECT *
+                FROM awards
+                WHERE membername = :membername
+                ORDER BY style DESC, material DESC, color DESC, icon DESC", [
+                    ':membername' => $_SESSION['username']]);
             ?>
 
             <h5><big><?= $total ?></big>&nbsp;Award<?= $total == 1 ? '' : 's' ?></h5>
@@ -149,7 +150,7 @@ if ($level < 10) {
             foreach ($result as $award) {
                 $award['material_name'] = $material_list[$award['material']];
                 $shinestyle = "";
-            ?>
+                ?>
                 <div class="award award_64 special_0">
                     <div class="layer shine" <?= $shinestyle ?>></div>
                     <div class="layer_mini" style="background-image: url('medals/px64/<?= $award['style'] . $award['material'] . $award['color'] . $award['icon'] ?>.gif');"></div>

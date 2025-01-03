@@ -61,11 +61,12 @@ if ($style > $maxCustomization || $material > $maxCustomization || $color > $max
 
 // Check whether membername is an actual member
 
-$db = connectToDatabase();
-$qs = "SELECT username FROM members WHERE username = :username";
-$statement = $db->prepare($qs);
-$statement->execute([':username' => $membername]);
-$result = $statement->fetchAll();
+$db = getDatabase();
+$result = $db->query("SELECT username
+    FROM members
+    WHERE username = :username", [
+        ':username' => $membername
+    ]);
 
 if (count($result) == 0) {
     header("Location: ../awards/index.php?err=no");
@@ -74,10 +75,13 @@ if (count($result) == 0) {
 
 
 // Check whether user has already sent an award to membername
-$qs = "SELECT username FROM award_requests WHERE username = :username AND membername = :membername";
-$statement = $db->prepare($qs);
-$statement->execute([':username' => $_SESSION['username'], ':membername' => $membername]);
-$result = $statement->fetchAll();
+$result = $db->query("SELECT username
+    FROM award_requests
+    WHERE username = :username
+    AND membername = :membername", [
+        ':username' => $_SESSION['username'],
+        ':membername' => $membername]);
+
 if (count($result) > 0) {
     header("Location: ../awards/index.php?err=sent");
     die();
@@ -86,9 +90,9 @@ if (count($result) > 0) {
 reduceAward();
 
 // Send award
-$sql = "INSERT INTO award_requests (username, membername, level, category, style, material, icon, color, message) VALUES (:username, :membername, :level, :category, :style, :material, :icon, :color, :message)";
-$statement = $db->prepare($sql);
-$statement->execute([
+$db->execute("INSERT INTO award_requests
+    (username, membername, level, category, style, material, icon, color, message)
+    VALUES (:username, :membername, :level, :category, :style, :material, :icon, :color, :message)", [
     ':username' => $_SESSION['username'],
     ':membername' => $membername,
     ':level' => $level,
@@ -98,5 +102,6 @@ $statement->execute([
     ':icon' => $icon,
     ':color' => $color,
     ':message' => $message
-]);
+    ]);
+
 header("Location: ../index.php");

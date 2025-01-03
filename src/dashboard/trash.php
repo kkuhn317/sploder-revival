@@ -4,19 +4,15 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 include('../content/logincheck.php');
 $username = $_SESSION['username'];
-include('../database/connect.php');
-$db = connectToDatabase();
-$qs2 = "SELECT g_id FROM games WHERE author=:user AND isdeleted=1";
-$statement2 = $db->prepare($qs2);
-$statement2->execute(
-    [
-        ':user' => $username
-    ]
-);
+require('../database/connect.php');
 if (isset($_GET['game']) && $_GET['game'] == null) {
     unset($_GET['game']);
 }
-$result4 = $statement2->fetchAll();
+
+$db = getDatabase();
+$result4 = $db->query("SELECT g_id FROM games WHERE author=:user AND isdeleted=1", [
+    ':user' => $username
+]);
 $totalgames = count($result4);
 
 ?>
@@ -97,42 +93,58 @@ $totalgames = count($result4);
                                  }
                                  $offset = 12;
                                  if (!isset($_GET['game'])) {
-                                     $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 ORDER BY "g_id" DESC';
-                                     $statement = $db->prepare($queryString);
-                                     $statement->execute([
+                                     $parameters = [
                                          ':username' => $username
-                                     ]);
-                                     $result = $statement->fetchAll();
+                                     ];
+                                     $result = $db->query('SELECT * 
+                                     FROM games 
+                                     WHERE author=:username
+                                     AND isdeleted = 1
+                                     ORDER BY "g_id" DESC', $parameters);
                                      $total = count($result);
-                                     $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 ORDER BY "g_id" DESC LIMIT 12 OFFSET ' . $o . '';
-                                     $statement = $db->prepare($queryString);
-                                     $statement->execute([
-                                         ':username' => $username
-                                     ]);
-                                     $result = $statement->fetchAll();
-                                     $qTotal = "SELECT count(1) FROM games WHERE author=:username AND isdeleted = 1 LIMIT 12 OFFSET " . $o . "";
-                                     $staTotal = $db->prepare($qTotal);
-                                     $staTotal->execute([
-                                         ':username' => $username
-                                     ]);
-                                     $resultTotal = $staTotal->fetchAll();
-                                     $resultTotal = $resultTotal[0][0];
-                                 } else {
-                                     $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
-                                     $statement = $db->prepare($queryString);
-                                     $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
-                                     $result = $statement->fetchAll();
-                                     $total = count($result);
-                                     $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 1 AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC LIMIT 12 OFFSET ' . $o . '';
-                                     $statement = $db->prepare($queryString);
-                                     $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
-                                     $result = $statement->fetchAll();
-                                     $qTotal = "SELECT count(1) FROM games WHERE author=:username AND isdeleted = 1 AND SIMILARITY(title, :game) > 0.3 LIMIT 12 OFFSET " . $o . "";
-                                     $staTotal = $db->prepare($qTotal);
-                                     $staTotal->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
 
-                                     $resultTotal = $staTotal->fetchAll();
-                                     $resultTotal = $resultTotal[0][0];
+                                     // TODO: put offset as a parameter instead of string concat
+                                     $result = $db->query('SELECT *
+                                       FROM games
+                                       WHERE author=:username
+                                       AND isdeleted = 1
+                                       ORDER BY "g_id" DESC
+                                       LIMIT 12 OFFSET ' . $o . '', $parameters);
+
+                                     $resultTotal = $db->queryFirstColumn("SELECT count(1)
+                                       FROM games
+                                       WHERE author=:username
+                                       AND isdeleted = 1
+                                       LIMIT 12 OFFSET " . $o . "", 0, $parameters);
+                                 } else {
+                                     $parameters = [':username' => $username];
+                                     if (isset($_GET['game'])) {
+                                         $parameters = $parameters + [':game' => $_GET['game']];
+                                     }
+
+                                     $result = $db->query('SELECT *
+                                     FROM games
+                                     WHERE author=:username
+                                     AND isdeleted = 1
+                                     AND SIMILARITY(title, :game) > 0.3
+                                     ORDER BY "g_id" DESC', $parameters);
+                                     $total = count($result);
+
+                                     // TODO: put offset as a parameter instead of string concat
+                                     $result = $db->query('SELECT *
+                                       FROM games
+                                       WHERE author=:username
+                                       AND isdeleted = 1
+                                       AND SIMILARITY(title, :game) > 0.3
+                                       ORDER BY "g_id" DESC
+                                       LIMIT 12 OFFSET ' . $o . '', $parameters);
+
+                                     $resultTotal = $db->queryFirstColumn("SELECT count(1)
+                                       FROM games
+                                       WHERE author=:username
+                                       AND isdeleted = 1
+                                       AND SIMILARITY(title, :game) > 0.3
+                                       LIMIT 12 OFFSET " . $o . "", 0, $parameters);
                                  }
 
 

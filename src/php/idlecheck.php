@@ -1,13 +1,13 @@
 <?php
 
-session_Start();
+session_start();
+
 if (isset($_SESSION['username'])) {
+    require_once('../database/connect.php');
     $t = time();
-    include_once('../database/connect.php');
-    $db = connectToDatabase('members');
-    $qs = "UPDATE members SET lastpagechange=:t WHERE username=:username";
-    $statement = $db->prepare($qs);
-    $statement->execute([':t' => $t,
+    $db = getDatabase();
+    $db->execute("UPDATE members SET lastpagechange=:t WHERE username=:username", [
+        ':t' => $t,
         ':username' => $_SESSION['username']
     ]);
 }

@@ -1,19 +1,32 @@
 <?php
+
+
 function display_user_info($username)
 {
     include_once('../database/connect.php');
-    if (!isset($db)) {
-        $db = connectToDatabase();
-    }
+    $db = getDatabase();
+
+    // TODO:: just inline this when migrating to the repository
     $publicgames = " AND isdeleted=0 AND ispublished=1 AND isprivate=0";
-    $sql = "SELECT * FROM user_info WHERE username = :username";
-    $statement = $db->prepare($sql);
-    $statement->execute([':username' => $username]);
-    $row = $statement->fetch();
-    $showAbout = true;
+
+    $row = $db->queryFirst("SELECT *
+        FROM user_info
+        WHERE username = :username", [
+        ':username' => $username
+    ]);
     //check if all columns are empty or if row does not exist
-    if (empty($row['description']) && empty($row['hobbies']) && empty($row['sports']) && empty($row['games']) && empty($row['movies']) && empty($row['bands']) && empty($row['respect'])) {
+    if (
+        empty($row['description'])
+        && empty($row['hobbies'])
+        && empty($row['sports'])
+        && empty($row['games'])
+        && empty($row['movies'])
+        && empty($row['bands'])
+        && empty($row['respect'])
+    ) {
         $showAbout = false;
+    } else {
+        $showAbout = true;
     }
     ?>
 <script type="text/javascript">
@@ -59,35 +72,44 @@ function setClass(id, c) {
 
     // Get required data for votes, comments, vote average, tributes, group memberships, and group ownerships
     // TODO: Group Memberships, Group Ownerships, Comment view page
-    $sql = "SELECT COUNT(*) as votes FROM votes WHERE username = :username";
-    $statement = $db->prepare($sql);
-    $statement->execute([':username' => $username]);
-    $votes_cast = $statement->fetch()['votes'];
+    $votes_cast = $db->queryFirstColumn("SELECT COUNT(*) as votes
+        FROM votes
+        WHERE username = :username", 0, [
+        ':username' => $username
+    ]);
 
-    $sql = "SELECT COUNT(*) as comments FROM comments WHERE creator_name = :username";
-    $statement = $db->prepare($sql);
-    $statement->execute([':username' => $username]);
-    $comments_made = $statement->fetch()['comments'];
+    $comments_made = $db->queryFirstColumn("SELECT COUNT(*) as comments
+        FROM comments
+        WHERE creator_name = :username", 0, [
+        ':username' => $username
+    ]);
 
-    $sql = "SELECT AVG(score) as vote_avg FROM votes WHERE username = :username";
-    $statement = $db->prepare($sql);
-    $statement->execute([':username' => $username]);
     // Round the average vote to the nearest integer and make it a percentage out of 100
     // Scores are store in the database as integers from 1 to 5
-    $vote_avg = $statement->fetch()['vote_avg'];
-    $vote_avg = $vote_avg !== null ? round($vote_avg) : 0;
+    $vote_avg = $db->queryFirstColumn("SELECT AVG(score) as vote_avg 
+        FROM votes
+        WHERE username = :username", 0, [
+        ':username' => $username
+        ]) ?? 0;
+
     // Convert the average vote to a percentage out of 96 (the width of the bar [WHY GEOFF, WHY!!!])
     $max_score = 5;
     $vote_avg_percentage = ($vote_avg / $max_score) * 96;
 
-
-    // Fetch all games made by the user that start with "Tribute to someoneese" and have a valid username except for the user themselves in one query
-
-    $stmt = $db->prepare("SELECT * FROM games WHERE title ILIKE 'Tribute to %' AND author = :username $publicgames AND EXISTS (SELECT 1 FROM members WHERE username = SUBSTRING(title FROM 12 FOR LENGTH(title) - 11) AND username != :username)");
-    $stmt->execute([':username' => $username]);
-    $validTributesCount = $stmt->rowCount();
-    // All hail GitHub Copilot!! Someone please switch this to a more optimized method by probably caching or something
-
+    // Fetch all games made by the user that start with "Tribute to someoneese"
+    // and have a valid username except for the user themselves in one query
+    // All hail GitHub Copilot!!
+    // TODO: in switching to a repository, consider caching, maybe improving query
+    $validTributesCount = $db->queryFirstColumn("SELECT COUNT(*)
+        FROM games
+        WHERE title ILIKE 'Tribute to %'
+        AND author = :username $publicgames
+        AND EXISTS (
+            SELECT 1 FROM members
+            WHERE username = SUBSTRING(title FROM 12 FOR LENGTH(title) - 11) 
+            AND username != :username)", 0, [
+        ':username' => $username
+            ]);
 
     ?>
 <div class="mprofgroup mprofsection">
@@ -120,13 +142,16 @@ function setClass(id, c) {
 </div>
 
     <?php
-
     // Get required data for reactions
-
-    $sql = "SELECT COUNT(*) as five_star_faves FROM votes v JOIN games g ON v.g_id = g.g_id WHERE g.author = :username AND v.score = 5 AND v.username != :username";
-    $statement = $db->prepare($sql);
-    $statement->execute([':username' => $username]);
-    $five_star_faves = $statement->fetch()['five_star_faves'];
+    $five_star_faves = $db->queryFirstColumn("SELECT COUNT(*) as five_star_faves
+        FROM votes v 
+        JOIN games g
+        ON v.g_id = g.g_id
+        AND g.author = :username
+        WHERE v.score = 5
+        AND v.username != :username", 0, [
+        ':username' => $username,
+    ]);
 
     // Get required data for comments received
     // This is  calculated by counting the number of comments on the user's items.
@@ -135,10 +160,14 @@ function setClass(id, c) {
     // someone with the username "user" does not get comments on items with the venue "user2" or "user3"
     // Comments received must not include the user's own comments on their own items
 
-    $sql = "SELECT COUNT(*) as comments_received FROM comments WHERE venue LIKE '%-$username' AND creator_name != :username";
-    $statement = $db->prepare($sql);
-    $statement->execute([':username' => $username]);
-    $comments_received = $statement->fetch()['comments_received'];
+    // TODO: change string concat to paramete injection for LIKE clause
+    $comments_received = $db->queryFirstColumn("SELECT COUNT(*) as comments_received
+        FROM comments
+        WHERE venue
+        LIKE '%-$username'
+        AND creator_name != :username", 0, [
+        ':username' => $username
+    ]);
 
     // TODO: Favourites
 
@@ -146,32 +175,33 @@ function setClass(id, c) {
     // This is calculated by counting the number of games that have the title 'Tribute to username'
     // Care must be taken that the tribute is not to the user themselves and user1's tribute is not counted as user11's tribute
     // Tribute to detection is not case sensitive
-    $sql = "SELECT COUNT(*) as tributes_received FROM games WHERE title ILIKE 'Tribute to ' || :username AND author != :username $publicgames";
-    $statement = $db->prepare($sql);
-    $statement->execute([':username' => $username]);
-    $tributes_received = $statement->fetch()['tributes_received'];
+    $tributes_received = $db->queryFirstColumn("SELECT COUNT(*) as tributes_received
+        FROM games
+        WHERE title ILIKE 'Tribute to ' || :username AND author != :username $publicgames", 0, [
+        ':username' => $username
+    ]);
 
     // Get required data for comment rating
     // This is calculated by averaging the ratings of other users on the user's comments
-    // It must be till 3 decimal places
-    $sql = "SELECT AVG(score) as comment_rating FROM comments WHERE creator_name = :username";
-    $statement = $db->prepare($sql);
-    $statement->execute([':username' => $username]);
-    $comment_rating = $statement->fetch()['comment_rating'];
     // Round off till 3 decimal places
     // Prevent NULL depreciation warning
-    $comment_rating = $comment_rating !== null ? $comment_rating : 0;
-    $comment_rating = round($comment_rating, 3);
+    $comment_rating = round($db->queryFirstColumn("SELECT AVG(score) as comment_rating
+        FROM comments
+        WHERE creator_name = :username", 0, [
+        ':username' => $username
+        ]) ?? 0, 3);
 
     // Get required data for contests won
     // This is calculated by counting the number of contests the user has won in the table 'contest_winner'
     // This table has 2 columns, g_id and contest_id
     // The user has won a contest if their g_id is present in the table
-
-    $sql = "SELECT COUNT(*) as contests_won FROM contest_winner cw JOIN games g ON cw.g_id = g.g_id WHERE g.author = :username";
-    $statement = $db->prepare($sql);
-    $statement->execute([':username' => $username]);
-    $contests_won = $statement->fetch()['contests_won'];
+    $contests_won = $db->queryFirstColumn("SELECT COUNT(*) as contests_won
+        FROM contest_winner cw
+        JOIN games g
+        ON cw.g_id = g.g_id
+        WHERE g.author = :username", 0, [
+        ':username' => $username
+    ]);
 
     ?>
 

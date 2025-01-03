@@ -3,18 +3,18 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include('../database/connect.php');
-$db = connectToDatabase();
+$db = getDatabase();
+
 $time = time();
 $last = $time - 30;
 $pagechange = $time - 900;
-$qs2 = "SELECT lastlogin,lastpagechange,status FROM members WHERE username=:username";
-$statement2 = $db->prepare($qs2);
-$statement2->execute(
-    [
+
+$result3 = $db->query("SELECT lastlogin, lastpagechange, status
+    FROM members 
+    WHERE username=:username", [
         ':username' => $_GET['u']
-    ]
-);
-$result3 = $statement2->fetchAll();
+    ]);
+
 if ($result3[0]['lastlogin'] < $last) {
     $status = "offline";
 } elseif ($result3[0]['status'] == "online") {
