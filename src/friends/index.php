@@ -123,7 +123,12 @@ $db = getDatabase();
             </div>
             <?php
 
-            $bestedfriends = db->query("SELECT user1,user2 FROM friends WHERE (bested=true) AND (user1=:sender_id) ORDER BY id DESC LIMIT 30", [
+            $bestedfriends = $db->query("SELECT user1,user2
+              FROM friends
+              WHERE (bested=true)
+              AND (user1=:sender_id)
+              ORDER BY id DESC
+              LIMIT 30", [
                     ':sender_id' => $_SESSION['username']
                 ]);
             $newLimit = 30 - count($bestedfriends);
