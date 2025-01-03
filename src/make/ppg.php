@@ -20,6 +20,7 @@
 
 
 </head>
+<?php include('../content/addressbar.php'); ?>
 
 <body id="creator" class="physics">
 

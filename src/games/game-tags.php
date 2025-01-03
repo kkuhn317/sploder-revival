@@ -10,10 +10,11 @@ $t = $_GET['t']; // Tag by user input
     <?php include('../content/head.php') ?>
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <script type="text/javascript">
-        var _sf_startpt = (new Date()).getTime()
+    var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
 </head>
+<?php include('../content/addressbar.php'); ?>
 
 <body id="everyones" class="featured">
 
