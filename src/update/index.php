@@ -1,10 +1,12 @@
 <?php
 $version = file_get_contents('currentversion.txt');
 $userVersion = explode('Sploder/', $_SERVER['HTTP_USER_AGENT'])[1];
-$userVersion = explode(' ', $version)[0];
-if($version == $userVersion){
-    header('Location: /');
-    exit();
+$userVersion = explode(' ', $userVersion)[0];
+echo $version;
+echo $userVersion;
+if ($version == $userVersion) {
+    //header('Location: /');
+    //exit();
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -18,7 +20,9 @@ if($version == $userVersion){
     <script type="text/javascript">
     var _sf_startpt = (new Date()).getTime()
     </script>
-
+    <script type="text/javascript">
+    const downloadUrl = 'files/Sploder-Setup-<?= $version ?>.exe';
+    </script>
     <script src="update.js"></script>
 
 
@@ -39,13 +43,6 @@ if($version == $userVersion){
                     </p>
 
                     <ul class="actions">
-
-
-                        <a href="">
-                            <li>
-                                Close
-                            </li>
-                        </a>
                         <a onclick="start_download()" href="#">
                             <li>
                                 Download
