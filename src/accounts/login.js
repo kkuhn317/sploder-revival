@@ -11,5 +11,7 @@ function setUsername() {
     try {
         var username = localStorage.getItem('login_username');
         document.getElementById('login_username').value = username;
+        // Change control to password
+        document.getElementById('login_password').focus();
     }  catch (err) {}
 }
