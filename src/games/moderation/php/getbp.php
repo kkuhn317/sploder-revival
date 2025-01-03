@@ -1,27 +1,27 @@
 <?php
 
 include('verify.php');
+require_once("../../../database/connect.php");
+$db = getDatabase();
+
 $username = $_POST['username'];
 
 // Check whether user actually exists
 $sql = "SELECT COUNT(*) FROM members WHERE username=:username";
-$statement = $db_old->prepare($sql);
-$statement->execute([
+$count = $db->queryFirstColumn($sql, 0, [
     ':username' => $username
 ]);
-$count = $statement->fetchColumn();
 if ($count == 0) {
     header("Location: ../index.php?err=User does not exist");
     die();
 }
 
 // Get boost points
-$sql = "SELECT boostpoints FROM members WHERE username=:username";
-$statement = $db_old->prepare($sql);
-$statement->execute([
+$bp = $db->queryFirstColumn("SELECT boostpoints
+    FROM members
+    WHERE username=:username", 0, [
     ':username' => $username
 ]);
-$bp = $statement->fetchColumn();
 
 // Send header with boost points
 include('log.php');

@@ -1,6 +1,10 @@
 <?php
 
 include('verify.php');
+require_once("../../../database/connect.php");
+
+$db = getDatabase();
+
 $username = $_POST['username'];
 $reason = $_POST['reason'];
 $banned_by = $_SESSION['username'];
@@ -9,23 +13,19 @@ $autounbandate = time() + $_POST['time'] * 24 * 60 * 60;
 
 
 // Check whether the user exists
-$sql = "SELECT COUNT(*) FROM members WHERE username=:username";
-$statement = $db_old->prepare($sql);
-$statement->execute([':username' => $username
+$count = $db->queryFirstColumn("SELECT COUNT(*) FROM members WHERE username=:username", 0, [
+    ':username' => $username
 ]);
-$count = $statement->fetchColumn();
 if ($count == 0) {
     header("Location: ../index.php?err=User does not exist");
     die();
 }
 
 // Check whether user banned is not a moderator
-$sql = "SELECT perms FROM members WHERE username=:username";
-$statement = $db_old->prepare($sql);
-$statement->execute([':username' => $username
+$perms = $db->queryFirstColumn("SELECT perms FROM members WHERE username=:username", 0, [
+    ':username' => $username
 ]);
-$perms = $statement->fetch();
-if (str_contains($perms['perms'], 'M')) {
+if (str_contains($perms, 'M')) {
     header("Location: ../index.php?err=You cannot ban a moderator");
     die();
 }
@@ -38,10 +38,10 @@ if (checkBan($username)) {
     die();
 }
 
-$sql = "INSERT INTO banned_members (username, banned_by, reason, bandate, autounbandate) VALUES (:username, :banned_by, :reason, :bandate, :autounbandate)";
-$statement = $db_old->prepare($sql);
 if (
-    $statement->execute([
+    $db->execute("INSERT INTO banned_members
+      (username, banned_by, reason, bandate, autounbandate)
+      VALUES (:username, :banned_by, :reason, :bandate, :autounbandate)", [
     ':username' => $username,
     ':banned_by' => $banned_by,
     ':reason' => $reason,
