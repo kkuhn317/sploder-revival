@@ -3,6 +3,11 @@
 include('verify.php');
 $url = $_REQUEST['url'];
 $page = $_REQUEST['return'];
+
+require_once("../../../database/connect.php");
+
+$db = getDatabase();
+
 // Get the game id from the URL by parsing it and getting the 'id' parameter
 function getIdFromUrl($url)
 {
@@ -70,26 +75,21 @@ $count = $statement->fetchColumn();
 
 // Proceed if 3 moderators opt to delete the game
 if ($count >= 3) {
-    $db->beginTransaction();
     try {
-        $sql = "DELETE FROM pending_deletions WHERE g_id=:g_id";
-        $statement = $db_old->prepare($sql);
-        $statement->execute([':g_id' => $gameId]);
+        $db->useTransactionScope(function () use ($db, $gameId) {
+            $db->execute("DELETE FROM pending_deletions WHERE g_id=:g_id", [
+                ':g_id' => $gameId
+            ]);
+            $db->execute("DELETE FROM games WHERE g_id=:id", [
+                ':id' => $gameId
+            ]);
+        });
 
-        $sql = "DELETE FROM games WHERE g_id=:id";
-        $statement = $db_old->prepare($sql);
-        $statement->execute([':id' => $gameId]);
-
-        $db->commit();
         $title = getGameName($gameId);
-
         include_once('log.php');
         logModeration('made a delete request', 'on ' . $title . ' and deleted it because of ' . $reason, 3);
-
-
         header("Location: ../" . $page . "?msg=Game deleted successfully");
     } catch (Exception $e) {
-        $db->rollBack();
         header("Location: ../" . $page . "?err=Failed to delete game");
     }
 } else {

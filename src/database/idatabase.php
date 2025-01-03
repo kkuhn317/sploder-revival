@@ -40,4 +40,12 @@ interface IDatabase
    * @return bool
    */
     public function execute(string $query, array $parameters = null): bool;
+
+  /**
+   * Within the block of $callable, a transaction scope will be created and committed. Any failures will rollback the transaction.
+   *
+   * @param $callback
+   * @return mixedk
+   */
+    public function useTransactionScope(callable $callback): mixed;
 }

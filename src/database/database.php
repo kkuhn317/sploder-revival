@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__ . "/idatabase.php");
-require_once(__DIR__ . "/connectionmanager.php");
+require_once(__DIR__ . "/iconnectionmanager.php");
 
 class Database implements IDatabase
 {
@@ -43,5 +43,23 @@ class Database implements IDatabase
     {
         $statement = $this->getConnection()->prepare($query);
         return $statement->execute($parameters);
+    }
+
+    public function useTransactionScope(callable $callback): mixed
+    {
+        $conn = $this->connection;
+        if (!$conn->beginTransaction()) {
+            throw new Exception("Failed to start a transaction", 1);
+        }
+
+        try {
+            $result = $callback();
+            if (!$conn->commit()) {
+                throw new Exception("Failed to commit the transaction", 1);
+            }
+            return $result;
+        } finally {
+            $conn->rollBack();
+        }
     }
 }
