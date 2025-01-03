@@ -18,7 +18,6 @@ if (!isset($exists[0]['id'])) {
         ':user' => $username
     ]);
     if (isset($receiver[0]['userid'])) {
-        print_r($receiver);
         $receiver = $receiver[0]['userid'];
     } else {
         header('Location: ../index.php?err=no');
@@ -35,8 +34,6 @@ if (!isset($exists[0]['id'])) {
     } elseif ($receiver == $_SESSION['userid']) {
         header('Location: ../index.php?err=you');
     } elseif ($receiver != $_SESSION['userid']) {
-        print_r($receiver);
-        print_r($_SESSION['userid']);
         $qs2 = 'INSERT INTO friend_requests 
             (sender_id, receiver_id, sender_username, receiver_username) 
             VALUES (:sender_id, :receiver_id, :sender_username, :receiver_username)';
