@@ -3,7 +3,7 @@
 /**
  * A functon that can take an array of string and return colored tags
  */
-function displayTags(array $tagList, bool $hyperlink = true)
+function displayTags($tagList, $hyperlink = true)
 {
     if (count($tagList) <= 0) {
         return "";

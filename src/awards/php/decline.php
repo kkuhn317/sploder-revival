@@ -6,7 +6,9 @@ require_once(__DIR__ . '/../../database/connect.php');
 $db = getDatabase();
 
 // Check if author is actually the receiver, if not, die
-$membername = $db->queryFirstColumn("SELECT membername FROM awards WHERE id = :id", 0, [
+$membername = $db->queryFirstColumn("SELECT membername
+    FROM awards
+    WHERE id = :id", 0, [
   ':id' => $_GET['id']
 ]);
 

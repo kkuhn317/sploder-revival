@@ -3,7 +3,7 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include('../database/connect.php');
-$db = connectToDatabase();
+$db = getDatabase();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -83,9 +83,7 @@ $db = connectToDatabase();
                     LIMIT 32
                 ) AS recent_contests
                 JOIN games ON recent_contests.id = games.g_id LIMIT 32;";
-                $statement = $db->prepare($qs);
-                $statement->execute();
-                $result = $statement->fetchAll();
+                $result = $db->query($qs);
             } else {
                 $qs = "SELECT games.g_id, games.title, games.author, games.user_id
                 FROM (
@@ -95,9 +93,7 @@ $db = connectToDatabase();
                     LIMIT 24
                 ) AS recent_contests
                 JOIN games ON recent_contests.g_id = games.g_id ORDER BY contest_id DESC LIMIT 24;";
-                $statement = $db->prepare($qs);
-                $statement->execute();
-                $result = $statement->fetchAll();
+                $result = $db->query($qs);
             }
             // Display everything
             if (count($result) > 0) {

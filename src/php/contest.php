@@ -21,13 +21,10 @@ function in_array_recursive(mixed $needle, array $haystack, bool $strict): bool
 }
 function is_winner($id)
 {
-    $db = connectToDatabase();
-    $qs = "SELECT * FROM contest_winner WHERE g_id = :id";
-    $statement = $db->prepare($qs);
-    $statement->execute([
+    $db = getDatabase();
+    $result = $db->query("SELECT * FROM contest_winner WHERE g_id = :id", [
         ':id' => $id
     ]);
-    $result = $statement->fetchAll();
     if (isset($result[0][0])) {
         return true;
     }
@@ -65,15 +62,15 @@ if ($a == "status") {
         $output .= '&voting=0';
     } elseif ($status == 1) {
         $output .= '&accepting_entries=1';
-        $db = connectToDatabase();
         $id = $_POST['game_id'];
-        $sql = "SELECT * FROM contest_nominations WHERE g_id = :id AND nominator_username = :username";
-        $statement = $db->prepare($sql);
-        $statement->execute([
+        $db = getDatabase();
+        $result = $db->query("SELECT *
+            FROM contest_nominations
+            WHERE g_id = :id
+            AND nominator_username = :username", [
             ':id' => $id,
             ':username' => $_SESSION['username']
         ]);
-        $result = $statement->fetchAll();
         if (count($result) > 0) {
             $output .= '&already_nominated=1';
         } else {
@@ -81,14 +78,11 @@ if ($a == "status") {
         }
     } elseif ($status == 2) {
         $output .= "&voting=1";
-        $db = connectToDatabase();
         $id = $_POST['game_id'];
-        $sql = "SELECT * FROM contest_votes WHERE id = :id";
-        $statement = $db->prepare($sql);
-        $statement->execute([
+        $db = getDatabase();
+        $result = $db->query("SELECT * FROM contest_votes WHERE id = :id", [
             ':id' => $id,
         ]);
-        $result = $statement->fetchAll();
         print_r($result);
         if (count($result) > 0) {
             $output .= '&can_vote=1';
@@ -109,20 +103,16 @@ if ($a == "status") {
     }
     $id = $_POST['game_id'];
 
-    $db = connectToDatabase();
-    $sql = "SELECT * FROM contest_nominations WHERE g_id = :id AND nominator_username = :username";
-    $statement = $db->prepare($sql);
-    $statement->execute([
+    $db = getDatabase();
+    $result = $db->query("SELECT * FROM contest_nominations WHERE g_id = :id AND nominator_username = :username", [
         ':id' => $id,
         ':username' => $_SESSION['username']
     ]);
-    $result = $statement->fetchAll();
+
     if (count($result) > 0) {
         die('&success=false');
     } else {
-        $sql = "INSERT INTO contest_nominations (g_id, nominator_username) VALUES (:id, :username)";
-        $statement = $db->prepare($sql);
-        $statement->execute([
+        $db->execute("INSERT INTO contest_nominations (g_id, nominator_username) VALUES (:id, :username)", [
             ':id' => $id,
             ':username' => $_SESSION['username']
         ]);
@@ -135,23 +125,18 @@ if ($a == "status") {
     }
     $id = $_POST['game_id'];
 
-    $db = connectToDatabase();
-    $sql = "SELECT * FROM contest_votes WHERE id = :id";
-    $statement = $db->prepare($sql);
-    $statement->execute([
+    $db = getDatabase();
+    $result = $db->query("SELECT * FROM contest_votes WHERE id = :id", [
         ':id' => $id,
     ]);
-    $result = $statement->fetchAll();
+
     if (count($result) != 1) {
         die('&success=false');
     }
-    $sql = "SELECT * FROM contest_voter_usernames WHERE voter_username = :username";
-    $statement = $db->prepare($sql);
-    $statement->execute([
-        ':username' => $_SESSION['username']
-    ]);
-    $result = $statement->fetchAll();
 
+    $result = $db->query("SELECT * FROM contest_voter_usernames WHERE voter_username = :username", [
+        ':username' => $_SESSION['username'],
+    ]);
 
     if (count($result) >= 3) {
         die('&success=false');
@@ -159,15 +144,11 @@ if ($a == "status") {
     if ($result[0][0] == $id || $result[1][0] == $id || $result[2][0] == $id) {
         die("&success=false");
     } else {
-        $sql = "INSERT INTO contest_voter_usernames (id,voter_username) VALUES (:id, :username)";
-        $statement = $db->prepare($sql);
-        $statement->execute([
+        $db->execute("INSERT INTO contest_voter_usernames (id,voter_username) VALUES (:id, :username)", [
             ':id' => $id,
             ':username' => $_SESSION['username']
         ]);
-        $sql = "UPDATE contest_votes SET votes = votes + 1 WHERE id = :id";
-        $statement = $db->prepare($sql);
-        $statement->execute([
+        $db->execute("UPDATE contest_votes SET votes = votes + 1 WHERE id = :id", [
             ':id' => $id
         ]);
     }

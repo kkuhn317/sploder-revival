@@ -9,14 +9,13 @@ $score = $_GET['score'];
 session_id($_GET['PHPSESSID']);
 session_start();
 $username = $_SESSION['username'];
-$db = connectToDatabase();
+$db = getDatabase();
 if (!vote_check($username, $g_id)) {
     $sql = "INSERT INTO votes (g_id, username, score) VALUES (:g_id, :username, :score)";
 } else {
     $sql = "UPDATE votes SET score = :score WHERE g_id = :g_id AND username = :username";
 }
-$statement = $db->prepare($sql);
-$statement->execute([
+$statement = $db->execute($sql, [
     ':g_id' => $g_id,
     ':username' => $username,
     ':score' => $score

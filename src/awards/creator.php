@@ -12,19 +12,27 @@ $level = getLevel();
 $isEditor = isEditor();
 $maxCustomization = getMaxCustomization($level, $isEditor);
 // If membername is not an actual user, send header and die
-$db = connectToDatabase();
-$qs = "SELECT username FROM members WHERE username = :username";
-$statement = $db->prepare($qs);
-$statement->execute([':username' => $membername]);
-$result = $statement->fetchAll();
+$db = getDatabase();
+
+$result = $db->query("SELECT username
+    FROM members
+    WHERE username = :username", [
+        ':username' => $membername
+    ]);
+
 if (count($result) == 0) {
     header("Location: ../awards/index.php?err=no");
     die();
 }
-$qs = "SELECT username FROM award_requests WHERE username = :username AND membername = :membername";
-$statement = $db->prepare($qs);
-$statement->execute([':username' => $_SESSION['username'], ':membername' => $membername]);
-$result = $statement->fetchAll();
+
+$result = $db->query("SELECT username
+    FROM award_requests
+    WHERE username = :username
+    AND membername = :membername", [
+        ':username' => $_SESSION['username'],
+        ':membername' => $membername
+    ]);
+
 if (count($result) > 0) {
     header("Location: ../awards/index.php?err=sent");
     die();

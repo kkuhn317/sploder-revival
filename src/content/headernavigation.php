@@ -9,15 +9,12 @@ if (!session_id() && session_status() !== PHP_SESSION_ACTIVE) {
 
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/database/connect.php');
-$db1 = connectToDatabase('members');
-$thing = "SELECT boostpoints FROM members WHERE username=:user";
-$thing2 = $db1->prepare($thing);
-$thing2->execute(
-    [
-        ':user' => isset($_SESSION['username']) ? $_SESSION['username'] : null
-    ]
-);
-$bp = $thing2->fetchAll();
+$db = getDatabase();
+$bp = $db->query("SELECT boostpoints
+    FROM members
+    WHERE username=:user", [
+    ':user' => isset($_SESSION['username']) ? $_SESSION['username'] : null
+]);
 function format_num($num, $precision = 0)
 {
     if ($num >= 1000 && $num < 1000000) {

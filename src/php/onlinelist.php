@@ -1,18 +1,17 @@
 <?php
 
 include_once('../database/connect.php');
-$db = connectToDatabase();
+$db = getDatabase();
 $time = time();
 $last = $time - 30;
 $pagechange = $time - 900;
-$qs2 = "SELECT username,lastlogin,lastpagechange,status FROM members WHERE lastlogin>:last ORDER BY level DESC LIMIT 15";
-$statement2 = $db->prepare($qs2);
-$statement2->execute(
-    [
-        ':last' => $last
-    ]
-);
-$result3 = $statement2->fetchAll();
+$qs2 = "SELECT username,lastlogin,lastpagechange,status
+FROM members 
+WHERE lastlogin>:last
+ORDER BY level DESC LIMIT 15";
+$result3 = $db->query($qs2, [
+    ':last' => $last
+]);
 $total = count($result3);
 ?>
 var _____WB$wombat$assign$function_____ = function(name) {return (self._wb_wombat && self._wb_wombat.local_init &&

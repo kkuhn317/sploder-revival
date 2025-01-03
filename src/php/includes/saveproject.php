@@ -1,4 +1,5 @@
 <?php
+
 function saveProject(int $g_swf): void
 {
     ini_set('display_errors', '1');
@@ -15,7 +16,7 @@ function saveProject(int $g_swf): void
         $id = 0;
         $new_game = false;
         include('../database/connect.php');
-        $db = connectToDatabase();
+        $db = getDatabase();
         if (isset($_GET['projid'])) {
             $id = (int)filter_var($_GET['projid'], FILTER_SANITIZE_NUMBER_INT);
         }
@@ -23,8 +24,7 @@ function saveProject(int $g_swf): void
             $qs = "INSERT INTO games (author, user_id, title, date, description, g_swf, ispublished, isdeleted, isprivate, comments) 
                 VALUES (:username, :user_id, :title, :date, :description, :g_swf, :ispublished, :isdeleted, :isprivate, :comments)
                 RETURNING g_id;";
-            $statement = $db->prepare($qs);
-            $statement->execute([
+            $id = $db->queryFirstColumn($qs, 0, [
                 ':username' => $author,
                 ':title' => $title,
                 ':date' => date("Y-m-d"),
@@ -36,8 +36,6 @@ function saveProject(int $g_swf): void
                 ':comments' => 0,
                 ':user_id' => $_SESSION['userid']
             ]);
-            $result = $statement->fetchAll();
-            $id = $result[0]['g_id'];
             $new_game = true;
             // Set xml2 "id" attribute to the new game id
             $xml2->attributes()['id'] = $id;
@@ -45,11 +43,12 @@ function saveProject(int $g_swf): void
             $xml = $xml2->asXML();
         } else {
             // Check whether user owns the game
-            $qs = "SELECT author FROM games WHERE g_id = :g_id";
-            $statement = $db->prepare($qs);
-            $statement->execute([':g_id' => $id]);
-            $result = $statement->fetchAll();
-            if ($result[0]['author'] != $author) {
+            $queriedAuthor = $db->queryFirstColumn("SELECT author
+                FROM games
+                WHERE g_id = :g_id", 0, [
+                ':g_id' => $id,
+            ]);
+            if ($queriedAuthor != $author) {
                 echo '<message result="failed" message="Haxxor detected!"/>';
                 exit();
             }

@@ -6,16 +6,11 @@ ini_set('display_errors', 1);
 <?php
 function get_game_info($game_id){
     include('../database/connect.php');
-    $db = connectToDatabase();
+    $db = getDatabase();
     $qs = "SELECT * FROM games WHERE g_id=:game_id";
-    $statement = $db->prepare($qs);
-    $statement->execute(
-        [
-            ':game_id' => $game_id
-        ]
-    );
-    $result = $statement->fetchAll();
-    return $result[0];
+    return $db->queryFirst($qs, [
+        ':game_id' => $game_id
+    ]);
 }
 function get_creator_type($type, $g_swf){
     if($type == 'name'){
@@ -257,13 +252,11 @@ function get_swf_version($g_Swf){
 
             <br>
             <?php
-                $db = connectToDatabase();
+                $db = getDatabase();
                 $sql = "SELECT g_id, date, title, author, views FROM games WHERE author = :author AND isprivate = 0 AND ispublished = 1 AND isdeleted = 0 ORDER BY date DESC LIMIT 11";
-                $statement = $db->prepare($sql);
-                $statement->execute([
+                $result = $db->query($sql, [
                     ':author' => $game['author']
                 ]);
-                $result = $statement->fetchAll();
                 // remove game if id is same as current game
                 foreach($result as $key => $value){
                     if($value['g_id'] == $game['g_id']){

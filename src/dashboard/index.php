@@ -3,17 +3,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include('../content/logincheck.php');
 $username = $_SESSION['username'];
-include_once('../database/connect.php');
-$db = connectToDatabase('members');
-$qs2 = "SELECT level FROM members WHERE username=:user LIMIT 1";
-$statement2 = $db->prepare($qs2);
-$statement2->execute(
-  [
+require_once('../database/connect.php');
+
+$db = getDatabase();
+$level = $db->queryFirstColumn("SELECT level FROM members WHERE username=:user LIMIT 1", 0, [
     ':user' => $username
-  ]
-);
-$result3 = $statement2->fetchAll();
-$level = $result3[0]['level']
+]);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"

@@ -4,15 +4,13 @@ ini_set('display_errors', 1);
 include('../content/logincheck.php');
 $username = $_SESSION['username'];
 include('../database/connect.php');
-$db = connectToDatabase();
-$qs2 = "SELECT g_id FROM games WHERE author=:user AND isdeleted=0";
-$statement2 = $db->prepare($qs2);
-$statement2->execute(
-    [
+$db = getDatabase();
+$result4 = $db->query("SELECT g_id
+    FROM games
+    WHERE author=:user
+    AND isdeleted=0", [
         ':user' => $username
-    ]
-);
-$result4 = $statement2->fetchAll();
+]);
 $total_games = count($result4);
 if (isset($_GET['game']) && $_GET['game'] == null) {
     unset($_GET['game']);
@@ -85,23 +83,20 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
                     $queryString = 'SELECT * FROM games WHERE author=:username AND isdeleted = 0 AND SIMILARITY(title, :game) > 0.3 ORDER BY "g_id" DESC';
                 }
 
-                $statement = $db->prepare($queryString);
-                $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
 
-                $result = $statement->fetchAll();
+                $parameters = [':username' => $username];
+                if (isset($_GET['game'])) {
+                    $parameters = $parameters + [':game' => $_GET['game']];
+                }
+
+                $result = $db->query($queryString, $parameters);
                 $total = count($result);
 
                 $queryString = $queryString . ' LIMIT 12 OFFSET ' . $o;
-                $statement = $db->prepare($queryString);
-                $statement->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
+                $result = $db->query($queryString, $parameters);
 
-                $result = $statement->fetchAll();
                 $qTotal = "SELECT count(1) FROM games WHERE author=:username AND isdeleted = 0" . (isset($_GET['game']) ? ' AND SIMILARITY(title, :game) > 0.3' : '') . ' LIMIT 12 OFFSET ' . $o;
-                $staTotal = $db->prepare($qTotal);
-                $staTotal->execute([':username' => $username] + (isset($_GET['game']) ? [':game' => $_GET['game']] : []));
-
-                $resultTotal = $staTotal->fetchAll();
-                $resultTotal = $resultTotal[0][0];
+                $resultTotal = $db->queryFirstColumn($qTotal, 0, $parameters);
 
                 $f = '20';
 
