@@ -13,7 +13,8 @@ header("Pragma: no-cache");
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
 if(!str_contains($_GET['g'], "_")){
-    echo "&username={$_SESSION['username']}&difficulty=5&rating=3";
+    $username = $_SESSION['username'] ?? "DEMO";
+    echo "&username={$username}&difficulty=5&rating=3";
     die();
 }
 $separated = explode("_", $_GET['g']);

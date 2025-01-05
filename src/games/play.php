@@ -93,7 +93,7 @@ $creator_type = to_creator_type($game['g_swf']);
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "sid: \"{$_SESSION['PHPSESSID']}\",\n";
                 } else {
-                    echo 'nu: "",' . "\n";
+                    echo 'nu: "1",' . "\n";
                 } ?>
 
                 // EMBED_BETA_VERSION
@@ -225,7 +225,7 @@ $creator_type = to_creator_type($game['g_swf']);
 
                 </ul>
             </div>
-                <?php } ?>
+            <?php } ?>
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="sidebar">
