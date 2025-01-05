@@ -52,7 +52,7 @@ enum CreatorType: int implements ICreatorType
     {
         return match ($this) {
             CreatorType::PLATFORMER => "20",
-            CreatorType::SHOOTER => "idk",
+            CreatorType::SHOOTER => "13",
             CreatorType::ALGORITHM => "idk",
             CreatorType::PHYSICS => "26",
             CreatorType::ARCADE => "idk",

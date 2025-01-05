@@ -15,7 +15,6 @@ $result = $db->query("SELECT *
     AND w = true ORDER BY gtm LIMIT 16", [
         ':pubkey' => $loc
     ]);
-print_r($result);
 if (!isset($result[0]['username'])) {
     die("<empty />");
 }
