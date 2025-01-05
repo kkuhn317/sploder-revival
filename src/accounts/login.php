@@ -61,7 +61,7 @@ require('logincheck.php');
                         <label for="login_username">Username:</label><br />
 
                         <input type="text" id="login_username" name="username" autocomplete="off" autocorrect="off"
-                            autocapitalize="off" spellcheck="false" maxlength="20" />
+                            autocapitalize="off" spellcheck="false" maxlength="20" required />
 
 
 
@@ -71,8 +71,9 @@ require('logincheck.php');
 
                         <label for="login_password">Password:</label><br />
 
-                        <input type="password" id="login_password" name="password" size="12" maxlength="20"
-                            onkeydown="e=window.event; if (e) if (e.keyCode == 13) this.form.submit(); return true;" />
+                        <input type="password" id="login_password" name="password" size="12" maxlength="25"
+                            onkeydown="e=window.event; if (e) if (e.keyCode == 13) this.form.submit(); return true;"
+                            required />
 
 
 
