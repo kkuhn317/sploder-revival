@@ -2,11 +2,9 @@
 $version = file_get_contents('currentversion.txt');
 $userVersion = explode('Sploder/', $_SERVER['HTTP_USER_AGENT'])[1];
 $userVersion = explode(' ', $userVersion)[0];
-echo $version;
-echo $userVersion;
 if ($version == $userVersion) {
-    //header('Location: /');
-    //exit();
+    header('Location: /');
+    exit();
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
