@@ -12,7 +12,10 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
-
+if(!str_contains($_GET['g'], "_")){
+    echo "&username={$_SESSION['username']}&difficulty=5&rating=3";
+    die();
+}
 $separated = explode("_", $_GET['g']);
 $userId = $separated[0];
 $gameId = $separated[1];
