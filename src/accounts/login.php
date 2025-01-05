@@ -15,14 +15,6 @@ require('logincheck.php');
     <?php include('../content/onlinechecker.php'); ?>
     <script type="text/javascript" src="login.js"></script>
 
-    <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
-    </script>
-
-
-
-
-
 </head>
 <?php include('../content/addressbar.php'); ?>
 
@@ -46,17 +38,6 @@ require('logincheck.php');
                     Enter your login information below to sign in to Sploder Revival.
 
                 </p>
-
-
-
-                <script>
-                window.onload = function() {
-
-                    document.getElementById("login_username").focus();
-                    setUsername();
-
-                }
-                </script>
 
                 <?php
                 if (isset($_GET['err'])) {

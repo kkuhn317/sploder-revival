@@ -1,5 +1,11 @@
-// Store username in local storage from HTML
+window.onload = function () {
 
+    document.getElementById("login_username").focus();
+    setUsername();
+
+}
+
+// Store username in local storage from HTML
 function storeUsername() {
     var username = document.getElementById('login_username').value;
     localStorage.setItem('login_username', username);
