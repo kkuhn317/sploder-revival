@@ -8,6 +8,7 @@ require_once('content/publish.php');
     <title>Sploder</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="../css/sploder_v2p12.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/css/scrollbar.css" />
     <link rel="stylesheet" href="../css/publishpage2.css" type="text/css" />
     <?php //require('../content/swfobject.php'); 
     ?>
@@ -86,10 +87,9 @@ require_once('content/publish.php');
             </script>
             <div style="display:none;" id="message" class="prompt"></div>
             <br id="promptBr">
-            <p class="description" id="descriptionBox"
-                style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0;<?php if ($game['description'] == null) {
-                                                                                                                                            echo 'display:none;';
-                                                                                                                                        } ?>">
+            <p class="description" id="descriptionBox" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0;<?php if ($game['description'] == null) {
+                                                                                                    echo 'display:none;';
+                                                                                                } ?>">
                 <?= nl2br(htmlspecialchars($game['description'] ?? '')) ?></p>
             <br><br>
             <div class="buttons" style="padding: 0;">
@@ -129,17 +129,16 @@ require_once('content/publish.php');
                     <?php } ?>
                 </p>
                 <input type="hidden" name="id" value="<?= $id ?>">
-                <textarea type="text" id="tagsText" name="tags" size="50"
-                    style="width: 300px; height: 100px;"><?php
-                                                                                                                    if (isset($tags[0][0])) {
-                                                                                                                        $tagString = '';
-                                                                                                                        foreach ($tags as $tag) {
-                                                                                                                            $tagString .= $tag[0] . ' ';
-                                                                                                                        }
-                                                                                                                        $tagString = substr($tagString, 0, -1);
-                                                                                                                        echo $tagString;
-                                                                                                                    }
-                                                                                                                    ?></textarea><br><br>
+                <textarea type="text" id="tagsText" name="tags" size="50" style="width: 300px; height: 100px;"><?php
+                                                                if (isset($tags[0][0])) {
+                                                                    $tagString = '';
+                                                                    foreach ($tags as $tag) {
+                                                                        $tagString .= $tag[0] . ' ';
+                                                                    }
+                                                                    $tagString = substr($tagString, 0, -1);
+                                                                    echo $tagString;
+                                                                }
+                                                                ?></textarea><br><br>
                 <input type="submit" onclick="sendTags()" value="Save Tags" class="loginbutton postbutton">
 
             </div>
