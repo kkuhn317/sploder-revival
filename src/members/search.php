@@ -16,6 +16,7 @@ $searchUserName = $_GET['u'] ?? '';
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
 </head>
+<?php include('../content/addressbar.php'); ?>
 
 <body id="members" class="">
 
@@ -39,7 +40,7 @@ $searchUserName = $_GET['u'] ?? '';
             </form>
             <?php
             if ($searchUserName !== null || $searchUserName !== '') {
-                ?>
+            ?>
             <h4>Members matching search <span class="tagcolor1"><?= $u ?? null ?></span>:</h4>
             </p>
 
@@ -47,10 +48,10 @@ $searchUserName = $_GET['u'] ?? '';
                 <?php
                     $searchResults = RepositoryManager::get()->getUserRepository()->search($searchUserName);
                     generateSearchResults($searchResults);
-                ?>
+                    ?>
                 <div class="spacer">&nbsp;</div>
             </div>
-                <?php
+            <?php
             }
             ?>
         </div>

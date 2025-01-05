@@ -1,6 +1,13 @@
 <?php
 $version = file_get_contents('currentversion.txt');
-
+$userVersion = explode('Sploder/', $_SERVER['HTTP_USER_AGENT'])[1];
+$userVersion = explode(' ', $userVersion)[0];
+echo $version;
+echo $userVersion;
+if ($version == $userVersion) {
+    //header('Location: /');
+    //exit();
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -11,15 +18,16 @@ $version = file_get_contents('currentversion.txt');
     <link rel="stylesheet" type="text/css" href="update.css" />
 
     <script type="text/javascript">
-        var _sf_startpt = (new Date()).getTime()
+    var _sf_startpt = (new Date()).getTime()
     </script>
-
+    <script type="text/javascript">
+    const downloadUrl = 'files/Sploder-Setup-<?= $version ?>.exe';
+    </script>
     <script src="update.js"></script>
 
 
 
 </head>
-<?php include('../content/addressbar.php'); ?>
 
 <body id="home" class="">
 
@@ -35,13 +43,6 @@ $version = file_get_contents('currentversion.txt');
                     </p>
 
                     <ul class="actions">
-
-
-                        <a href="">
-                            <li>
-                                Close
-                            </li>
-                        </a>
                         <a onclick="start_download()" href="#">
                             <li>
                                 Download

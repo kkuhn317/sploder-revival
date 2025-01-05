@@ -13,6 +13,7 @@
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
 </head>
+<?php include('../content/addressbar.php'); ?>
 
 <body id="everyones" class="featured">
 
