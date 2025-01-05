@@ -9,12 +9,11 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $author = $_SESSION["username"];
     $num = $_GET['num'] ?? 10;
     $start = $_GET['start'] ?? 0;
-    if (
-        in_array(
-            $_GET['version'],
-            ["5", "3", "7"]
-        )
-    ) {
+    $version = $_GET['version'] ?? 1;
+    if(in_array(
+        $version,
+        ["5", "3", "7"]
+    )){
         $newFormat = true;
     } else {
         $newFormat = false;
@@ -23,7 +22,7 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $db = getDatabase();
     $queryString = 'SELECT * FROM games WHERE author = :author AND g_swf = :g_swf AND isdeleted = :isdeleted ORDER BY g_id DESC';
     $params = [
-        ':g_swf' => $_GET['version'],
+        ':g_swf' => $version,
         ':author' => $author,
         ':isdeleted' => '0'
     ];
@@ -37,13 +36,12 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $result = $db->query($queryString, $params);
     //print_r($result);
     $resultTotal = count($result);
-
     $totalGames = $db->queryFirstColumn("SELECT COUNT(g_id)
         FROM games
         WHERE author= :author
         AND g_swf = :g_swf
         AND isdeleted = :isdeleted", 0, [
-        ':g_swf' => $_GET['version'],
+        ':g_swf' => $version,
         ':author' => $author,
         ':isdeleted' => '0'
         ]);
@@ -62,7 +60,7 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $string .= '</projects>';
     print($string);
 } else {
-    if ($_GET['version'] == "7") {
+    if ($version == "7") {
         echo '<projects total="1" start="0" num="10"><project id="notset" src="notset" title="No demo games for you mwahahaha" time="157774694400" archived="0"/></projects>';
     } elseif ($_GET['PHPSESSID'] != "demo") {
         echo '<projects total="1" start="0" num="10"><project id="notset" src="notset" title="The session ID is incorrect!" date="Log out and log in again." archived="0"/></projects>';
