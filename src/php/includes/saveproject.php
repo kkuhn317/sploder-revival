@@ -21,7 +21,8 @@ function saveProject(int $g_swf): void
         if (!isset($_GET['projid'])) {
             $title = urldecode($xml2->attributes()['title']);
             if($g_swf == 1){
-                $xml2->attributes()['title'] = $title; // Fix the title in the XML as well... Screw geoff
+                $title = urldecode($title); // Screw you geoff
+                $xml2->attributes()['title'] = $title; // Fix the title in the XML as well... Screw geoff again!!
             }
             $qs = "INSERT INTO games (author, user_id, title, date, description, g_swf, ispublished, isdeleted, isprivate, comments) 
                 VALUES (:username, :user_id, :title, :date, :description, :g_swf, :ispublished, :isdeleted, :isprivate, :comments)
