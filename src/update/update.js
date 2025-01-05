@@ -1,9 +1,5 @@
-function start_download()
-{
+function start_download() {
     const progressBar = document.getElementById('progress-bar');
-
-
-    const downloadUrl = 'files/Sploder.exe'; // Replace with your file download URL
 
     fetch(downloadUrl)
         .then(response => {
@@ -19,8 +15,7 @@ function start_download()
 
             return new ReadableStream({
                 start(controller) {
-                    function push()
-                    {
+                    function push() {
                         reader.read().then(({ done, value }) => {
                             if (done) {
                                 controller.close();
@@ -41,15 +36,18 @@ function start_download()
                                     // Revoke the object URL after the download
                                     URL.revokeObjectURL(url);
                                 }, 1000); // Wait for 1 second (1000 milliseconds)
+                            } else {
+                                if (value) {
+                                    chunks.push(value);
+                                    receivedLength += value.length;
+
+                                    const percentComplete = (receivedLength / contentLength) * 100;
+                                    progressBar.style.width = `${percentComplete}%`;
+
+                                    controller.enqueue(value);
+                                    push();
+                                }
                             }
-                            chunks.push(value);
-                            receivedLength += value.length;
-
-                            const percentComplete = (receivedLength / contentLength) * 100;
-                            progressBar.style.width = `${percentComplete} % `;
-
-                            controller.enqueue(value);
-                            push();
                         }).catch(err => console.error(err));
                     }
                     push();
@@ -57,4 +55,4 @@ function start_download()
             });
         })
         .catch(err => console.error('Error during fetch:', err));
-};
+}

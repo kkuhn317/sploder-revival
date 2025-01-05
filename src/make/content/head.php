@@ -67,7 +67,7 @@ function getPhotos() {
 
 function launchHelp() {
 
-    popUpWindow("help_inline.php?PHPSESSID=", Math.floor(screen.width / 2) - 275, Math.floor(screen.height / 2) -
+    popUpWindow("help_inline.php?&inLauncher=1", Math.floor(screen.width / 2) - 275, Math.floor(screen.height / 2) -
         225, 550, 450);
 
 }

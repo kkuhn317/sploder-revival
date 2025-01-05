@@ -9,15 +9,11 @@
 
 <?php
 if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
-    echo '<script src="/chrome/loader.js"></script><link rel="canonical" href="https://sploder.xyz/" />';
+    echo '<script src="/chrome/loader.js"></script>
+    <link rel="stylesheet" href="/css/addressbar.css" type="text/css" />';
 }
 ?>
 
+<link rel="canonical" href="https://sploder.xyz/" />
 <link rel="alternate nofollow" type="application/rss+xml" title="RSS" href="/gamefeed.php" />
 <link href='https://fonts.googleapis.com/css?family=Raleway:800,700,500' rel='stylesheet' type='text/css' />
-
-
-
-<script type="text/javascript">
-var _sf_startpt = (new Date()).getTime()
-</script>

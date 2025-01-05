@@ -13,15 +13,7 @@ require('logincheck.php');
 
 
     <?php include('../content/onlinechecker.php'); ?>
-
-
-    <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
-    </script>
-
-
-
-
+    <script type="text/javascript" src="login.js"></script>
 
 </head>
 <?php include('../content/addressbar.php'); ?>
@@ -47,16 +39,6 @@ require('logincheck.php');
 
                 </p>
 
-
-
-                <script>
-                window.onload = function() {
-
-                    document.getElementById("login_username").focus();
-
-                }
-                </script>
-
                 <?php
                 if (isset($_GET['err'])) {
                     $err = $_GET['err'];
@@ -64,7 +46,7 @@ require('logincheck.php');
                 if (isset($err)) {
                     if ($err == "no") { ?>
                 <p class="alert">The username and/or password was incorrect!</p>
-                    <?php }
+                <?php }
                 } ?>
 
 
@@ -94,7 +76,8 @@ require('logincheck.php');
 
 
 
-                        <input type="submit" name="Submit" class="postbutton loginbutton" value="Log in " />
+                        <input type="submit" onclick="storeUsername()" name="Submit" class="postbutton loginbutton"
+                            value="Log in " />
 
                     </p>
 

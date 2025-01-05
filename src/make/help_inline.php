@@ -1,3 +1,4 @@
+<?php include_once('../config/env.php'); ?>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -513,10 +514,9 @@
     <br />
     <h2>Further Help</a></h2>
     <p>That's it! There is a lot more to this creator once you get used to the way it works. If you have questions, the
-        best place to ask is in the <a href="https://discord.gg/cHGz362sdC/" target="_blank">Discord server</a>.</p>
-    <div style="float: right; width: 120px;">
-        <p><a href="javascript: close();">Close Window</a></p>
-    </div>
+        best place to ask is in the <a href="https://discord.com/invite/<?= getenv('DISCORD_INVITE') ?>/"
+            target="_blank">Discord server</a>.
+    </p>
     <p><a href="#top">Back to Top</a></p>
 
 </body>
