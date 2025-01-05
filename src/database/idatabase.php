@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . "/PaginationData.php");
+
 /**
  * Handles abstractions over querying a database
  */
@@ -31,6 +33,19 @@ interface IDatabase
    * @return array
    */
     public function queryFirstColumn(string $query, int $column = 0, array $parameters = null): mixed;
+
+    /**
+     * Returns a $query results as paginated + metadata on the pagination.
+     *
+     * Do not pass in $limit and $offset into the parameters, as this will be injected for you.
+     *
+     * @param $query
+     * @param $limit
+     * @param $offset
+     * @param $parameters
+     * @return PaginationData
+     */
+    public function queryPaginated(string $query, int $page, int $itemsPerPage, $parameters = null): PaginationData;
 
   /**
    * Executes a $query with $parameters and returns if the query succeeded or not
