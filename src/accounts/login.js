@@ -42,22 +42,20 @@ async function setUsername() {
         const store = transaction.objectStore('loginStore');
         const request = store.get('username');
 
-        request.onsuccess = (event) => {
-            const result = event.target.result;
-            if (result) {
-                const username = result.value;
-                document.getElementById('login_username').value = username;
-                // If username is not null, focus on password
-                if (username != null) {
-                    document.getElementById('login_password').focus();
-                }
-            }
-        };
+        const result = await new Promise((resolve, reject) => {
+            request.onsuccess = (event) => resolve(event.target.result);
+            request.onerror = (event) => reject(event.target.error);
+        });
 
-        request.onerror = (event) => {
-            console.error('Error retrieving username:', event.target.error);
-        };
+        if (result) {
+            const username = result.value;
+            document.getElementById('login_username').value = username;
+            // If username is not null, focus on password
+            if (username != null) {
+                document.getElementById('login_password').focus();
+            }
+        }
     } catch (err) {
-        console.error('Error setting username:', err);
+        console.error('Error retrieving username:', err);
     }
 }
