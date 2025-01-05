@@ -13,8 +13,9 @@ class RepositoryManagerTests extends TestCase
         $this->database = $this->createMock(IDatabase::class);
     }
 
-    public function testStaticInitialization(): void
+    public function test_Get_NotNull(): void
     {
+        putenv("ORIGINAL_MEMBERS_DB=\"foobar\"");
         $value = RepositoryManager::get();
         $this->assertNotNull($value);
     }

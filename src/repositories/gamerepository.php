@@ -1,5 +1,6 @@
 <?php
 
+require_once(__DIR__ . "/../database/PaginationData.php");
 require_once(__DIR__ . "/../database/idatabase.php");
 require_once(__DIR__ . "/igamerepository.php");
 
@@ -63,17 +64,13 @@ where g_id = :g_id
         return new GameData($gameInfo['author'], round($gameInfo['difficulty']), $avgScore);
     }
 
-    public function getGameTags(int $perPage, int $offset): GameTags
+    public function getGameTags(int $offset, int $perPage): PaginationData
     {
-        $tags = $this->db->query("SELECT DISTINCT tag FROM game_tags ORDER BY tag LIMIT :perpage OFFSET :offset", [
-            ':perpage' => $perPage,
-            ':offset' => $offset,
-        ]);
-
-      // Delete the below line and just get the length of $tags?
-        $total = $this->db->queryFirstColumn("SELECT COUNT(DISTINCT tag) as total_unique_tags FROM game_tags");
-
-        return new GameTags($tags, $total);
+        return $this->db->queryPaginated(
+            "SELECT DISTINCT tag FROM game_tags ORDER BY tag",
+            $offset,
+            $perPage
+        );
     }
 
     public function getUserId(int $gameId): string
@@ -89,6 +86,72 @@ where g_id = :g_id
         return $this->db->query($query);
     }
 
+    public function getPendingDeletionGames(): array
+    {
+        return $this->db->query("SELECT
+            games.g_id, games.date, MIN(pending_deletions.timestamp) as deletion_date, g_swf, author, title, userid as user_id, reason, views
+            FROM pending_deletions
+            JOIN games ON games.g_id = pending_deletions.g_id 
+            JOIN members ON games.author = members.username 
+            WHERE pending_deletions.timestamp = (SELECT MIN(timestamp) FROM pending_deletions pd WHERE pd.g_id = games.g_id)
+            GROUP BY games.g_id, g_swf, author, title, userid, reason, views");
+    }
+
+    public function getGamesFromUser(string $userName, int $offset, int $perPage): PaginationData
+    {
+        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
+            FROM games g 
+            LEFT JOIN votes r ON g.g_id = r.g_id 
+            WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.author = :userName
+            GROUP BY g.g_id 
+            ORDER BY g.g_id DESC";
+
+        return $this->db->queryPaginated($qs, $offset, $perPage, [
+            ':userName' => $userName,
+        ]);
+    }
+
+    public function getGamesFromUserAndGameSearch(string $userName, string $game, int $offset, int $perPage): PaginationData
+    {
+        $qs = 'SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
+            FROM games g 
+            LEFT JOIN votes r ON g.g_id = r.g_id 
+            WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.author = :userName
+            AND SIMILARITY(title, :game) > 0.3
+            GROUP BY g.g_id 
+            ORDER BY g.g_id DESC';
+
+        return $this->db->queryPaginated($qs, $offset, $perPage, [
+            ':userName' => $userName,
+            ':game' => $game,
+        ]);
+    }
+
+    public function getGamesNewest(int $offset, int $perPage): PaginationData
+    {
+        return $this->db->queryPaginated("SELECT g.g_id, g.author, g.title, g.description, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
+            FROM games g 
+            LEFT JOIN votes r ON g.g_id = r.g_id 
+            WHERE g.ispublished = 1
+            AND g.isprivate = 0
+            and g.isdeleted = 0
+            GROUP BY g.g_id 
+            ORDER BY g.g_id DESC", $offset, $perPage);
+    }
+
+    public function removeOldPendingDeletionGames(int $daysOld): void
+    {
+        // Remove pending deletions older than 14 days
+        $this->db->execute("DELETE FROM pending_deletions
+            WHERE timestamp < NOW() - MAKE_INTERVAL(DAYS => :daysOld)", [
+            ':daysOld' => $daysOld
+        ]);
+    }
+
+    // TODO: move this to the contest repository
     public function getContestWinners(int $contestId): array
     {
         if ($contestId < 0) {
@@ -104,5 +167,24 @@ where g_id = :g_id
 		) AS recent_contests
 		JOIN games ON recent_contests.g_id = games.g_id;";
         return $this->db->query($query, ['id' => $contestId]);
+    }
+
+    public function getTotalPublishedGameCount(): int
+    {
+        return $this->db->queryFirstColumn("SELECT COUNT(g_id)
+            FROM games
+            WHERE ispublished = 1
+            AND isprivate = 0", 0);
+    }
+
+    public function getTotalMetricsForUser(string $userName): GameMetricsForUser
+    {
+        $metrics = $this->db->queryFirst("SELECT count(g_id) as totalGames, sum(views) as totalViews
+            FROM games
+            WHERE author=:user
+            AND isdeleted=0", [
+            ':user' => $userName,
+        ], PDO::FETCH_NUM);
+        return new GameMetricsForUser($metrics[0], $metrics[1]);
     }
 }
