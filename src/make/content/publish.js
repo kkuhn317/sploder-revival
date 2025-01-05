@@ -59,7 +59,7 @@ function sendTags() {
     // For a tag to be valid, it must be less than 30 characters long
     // It also must have only letters and numbers
     var tagArray = tags.split(' ');
-    for (const tag of tagArray) {
+    for (let tag of tagArray) {
         // If a tag is empty, remove it from the array
         if (tag == '') {
             tagArray.splice(tagArray.indexOf(tag), 1);
