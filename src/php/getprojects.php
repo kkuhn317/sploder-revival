@@ -12,7 +12,7 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $start = $_GET['start'] ?? 0;
     if(in_array(
         $version,
-        ["5", "3", "7"]
+        ["5", "7"] // Turns out that literally only the Physics and Arcade support dynamically loading the games lst
     )){
         $newFormat = true;
     } else {
