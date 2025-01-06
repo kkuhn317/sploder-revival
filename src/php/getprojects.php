@@ -5,11 +5,11 @@ ini_set('display_errors', 1);
 session_id($_GET['PHPSESSID']);
 session_start();
 header("Content-type: text/xml");
+$version = $_GET['version'] ?? 1;
 if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $author = $_SESSION["username"];
     $num = $_GET['num'] ?? 10;
     $start = $_GET['start'] ?? 0;
-    $version = $_GET['version'] ?? 1;
     if(in_array(
         $version,
         ["5", "3", "7"]
