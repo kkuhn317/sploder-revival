@@ -41,7 +41,7 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     ]);
     $project_path = "../users/user" . $_SESSION['userid'] . "/projects/proj" . $id . "/";
     file_put_contents($project_path . "game.xml", $xml);
-    echo '<message result="success" id="proj' . $id . '" pubkey="' . $_SESSION['userid'] . '_' . $id . '" message=""/>';
+    echo '<message result="success" id="proj' . $id . '" pubkey="' . $_SESSION['userid'] . '_' . $id . '" message="Success"/>';
 } else {
     echo '<message result="failed" message="The session ID is incorrect! Log out and log in again."/>';
 }
