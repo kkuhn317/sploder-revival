@@ -1,12 +1,12 @@
 <?php
-// filepath: /mnt/c/Users/Saptarshi/Documents/GitHub/sploder-revival/src/make/php/removehardcode.php
 
+require_once('../../config/env.php');
 if (!isset($_GET['url'])) {
     die('No target URL set.');
 }
 
 $url = $_GET['url'];
-$domain = 'http://sploder.local';
+$domain = getenv('DOMAIN_NAME');
 
 // Parse the URL to separate the path and query parameters
 $parsed_url = parse_url($url);
