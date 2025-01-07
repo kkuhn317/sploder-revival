@@ -2,10 +2,14 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-session_id($_GET['PHPSESSID']);
-session_start();
 header("Content-type: text/xml");
 $version = $_GET['version'] ?? 1;
+if(!isset($_GET['PHPSESSID']) && $version == 7){
+    showArcadeDemoGames();
+    exit;
+}
+session_id($_GET['PHPSESSID']);
+session_start();
 if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $author = $_SESSION["username"];
     $num = $_GET['num'] ?? 10;
@@ -60,11 +64,13 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $string .= '</projects>';
     print($string);
 } else {
-    if ($version == "7") {
-        echo '<projects total="1" start="0" num="10"><project id="notset" src="notset" title="No demo games for you mwahahaha" time="157774694400" archived="0"/></projects>';
-    } elseif ($_GET['PHPSESSID'] != "demo") {
+    if ($_GET['PHPSESSID'] != "demo") {
         echo '<projects total="1" start="0" num="10"><project id="notset" src="notset" title="The session ID is incorrect!" date="Log out and log in again." archived="0"/></projects>';
     } else {
         echo '<projects total="1" start="0" num="10"><project id="notset" src="notset" title="The creator is in demo mode!" date="Loading is disabled." archived="0"/></projects>';
     }
+}
+
+function showArcadeDemoGames():void {
+    echo '<projects total="1" start="0" num="10"><project id="notset" src="notset" title="No demo games for now, sad face" time="'.time().'" archived="0"/></projects>';
 }
