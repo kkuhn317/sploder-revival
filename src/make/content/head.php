@@ -139,22 +139,28 @@ if (userid != "demo") {
 }
 
 setup_exit();
-<?php if (!isset($_SESSION['username'])) { ?>
 var flashvars = {
+    <?php
+        if (strpos($_SERVER['REQUEST_URI'], 'arcade.php') !== false) {
+            echo 'v: "15",';
+        //pr: "15.2",';
+        }
+        ?>
+    <?php if (!isset($_SESSION['username'])) { ?>
     PHPSESSID: "demo",
     userid: "demo",
     username: "demo",
     creationdate: "20070102003743"
-};
-<?php } else { ?>
-var flashvars = {
+
+    <?php } else { ?>
     PHPSESSID: "<?php echo $_SESSION['PHPSESSID']; ?>",
     userid: "<?php echo $_SESSION['userid'] ?>",
     username: "<?php echo $_SESSION['username'] ?>",
     creationdate: "<?php echo time() ?>"
-};
 
-<?php } ?>
+
+    <?php } ?>
+};
 
 var params = {
     menu: "false",
