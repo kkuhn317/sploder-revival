@@ -53,27 +53,25 @@
 
     // Make the flashcontent think that there is always a mouse cursor inside the window
     // This is done by blocking events of the mouse outside the flashwindow to be sent to the flashwindow
-    function blockMouseEvents(e) {
-        var flashcontent = document.getElementById("flashcontent");
-        var flashcontentRect = flashcontent.getBoundingClientRect();
-        var searchBox = document.getElementById("search-box");
-        var searchBoxRect = searchBox.getBoundingClientRect();
-        var mouseX = e.clientX;
-        var mouseY = e.clientY;
 
-        // Check if the mouse is within the flash content area
-        if (mouseX < flashcontentRect.left || mouseX > flashcontentRect.right || mouseY < flashcontentRect.top || mouseY > flashcontentRect.bottom) {
-            // Allow mouse events if within the search box area
-            if (!(mouseX >= searchBoxRect.left && mouseX <= searchBoxRect.right && mouseY >= searchBoxRect.top && mouseY <= searchBoxRect.bottom)) {
-                e.preventDefault();
-            }
+    function blockMouseEvents(e) {
+    var flashcontent = document.getElementById("flashcontent");
+    var flashcontentRect = flashcontent.getBoundingClientRect();
+    var mouseX = e.clientX;
+    var mouseY = e.clientY;
+    if (mouseX < flashcontentRect.left || mouseX> flashcontentRect.right || mouseY < flashcontentRect.top || mouseY>
+        flashcontentRect.bottom) {
+            e.preventDefault();
         }
     }
 
     document.addEventListener("mousedown", blockMouseEvents, true);
     document.addEventListener("mouseup", blockMouseEvents, true);
-    swfobject.embedSWF("/swf/creator7preloader2.swf", "flashcontent" , "860" , "626" , "10.2.152"
-    , "/swfobject/expressInstall.swf" , flashvars, params); </script>
+
+
+    swfobject.embedSWF("/swf/creator7preloader2.swf", "flashcontent", "860", "626", "10.2.152",
+    "/swfobject/expressInstall.swf", flashvars, params);
+</script>
 
 </head>
 <?php include('../content/addressbar.php'); ?>
