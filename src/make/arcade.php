@@ -49,8 +49,6 @@
     v: "1"
     };
 
-    disable_scroll();
-
     // Make the flashcontent think that there is always a mouse cursor inside the window
     // This is done by blocking events of the mouse outside the flashwindow to be sent to the flashwindow
 
