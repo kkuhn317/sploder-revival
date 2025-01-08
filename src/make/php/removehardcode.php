@@ -23,7 +23,7 @@ $whitelisted_paths = [
 
 if (!in_array($path, $whitelisted_paths)) {
     // Check whether URL is in the format of
-    // /users/user1//images/proj110/thumbnail.png
+    // /users/userx/images/projx/thumbnail.png
     // using regex
     if (!preg_match('/^\/users\/[^\/]+\/images\/[^\/]+\/thumbnail\.png$/', $path)) {
         die('URL not whitelisted.');
