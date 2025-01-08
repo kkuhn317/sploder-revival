@@ -12,14 +12,20 @@ $domain = getenv('DOMAIN_NAME');
 $parsed_url = parse_url($url);
 $path = $parsed_url['path'];
 $query = isset($parsed_url['query']) ? $parsed_url['query'] : '';
+// Whitelist specific paths
 
-// Build the full URL
-if (strpos($path, '/') === 0) {
-    $prefix = '';
-} else {
-    $prefix = '/make/';
+$whitelisted_paths = [
+    '/php/getproject.php',
+    '/php/getprojects.php',
+    '/php/saveproject7.php',
+    '/php/savegamedata7.php'
+];
+
+if (!in_array($path, $whitelisted_paths)) {
+    die('URL not whitelisted.');
 }
-$target_url = $domain . $prefix . $path;
+
+$target_url = $domain . $path;
 
 // Merge the query parameters
 $get_data = $_GET;
