@@ -4,11 +4,13 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 header("Content-type: text/xml");
 $version = $_GET['version'] ?? 1;
-if(!isset($_GET['PHPSESSID']) && $version == 7){
+if((($_GET['PHPSESSID'] ?? null) == 'demo' || !isset($_GET['PHPSESSID'])) && $version == 7){
     showArcadeDemoGames();
     exit;
 }
-session_id($_GET['PHPSESSID']);
+if (isset($_GET['PHPSESSID'])) {
+    session_id($_GET['PHPSESSID']);
+}
 session_start();
 if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $author = $_SESSION["username"];
@@ -64,7 +66,7 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $string .= '</projects>';
     print($string);
 } else {
-    if ($_GET['PHPSESSID'] != "demo") {
+    if (($_GET['PHPSESSID'] ?? null) != "demo") {
         echo '<projects total="1" start="0" num="10"><project id="notset" src="notset" title="The session ID is incorrect!" date="Log out and log in again." archived="0"/></projects>';
     } else {
         echo '<projects total="1" start="0" num="10"><project id="notset" src="notset" title="The creator is in demo mode!" date="Loading is disabled." archived="0"/></projects>';
