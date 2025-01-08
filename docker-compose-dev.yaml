@@ -7,6 +7,11 @@ services:
     depends_on:
      - "db"
     environment:
+      DOMAIN_NAME: http://mydomain.com
+      # DO NOT INCLUDE THE 'https://discord.gg/' PART
+      # DO NOT INCLUDE THE 'https://discord.com/invite/' PART
+      # example: cHGz362sdC
+      DISCORD_INVITE: yourInviteCode
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       POSTGRES_DB: sploder
