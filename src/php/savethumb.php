@@ -7,6 +7,12 @@ $data = file_get_contents("php://input");
 $id = (int)filter_var(substr($_GET['projid'], 4), FILTER_SANITIZE_NUMBER_INT);
 $size = $_GET['size'];
 $image_path = "../users/user" . $_SESSION['userid'] . "/images/proj" . $id . "/";
+
+if (!@imagecreatefromstring($data)) {
+    echo '<message result="error" message="Invalid image data"/>';
+    exit();
+}
+
 if ($size == "small") {
     file_put_contents($image_path . "thumbnail.png", $data);
 } else {
