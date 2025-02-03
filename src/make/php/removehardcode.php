@@ -12,8 +12,8 @@ $domain = getenv('DOMAIN_NAME');
 $parsed_url = parse_url($url);
 $path = $parsed_url['path'];
 $query = isset($parsed_url['query']) ? $parsed_url['query'] : '';
-// Whitelist specific paths
 
+// Whitelist specific paths
 $whitelisted_paths = [
     '/php/getproject.php',
     '/php/getprojects.php',
@@ -22,7 +22,12 @@ $whitelisted_paths = [
 ];
 
 if (!in_array($path, $whitelisted_paths)) {
-    die('URL not whitelisted.');
+    // Check whether URL is in the format of
+    // /users/userx/images/projx/thumbnail.png
+    // using regex
+    if (!preg_match('/^\/users\/[^\/]+\/images\/[^\/]+\/thumbnail\.png$/', $path)) {
+        die('URL not whitelisted.');
+    }
 }
 
 $target_url = $domain . $path;

@@ -49,11 +49,36 @@
     v: "1"
     };
 
-    disable_scroll();
+    // Make the flashcontent think that there is always a mouse cursor inside the window
+    // This is done by blocking events of the mouse outside the flashwindow to be sent to the flashwindow
+
+    function blockMouseEvents(e) {
+    var flashcontent = document.getElementById("flashcontent");
+    if (!flashcontent) return;
+
+    var flashcontentRect = flashcontent.getBoundingClientRect();
+    var mouseX = e.clientX;
+    var mouseY = e.clientY;
+
+    // Block only if the mouse is outside flashcontent
+    if (mouseX < flashcontentRect.left || mouseX> flashcontentRect.right ||
+        mouseY < flashcontentRect.top || mouseY> flashcontentRect.bottom) {
+
+        // Check if the event target is not a form control, link, or interactive element
+        var interactiveTags = ['A', 'BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'];
+        if (!interactiveTags.includes(e.target.tagName)) {
+            e.preventDefault();
+            }
+        }
+    }
+
+    document.addEventListener("mousedown", blockMouseEvents, true);
+    document.addEventListener("mouseup", blockMouseEvents, true);
 
     swfobject.embedSWF("/swf/creator7preloader2.swf", "flashcontent", "860", "626", "10.2.152",
     "/swfobject/expressInstall.swf", flashvars, params);
-    </script>
+
+</script>
 
 </head>
 <?php include('../content/addressbar.php'); ?>
