@@ -8,4 +8,4 @@ The contents of this directory, `src/swf`, are subject to the following license 
 
 ## License Terms
 
-All files within this directory are copyrighted materials. Geoffrey P. Gaudreault holds all rights to this work, which means that reproduction, distribution, or modification of any content within this directory is not permitted without explicit written permission from Geoffrey P. Gaudreault.
+All files within this directory are copyrighted materials. Geoffrey P. Gaudreault holds all rights to this work, and any reproduction, distribution, or modification of the content within this directory is subject to the will of Geoffrey P. Gaudreault.
