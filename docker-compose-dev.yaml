@@ -1,11 +1,17 @@
 services:
   sploder-revival:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: sploder-revival
     container_name: sploder_revival
     ports:
      - "8010:80"
     depends_on:
      - "db"
+    volumes:
+      - ./src:/var/www/html # DEV-ONLY: No need to rebuild source for modifying code
+      - ./vendor:/var/www/html/vendor # DEV-ONLY: No need to rebuild source for modifying code
     environment:
       DOMAIN_NAME: http://mydomain.com
       # DO NOT INCLUDE THE 'https://discord.gg/' PART
@@ -34,9 +40,9 @@ services:
       POSTGRES_USER: sploder 
       POSTGRES_PASSWORD: geoff
     volumes:
-      # - ./db:/docker-entrypoint-initdb.d  # Mount the backup file into the container
       - ./db:/bootstrap  # Mount the backup file into the container
       - ./pgdata:/var/lib/postgresql/data  # Persistent storage for the database
+      # - ./db:/docker-entrypoint-initdb.d  # Mount the backup file into the container
     ports:
       - "5432:5432"
     healthcheck:
