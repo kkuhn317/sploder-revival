@@ -88,11 +88,13 @@ class GameListRenderService
                                         <?php if ($includeBoost) { echo '&nbsp;'; } ?>
                                         <input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">
                                     <?php } ?>
+
+                                
                                 </div>
                             <?php } ?>
                             <div class="spacer">&nbsp;</div>
                             <?php if ($reason !== null) {
-                                nl2br(htmlspecialchars($reason));
+                                echo nl2br(htmlspecialchars($reason));
                             }?>
                         </div>
                     </div>
