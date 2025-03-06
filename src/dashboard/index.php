@@ -91,11 +91,12 @@ $newFriends = $db->queryFirstColumn("SELECT count(*) FROM friend_requests WHERE 
           if ($newFriends > 0) {
               echo 'class="wow"';
           } else {
+            echo 'class="meh"';
             $newFriends = 'No';
           }
           ?>
           >
-            <a href="../friends/index.php"><?= $newFriends != 'No' ? '<strong>' : '' ?><?= $newFriends ?><?= $newFriends != 'No' ? '</strong>' : '' ?> new friend request<?= $newFriends == 1 ? '' : 's' ?>!</a>
+            <a <?= $newFriends == 'No' ? 'style="color:#666"' : '' ?> href="../friends/index.php"><?= $newFriends != 'No' ? '<strong>' : '' ?><?= $newFriends ?><?= $newFriends != 'No' ? '</strong>' : '' ?> new friend request<?= $newFriends == 1 ? '' : 's' ?>!</a>
           </li>
           <li>
             <a href="../make/index.php">Make
