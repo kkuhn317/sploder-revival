@@ -64,7 +64,7 @@ class GameListRenderService
                         <p class="gamevote">
                             <img src="<?= $starUrl ?>" width="64" height="12" border="0" alt="'<?= $avgRating ?>' stars"/>
                             <?= $includeTotalVotes ?> vote<?= ($totalVotes == 1 ? '' : '') ?>
-                        <p class="gameviews"><?= $views ?> view <?= ($views == 1) ? 's' : '' ?></p>
+                        <p class="gameviews"><?= $views ?> view<?= ($views == 1) ? '' : 's' ?></p>
                         <?= $anyModification ? '<div class="spacer">&nbsp;</div>' : '' ?>
                         <?php if ($includeDelete) {
                             ?>
