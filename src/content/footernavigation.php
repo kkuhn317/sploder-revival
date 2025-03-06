@@ -12,5 +12,13 @@
         <li><a href="/credits.php">Credits</a></li>
         <li><a href="/legal/privacypolicy.php">Privacy Policy</a></li>
         <li><a href="https://discord.com/invite/<?= getenv('DISCORD_INVITE') ?>/" target="_blank">Discord</a></li>
-    </ul><br><br><i>All assets are the property of neurofuzzy</i>
+    </ul><br><br><i>All assets are the property of neurofuzzy
+        <?php
+        $public = getenv('NETWORKED');
+        if($public == 'true') {
+            $repository = getenv('REPOSITORY');
+            echo " | <a href='$repository' target='_blank'>Source code</a>";
+        }
+        ?>
+    </i>
 </div>
