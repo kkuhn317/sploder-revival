@@ -9,6 +9,10 @@ $db = getDatabase();
 $level = $db->queryFirstColumn("SELECT level FROM members WHERE username=:user LIMIT 1", 0, [
     ':user' => $username
 ]);
+// Get new friend requests not viewed
+$newFriends = $db->queryFirstColumn("SELECT count(*) FROM friend_requests WHERE receiver_id=:user AND is_viewed=false", 0, [
+    ':user' => $_SESSION['userid']
+]);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -82,9 +86,16 @@ $level = $db->queryFirstColumn("SELECT level FROM members WHERE username=:user L
           </div>
         </div>
         <ul class="actions">
-          <li class="wow">
-            <a href="../friends/index.php"><strong>?</strong>
-              new friend requests!</a>
+          <li
+          <?php
+          if ($newFriends > 0) {
+              echo 'class="wow"';
+          } else {
+            $newFriends = 'No';
+          }
+          ?>
+          >
+            <a href="../friends/index.php"><?= $newFriends != 'No' ? '<strong>' : '' ?><?= $newFriends ?><?= $newFriends != 'No' ? '</strong>' : '' ?> new friend request<?= $newFriends == 1 ? '' : 's' ?>!</a>
           </li>
           <li>
             <a href="../make/index.php">Make
