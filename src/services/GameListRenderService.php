@@ -48,7 +48,7 @@ class GameListRenderService
                     <div class="game">
                         <div class="photo">
                             <a
-                                href="/games/play.php?&id=<?= $id ?>&g_swf=<?= $swf ?>&title=<?= $title ?>&pub=0">
+                                href="/games/play.php?&s=<?= $userId ?>_<?= $id ?>">
                                 <img src="/users/user<?= $userId ?>/images/proj<?= $id ?>/thumbnail.png"
                                     width="80" height="80" />
                             </a>
@@ -57,7 +57,7 @@ class GameListRenderService
                             <p class="gamedate"><?= $gameDate ?></p>
                             <h4>
                                 <a
-                                    href="/games/play.php?&id=<?= $id ?>&g_swf=<?= $swf ?>&title=<?= $title ?>&pub=0"><?= urldecode($title) ?>
+                                    href="/games/play.php?&s=<?= $userId ?>_<?= $id ?>"><?= urldecode($title) ?>
                                 </a>
                             </h4>
                             <?php if ($includeUsername) { ?>
