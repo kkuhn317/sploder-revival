@@ -65,10 +65,14 @@ class GameListRenderService
                                     <a href="../../members/index.php?u=<?= $author ?>"><?= $author ?></a>
                                 </h5>
                             <?php } ?>
+                            <?php
+                            if ($includeTotalVotes) {
+                            ?>
                             <p class="gamevote">
                                 <img src="<?= $starUrl ?>" width="64" height="12" border="0" alt="'<?= $avgRating ?>' stars"/>
-                                <?= $includeTotalVotes ?> vote<?= ($totalVotes == 1 ? '' : 's') ?>
+                                <?= $totalVotes ?> vote<?= ($totalVotes == 1 ? '' : 's') ?>
                             </p>
+                            <?php } ?>
                             <p class="gameviews"><?= $views ?> view<?= ($views == 1) ? '' : 's' ?></p>
                             <?php if ($anyModification) { ?>
                                 <div class="game-buttons">
