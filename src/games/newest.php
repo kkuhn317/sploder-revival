@@ -18,7 +18,7 @@ $total = $gameRepository->getTotalPublishedGameCount();
     <?php include('../content/head.php') ?>
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
+        var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
 </head>
@@ -37,22 +37,22 @@ $total = $gameRepository->getTotalPublishedGameCount();
                 sure you
                 vote for your favorites! To see
                 the first games made on Sploder Revival, go to the <a
-                    href="?o=<?php echo max(0, floor(($total - 1) / $perPage) * $perPage); ?>">end of
+                    href="?o=<?php echo max(0, floor(($total - 1) / $perPage)); ?>">end of
                     the
                     list</a>.
             </p>
             <?php
-                $gameListRenderService->renderPartialViewForNewestGames($offset, $perPage);
+            $gameListRenderService->renderPartialViewForNewestGames($offset, $perPage);
             ?>
-            </div>
-            <div class="spacer">&nbsp;</div>
-        </div>
-        <div id="sidebar">
-            <br /><br /><br />
-            <div class="spacer">&nbsp;</div>
         </div>
         <div class="spacer">&nbsp;</div>
-        <?php include('../content/footernavigation.php') ?>
+    </div>
+    <div id="sidebar">
+        <br /><br /><br />
+        <div class="spacer">&nbsp;</div>
+    </div>
+    <div class="spacer">&nbsp;</div>
+    <?php include('../content/footernavigation.php') ?>
 </body>
 
 </html>
