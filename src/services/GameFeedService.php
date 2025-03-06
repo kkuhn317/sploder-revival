@@ -1,5 +1,7 @@
 <?php
 
+require(__DIR__ . "/../repositories/igamerepository.php");
+
 class GameFeedService
 {
     private readonly IGameRepository $gameRepository;
