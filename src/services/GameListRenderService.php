@@ -127,7 +127,7 @@ class GameListRenderService
         $this->renderPartialViewForGames(
             $games->data,
             "No games found!",
-            includeStyleWidth: true,
+            includeStyleWidth: false,
             includeDelete: false,
             includeBoost: false,
             includeChallenge: false,
