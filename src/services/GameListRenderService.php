@@ -53,49 +53,46 @@ class GameListRenderService
                                     width="80" height="80" />
                             </a>
                         </div>
-                        <p class="gamedate"><?= $gameDate ?></p>
-                        <h4>
-                            <a
-                                href="/games/play.php?&id=<?= $id ?>&g_swf=<?= $swf ?>&title=<?= $title ?>&pub=0"><?= urldecode($title) ?>
-                            </a>
-                        </h4>
-                        <?php if ($includeUsername) {
-                            ?>
-                        <h5>
-                            <a href="../../members/index.php?u=<?= $author ?>"><?= $author ?></a>
-                        </h5>
-                        <?php } ?>
-                        <p class="gamevote">
-                            <img src="<?= $starUrl ?>" width="64" height="12" border="0" alt="'<?= $avgRating ?>' stars"/>
-                            <?= $includeTotalVotes ?> vote<?= ($totalVotes == 1 ? '' : '') ?>
-                        <p class="gameviews"><?= $views ?> view<?= ($views == 1) ? '' : 's' ?></p>
-                        <?= $anyModification ? '<div class="spacer">&nbsp;</div>' : '' ?>
-                        <?php if ($includeDelete) {
-                            ?>
-                        <input title="Delete" type="button"
-                            onclick="delproj(<?= $id ?>,'<?= urldecode($title) ?>')"
-                            style="width:37px" value="Delete">&nbsp;
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if ($includeBoost) {
-                            echo '<input title="Boost" style="width:27px" class="boost_button" value="Boost">';
-                        }
-                        if ($includeChallenge) {
-                            if ($includeBoost) {
-                                echo '&nbsp;';
-                            }
-                            echo '<input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">';
-                        }
-                        ?>
-
-                        <div class="spacer">&nbsp;</div>
-                        <?php if ($reason !== null) {
-                            nl2br(htmlspecialchars($reason));
-                        }?>
+                        <div class="game-details">
+                            <p class="gamedate"><?= $gameDate ?></p>
+                            <h4>
+                                <a
+                                    href="/games/play.php?&id=<?= $id ?>&g_swf=<?= $swf ?>&title=<?= $title ?>&pub=0"><?= urldecode($title) ?>
+                                </a>
+                            </h4>
+                            <?php if ($includeUsername) { ?>
+                                <h5>
+                                    <a href="../../members/index.php?u=<?= $author ?>"><?= $author ?></a>
+                                </h5>
+                            <?php } ?>
+                            <p class="gamevote">
+                                <img src="<?= $starUrl ?>" width="64" height="12" border="0" alt="'<?= $avgRating ?>' stars"/>
+                                <?= $includeTotalVotes ?> vote<?= ($totalVotes == 1 ? '' : '') ?>
+                            </p>
+                            <p class="gameviews"><?= $views ?> view<?= ($views == 1) ? '' : 's' ?></p>
+                            <?php if ($anyModification) { ?>
+                                <div class="game-buttons">
+                                    <?php if ($includeDelete) { ?>
+                                        <input title="Delete" type="button"
+                                            onclick="delproj(<?= $id ?>,'<?= urldecode($title) ?>')"
+                                            style="width:37px" value="Delete">&nbsp;
+                                    <?php } ?>
+                                    <?php if ($includeBoost) { ?>
+                                        <input title="Boost" style="width:27px" class="boost_button" value="Boost">
+                                    <?php } ?>
+                                    <?php if ($includeChallenge) { ?>
+                                        <?php if ($includeBoost) { echo '&nbsp;'; } ?>
+                                        <input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
+                            <div class="spacer">&nbsp;</div>
+                            <?php if ($reason !== null) {
+                                nl2br(htmlspecialchars($reason));
+                            }?>
+                        </div>
                     </div>
-                        <?= ($counter % 2 == 1) ? '<div class="spacer">&nbsp;</div>' : "" ?>
+                    <?= ($counter % 2 == 1) ? '<div class="spacer">&nbsp;</div>' : "" ?>
                     <?php endforeach; ?>
                     <div class="spacer">&nbsp;</div>
                 </div>
@@ -103,7 +100,6 @@ class GameListRenderService
             <div class="spacer">&nbsp;</div>
         <?php
     }
-
     public function renderPartialViewForPendingDeletion(int $daysOldToDelete): void
     {
         $this->gameRepository->removeOldPendingDeletionGames($daysOldToDelete);
