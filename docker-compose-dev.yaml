@@ -14,6 +14,15 @@ services:
       - ./vendor:/var/www/html/vendor # DEV-ONLY: No need to rebuild source for modifying code
     environment:
       DOMAIN_NAME: http://mydomain.com
+      # Is this website public via a network?
+      # If you are running this PRIVATELY, set this to false
+      NETWORKED: true
+
+      # If yes, you must provide the source code to comply with the AGPL-3.0 license
+      # If you do not provide the source code, you are in violation of the AGPL-3.0 license
+      REPOSITORY: https://github.com/Sploder-Saptarshi/sploder-revival
+
+
       # DO NOT INCLUDE THE 'https://discord.gg/' PART
       # DO NOT INCLUDE THE 'https://discord.com/invite/' PART
       # example: cHGz362sdC
