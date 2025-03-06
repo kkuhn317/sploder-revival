@@ -18,6 +18,7 @@ class GameListRenderService
         bool $includeDelete,
         bool $includeBoost,
         bool $includeChallenge,
+        bool $includeUsername,
     ): void {
         if (count($games) <= 0) {
             echo "<p>$noGamesFoundMessage</p>";
@@ -58,9 +59,12 @@ class GameListRenderService
                                 href="/games/play.php?&id=<?= $id ?>&g_swf=<?= $swf ?>&title=<?= $title ?>&pub=0"><?= urldecode($title) ?>
                             </a>
                         </h4>
+                        <?php if ($includeUsername) {
+                            ?>
                         <h5>
                             <a href="../../members/index.php?u=<?= $author ?>"><?= $author ?></a>
                         </h5>
+                        <?php } ?>
                         <p class="gamevote">
                             <img src="<?= $starUrl ?>" width="64" height="12" border="0" alt="'<?= $avgRating ?>' stars"/>
                             <?= $includeTotalVotes ?> vote<?= ($totalVotes == 1 ? '' : '') ?>
@@ -110,7 +114,8 @@ class GameListRenderService
             includeStyleWidth: true,
             includeDelete: true,
             includeBoost: false,
-            includeChallenge: false
+            includeChallenge: false,
+            includeUsername: true
         );
     }
 
@@ -123,7 +128,8 @@ class GameListRenderService
             includeStyleWidth: true,
             includeDelete: false,
             includeBoost: false,
-            includeChallenge: false
+            includeChallenge: false,
+            includeUsername: false
         );
         addPagination($games->totalCount, $perPage, $offset);
     }
@@ -138,7 +144,8 @@ class GameListRenderService
             includeDelete: true,
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
-            includeChallenge: false
+            includeChallenge: false,
+            includeUsername: false
         );
         addPagination($games->totalCount, $perPage, $offset);
     }
@@ -153,7 +160,8 @@ class GameListRenderService
             includeDelete: true,
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
-            includeChallenge: false
+            includeChallenge: false,
+            includeUsername: false
         );
         addPagination($games->totalCount, $offset, $perPage);
     }
@@ -167,7 +175,8 @@ class GameListRenderService
             includeStyleWidth: false,
             includeDelete: false,
             includeBoost: false,
-            includeChallenge: false
+            includeChallenge: false,
+            includeUsername: true
         );
         addPagination($games->totalCount, $perPage, $offset);
     }
