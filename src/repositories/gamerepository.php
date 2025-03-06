@@ -97,13 +97,28 @@ where g_id = :g_id
             GROUP BY games.g_id, g_swf, author, title, userid, reason, views");
     }
 
-    public function getGamesFromUser(string $userName, int $offset, int $perPage): PaginationData
+    public function getPublicGamesFromUser(string $userName, int $offset, int $perPage): PaginationData
     {
         $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             LEFT JOIN votes r ON g.g_id = r.g_id 
             WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.author = :userName
+            GROUP BY g.g_id 
+            ORDER BY g.g_id DESC";
+
+        return $this->db->queryPaginated($qs, $offset, $perPage, [
+            ':userName' => $userName,
+        ]);
+    }
+
+    public function getAllGamesFromUser(string $userName, int $offset, int $perPage): PaginationData
+    {
+        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
+            FROM games g 
+            LEFT JOIN votes r ON g.g_id = r.g_id 
+            WHERE g.author = :userName
             GROUP BY g.g_id 
             ORDER BY g.g_id DESC";
 

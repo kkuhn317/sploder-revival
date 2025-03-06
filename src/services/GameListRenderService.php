@@ -123,7 +123,7 @@ class GameListRenderService
 
     public function renderPartialViewForUser(string $userName, int $offset, int $perPage): void
     {
-        $games = $this->gameRepository->getGamesFromUser($userName, $offset, $perPage);
+        $games = $this->gameRepository->getPublicGamesFromUser($userName, $offset, $perPage);
         $this->renderPartialViewForGames(
             $games->data,
             "No games found!",
@@ -138,7 +138,7 @@ class GameListRenderService
 
     public function renderPartialViewForMyGamesUser(string $userName, int $offset, int $perPage): void
     {
-        $games = $this->gameRepository->getGamesFromUser($userName, $offset, $perPage);
+        $games = $this->gameRepository->getAllGamesFromUser($userName, $offset, $perPage);
         $this->renderPartialViewForGames(
             $games->data,
             'You have not made any games yet.<div class="spacer">&nbsp;</div>',

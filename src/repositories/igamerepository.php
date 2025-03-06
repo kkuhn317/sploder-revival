@@ -59,7 +59,9 @@ interface IGameRepository
      * @param $offset
      * @return games
      */
-    public function getGamesFromUser(string $userName, int $offset, int $perPage): PaginationData;
+    public function getPublicGamesFromUser(string $userName, int $offset, int $perPage): PaginationData;
+
+    public function getAllGamesFromUser(string $userName, int $offset, int $perPage): PaginationData;
 
     public function getGamesFromUserAndGameSearch(string $userName, string $game, int $page, int $itemsPerPage): PaginationData;
 
