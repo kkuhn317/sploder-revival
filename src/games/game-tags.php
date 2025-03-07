@@ -40,7 +40,7 @@ $gameListRenderService = new GameListRenderService($gameRepository);
             </p>
             <?php
             $gameListRenderService->renderPartialViewForGamesWithTag($t, $offset, $perPage);
-            require('../content/mostpopulartags.php')
+            $gameListRenderService->renderPartialViewForMostPopularTags();
             ?>
 
         </div>
