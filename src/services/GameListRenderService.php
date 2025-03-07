@@ -182,4 +182,17 @@ class GameListRenderService
         );
         addPagination($games->totalCount, $perPage, $offset);
     }
+    public function renderPartialViewForGamesWithTag(string $tag, int $offset, int $perPage): void
+    {
+        $games = $this->gameRepository->getGamesWithTag($tag, $offset, $perPage);
+        $this->renderPartialViewForGames(
+            $games->data,
+            "No games found!",
+            includeStyleWidth: false,
+            includeDelete: false,
+            includeBoost: false,
+            includeChallenge: false,
+            includeUsername: true
+        );
+    }
 }

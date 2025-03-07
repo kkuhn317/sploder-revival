@@ -157,6 +157,22 @@ where g_id = :g_id
             ORDER BY g.g_id DESC", $offset, $perPage);
     }
 
+    public function getGamesWithTag(string $tag, int $offset, int $perPage): PaginationData
+    {
+        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
+            FROM games g 
+            JOIN game_tags gt ON g.g_id = gt.g_id 
+            LEFT JOIN votes r ON g.g_id = r.g_id 
+            WHERE g.ispublished = 1 AND g.isprivate = 0 AND gt.tag = :tag
+            GROUP BY g.g_id 
+            ORDER BY g.g_id DESC";
+
+        return $this->db->queryPaginated($qs, $offset, $perPage, [
+            ':tag' => $tag,
+        ]);
+    }
+
     public function removeOldPendingDeletionGames(int $daysOld): void
     {
         // Remove pending deletions older than 14 days

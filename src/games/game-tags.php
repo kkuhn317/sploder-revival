@@ -1,5 +1,13 @@
 <?php
 $t = $_GET['t']; // Tag by user input
+session_start();
+require_once('../services/GameListRenderService.php');
+require_once('../repositories/repositorymanager.php');
+$perPage = 12;
+$offset = $_GET['o'] ?? 0;
+$gameRepository = RepositoryManager::get()->getGameRepository();
+$gameListRenderService = new GameListRenderService($gameRepository);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -30,15 +38,10 @@ $t = $_GET['t']; // Tag by user input
                 them more fun! <a href="tags.php">Browse all tags now.</a>
             <h4>Games with tag <span class="tagcolor1"><?= $t ?></span>:</h4>
             </p>
-            <div id="viewpage">
-                <div class="set">
-                    <?php require('../content/pages.php');
-                    addPagination($total ?? 0, 100) ?>
-                    ?>
-                </div>
-            </div>
-            <div class="spacer">&nbsp;
-            </div>
+            <?php
+            $gameListRenderService->renderPartialViewForGamesWithTag($t, $offset, $perPage);
+            ?>
+
         </div>
         <div id="sidebar">
             <br /><br /><br />
