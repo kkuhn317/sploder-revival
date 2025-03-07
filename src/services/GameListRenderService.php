@@ -199,7 +199,7 @@ class GameListRenderService
     public function renderPartialViewForMostPopularTags(): void
     {
         require_once(__DIR__ . '/../content/taglister.php');
-        echo '<div class="tagbox"><p class="tags"><strong>Most Popular Tags:</strong>';
+        echo '<div class="tagbox"><p class="tags"><strong>Most Popular Tags: </strong>';
         echo displayTags($this->gameRepository->getGameTags(0,25)->data, true);
         echo '<p>Learn more about <a href="/games/tags.php">tags</a>.</p>';
         echo '</p></div>';
