@@ -42,14 +42,15 @@
 				
 				<div class="buttons" style="padding: 0;">
 					<span class="button firstbutton"><a href="games/favorites/">Favorite Games &raquo;</a></span>
-					<span class="button"><a href="games/web/">Games on the Web &raquo;</a></span>
+					<span class="button"><a href="/members/hall-of-fame">Hall of Fame &raquo;</a></span>
+					<span class="button"><a href="/games/tags.php">Tags &raquo;</a></span>
 					<span class="button"><a href="games/members/">Top Members &raquo;</a></span>
 					<span class="button"><a href="games/groups/">Groups &raquo;</a></span>
 				</div>
 				
 				<br style="clear: both;" />
 				
-				<p>Want to make your own online games for free? <strong>Sploder Revival</strong> makes it super easy for you to make your own free games online and share them with your friends. Make your own <a href="/free-platformer-game-maker.php">platformer games</a>, <a href="/free-shooter-game-maker.php">spaceship shooters</a>, and more! And now our new <a href="/previews/algorithmcrew/">space adventure game</a> has it's own creator too!</p>
+				<p>Want to make your own online games for free? <strong>Sploder Revival</strong> makes it super easy for you to make your own free games online and share them with your friends. Make your own <a href="/make/plat.php">platformer games</a>, <a href="/make/shooter.php">spaceship shooters</a>, and more!</p>
 				
 				
 				<br style="clear: both;" />
