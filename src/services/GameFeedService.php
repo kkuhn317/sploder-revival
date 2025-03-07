@@ -52,7 +52,7 @@ class GameFeedService
         header("Content-Type: application/xml; charset=utf-8");
         $output = "<games>\n";
         foreach ($results as $row) {
-            $output .= "    <item name=\"{$row['title']}\" author=\"{$row['author']}\" thumb=\"/users/user{$row['user_id']}/images/proj{$row['g_id']}/thumbnail.png\" link=\"/games/play.php?s={$row['user_id']}_{$row['g_id']}\" />\n";
+            $output .= "    <item name=\"{$row['title']}\" author=\"{$row['author']}\" thumb=\"/users/user{$row['user_id']}/images/proj{$row['g_id']}/thumbnail.png\" link=\"../../../../../../games/play.php?s={$row['user_id']}_{$row['g_id']}\" />\n";
         }
         $output .= "</games>";
         return $output;
