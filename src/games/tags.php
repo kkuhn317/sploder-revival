@@ -19,7 +19,7 @@ $gameTags = $gameRepository->getGameTags($_GET['offset'] ?? 0,100);
 </head>
 <?php include('../content/addressbar.php'); ?>
 
-<body id="everyones" class="featured">
+<body id="everyones" class="tags">
     <?php include('../content/headernavigation.php') ?>
     <div id="page">
         <?php include('../content/subnav.php') ?>

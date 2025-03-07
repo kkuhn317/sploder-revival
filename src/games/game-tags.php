@@ -24,7 +24,7 @@ $gameListRenderService = new GameListRenderService($gameRepository);
 </head>
 <?php include('../content/addressbar.php'); ?>
 
-<body id="everyones" class="featured">
+<body id="everyones" class="tags">
 
     <?php include('../content/headernavigation.php') ?>
     <div id="page">
@@ -40,6 +40,7 @@ $gameListRenderService = new GameListRenderService($gameRepository);
             </p>
             <?php
             $gameListRenderService->renderPartialViewForGamesWithTag($t, $offset, $perPage);
+            require('../content/mostpopulartags.php')
             ?>
 
         </div>
