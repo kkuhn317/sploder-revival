@@ -84,6 +84,15 @@ interface IGameRepository
     public function getGamesWithTag(string $tag, int $offset, int $perPage): PaginationData;
 
     /**
+     * Retrieves the tags for a given game
+     *
+     * @param $perPage
+     * @param $offset
+     * @return games
+     */
+    public function getTagsFromGame(int $gameId): array;
+
+    /**
      * Retrieves the contest winners from the database
      * @return contest winners
      */

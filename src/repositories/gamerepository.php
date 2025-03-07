@@ -73,6 +73,13 @@ where g_id = :g_id
         );
     }
 
+    public function getTagsFromGame(int $gameId): array
+    {
+        return $this->db->query("SELECT tag FROM game_tags WHERE g_id = :g_id", [
+            ':g_id' => $gameId,
+        ]);
+    }
+
     public function getUserId(int $gameId): string
     {
         return $this->db->queryFirstColumn("SELECT user_Id FROM games WHERE g_id = :g_id", 0, [
