@@ -1,6 +1,6 @@
 <?php
 
-require(__DIR__ . "/../repositories/igamerepository.php");
+require_once(__DIR__ . "/../repositories/igamerepository.php");
 
 class GameFeedService
 {
