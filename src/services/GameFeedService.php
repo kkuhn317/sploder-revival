@@ -48,6 +48,16 @@ class GameFeedService
         return $rssFeed;
     }
 
+    public function generateWeirdFeed(array $results){
+        header("Content-Type: application/xml; charset=utf-8");
+        $output = "<games>\n";
+        foreach ($results as $row) {
+            $output .= "    <item name=\"{$row['title']}\" author=\"{$row['author']}\" thumb=\"/users/user{$row['user_id']}/images/proj{$row['g_id']}/thumbnail.png\" link=\"/games/play.php?s={$row['user_id']}_{$row['g_id']}\" />\n";
+        }
+        $output .= "</games>";
+        return $output;
+    }
+
     public function generateFeedForPopularGames(): string
     {
         return $this->generateFeed(
@@ -55,6 +65,11 @@ class GameFeedService
             "The most popular games on Sploder Revival.",
             $this->gameRepository->getRandomGames()
         );
+    }
+
+    public function generateFeedForWeirdPopularGames(): string
+    {
+        return $this->generateWeirdFeed($this->gameRepository->getWeirdRandomGames());
     }
 
     public function generateFeedForContestWinners(int $contestIdOffset): string
