@@ -67,7 +67,11 @@ where g_id = :g_id
     public function getGameTags(int $offset, int $perPage): PaginationData
     {
         return $this->db->queryPaginated(
-            "SELECT DISTINCT tag FROM game_tags ORDER BY tag",
+            "SELECT DISTINCT gt.tag 
+            FROM game_tags gt
+            JOIN games g ON gt.g_id = g.g_id
+            WHERE g.ispublished = 1 AND g.isprivate = 0
+            ORDER BY gt.tag",
             $offset,
             $perPage
         );
