@@ -86,6 +86,12 @@ where g_id = :g_id
         return $this->db->query($query);
     }
 
+    public function getWeirdRandomGames(): array
+    {
+        $query = "SELECT g_id, title, author, user_id FROM games WHERE ispublished = 1 AND isprivate = 0 ORDER BY RANDOM() LIMIT 22";
+        return $this->db->query($query);
+    }
+
     public function getPendingDeletionGames(): array
     {
         return $this->db->query("SELECT

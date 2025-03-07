@@ -44,6 +44,7 @@ interface IGameRepository
      * @return random games
      */
     public function getRandomGames(): array;
+    public function getWeirdRandomGames(): array;
 
     /**
      * Retrieves games that are pending deletion
