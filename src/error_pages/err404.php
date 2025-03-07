@@ -62,59 +62,7 @@
 			
 			
 					
-			<div id="footer">
-			    <div class="spacer">&nbsp;</div></div>
-			<div class="spacer">&nbsp;</div>
-		</div>
-	</div>
-	<div id="bottomnav">
-		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="about.php">About</a></li>
-			<li><a href="/contact.php">Contact Us</a></li>
-			<li><a href="/termsofservice.php">Terms of Service</a></li>
-			<li><a href="/privacypolicy.php">Privacy Policy</a></li>
-                        <li><a href="https://forums.sploder.com">Forums</a></li>
-			<li><a href="https://help.sploder.com" class="help">Help</a></li>
-		</ul>
-	</div>
-
-	
-<p><img src="https://pixel.quantserve.com/pixel/p-46kZQQF5TMqL6.gif" style="display: none" height="1" width="1" alt="Quantcast"/></p>
-
-<script type="text/javascript">
-var _sf_async_config={uid:1790,domain:"sploder.com"};
-(function(){
-  function loadChartbeat() {
-	window._sf_endpt=(new Date()).getTime();
-	var e = document.createElement('script');
-	e.setAttribute('language', 'javascript');
-	e.setAttribute('type', 'text/javascript');
-	e.setAttribute('src',
-	   (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "https://") +
-	   "static.chartbeat.com/js/chartbeat.js");
-	document.body.appendChild(e);
-  }
-  var oldonload = window.onload;
-  window.onload = (typeof window.onload != 'function') ?
-	 loadChartbeat : function() { oldonload(); loadChartbeat(); };
-})();
-
-</script>
-
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-92552-8']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-
+<?php include('../content/footernavigation.php') ?>
 </body>
+
 </html>
