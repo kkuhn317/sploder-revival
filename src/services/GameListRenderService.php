@@ -106,6 +106,16 @@ class GameListRenderService
             <div class="spacer">&nbsp;</div>
         <?php
     }
+
+    private function renderPartialViewForMostPopularTags(): void
+    {
+        require_once(__DIR__ . '/../content/taglister.php');
+        echo '<div class="tagbox"><p class="tags"><strong>Most Popular Tags: </strong>';
+        echo displayTags($this->gameRepository->getGameTags(0,25)->data, true);
+        echo '<p>Learn more about <a href="/games/tags.php">tags</a>.</p>';
+        echo '</p></div>';
+    }
+
     public function renderPartialViewForPendingDeletion(int $daysOldToDelete): void
     {
         $this->gameRepository->removeOldPendingDeletionGames($daysOldToDelete);
@@ -181,6 +191,7 @@ class GameListRenderService
             includeUsername: true
         );
         addPagination($games->totalCount, $perPage, $offset);
+        $this->renderPartialViewForMostPopularTags();
     }
     public function renderPartialViewForGamesWithTag(string $tag, int $offset, int $perPage): void
     {
@@ -195,13 +206,6 @@ class GameListRenderService
             includeUsername: true
         );
         addPagination($games->totalCount, $perPage, $offset);
-    }
-    public function renderPartialViewForMostPopularTags(): void
-    {
-        require_once(__DIR__ . '/../content/taglister.php');
-        echo '<div class="tagbox"><p class="tags"><strong>Most Popular Tags: </strong>';
-        echo displayTags($this->gameRepository->getGameTags(0,25)->data, true);
-        echo '<p>Learn more about <a href="/games/tags.php">tags</a>.</p>';
-        echo '</p></div>';
+        $this->renderPartialViewForMostPopularTags();
     }
 }

@@ -43,7 +43,6 @@ $total = $gameRepository->getTotalPublishedGameCount();
             </p>
             <?php
             $gameListRenderService->renderPartialViewForNewestGames($offset, $perPage);
-            $gameListRenderService->renderPartialViewForMostPopularTags();
             ?>
         </div>
         <div class="spacer">&nbsp;</div>
