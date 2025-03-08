@@ -40,7 +40,6 @@ $gameListRenderService = new GameListRenderService($gameRepository);
             </p>
             <?php
             $gameListRenderService->renderPartialViewForGamesWithTag($t, $offset, $perPage);
-            $gameListRenderService->renderPartialViewForMostPopularTags();
             ?>
 
         </div>
