@@ -238,6 +238,18 @@ $creator_type = to_creator_type($game['g_swf']);
                 </p>
             </div>
 
+            <div id="events" style="width: 260px; height: 480px;">
+            <div id="events_ticker"></div>
+	        </div>
+
+
+            <script type="text/javascript">
+                swfobject.embedSWF("/swf/events7.swf", "events_ticker", "260", "480", "9", "/swfobject/expressInstall.swf", { PHPSESSID: "<?php
+                if(isset($_SESSION['PHPSESSID'])){
+                 echo $_SESSION['PHPSESSID'];
+                }?>" }, { bgcolor: "#000000", menu: "false", quality: "low", scale: "noscale", salign: "tl", wmode: "opaque" });
+            </script>
+    
 
 
 
