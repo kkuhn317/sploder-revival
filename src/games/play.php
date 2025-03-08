@@ -8,6 +8,10 @@ ini_set('display_errors', 1);
 
 require_once('../content/getgameid.php');
 require('../content/playgame.php');
+require_once('../content/taglister.php');
+require_once('../repositories/repositorymanager.php');
+
+$gameRepository = RepositoryManager::get()->getGameRepository();
 
 $game_id = get_game_id($_GET['s']);
 $game = get_game_info($game_id['id']);
@@ -140,6 +144,14 @@ $creator_type = to_creator_type($game['g_swf']);
             <?php
             if (isset($game['description'])) {
                 echo '<p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">' . htmlspecialchars($game['description']) . '</p>';
+            }
+
+            // Get game tags
+            $tags = $gameRepository->getTagsFromGame($game['g_id']);
+            if ($tags) {
+                echo '<div class="tagbox"><p class="tags" style="line-height: 40px;">Tags: ';
+                echo displayTags($tags, true);
+                echo '</p></div>';
             }
             ?>
 

@@ -1,7 +1,7 @@
 <?php
 require_once(__DIR__ . '/../repositories/repositorymanager.php');
 $gameRepository = RepositoryManager::get()->getGameRepository();
-$gameTags = $gameRepository->getGameTags(100, $_GET['offset'] ?? 0);
+$gameTags = $gameRepository->getGameTags($_GET['offset'] ?? 0,100);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -19,7 +19,7 @@ $gameTags = $gameRepository->getGameTags(100, $_GET['offset'] ?? 0);
 </head>
 <?php include('../content/addressbar.php'); ?>
 
-<body id="everyones" class="featured">
+<body id="everyones" class="tags">
     <?php include('../content/headernavigation.php') ?>
     <div id="page">
         <?php include('../content/subnav.php') ?>
@@ -34,7 +34,7 @@ $gameTags = $gameRepository->getGameTags(100, $_GET['offset'] ?? 0);
                     <p class="tags" style="line-height: 40px;">Tags:
                         <?php
                         require_once('../content/taglister.php');
-                        echo displayTags($gameTags->tags, true);
+                        echo displayTags($gameTags->data, true);
                         ?>
                     </p>
 
