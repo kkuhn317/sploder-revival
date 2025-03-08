@@ -46,7 +46,7 @@ $total = $gameRepository->getTotalPublishedGameCount();
             ?>
         </div>
         <div class="spacer">&nbsp;</div>
-    </div>
+    
     <div id="sidebar">
         <br /><br /><br />
         <div class="spacer">&nbsp;</div>

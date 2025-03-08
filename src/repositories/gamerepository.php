@@ -67,10 +67,21 @@ where g_id = :g_id
     public function getGameTags(int $offset, int $perPage): PaginationData
     {
         return $this->db->queryPaginated(
-            "SELECT DISTINCT tag FROM game_tags ORDER BY tag",
+            "SELECT DISTINCT gt.tag 
+            FROM game_tags gt
+            JOIN games g ON gt.g_id = g.g_id
+            WHERE g.ispublished = 1 AND g.isprivate = 0
+            ORDER BY gt.tag",
             $offset,
             $perPage
         );
+    }
+
+    public function getTagsFromGame(int $gameId): array
+    {
+        return $this->db->query("SELECT tag FROM game_tags WHERE g_id = :g_id", [
+            ':g_id' => $gameId,
+        ]);
     }
 
     public function getUserId(int $gameId): string
@@ -155,6 +166,22 @@ where g_id = :g_id
             and g.isdeleted = 0
             GROUP BY g.g_id 
             ORDER BY g.g_id DESC", $offset, $perPage);
+    }
+
+    public function getGamesWithTag(string $tag, int $offset, int $perPage): PaginationData
+    {
+        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
+            FROM games g 
+            JOIN game_tags gt ON g.g_id = gt.g_id 
+            LEFT JOIN votes r ON g.g_id = r.g_id 
+            WHERE g.ispublished = 1 AND g.isprivate = 0 AND gt.tag = :tag
+            GROUP BY g.g_id 
+            ORDER BY g.g_id DESC";
+
+        return $this->db->queryPaginated($qs, $offset, $perPage, [
+            ':tag' => $tag,
+        ]);
     }
 
     public function removeOldPendingDeletionGames(int $daysOld): void
