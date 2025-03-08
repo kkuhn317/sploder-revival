@@ -52,7 +52,6 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
         ':isdeleted' => '0'
         ]);
 
-    $f = '20';
     if ($newFormat) {
         $string = '<projects total="' . $totalGames . '" start="' . $start . '" num="' . $num . '">';
     } else {
