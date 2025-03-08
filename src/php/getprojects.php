@@ -61,7 +61,7 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     }
 
     foreach ($result as $project) {
-        $string .= '<project id="proj' . $project['g_id'] . '" src="proj' . $project['g_id'] . '.xml" title="' . $project['title'] . '" date="' . date("l, F jS, Y", strtotime($f . $project['date'])) . '" time="' . strtotime($f . $project['date']) . '" archived="0" />';
+        $string .= '<project id="proj' . $project['g_id'] . '" src="proj' . $project['g_id'] . '.xml" title="' . $project['title'] . '" date="' . date("l, F jS, Y", strtotime($project['date'])) . '" time="' . strtotime($project['date']) . '" archived="0" />';
     }
     $string .= '</projects>';
     print($string);
