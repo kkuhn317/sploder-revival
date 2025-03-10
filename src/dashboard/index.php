@@ -4,11 +4,15 @@ ini_set('display_errors', 1);
 include('../content/logincheck.php');
 $username = $_SESSION['username'];
 require_once('../database/connect.php');
+require_once('../repositories/repositorymanager.php');
 
+$friendsRepository = RepositoryManager::get()->getFriendsRepository();
+$newFriends = $friendsRepository->getFriendRequestCount($_SESSION['userid'], false);
 $db = getDatabase();
 $level = $db->queryFirstColumn("SELECT level FROM members WHERE username=:user LIMIT 1", 0, [
     ':user' => $username
 ]);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -82,9 +86,17 @@ $level = $db->queryFirstColumn("SELECT level FROM members WHERE username=:user L
           </div>
         </div>
         <ul class="actions">
-          <li class="wow">
-            <a href="../friends/index.php"><strong>?</strong>
-              new friend requests!</a>
+          <li
+          <?php
+          if ($newFriends > 0) {
+              echo 'class="wow"';
+          } else {
+            echo 'class="meh"';
+            $newFriends = 'No';
+          }
+          ?>
+          >
+            <a <?= $newFriends == 'No' ? 'style="color:#666"' : '' ?> href="../friends/index.php"><?= $newFriends != 'No' ? '<strong>' : '' ?><?= $newFriends ?><?= $newFriends != 'No' ? '</strong>' : '' ?> new friend request<?= $newFriends == 1 ? '' : 's' ?>!</a>
           </li>
           <li>
             <a href="../make/index.php">Make
