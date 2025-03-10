@@ -7,7 +7,7 @@ require_once('../database/connect.php');
 require_once('../repositories/repositorymanager.php');
 
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
-$newFriends = $friendsRepository->getNumerOfUnviewedFriends($_SESSION['userid']);
+$newFriends = $friendsRepository->getFriendRequestCount($_SESSION['userid'], false);
 $db = getDatabase();
 $level = $db->queryFirstColumn("SELECT level FROM members WHERE username=:user LIMIT 1", 0, [
     ':user' => $username
