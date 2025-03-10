@@ -12,18 +12,19 @@ class FriendsRepository implements IFriendsRepository
         $this->db = $db;
     }
 
-    public function getNumerOfUnviewedFriends(int $userId): int
+    public function getFriendRequestCount(int $userId, bool $isViewed): int
     {
-        $newFriends = $this->db->queryFirstColumn("SELECT count(*) FROM friend_requests WHERE receiver_id=:user AND is_viewed=false", 0, [
-            ':user' => $userId
+        $newFriends = $this->db->queryFirstColumn("SELECT count(*) FROM friend_requests WHERE receiver_id=:user AND is_viewed=:is_viewed", 0, [
+            ':user' => $userId,
+            ':is_viewed' => $isViewed
         ]);
         return $newFriends;
     }
 
-    public function markAllFriendsAsViewed(int $userId): void
+    public function setAllFriendsAsViewed(int $userId): void
     {
         $this->db->execute("UPDATE friend_requests SET is_viewed=true WHERE receiver_id=:receiver_id", [
-            ':receiver_id' => $_SESSION['userid']
+            ':receiver_id' => $userId
             ]);
     }
 }

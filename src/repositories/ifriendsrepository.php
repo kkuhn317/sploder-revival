@@ -1,20 +1,21 @@
 <?php
 
 /**
- * Handles database interations with froemds
+ * Handles database interations with friends
  */
 interface IFriendsRepository
 {
     /**
      * Gets the number of unviewed friends
      * 
-     * @param $userId the user to check for unviewed friends
-     * @return the number of unviewed friends
+     * @param $userId the user to check for friends
+     * @param $isViewed whether the friend request has been viewed
+     * @return the number of friends
      */
-    public function getNumerOfUnviewedFriends(int $userId): int;
+    public function getFriendRequestCount(int $userId, bool $isViewed): int;
 
     /**
      * Views all friend requests for a user
      */
-    public function markAllFriendsAsViewed(int $userId): void;
+    public function setAllFriendsAsViewed(int $userId): void;
 }
