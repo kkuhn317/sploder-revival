@@ -1,9 +1,14 @@
+<?php
+include(__DIR__.'/../config/env.php');
+$discord = getenv("DISCORD_INVITE");
+$forums = getenv("FORUMS_URL");
+?>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Server Error: 503 Service Not Available</title>
+    <title>Sploder</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <meta http-equiv="expires" content="0" />
     <meta http-equiv="Pragma" content="no-cache" />
@@ -47,7 +52,7 @@
 </head>
 
 <body>
-    <h1>HTTP Error 503: Service Unavailable</h1>
+    <h1>Sploder</h1>
     <div class="epicfail">
         <img align="left" src="../images/ad_200x200.jpg" alt="boom!" />
         <h3>
@@ -58,8 +63,8 @@
         <p><a href="javascript:history.back()">&laquo; go back whence ye came</a></p>
     </div>
     <div class="epicfoot">
-        You can also try the <a target="_blank" href="https://forums.sploder.xyz">forums</a> or yell at us on <a
-            target="_blank" href="https://discord.com/invite/cHGz362sdC">discord</a>.
+        You can also try the <a target="_blank" href="<?= $forums ?>">forums</a> or yell at us on <a
+            target="_blank" href="https://discord.com/invite/<?= $discord ?>">discord</a>.
     </div>
 </body>
 
