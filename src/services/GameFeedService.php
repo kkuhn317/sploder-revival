@@ -48,16 +48,22 @@ class GameFeedService
         return $rssFeed;
     }
 
-    public function generateWeirdFeed(array $results){
+    public function generateWeirdFeed(array $results): string
+    {
         header("Content-Type: application/xml; charset=utf-8");
-        $output = "<games>\n";
-        foreach ($results as $row) {
-            $output .= "    <item name=\"{$row['title']}\" author=\"{$row['author']}\" thumb=\"/users/user{$row['user_id']}/images/proj{$row['g_id']}/thumbnail.png\" link=\"../../../../../../games/play.php?s={$row['user_id']}_{$row['g_id']}\" />\n";
-        }
-        $output .= "</games>";
-        return $output;
-    }
 
+        $xml = new SimpleXMLElement('<games/>');
+
+        foreach ($results as $row) {
+            $item = $xml->addChild('item');
+            $item->addAttribute('name', $row['title']);
+            $item->addAttribute('author', $row['author']);
+            $item->addAttribute('thumb', "/users/user{$row['user_id']}/images/proj{$row['g_id']}/thumbnail.png");
+            $item->addAttribute('link', "../../../../../../games/play.php?s={$row['user_id']}_{$row['g_id']}");
+        }
+
+        return $xml->asXML();
+    }
     public function generateFeedForPopularGames(): string
     {
         return $this->generateFeed(
