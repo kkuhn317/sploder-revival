@@ -7,4 +7,5 @@ $gameRepository = RepositoryManager::get()->getGameRepository();
 
 $gameFeed = new GameFeedService($gameRepository);
 
-echo $gameFeed->generateFeedForPopularGames();
+echo $gameFeed->generateFeedForWeirdPopularGames();
+

@@ -22,6 +22,8 @@ services:
       # If you do not provide the source code, you are in violation of the AGPL-3.0 license
       REPOSITORY: https://github.com/Sploder-Saptarshi/sploder-revival
 
+      # Link to your forum
+      FORUMS_URL: https://forums.mydomain.com
 
       # DO NOT INCLUDE THE 'https://discord.gg/' PART
       # DO NOT INCLUDE THE 'https://discord.com/invite/' PART
