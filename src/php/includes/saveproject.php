@@ -1,6 +1,6 @@
 <?php
 
-function saveProject(int $g_swf): void
+function saveProject(int $g_swf): int
 {
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
@@ -68,4 +68,5 @@ function saveProject(int $g_swf): void
     } else {
         echo '<message result="failed" message="The session ID is incorrect! Log out and log in again."/>';
     }
+    return $id;
 }
