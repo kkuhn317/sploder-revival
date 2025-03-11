@@ -37,9 +37,6 @@ function overlayOnBase(Imagick $baseImage, int $id, int $x, int $y, float $scale
     return $baseImage;
 }
 
-
-// ...existing code...
-
 function generate2DShooterImage(SimpleXMLElement $xml) : array {
     $color = (string) $xml->playfield['color'];
     $playfieldString = (string)$xml->objects;
