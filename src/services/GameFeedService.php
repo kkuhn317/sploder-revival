@@ -1,6 +1,6 @@
 <?php
 
-require(__DIR__ . "/../repositories/igamerepository.php");
+require_once(__DIR__ . "/../repositories/igamerepository.php");
 
 class GameFeedService
 {
@@ -48,6 +48,22 @@ class GameFeedService
         return $rssFeed;
     }
 
+    public function generateWeirdFeed(array $results): string
+    {
+        header("Content-Type: application/xml; charset=utf-8");
+
+        $xml = new SimpleXMLElement('<games/>');
+
+        foreach ($results as $row) {
+            $item = $xml->addChild('item');
+            $item->addAttribute('name', $row['title']);
+            $item->addAttribute('author', $row['author']);
+            $item->addAttribute('thumb', "/users/user{$row['user_id']}/images/proj{$row['g_id']}/thumbnail.png");
+            $item->addAttribute('link', "../../../../../../games/play.php?s={$row['user_id']}_{$row['g_id']}");
+        }
+
+        return $xml->asXML();
+    }
     public function generateFeedForPopularGames(): string
     {
         return $this->generateFeed(
@@ -55,6 +71,11 @@ class GameFeedService
             "The most popular games on Sploder Revival.",
             $this->gameRepository->getRandomGames()
         );
+    }
+
+    public function generateFeedForWeirdPopularGames(): string
+    {
+        return $this->generateWeirdFeed($this->gameRepository->getWeirdRandomGames());
     }
 
     public function generateFeedForContestWinners(int $contestIdOffset): string
