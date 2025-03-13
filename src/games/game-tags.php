@@ -42,11 +42,12 @@ $gameListRenderService = new GameListRenderService($gameRepository);
             $gameListRenderService->renderPartialViewForGamesWithTag($t, $offset, $perPage);
             ?>
 
-        </div>
+        
         <div id="sidebar">
             <br /><br /><br />
             <div class="spacer">&nbsp;</div>
         </div>
+        </div></div>
         <div class="spacer">&nbsp;</div>
         <?php include('../content/footernavigation.php') ?>
 </body>
