@@ -25,6 +25,14 @@ services:
       # Link to your forum
       FORUMS_URL: https://forums.mydomain.com
 
+      # Your Discord username, where you can be reached
+      # This username will be shown in the privacy policy and other pages
+      DISCORD_USERNAME: owner
+
+      # Your email, where you can be reached
+      # This email will be shown in the privacy policy and other pages
+      EMAIL: owner@domain.com
+
       # DO NOT INCLUDE THE 'https://discord.gg/' PART
       # DO NOT INCLUDE THE 'https://discord.com/invite/' PART
       # example: cHGz362sdC
