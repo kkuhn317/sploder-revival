@@ -178,7 +178,7 @@ if (isset($_SESSION['username'])) {
 
                 <a href="/free-game-creator.php" class="sprite_button home_button_makegame">Make a game</a>
 
-                <a href="/games/members/" class="sprite_button home_button_members">Members</a>
+                <a href="/games/members.php" class="sprite_button home_button_members">Members</a>
 
                 <a href="games/newest.php"><img src="/chrome/home_button_newestgames.gif" width="160" height="120"
                         alt="Newest Games" /></a>
