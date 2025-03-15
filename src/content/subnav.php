@@ -16,7 +16,7 @@
     </ul>
     <ul class="nav_members">
         <li><a href="/">Home</a></li>
-        <li><a href="/members/all/">Member List</a></li>
+        <li><a href="/members/all.php">Member List</a></li>
         <!-- <li><a href="/games/groups/">Groups</a></li> -->
         <li><a href="/staff.php">Staff</a></li>
         <!-- <li><a href="/members/contest/">Member of the Day</a></li>

@@ -32,7 +32,7 @@ $topMembers = $userRepository->getTopMembers();
         <div id="content">
             <h3>Today's Top Members</h3>
             <p>Welcome to the Sploder members home page!  This page shows the top members for today.  The members who are getting the most gameplays today are listed here.  This page is updated hourly.  To see the top members of all time, visit our <a href="/members/hall-of-fame/">Hall of Fame</a>. To meet and communicate with our staff, visit the <a href="/staff.php">Sploder Staff</a> page.</p>
-            <div class="button" style="float: right; width: 120px; padding-top: 13px;"><a href="/members/all/">All members &raquo;</a></div> <form action="/members/search.php" method="get">
+            <div class="button" style="float: right; width: 120px; padding-top: 13px;"><a href="/members/all.php">All members &raquo;</a></div> <form action="/members/search.php" method="get">
 				<label for="search_username" style="font-size: 16px;">Member Search: &nbsp;</label>
 				<input type="text" id="search_username" name="u" value="" size="16" maxlength="16" class="biginput" />
 				<input type="submit" value="Search" class="postbutton" />
