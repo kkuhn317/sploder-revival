@@ -4,8 +4,10 @@ ini_set('display_errors', 1);
 require_once(__DIR__ . '/../content/logincheck.php');
 require_once(__DIR__ . '/../database/connect.php');
 require_once(__DIR__ . '/php/functions.php');
+require_once('../repositories/repositorymanager.php');
 
-$level = getLevel();
+$userRepository = RepositoryManager::get()->getUserRepository();
+$level = getLevel($userRepository);
 
 
 require_once(__DIR__ . '/php/materials.php');
@@ -118,7 +120,7 @@ require_once(__DIR__ . '/php/materials.php');
                 <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
                 <li><a href="" class="active">Awards</a></li>
                 <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
-                <li><a href="my-graphics.php">Graphics</a></li>
+                <li><a href="/dashboard/my-graphics.php">Graphics</a></li>
                 <li style="float: right;"><a href="/accounts/account.php">My Account</a></li>
             </ul>
         </div>

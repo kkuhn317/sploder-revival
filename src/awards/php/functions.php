@@ -7,15 +7,9 @@ error_reporting(E_ALL);
 
 require_once(__DIR__ . "/../../database/connect.php");
 
-// Common functions for awards
-function getLevel()
+function getLevel($userRepository)
 {
-    $db = getDatabase();
-    // Get user level
-    $qs = "SELECT level FROM members WHERE username = :username";
-    return $db->queryFirstColumn($qs, 0, [
-      ':username' => $_SESSION['username'],
-    ]);
+    return $userRepository->getLevelByUserId($_SESSION['userid']);
 }
 
 function isEditor()
