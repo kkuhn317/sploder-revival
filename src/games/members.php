@@ -5,6 +5,8 @@ require_once('../repositories/repositorymanager.php');
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
 $gameListRenderService = new GameListRenderService($gameRepository);
+$userRepository = RepositoryManager::get()->getUserRepository();
+$topMembers = $userRepository->getTopMembers();
 $perPage = 12;
 $offset = $_GET['o'] ?? 0;
 $total = $gameRepository->getTotalPublishedGameCount();
@@ -47,47 +49,12 @@ $total = $gameRepository->getTotalPublishedGameCount();
 // squash time if necessary.  1 is unsquashed.
 $timesquash = 1;
 
-// array of items and sizes
-$tagArray = array(
-	"apples" => 12,
-	"oranges" => 38,
-	"pears" => 10,
-	"mangos" => 24,
-	"grapes" => 18,
-	"bananas" => 56,
-	"watermelons" => 80,
-	"lemons" => 12,
-	"limes" => 12,
-	"pineapples" => 15,
-	"strawberries" => 20,
-	"coconuts" => 43,
-	"cherries" => 20,
-	"raspberries" => 8,
-	"peaches" => 25
-	);
-	
-// array of items and ages
-$taggedArray = array(
-	"apples" => "4/21/2006",
-	"oranges" => "4/21/2006",
-	"pears" => "4/22/2006",
-	"mangos" => "4/22/2006",
-	"grapes" => "4/23/2006",
-	"bananas" => "4/23/2006",
-	"watermelons" => "4/24/2006",
-	"lemons" => "4/24/2006",
-	"limes" => "4/25/2006",
-	"pineapples" => "4/26/2006",
-	"strawberries" => "4/27/2006",
-	"coconuts" => "4/27/2006",
-	"cherries" => "4/28/2006",
-	"raspberries" => "4/28/2006",
-	"peaches" => "4/28/2006"
-	);
+$tagArray = array_column($topMembers, 'total_views', 'author');
+$taggedArray = array_column($topMembers, 'last_view_time', 'author');
 
 // define timespan
-$fromwhen = date("Y-m-d H:i:s",strtotime("4/21/2006"));
-$towhen = date("Y-m-d H:i:s",strtotime("4/28/2006"));
+$fromwhen = date("Y-m-d H:i:s", time() - 60*60*24*7);
+$towhen = date("Y-m-d H:i:s", time());
 
 // sort the array according to size
 arsort($tagArray);

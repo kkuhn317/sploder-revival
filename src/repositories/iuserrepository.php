@@ -13,4 +13,11 @@ interface IUserRepository
    * @return the array of search values
    */
     function search(string $userName, int $limit = 180);
+
+    /**
+     * Get top 90 members which have the most views per day
+     * 
+     * @return array of top users
+     */
+    function getTopMembers();
 }
