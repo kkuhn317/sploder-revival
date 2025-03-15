@@ -57,4 +57,51 @@ LIMIT 90;
 ";
         return $this->db->query($qs);
     }
+
+    public function getLevel(int $rating, int $friends, int $games, int $views)
+    {
+        $level = min(250, floor($rating/25 + $friends/10 + $games/10 + $views/1000));
+        return $level;
+    }
+
+    public function getMembers(int $offset)
+    {
+    $offset = $offset * 100;
+    $qs = "
+        SELECT 
+            m.username,
+            m.joindate,
+            COUNT(DISTINCT f.user2) AS friend_count,
+            COUNT(DISTINCT g.g_id) AS game_count,
+            COALESCE(SUM(g.views), 0) AS total_views,
+            (SELECT COUNT(*) FROM votes v2 WHERE v2.username = m.username) AS total_ratings_given
+        FROM 
+            members m
+        LEFT JOIN 
+            friends f ON m.username = f.user1
+        LEFT JOIN 
+            games g ON m.username = g.author
+        GROUP BY 
+            m.username, m.joindate
+        ORDER BY 
+            m.joindate
+        LIMIT 100 OFFSET :offset
+    ";
+        $result = $this->db->query($qs, [':offset' => $offset]);
+        foreach ($result as &$row) {
+            $row['level'] = $this->getLevel(
+                $row['total_ratings_given'],
+                $row['friend_count'],
+                $row['game_count'],
+                $row['total_views']
+            );
+        }   
+        return $result;
+    }
+
+    public function getTotalNumberOfMembers()
+    {
+        $qs = "SELECT COUNT(*) FROM members";
+        return $this->db->query($qs)[0]['count'];
+    }
 }
