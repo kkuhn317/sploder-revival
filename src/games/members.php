@@ -3,13 +3,8 @@ session_start();
 require_once('../services/GameListRenderService.php');
 require_once('../repositories/repositorymanager.php');
 
-$gameRepository = RepositoryManager::get()->getGameRepository();
-$gameListRenderService = new GameListRenderService($gameRepository);
 $userRepository = RepositoryManager::get()->getUserRepository();
 $topMembers = $userRepository->getTopMembers();
-$perPage = 12;
-$offset = $_GET['o'] ?? 0;
-$total = $gameRepository->getTotalPublishedGameCount();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
