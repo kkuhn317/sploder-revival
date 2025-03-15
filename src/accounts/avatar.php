@@ -41,7 +41,7 @@
                 <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
                 <li><a href="/awards/index.php">Awards</a></li>
                 <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
-                <li><a href="my-graphics.php">Graphics</a></li>
+                <li><a href="/dashboard/my-graphics.php">Graphics</a></li>
                 <li style="float: right;"><a href="/accounts/account.php">My Account</a></li>
             </ul>
         </div>

@@ -30,20 +30,17 @@ interface IUserRepository
     function getMembers(int $offset);
 
     /**
-     * Get level of user
-     * 
-     * @param $rating
-     * @param $friends
-     * @param $games
-     * @param $views
-     * @return int level of user
-     */
-    function getLevel(int $rating, int $friends, int $games, int $views);
-
-    /**
      * Get total number of members
      * 
      * @return int total number of members
      */
     function getTotalNumberOfMembers();
+
+    /**
+     * Get level of user by user ID
+     * 
+     * @param $userId
+     * @return int level of user
+     */
+    function getLevelByUserId(int $userId);
 }

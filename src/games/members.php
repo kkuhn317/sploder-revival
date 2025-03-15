@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once('../services/GameListRenderService.php');
 require_once('../repositories/repositorymanager.php');
 
 $userRepository = RepositoryManager::get()->getUserRepository();

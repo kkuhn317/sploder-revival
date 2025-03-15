@@ -58,7 +58,7 @@ LIMIT 90;
         return $this->db->query($qs);
     }
 
-    public function getLevel(int $rating, int $friends, int $games, int $views)
+    private function getLevel(int $rating, int $friends, int $games, int $views)
     {
         $level = min(250, floor($rating/25 + $friends/10 + $games/10 + $views/1000));
         return $level;
@@ -104,4 +104,39 @@ LIMIT 90;
         $qs = "SELECT COUNT(*) FROM members";
         return $this->db->query($qs)[0]['count'];
     }
+
+    public function getLevelByUserId(int $userId)
+    {
+        $qs = "
+            SELECT 
+                (SELECT COUNT(*) FROM votes v WHERE v.username = m.username) AS total_ratings_given,
+                COUNT(DISTINCT f.user2) AS friend_count,
+                COUNT(DISTINCT g.g_id) AS game_count,
+                COALESCE(SUM(g.views), 0) AS total_views
+            FROM 
+                members m
+            LEFT JOIN 
+                friends f ON m.username = f.user1
+            LEFT JOIN 
+                games g ON m.username = g.author
+            WHERE 
+                m.userid = :id
+            GROUP BY 
+                m.username
+        ";
+
+        $result = $this->db->query($qs, [':id' => $userId])[0] ?? null;
+
+        if ($result) {
+            return $this->getLevel(
+                $result['total_ratings_given'],
+                $result['friend_count'],
+                $result['game_count'],
+                $result['total_views']
+            );
+        }
+
+        return null; // Return null if no user found
+    }
+
 }

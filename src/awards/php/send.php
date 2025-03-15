@@ -41,7 +41,10 @@ if (strlen($message) > 40) {
 require_once('functions.php');
 
 // Start eligibility validation
-$level = getLevel();
+require_once('../repositories/repositorymanager.php');
+
+$userRepository = RepositoryManager::get()->getUserRepository();
+$level = getLevel($userRepository);
 $isEditor = isEditor();
 $maxCustomization = getMaxCustomization($level, $isEditor)[1];
 
