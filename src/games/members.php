@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../repositories/repositorymanager.php');
+require_once('../members/treemap/treemap.php');
 
 $userRepository = RepositoryManager::get()->getUserRepository();
 $topMembers = $userRepository->getTopMembers();
@@ -37,24 +38,23 @@ $topMembers = $userRepository->getTopMembers();
 				<input type="submit" value="Search" class="postbutton" />
 			</form><br /><br /><br />
             <?php
-            require('../members/treemap/treemap.php');
             $baseurl = "/";
 
-// squash time if necessary.  1 is unsquashed.
-$timesquash = 1;
+            // squash time if necessary.  1 is unsquashed.
+            $timesquash = 1;
 
-$tagArray = array_column($topMembers, 'total_views', 'author');
-$taggedArray = array_column($topMembers, 'last_view_time', 'author');
+            $tagArray = array_column($topMembers, 'total_views', 'author');
+            $taggedArray = array_column($topMembers, 'last_view_time', 'author');
 
-// define timespan
-$fromwhen = date("Y-m-d H:i:s", time() - 60*60*24*7);
-$towhen = date("Y-m-d H:i:s", time());
+            // define timespan
+            $fromwhen = date("Y-m-d H:i:s", time() - 60*60*24*7);
+            $towhen = date("Y-m-d H:i:s", time());
 
-// sort the array according to size
-arsort($tagArray);
-	
-// call the function
-echo render_treemap($tagArray, 570, 900, 0, 1);
+            // sort the array according to size
+            arsort($tagArray);
+                
+            // call the function
+            echo render_treemap($tagArray, 570, 900, 0, 1);
 
             ?>
         </div>
