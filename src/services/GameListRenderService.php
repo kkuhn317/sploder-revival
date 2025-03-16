@@ -110,7 +110,7 @@ class GameListRenderService
         <?php
     }
 
-    private function renderPartialViewForMostPopularTags(): void
+    public function renderPartialViewForMostPopularTags(): void
     {
         require_once(__DIR__ . '/../content/taglister.php');
         echo '<div class="tagbox"><p class="tags"><strong>Most Popular Tags: </strong>';
@@ -229,9 +229,8 @@ class GameListRenderService
             includeBoost: false,
             includeChallenge: false,
             includeUsername: true,
-            fixSidebar: true
+            fixSidebar: false
         );
         addPagination($games->totalCount, $perPage, $offset);
-        $this->renderPartialViewForMostPopularTags();
     }
 }
