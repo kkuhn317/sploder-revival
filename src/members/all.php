@@ -47,7 +47,7 @@ $totalMembers = $userRepository->getTotalNumberOfMembers()
                     $rowClass = 'even';
                     foreach ($users as $user) {
                         echo "<tr class=\"$rowClass iconsmall\">\n";
-                        echo "<td class=\"userlink\"><a href=\"/games/members/{$user['username']}/\" title=\"{$user['username']}\"><img src=\"/php/avatarproxy.php?size=24&u={$user['username']}\" width=\"24\" height=\"24\" /> {$user['username']}</a></td>";
+                        echo "<td class=\"userlink\"><a href=\"/members/index.php?u={$user['username']}/\" title=\"{$user['username']}\"><img src=\"/php/avatarproxy.php?size=24&u={$user['username']}\" width=\"24\" height=\"24\" /> {$user['username']}</a></td>";
                         echo "<td class=\"stat rank\">{$user['level']}</td>";
                         echo "<td class=\"stat\">{$user['game_count']}</td>";
                         echo "<td class=\"stat\">{$user['friend_count']}</td>";
