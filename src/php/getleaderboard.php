@@ -12,7 +12,7 @@ $db = getDatabase();
 $result = $db->query("SELECT *
     FROM leaderboard
     WHERE pubkey = :pubkey
-    AND w = true ORDER BY gtm LIMIT 16", [
+    AND w = true ORDER BY gtm DESC LIMIT 16", [
         ':pubkey' => $loc
     ]);
 if (!isset($result[0]['username'])) {
