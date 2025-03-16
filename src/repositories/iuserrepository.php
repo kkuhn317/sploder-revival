@@ -43,4 +43,14 @@ interface IUserRepository
      * @return int level of user
      */
     function getLevelByUserId(int $userId);
+
+    /**
+     * Save event data
+     * 
+     * @param $s
+     * @param $e
+     * @param $g
+     * @return void
+     */
+    function saveEvent(string $s, string $e, string $g);
 }

@@ -139,4 +139,54 @@ LIMIT 90;
         return null; // Return null if no user found
     }
 
+    public function saveEvent(string $s, string $e, string $g)
+    {
+        $filePath = __DIR__ . '/../cache/events.xml';
+        $lockFilePath = __DIR__ . '/../cache/events.lock';
+
+        $lockFile = fopen($lockFilePath, 'w');
+        if (flock($lockFile, LOCK_EX)) {
+            try {
+                $eventsXml = '<root>';
+                if (file_exists($filePath) && filesize($filePath) > 0) {
+                    $rawData = file_get_contents($filePath);
+                    if (trim($rawData) !== '') {
+                        $eventsXml .= $rawData;
+                    }
+                }
+                $eventsXml .= '</root>';
+
+                // Load XML with a temporary root
+                $events = simplexml_load_string($eventsXml);
+
+                // Add new event
+                $event = $events->addChild('evt');
+                $event->addAttribute('u', $_SESSION['username']);
+                $event->addAttribute('e', $e);
+                $event->addAttribute('g', $g);
+                $event->addAttribute('s', $s);
+                $event->addAttribute('d', time());
+
+                // Keep only the last 16 entries
+                $children = $events->children();
+                while (count($children) > 16) {
+                    unset($children[0]);
+                }
+
+                // Remove the root and save back in original format
+                $newXml = '';
+                foreach ($events->evt as $evt) {
+                    $newXml .= $evt->asXML() . "\n";
+                }
+
+                file_put_contents($filePath, $newXml, LOCK_EX);
+            } catch (Exception $ex) {
+                error_log('Error saving event: ' . $ex->getMessage());
+            } finally {
+                flock($lockFile, LOCK_UN);
+                fclose($lockFile);
+            }
+        }
+    }
+
 }
