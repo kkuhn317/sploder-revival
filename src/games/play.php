@@ -48,7 +48,7 @@ $creator_type = to_creator_type($game['g_swf']);
 
         <div id="content">
             <h3><?= $game['title'] ?></h3>
-            <h4 class="subtitle">By <a href="games/members/<?= $game['author'] ?>/"><?= $game['author'] ?></a> ::
+            <h4 class="subtitle">By <a href="members/index.php?u=<?= $game['author'] ?>"><?= $game['author'] ?></a> ::
                 <?= date('l F j\t\h, Y', strtotime($game['date'])) ?></h4>
 
             <div class="vote" id="contestwidget">
