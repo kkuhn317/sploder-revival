@@ -180,6 +180,22 @@ where g_id = :g_id
             ORDER BY g.g_id DESC", $offset, $perPage);
     }
 
+    public function getGamesNewestByName(string $game, int $offset, int $perPage): PaginationData
+    {
+        return $this->db->queryPaginated("SELECT g.g_id, g.author, g.title, g.description, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
+            FROM games g 
+            LEFT JOIN votes r ON g.g_id = r.g_id 
+            WHERE g.ispublished = 1
+            AND g.isprivate = 0
+            and g.isdeleted = 0
+            AND SIMILARITY(title, :game) > 0.3
+            GROUP BY g.g_id 
+            ORDER BY g.g_id DESC", $offset, $perPage, [
+            ':game' => $game,
+        ]);
+    }
+
     public function getGamesWithTag(string $tag, int $offset, int $perPage): PaginationData
     {
         $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 

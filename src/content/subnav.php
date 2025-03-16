@@ -12,7 +12,7 @@
 					<li><a href="/games/web/">Web</a></li> -->
         <li><a href="/games/tags.php">Tags</a></li>
         <!-- <li><a href="/games/epic/">The EGL</a></li> -->
-        <li><a href="/games/search/">Search</a></li>
+        <li><a href="/games/search.php">Search</a></li>
     </ul>
     <ul class="nav_members">
         <li><a href="/">Home</a></li>
