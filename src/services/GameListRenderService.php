@@ -69,7 +69,7 @@ class GameListRenderService
                             <?php } ?>
                             <?php
                             if ($includeTotalVotes) {
-                            ?>
+                                ?>
                             <p class="gamevote">
                                 <img src="<?= $starUrl ?>" width="64" height="12" border="0" alt="'<?= $avgRating ?>' stars"/>
                                 <?= $totalVotes ?> vote<?= ($totalVotes == 1 ? '' : 's') ?>
@@ -87,7 +87,9 @@ class GameListRenderService
                                         <input title="Boost" style="width:27px" class="boost_button" value="Boost">
                                     <?php } ?>
                                     <?php if ($includeChallenge) { ?>
-                                        <?php if ($includeBoost) { echo '&nbsp;'; } ?>
+                                        <?php if ($includeBoost) {
+                                            echo '&nbsp;';
+                                        } ?>
                                         <input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">
                                     <?php } ?>
 
@@ -100,7 +102,7 @@ class GameListRenderService
                             }?>
                         </div>
                     </div>
-                    <?= ($counter % 2 == 1) ? '<div class="spacer">&nbsp;</div>' : "" ?>
+                        <?= ($counter % 2 == 1) ? '<div class="spacer">&nbsp;</div>' : "" ?>
                     <?php endforeach; ?>
                     <div class="spacer">&nbsp;</div>
                 </div>
@@ -109,11 +111,11 @@ class GameListRenderService
         <?php
     }
 
-    private function renderPartialViewForMostPopularTags(): void
+    public function renderPartialViewForMostPopularTags(): void
     {
         require_once(__DIR__ . '/../content/taglister.php');
         echo '<div class="tagbox"><p class="tags"><strong>Most Popular Tags: </strong>';
-        echo displayTags($this->gameRepository->getGameTags(0,25)->data, true);
+        echo displayTags($this->gameRepository->getGameTags(0, 25)->data, true);
         echo '<p>Learn more about <a href="/games/tags.php">tags</a>.</p>';
         echo '</p></div>';
     }
@@ -215,5 +217,21 @@ class GameListRenderService
         );
         addPagination($games->totalCount, $perPage, $offset);
         $this->renderPartialViewForMostPopularTags();
+    }
+
+    public function renderPartialViewForGamesSearch(string $game, int $offset, int $perPage): void
+    {
+        $games = $this->gameRepository->getGamesNewestByName($game, $offset, $perPage);
+        $this->renderPartialViewForGames(
+            $games->data,
+            "No games found!",
+            includeStyleWidth: false,
+            includeDelete: false,
+            includeBoost: false,
+            includeChallenge: false,
+            includeUsername: true,
+            fixSidebar: false
+        );
+        addPagination($games->totalCount, $perPage, $offset);
     }
 }
