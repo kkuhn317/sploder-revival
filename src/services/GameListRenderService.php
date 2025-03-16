@@ -23,6 +23,7 @@ class GameListRenderService
     ): void {
         if (count($games) <= 0) {
             echo "<p>$noGamesFoundMessage</p>";
+            echo $fixSidebar ? '<div>' : '';
             return;
         }
         $anyModification = $includeDelete || $includeBoost || $includeChallenge;
