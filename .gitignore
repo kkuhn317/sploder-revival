@@ -7,6 +7,9 @@ node_modules
 playgrounds
 src/users
 .phpunit.result.cache
+src/cache/events.lock
+src/cache/events.xml
+
 
 # Docker local development folders
 pgdata
@@ -66,5 +69,3 @@ Sessionx.vim
 tags
 # Persistent undo
 [._]*.un~
-src/cache/events.lock
-src/cache/events.xml
