@@ -42,7 +42,7 @@ function setClass(id, c) {
         <?php
         if ($row['description'] != '') {
             echo '<p class="intro">
-    <img class="p_avatar" src="/php/avatarproxy.php?u="' . $username . ' width="48" height="48" alt="member speaking"/>
+    <img class="p_avatar" src="/php/avatarproxy.php?u="' . $username . '" width="48" height="48" alt="member speaking"/>
     ' . nl2br(htmlspecialchars($row['description'])) . '</p>';
         }
                 $fields = [
