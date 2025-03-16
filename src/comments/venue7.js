@@ -390,7 +390,7 @@ function us_renderMessage(m, inner)
 
     h += '<cite>';
     if (us_config['use_avatar']) {
-        h += '<span class="us_author"><a href="/games/members/' + m.creator_name + '/"><img src="/php/avatarproxy.php' + '?u=' + m.creator_name + '" width="24" height="24" border="0" />' + m.creator_name + '</a></span>';
+        h += '<span class="us_author"><a href="/members/index.php?u=' + m.creator_name + '"><img src="/php/avatarproxy.php' + '?u=' + m.creator_name + '&size=24" width="24" height="24" border="0" />' + m.creator_name + '</a></span>';
     } else {
         h += '<span class="us_author">' + m.creator_name + '</span>';
     }
