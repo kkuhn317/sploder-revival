@@ -18,7 +18,6 @@ $gameListRenderService = new GameListRenderService($gameRepository);
 <head>
     <?php include('../content/head.php') ?>
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
-    <link rel="stylesheet" type="text/css" href="/css/tags.css" />
     <script type="text/javascript">
     var _sf_startpt = (new Date()).getTime()
     </script>
@@ -26,7 +25,7 @@ $gameListRenderService = new GameListRenderService($gameRepository);
 </head>
 <?php include('../content/addressbar.php'); ?>
 
-<body id="everyones" class="tags">
+<body id="everyones" class="search">
     <?php include('../content/headernavigation.php') ?>
     <div id="page">
         <?php include('../content/subnav.php') ?>
@@ -45,20 +44,16 @@ $gameListRenderService = new GameListRenderService($gameRepository);
             <br><br>
             <div class="tagbox">
             <div id="viewpage">
-                <div class="tagbox">
-                    <p class="tags" style="line-height: 40px;">Most Popular Tags:
-                        <?php
-                        echo displayTags($gameTags->data, true);
-                        ?>
-                    </p>
-                </div>
+                
+                <?php
+                if (isset($_GET['game']) && $_GET['game'] != '') {
+                    $gameListRenderService->renderPartialViewForGamesSearch($_GET['game'], $offset, $perPage);
+                }
+                $gameListRenderService->renderPartialViewForMostPopularTags();
+                ?>
                 <div class="spacer">&nbsp;</div>
             </div>
-<?php
-if (isset($_GET['game'])) {
-    $gameListRenderService->renderPartialViewForGamesSearch($_GET['game'], $offset, $perPage);
-}
-?>
+        </div>
         </div>
         <div id="sidebar">
             <br /><br /><br />
