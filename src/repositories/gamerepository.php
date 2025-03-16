@@ -120,12 +120,15 @@ where g_id = :g_id
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             LEFT JOIN votes r ON g.g_id = r.g_id 
-            WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.author = :userName
+            WHERE ((g.ispublished = 1 AND g.isprivate = 0) OR :isDeleted = 1)
+            AND g.author = :userName
+            AND g.isdeleted = :isDeleted
             GROUP BY g.g_id 
             ORDER BY g.g_id DESC";
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,
+            ':isDeleted' => $isDeleted,
         ]);
     }
 
@@ -144,13 +147,15 @@ where g_id = :g_id
         ]);
     }
 
-    public function getGamesFromUserAndGameSearch(string $userName, string $game, int $offset, int $perPage): PaginationData
+    public function getGamesFromUserAndGameSearch(string $userName, string $game, int $offset, int $perPage, $isDeleted): PaginationData
     {
         $qs = 'SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             LEFT JOIN votes r ON g.g_id = r.g_id 
-            WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.author = :userName
+            WHERE ((g.ispublished = 1 AND g.isprivate = 0) OR :isDeleted = 1)
+            AND g.author = :userName
+            AND g.isdeleted = :isDeleted
             AND SIMILARITY(title, :game) > 0.3
             GROUP BY g.g_id 
             ORDER BY g.g_id DESC';
@@ -158,6 +163,7 @@ where g_id = :g_id
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,
             ':game' => $game,
+            ':isDeleted' => $isDeleted,
         ]);
     }
 
@@ -223,6 +229,16 @@ where g_id = :g_id
             FROM games
             WHERE ispublished = 1
             AND isprivate = 0", 0);
+    }
+
+    public function getTotalDeletedGameCount($userName): int
+    {
+        return $this->db->queryFirstColumn("SELECT g_id
+            FROM games
+            WHERE author=:user
+            AND isdeleted=1", 0, [
+                ':user' => $userName
+            ]);
     }
 
     public function getTotalMetricsForUser(string $userName): GameMetricsForUser
