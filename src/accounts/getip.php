@@ -2,7 +2,10 @@
 
 function getVisitorIp()
 {
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+    // Check cloudflare IP
+    if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+    } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         // Check if IP is from shared internet
         $ip = $_SERVER['HTTP_CLIENT_IP'];
     } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {

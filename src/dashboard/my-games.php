@@ -62,7 +62,7 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
                 <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
                 <li><a href="/awards/index.php">Awards</a></li>
                 <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
-                <li><a href="my-graphics.php">Graphics</a></li>
+                <li><a href="/dashboard/my-graphics.php">Graphics</a></li>
                 <li style="float: right;"><a href="/accounts/account.php">My Account</a></li>
             </ul>
         </div>
@@ -78,9 +78,9 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
                 <?php
                 $perPage = 12;
                 if (isset($_GET['game'])) {
-                    $gameListRenderService->renderPartialViewForMyGamesUserAndGame($username, $_GET['game'], $currentPage, $perPage);
+                    $gameListRenderService->renderPartialViewForMyGamesUserAndGame($username, $_GET['game'], $currentPage, $perPage, isDeleted: true);
                 } else {
-                    $gameListRenderService->renderPartialViewForMyGamesUser($username, $currentPage, $perPage);
+                    $gameListRenderService->renderPartialViewForMyGamesUser($username, $currentPage, $perPage, isDeleted: true);
                 }
                 ?>
 

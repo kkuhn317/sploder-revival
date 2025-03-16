@@ -24,7 +24,7 @@
             <p>This is the Sploder Revival&trade; privacy policy. If you have questions about this policy, or about the
                 information stored in your account, we can be reached
 
-                via discord at @malware8148 or email <a href="mailto:malware8148@skiff.com">malware8148@skiff.com</a>.
+                via discord at @<?= getenv('DISCORD_USERNAME') ?> or email <a href="mailto:<?= getenv('EMAIL') ?>"><?= getenv('EMAIL') ?></a>.
             </p>
 
 
@@ -60,8 +60,7 @@
             <p class="note">Clients can change most account information online. Information that cannot be changed
                 online can be
 
-                corrected by sending us a message via discord at @malware8148 or email <a
-                    href="mailto:malware8148@skiff.com">malware8148@skiff.com</a>.</p>
+                corrected by sending us a message via discord at @<?= getenv('DISCORD_USERNAME') ?> or email <a href="mailto:<?= getenv('EMAIL') ?>"><?= getenv('EMAIL') ?></a>.</p>
 
 
 
@@ -103,14 +102,12 @@
             <h4>Deleting your account.</h4>
 
             <p class="note">Registered users may permanently delete their account and account data at any time by
-                contacting us via discord at @malware8148 or emailing <a
-                    href="mailto:malware8148@skiff.com">malware8148@skiff.com</a>.</p>
+                contacting us via discord at @<?= getenv('DISCORD_USERNAME') ?> or emailing <a href="mailto:<?= getenv('EMAIL') ?>"><?= getenv('EMAIL') ?></a>.</p>
 
 
 
             <p class="note">If you feel that this site is not following its stated information policy, you may contact
-                us via discord at @malware8148 or email <a
-                    href="mailto:malware8148@skiff.com">malware8148@skiff.com</a>.</p>
+                us via discord at @<?= getenv('DISCORD_USERNAME') ?> or email <a href="mailto:<?= getenv('EMAIL') ?>"><?= getenv('EMAIL') ?></a>.</p>
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="sidebar">

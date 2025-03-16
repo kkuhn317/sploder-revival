@@ -8,7 +8,10 @@ if ($membername == $_SESSION['username']) {
     die();
 }
 include('php/functions.php');
-$level = getLevel();
+require_once('../repositories/repositorymanager.php');
+
+$userRepository = RepositoryManager::get()->getUserRepository();
+$level = $userRepository->getLevelByUserId($_SESSION['userid']);
 $isEditor = isEditor();
 $maxCustomization = getMaxCustomization($level, $isEditor);
 // If membername is not an actual user, send header and die
@@ -88,7 +91,7 @@ if (count($result) > 0) {
                 <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
                 <li><a href="/awards/index.php" class="active">Awards</a></li>
                 <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
-                <li><a href="my-graphics.php">Graphics</a></li>
+                <li><a href="/dashboard/my-graphics.php">Graphics</a></li>
                 <li style="float: right;"><a href="/accounts/account.php">My Account</a></li>
             </ul>
         </div>

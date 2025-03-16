@@ -6,6 +6,7 @@ require_once(__DIR__ . "/iuserrepository.php");
 require_once(__DIR__ . "/iawardsrepository.php");
 require_once(__DIR__ . "/iuserrepository.php");
 require_once(__DIR__ . "/icontestrepository.php");
+require_once(__DIR__ . "/ifriendsrepository.php");
 
 interface IRepositoryManager
 {
@@ -14,4 +15,5 @@ interface IRepositoryManager
     public function getGameRepository(): IGameRepository;
     public function getGraphicsRepository(): IGraphicsRepository;
     public function getUserRepository(): IUserRepository;
+    public function getFriendsRepository(): IFriendsRepository;
 }
