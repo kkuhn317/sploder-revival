@@ -36,7 +36,7 @@ function extracted(IDatabase $db): void
     $total = count($result2);
     echo '[{"action":"read","status":"1","id":"' . $venue . '","data":[';
     for ($i = 0; $i <= $total - 1; $i++) {
-        $comment = $result2[i];
+        $comment = $result2[$i];
         echo '{"id":"' . $comment['id']
             . '","thread_id":"' . $comment['thread_id']
             . '","creator_name":"' . $comment['creator_name']
