@@ -34,7 +34,7 @@ interface IUserRepository
      * 
      * @return int total number of members
      */
-    function getTotalNumberOfMembers();
+    function getTotalNumberOfMembers(): int;
 
     /**
      * Get level of user by user ID
