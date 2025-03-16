@@ -180,7 +180,7 @@ if (isset($_GET['s'])) {
             <?php } ?>
             <div class="homebuttons">
 
-                <a href="/free-game-creator.php" class="sprite_button home_button_makegame">Make a game</a>
+                <a href="/make/index.php" class="sprite_button home_button_makegame">Make a game</a>
 
                 <a href="/games/members.php" class="sprite_button home_button_members">Members</a>
 
