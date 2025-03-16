@@ -11,7 +11,7 @@ include('php/functions.php');
 require_once('../repositories/repositorymanager.php');
 
 $userRepository = RepositoryManager::get()->getUserRepository();
-$level = getLevel($userRepository);
+$level = $userRepository->getLevelByUserId($_SESSION['userid']);
 $isEditor = isEditor();
 $maxCustomization = getMaxCustomization($level, $isEditor);
 // If membername is not an actual user, send header and die

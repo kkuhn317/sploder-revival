@@ -7,11 +7,6 @@ error_reporting(E_ALL);
 
 require_once(__DIR__ . "/../../database/connect.php");
 
-function getLevel($userRepository)
-{
-    return $userRepository->getLevelByUserId($_SESSION['userid']);
-}
-
 function isEditor()
 {
     $db = getDatabase();
