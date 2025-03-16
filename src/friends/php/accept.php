@@ -39,6 +39,13 @@ if (!isset($exists[0]['id'])) {
                 ':user2' => $_GET['u']
             ]);
 
+        $db->execute("INSERT INTO friends 
+            (user1,user2,bested) 
+            VALUES (:user1,:user2,false)", [
+                ':user1' => $_GET['u'],
+                ':user2' => $_SESSION['username']
+            ]);
+
         $user1bp = $db->queryFirstColumn("SELECT boostpoints
             FROM members
             WHERE username=:username", 0, [
