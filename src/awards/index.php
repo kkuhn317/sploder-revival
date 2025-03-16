@@ -7,7 +7,7 @@ require_once(__DIR__ . '/php/functions.php');
 require_once('../repositories/repositorymanager.php');
 
 $userRepository = RepositoryManager::get()->getUserRepository();
-$level = getLevel($userRepository);
+$level = $userRepository->getLevelByUserId($_SESSION['userid']);
 
 
 require_once(__DIR__ . '/php/materials.php');
