@@ -4,17 +4,18 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 include('../content/logincheck.php');
 $username = $_SESSION['username'];
-require('../database/connect.php');
+require_once('../services/GameListRenderService.php');
+require_once('../repositories/repositorymanager.php');
+
+$gameRepository = RepositoryManager::get()->getGameRepository();
+$gameListRenderService = new GameListRenderService($gameRepository);
+
 if (isset($_GET['game']) && $_GET['game'] == null) {
     unset($_GET['game']);
 }
 
-$db = getDatabase();
-$result4 = $db->query("SELECT g_id FROM games WHERE author=:user AND isdeleted=1", [
-    ':user' => $username
-]);
-$totalgames = count($result4);
 
+$totalgames = $gameRepository->getTotalDeletedGameCount($username);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -77,115 +78,43 @@ $totalgames = count($result4);
             <h3>Deleted Games</h3>
             <p>Here's a list of all your deleted games. Remember, permanently deleted games can NEVER be recovered, not
                 even by the developers.</p>
-            <form action="<?php echo $currentpage ?>" method="GET"><label for="title">Search by title:
+
+
+            <form action="trash.php" method="GET"><label for="title">Search by title:
                     &nbsp;</label><input style="width:98.5%;height:26px" placeholder="My deleted game" value="<?php if (isset($_GET['game'])) {
                                                                                                                     echo $_GET['game'];
                                                                                                               } ?>"
                     class="urlthing" type="text" id="game" name="game" autocomplete="off" autocorrect="off"
                     autocapitalize="off" spellcheck="false" maxlength="100" /><br><br><br></form>
-            <div class="set"><?php if ($totalgames == "0") {
-                                    echo "You have not deleted any games so far!";
-                             } else {
-                                 if (isset($_GET['o'])) {
-                                     $o = $_GET['o'];
-                                 } else {
-                                     $o = "0";
-                                 }
-                                 $offset = 12;
-                                 if (!isset($_GET['game'])) {
-                                     $parameters = [
-                                         ':username' => $username
-                                     ];
-                                     $result = $db->query('SELECT * 
-                                     FROM games 
-                                     WHERE author=:username
-                                     AND isdeleted = 1
-                                     ORDER BY "g_id" DESC', $parameters);
-                                     $total = count($result);
-
-                                     // TODO: put offset as a parameter instead of string concat
-                                     $result = $db->query('SELECT *
-                                       FROM games
-                                       WHERE author=:username
-                                       AND isdeleted = 1
-                                       ORDER BY "g_id" DESC
-                                       LIMIT 12 OFFSET ' . $o . '', $parameters);
-
-                                     $resultTotal = $db->queryFirstColumn("SELECT count(1)
-                                       FROM games
-                                       WHERE author=:username
-                                       AND isdeleted = 1
-                                       LIMIT 12 OFFSET " . $o . "", 0, $parameters);
-                                 } else {
-                                     $parameters = [':username' => $username];
-                                     if (isset($_GET['game'])) {
-                                         $parameters = $parameters + [':game' => $_GET['game']];
-                                     }
-
-                                     $result = $db->query('SELECT *
-                                     FROM games
-                                     WHERE author=:username
-                                     AND isdeleted = 1
-                                     AND SIMILARITY(title, :game) > 0.3
-                                     ORDER BY "g_id" DESC', $parameters);
-                                     $total = count($result);
-
-                                     // TODO: put offset as a parameter instead of string concat
-                                     $result = $db->query('SELECT *
-                                       FROM games
-                                       WHERE author=:username
-                                       AND isdeleted = 1
-                                       AND SIMILARITY(title, :game) > 0.3
-                                       ORDER BY "g_id" DESC
-                                       LIMIT 12 OFFSET ' . $o . '', $parameters);
-
-                                     $resultTotal = $db->queryFirstColumn("SELECT count(1)
-                                       FROM games
-                                       WHERE author=:username
-                                       AND isdeleted = 1
-                                       AND SIMILARITY(title, :game) > 0.3
-                                       LIMIT 12 OFFSET " . $o . "", 0, $parameters);
-                                 }
-
-
-                                 $f = '20';
-                                 if (count($result) == "0" && $_GET['game'] != null) {
-                                     echo 'This game was not found.<div class="spacer">&nbsp;</div>';
-                                 }
-
-                                 // TODO: migrate to GameListRenderService
-                                 for ($i = 0; $i < count($result); $i++) {
-                                     if ($result[$i]['g_id'] == null) {
-                                         break;
-                                     };
-                                     echo '<div class="game">';
-                                     $date = date_parse(substr_replace($result[$i]['date'], "20", 0, 0));
-                                     echo '<div class="photo">';
-                                     echo '<a href="/play_game.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0"><img src="/projects/proj' . $result[$i]['g_id'] . '/thumbnail.png" width="80" height="80"/></a>';
-                                     echo '</div>';
-                                     echo '<p class="gamedate">' . $date['month'] . '&middot;' . $date['day'] . '&middot;' . substr($date['year'], 2) . '</p>';
-                                     echo '<h4><a href="/play_game.php?&id=' . $result[$i]['g_id'] . '&g_swf=' . $result[$i]['g_swf'] . '&title=' . $result[$i]['title'] . '&pub=0">' . urldecode($result[$i]['title']) . '</a></h4>';
-                                     echo '<input title="Delete" type="button" onclick="delproj(' . $result[$i]['g_id'] . ',\'' . urldecode($result[$i]['title']) . '\')" style="width:37px" value="Delete">&nbsp;<input title="Restore" class="boost_button" type="button" onclick="resproj(' . $result[$i]['g_id'] . ',\'' . urldecode($result[$i]['title']) . '\')" style="width:41px" value="Restore">';
-                                     echo '<div class="spacer">&nbsp;</div>';
-                                     echo '</div>';
-                                 }
-
-                                 /*for ($i = 0; $i < count($result); $i++) {
-                echo '<div class="game"><div class="photo"><a href="../games/playgame.php?id=916&g_swf=7&title=Martie Echito  A Taste Of Americana&pub=0"><img src="/projects/proj916/thumbnail.png" width="80" height="80"/></a></div><p class="gamedate">6&middot;1&middot;23</p><h4><a href="/play_game.php?id=916&g_swf=7&title=Martie Echito  A Taste Of Americana&pub=0&p=0">Martie Echito  A Taste Of Americana</a></h4><input title="Delete" style="width:30px" value="Delete">&nbsp;<input title="Boost" style="width:25px" class="boost_button" value="Boost">&nbsp;<input title="Challenge" style="width:45px" class="challenge_button" value="Challenge"><div class="spacer">&nbsp;</div></div>';
-            }*/
-                             }
-
-                                ?>
+                    <?php
+                    if ($totalgames == 0) {
+                        echo "You have not deleted any games so far!";
+                    } else {
+                        $currentPage = isset($_GET['o']) ? (int)$_GET['o'] : 0;
+                        $perPage = 12;
+                        if (isset($_GET['game'])) {
+                            $total = $gameListRenderService->renderPartialViewForMyGamesUserAndGame(
+                                $username,
+                                $_GET['game'],
+                                $currentPage,
+                                $perPage,
+                                isDeleted: true
+                            );
+                        } else {
+                            $total = $gameListRenderService->renderPartialViewForMyGamesUser(
+                                $username,
+                                $currentPage,
+                                $perPage,
+                                isDeleted: true
+                            );
+                        }
+                    }
+                    ?>
                 <div class="spacer">&nbsp;</div>
-
-
-            </div>
-            <?php include('../content/pages.php');
-            addPagination($total ?? 0) ?>
-
         </div>
         <div class="spacer">&nbsp;</div>
         <?php include('../content/footernavigation.php') ?>
+    </div>
 </body>
 
 </html>
