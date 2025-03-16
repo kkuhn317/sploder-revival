@@ -120,7 +120,7 @@ where g_id = :g_id
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             LEFT JOIN votes r ON g.g_id = r.g_id 
-            WHERE ((g.ispublished = 1 AND g.isprivate = 0) OR :isDeleted = 1)
+            WHERE ((g.ispublished = 1 AND g.isprivate = 0) OR :isDeleted = 0)
             AND g.author = :userName
             AND g.isdeleted = :isDeleted
             GROUP BY g.g_id 
@@ -128,7 +128,7 @@ where g_id = :g_id
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,
-            ':isDeleted' => $isDeleted,
+            ':isDeleted' => 0,
         ]);
     }
 
