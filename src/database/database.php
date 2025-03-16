@@ -22,28 +22,28 @@ class Database implements IDatabase
     {
         $connection =  $this->getConnection();
         $statement = $this->getConnection()->prepare($query);
-        $statement->execute($parameters);
+        $statement->execute($this->mutateParameters($parameters));
         return $statement->fetchAll($mode);
     }
 
     public function queryFirst(string $query, array $parameters = null, $mode = 0): mixed
     {
         $statement = $this->getConnection()->prepare($query);
-        $statement->execute($parameters);
+        $statement->execute($this->mutateParameters($parameters));
         return $statement->fetch($mode);
     }
 
     public function queryFirstColumn(string $query, int $column = 0, array $parameters = null): mixed
     {
         $statement = $this->getConnection()->prepare($query);
-        $statement->execute($parameters);
+        $statement->execute($this->mutateParameters($parameters));
         return $statement->fetchColumn($column);
     }
 
     public function execute(string $query, array $parameters = null): bool
     {
         $statement = $this->getConnection()->prepare($query);
-        return $statement->execute($parameters);
+        return $statement->execute($this->mutateParameters($parameters));
     }
 
     public function queryPaginated(string $query, int $page, int $itemsPerPage, $parameters = null): PaginationData
@@ -55,6 +55,8 @@ class Database implements IDatabase
         if ($itemsPerPage < 0) {
             throw new InvalidArgumentException("ItemsPerPage cannot be less than 0: " . $itemsPerPage);
         }
+
+        $parameters = $this->mutateParameters($parameters);
 
         // Calculate the OFFSET based on the current page
         // Assumes index of 0
@@ -99,5 +101,26 @@ class Database implements IDatabase
         } finally {
             $conn->rollBack();
         }
+    }
+
+    /**
+     * Handles common type mapping issues from input
+     *
+     * @param $parameters ?array
+     * @return ?array
+     */
+    private function mutateParameters(?array $parameters): ?array
+    {
+        if ($parameters === null) {
+            return null;
+        }
+
+        foreach ($parameters as $key => $value) {
+            if (is_bool($value)) {
+                $parameters[$key] = $value == true ? 1 : 0;
+            }
+        }
+
+        return $parameters;
     }
 }
