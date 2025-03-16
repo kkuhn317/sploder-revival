@@ -66,3 +66,5 @@ Sessionx.vim
 tags
 # Persistent undo
 [._]*.un~
+src/cache/events.lock
+src/cache/events.xml
