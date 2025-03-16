@@ -44,7 +44,7 @@
 					<span class="button firstbutton"><a href="games/favorites/">Favorite Games &raquo;</a></span>
 					<span class="button"><a href="/members/hall-of-fame">Hall of Fame &raquo;</a></span>
 					<span class="button"><a href="/games/tags.php">Tags &raquo;</a></span>
-					<span class="button"><a href="games/members/">Top Members &raquo;</a></span>
+					<span class="button"><a href="games/members.php">Top Members &raquo;</a></span>
 					<span class="button"><a href="games/groups/">Groups &raquo;</a></span>
 				</div>
 				

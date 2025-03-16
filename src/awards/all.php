@@ -5,7 +5,10 @@ require_once('../content/logincheck.php');
 require_once('../database/connect.php');
 require_once('php/materials.php');
 require_once('php/functions.php');
-$level = getLevel();
+require_once('../repositories/repositorymanager.php');
+
+$userRepository = RepositoryManager::get()->getUserRepository();
+$level = getLevel($userRepository);
 if ($level < 10) {
     header("Location: ../index.php");
     die();
@@ -119,7 +122,7 @@ if ($level < 10) {
                 <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
                 <li><a href="index.php" class="active">Awards</a></li>
                 <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
-                <li><a href="my-graphics.php">Graphics</a></li>
+                <li><a href="/dashboard/my-graphics.php">Graphics</a></li>
                 <li style="float: right;"><a href="/accounts/account.php">My Account</a></li>
             </ul>
         </div>

@@ -141,30 +141,25 @@ function render_treemap ($theArray, $width, $height, $depth = 0, $orientation = 
 				$age = floor($age / (8640 / $timesquash));
 				
 				if ($age > 6) {
-				
+
 					if (strlen($classtext) == 0) {
-					
-						$r = min(180,164 + $age);
-						$g = min(190,192 + $age);
-						$b = min(205,136 + $age);				
-					
+						// Generate the first two characters dynamically based on age
+						$prefix = str_pad(dechex(($age * 37) % 256), 2, '0', STR_PAD_LEFT); // Cycle through 00 to ff
 					} else {
-					
-						$r = min(204,204 + $age);
-						$g = min(190,131 + $age);
-						$b = min(180,73 + $age);
-					
+						$prefix = str_pad(dechex(($age * 53) % 256), 2, '0', STR_PAD_LEFT); // Use a different multiplier for variation
 					}
 					
-					$col = dechex($r).dechex($g).dechex($b);
+					// Fixed part of the color
+					$col = $prefix . '007d';
 					
 					$styletext = " background-color: #$col";
-				
+
 				} else {
-				
+
 					$styletext = "";
-					
+
 				}
+
 			
 			} else {
 			
@@ -179,7 +174,7 @@ function render_treemap ($theArray, $width, $height, $depth = 0, $orientation = 
 			$styletext = "style=\" font-size: {$textsize}px; $styletext;\"";
 			
 			// make html
-			$html .= "<a class=\"textnode$classtext\"$styletext href=\"".$baseurl."find/$urltag\" title=\"View stories with keyword '$tag'\"><img src=\"".$baseurl."chrome/spacer.gif\" height=\"100%\" width=\"1\" border=\"0\" alt=\"\" />$tag</a>";
+			$html .= "<a class=\"textnode$classtext\"$styletext href=\"".$baseurl."members/index.php?u=$urltag\" title=\"View games by '$tag'\"><img src=\"".$baseurl."chrome/spacer.gif\" height=\"100%\" width=\"1\" border=\"0\" alt=\"\" />$tag</a>";
 			
 		}
 	
