@@ -243,12 +243,12 @@ where g_id = :g_id
 
     public function getTotalMetricsForUser(string $userName): GameMetricsForUser
     {
-        $metrics = $this->db->queryFirst("SELECT count(g_id) as totalGames, sum(views) as totalViews
+        $metrics = $this->db->queryFirst("SELECT COALESCE(count(g_id), 0) as totalGames, COALESCE(sum(views), 0) as totalViews
             FROM games
             WHERE author=:user
             AND isdeleted=0", [
             ':user' => $userName,
         ], PDO::FETCH_NUM);
-        return new GameMetricsForUser($metrics[0], $metrics[1]);
+        return new GameMetricsForUser((int)$metrics[0], (int)$metrics[1]);
     }
 }
