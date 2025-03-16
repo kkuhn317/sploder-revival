@@ -77,7 +77,7 @@ $gameListRenderService = new GameListRenderService(RepositoryManager::get()->get
                             <div class="stat"><?php echo $totalgames ?> <span>Games</span></div>
                         </div>
                         <div class="mprofcount mprofend">
-                            <div class="stat"><?php echo count($friends) ?> <span>Friends</span></div>
+                            <div class="stat"><?php echo count($friends)/2 ?> <span>Friends</span></div>
                         </div>
 
                         <div class="mprofchart" title="Average difficulty, all games combined">
