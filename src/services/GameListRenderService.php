@@ -149,7 +149,7 @@ class GameListRenderService
         addPagination($games->totalCount, $perPage, $offset);
     }
 
-    public function renderPartialViewForMyGamesUser(string $userName, int $offset, int $perPage): void
+    public function renderPartialViewForMyGamesUser(string $userName, int $offset, int $perPage, bool $isDeleted): void
     {
         $games = $this->gameRepository->getAllGamesFromUser($userName, $offset, $perPage);
         $this->renderPartialViewForGames(
@@ -166,9 +166,9 @@ class GameListRenderService
         addPagination($games->totalCount, $perPage, $offset);
     }
 
-    public function renderPartialViewForMyGamesUserAndGame(string $userName, string $game, int $offset, int $perPage): void
+    public function renderPartialViewForMyGamesUserAndGame(string $userName, string $game, int $offset, int $perPage, bool $isDeleted): void
     {
-        $games = $this->gameRepository->getGamesFromUserAndGameSearch($userName, $game, $offset, $perPage);
+        $games = $this->gameRepository->getGamesFromUserAndGameSearch($userName, $game, $offset, $perPage, $isDeleted);
         $this->renderPartialViewForGames(
             $games->data,
             'This game was not found.<div class="spacer">&nbsp;</div>',
