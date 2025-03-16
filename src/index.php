@@ -1,7 +1,11 @@
 <?php
 session_start();
-if (isset($_SESSION['username'])) {
+if (isset($_GET['s'])) {
+    header('Location: games/play.php?s=' . $_GET['s']);
+    die();
+} elseif (isset($_SESSION['username'])) {
     header('Location: dashboard/index.php');
+    die();
 }
 ?>
 
