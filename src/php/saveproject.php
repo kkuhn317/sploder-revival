@@ -1,3 +1,7 @@
 <?php
 require('includes/saveproject.php');
-saveProject(1);
+$id = saveProject(1);
+require('thumbnails/thumb.php');
+$xml = file_get_contents('php://input');
+$image_path = "../users/user" . $_SESSION['userid'] . "/images/proj" . $id . "/";
+generateImageFromXML($xml, $image_path, true);

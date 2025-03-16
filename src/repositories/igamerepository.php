@@ -44,6 +44,7 @@ interface IGameRepository
      * @return random games
      */
     public function getRandomGames(): array;
+    public function getWeirdRandomGames(): array;
 
     /**
      * Retrieves games that are pending deletion
@@ -57,13 +58,23 @@ interface IGameRepository
      * @param $userId
      * @param $perPage
      * @param $offset
+     * @param $isDeleted
      * @return games
      */
     public function getPublicGamesFromUser(string $userName, int $offset, int $perPage): PaginationData;
 
     public function getAllGamesFromUser(string $userName, int $offset, int $perPage): PaginationData;
 
-    public function getGamesFromUserAndGameSearch(string $userName, string $game, int $page, int $itemsPerPage): PaginationData;
+    /**
+     * Retrieves games for a given member based on a search parameter
+     *
+     * @param $userId
+     * @param $perPage
+     * @param $offset
+     * @param $isDeleted
+     * @return games
+     */
+    public function getGamesFromUserAndGameSearch(string $userName, string $game, int $offset, int $perPage, bool $isDeleted): PaginationData;
 
     /**
      * Retrieves the latest games
@@ -108,6 +119,11 @@ interface IGameRepository
      * Retrieves the total count of published games
      */
     public function getTotalPublishedGameCount(): int;
+
+    /**
+     * Retrieves the total count of published games
+     */
+    public function getTotalDeletedGameCount($userName): int;
 
     /**
      * Retrieves the total count of published games for a suer

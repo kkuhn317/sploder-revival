@@ -19,9 +19,11 @@ class GameListRenderService
         bool $includeBoost,
         bool $includeChallenge,
         bool $includeUsername,
+        bool $fixSidebar
     ): void {
         if (count($games) <= 0) {
             echo "<p>$noGamesFoundMessage</p>";
+            echo $fixSidebar ? '<div>' : '';
             return;
         }
         $anyModification = $includeDelete || $includeBoost || $includeChallenge;
@@ -102,7 +104,7 @@ class GameListRenderService
                     <?php endforeach; ?>
                     <div class="spacer">&nbsp;</div>
                 </div>
-            </div>
+            <?= $fixSidebar ? '' : '</div>' ?>
             <div class="spacer">&nbsp;</div>
         <?php
     }
@@ -127,7 +129,8 @@ class GameListRenderService
             includeDelete: true,
             includeBoost: false,
             includeChallenge: false,
-            includeUsername: true
+            includeUsername: true,
+            fixSidebar: false
         );
     }
 
@@ -141,12 +144,13 @@ class GameListRenderService
             includeDelete: false,
             includeBoost: false,
             includeChallenge: false,
-            includeUsername: false
+            includeUsername: false,
+            fixSidebar: true
         );
         addPagination($games->totalCount, $perPage, $offset);
     }
 
-    public function renderPartialViewForMyGamesUser(string $userName, int $offset, int $perPage): void
+    public function renderPartialViewForMyGamesUser(string $userName, int $offset, int $perPage, bool $isDeleted): void
     {
         $games = $this->gameRepository->getAllGamesFromUser($userName, $offset, $perPage);
         $this->renderPartialViewForGames(
@@ -157,14 +161,15 @@ class GameListRenderService
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
             includeChallenge: false,
-            includeUsername: false
+            includeUsername: false,
+            fixSidebar: false
         );
         addPagination($games->totalCount, $perPage, $offset);
     }
 
-    public function renderPartialViewForMyGamesUserAndGame(string $userName, string $game, int $offset, int $perPage): void
+    public function renderPartialViewForMyGamesUserAndGame(string $userName, string $game, int $offset, int $perPage, bool $isDeleted): void
     {
-        $games = $this->gameRepository->getGamesFromUserAndGameSearch($userName, $game, $offset, $perPage);
+        $games = $this->gameRepository->getGamesFromUserAndGameSearch($userName, $game, $offset, $perPage, $isDeleted);
         $this->renderPartialViewForGames(
             $games->data,
             'This game was not found.<div class="spacer">&nbsp;</div>',
@@ -173,7 +178,8 @@ class GameListRenderService
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
             includeChallenge: false,
-            includeUsername: false
+            includeUsername: false,
+            fixSidebar: false
         );
         addPagination($games->totalCount, $perPage, $offset);
     }
@@ -188,7 +194,8 @@ class GameListRenderService
             includeDelete: false,
             includeBoost: false,
             includeChallenge: false,
-            includeUsername: true
+            includeUsername: true,
+            fixSidebar: false
         );
         addPagination($games->totalCount, $perPage, $offset);
         $this->renderPartialViewForMostPopularTags();
@@ -203,7 +210,8 @@ class GameListRenderService
             includeDelete: false,
             includeBoost: false,
             includeChallenge: false,
-            includeUsername: true
+            includeUsername: true,
+            fixSidebar: true
         );
         addPagination($games->totalCount, $perPage, $offset);
         $this->renderPartialViewForMostPopularTags();
