@@ -8,7 +8,8 @@ div.treemap div.node
 	{
 	float: left;
 	clear: none;
-	background-color: #CCCC00;
+	background-color: #ff0066;
+	overflow: hidden;
 	}
 	
 div.treemap a.textnode
@@ -23,7 +24,7 @@ div.treemap a.textnode
 	float: left;
 	color: #fff;
 	overflow: hidden;
-	background-color: #A4C088;
+	background-color: #ff0066;
 	text-decoration: none;
 	}
 	

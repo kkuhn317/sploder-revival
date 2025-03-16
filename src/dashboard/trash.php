@@ -61,7 +61,19 @@ $totalgames = $gameRepository->getTotalDeletedGameCount($username);
 <body id="home" class="" onload="doLoad();">
     <?php include('../content/headernavigation.php'); ?>
     <div id="page">
-        <?php include('../content/subnav.php') ?>
+        <div id="subnav">
+            <ul class="nav_dashboard">
+                <li><a href="/">Home</a></li>
+                <li><a href="my-games.php" class="active">My Games</a></li>
+                <li><a href="profile-edit.php">Profile</a></li>
+                <li><a href="/friends/index.php">Friends</a></li>
+                <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
+                <li><a href="/awards/index.php">Awards</a></li>
+                <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
+                <li><a href="/dashboard/my-graphics.php">Graphics</a></li>
+                <li style="float: right;"><a href="/accounts/account.php">My Account</a></li>
+            </ul>
+        </div>
         <div id="content">
             <h3>Deleted Games</h3>
             <p>Here's a list of all your deleted games. Remember, permanently deleted games can NEVER be recovered, not
