@@ -393,7 +393,7 @@ function us_renderMessage(m, inner)
         h += '<span class="us_author">';
         // Check if on publishpage.php
         if (window.location.href.indexOf('publish.php') == -1) {
-            h + '<a href="/members/index.php?u=' + m.creator_name + '">';
+            h += '<a href="/members/index.php?u=' + m.creator_name + '">';
         }
         h += '<img src="/php/avatarproxy.php' + '?u=' + m.creator_name + '&size=24" width="24" height="24" border="0" />' + m.creator_name;
         if (window.location.href.indexOf('publish.php') == -1) {
