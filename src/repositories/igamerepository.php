@@ -86,6 +86,15 @@ interface IGameRepository
     public function getGamesNewest(int $offset, int $perPage): PaginationData;
 
     /**
+     * Retrieves the latest games with a search term
+     *
+     * @param $perPage
+     * @param $offset
+     * @return games
+     */
+    public function getGamesNewestByName(string $game, int $offset, int $perPage): PaginationData;
+
+    /**
      * Retrieves the games with a specified tag
      *
      * @param $perPage
