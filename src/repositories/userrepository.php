@@ -99,7 +99,7 @@ LIMIT 90;
         return $result;
     }
 
-    public function getTotalNumberOfMembers()
+    public function getTotalNumberOfMembers(): int
     {
         $qs = "SELECT COUNT(*) FROM members";
         return $this->db->query($qs)[0]['count'];
@@ -125,7 +125,7 @@ LIMIT 90;
                 m.username
         ";
 
-        $result = $this->db->query($qs, [':id' => $userId])[0] ?? null;
+        $result = $this->db->queryFirst($qs, [':id' => $userId]) ?? null;
 
         if ($result) {
             return $this->getLevel(
