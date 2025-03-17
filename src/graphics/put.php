@@ -29,7 +29,7 @@ if ($result == $userid) {
         $image = imagecreatefromstring($rawdata);
         $width = imagesx($image);
         $height = imagesy($image);
-        if ($width != 80 || $height != 80) {
+        if (($width != 80 || $height != 80) || ($width == 60 || $height == 60)) {
             // Remove the graphic from the database if it is not 80px by 80px
             $qs = "DELETE FROM graphics WHERE id=:id";
             $db->execute($qs, [
