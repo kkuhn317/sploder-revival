@@ -44,24 +44,6 @@
 
 
 
-        function setup_exit() {
-
-            if (userid != "demo") {
-
-                window.onbeforeunload = function() {
-
-                    if ((new Date()).getTime() - page_start_time > 5000)
-                        return "If you exit thisl page you will lose any unsaved work.";
-
-                };
-
-            }
-
-        }
-
-
-
-
 
         function getPhotos() {
 
@@ -141,7 +123,6 @@
 
 
 
-        setup_exit();
 
         <?php if (!isset($_SESSION['username'])) { ?>
             var flashvars = {
@@ -177,14 +158,6 @@
         
     </script>
 
-
-    <script type="text/javascript">
-        if (userid != "demo") {
-            window.onbeforeunload = function() {
-                return "Are you sure you want to navigate away from this page?";
-            }
-        }
-    </script>
 
 </head>
 <?php require('../content/addressbar.php'); ?>
