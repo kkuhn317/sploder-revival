@@ -51,7 +51,7 @@ if ($verified) {
         <div id="subnav">
             <ul class="nav_dashboard">
                 <li><a href="/">Home</a></li>
-                <li><a href="">My Games</a></li>
+                <li><a href="/dashboard/my-games.php">My Games</a></li>
                 <li><a href="profile-edit.php">Profile</a></li>
                 <li><a href="/friends/index.php">Friends</a></li>
                 <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
