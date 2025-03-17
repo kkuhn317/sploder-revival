@@ -37,6 +37,15 @@ if ($result == $userid) {
             ]);
             die('<message result="error" message="Invalid dimensions! Please note that inappropriate graphics and graphics not made by the creator is strictly forbidden."/>');
         }
+        // If 60x60, resize to 80x80
+        if ($width == 60 && $height == 60) {
+            $newimage = imagecreatetruecolor(80, 80);
+            imagecopyresampled($newimage, $image, 0, 0, 0, 0, 80, 80, 60, 60);
+            ob_start();
+            imagegif($newimage);
+            $rawdata = ob_get_contents();
+            ob_end_clean();
+        }
         file_put_contents("gif/" . $id . ".gif", $rawdata);
     } elseif ($type == "sprite") {
         $isprivate = $_GET['isprivate'] == "1" ? 'true' : 'false';
