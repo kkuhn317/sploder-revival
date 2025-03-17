@@ -9,8 +9,8 @@
 
 <?php
 if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
-    echo '<script src="/chrome/loader.js"></script>
-    <link rel="stylesheet" href="/css/addressbar.css" type="text/css" />';
+    //echo '<script src="/chrome/loader.js"></script>';
+    echo '<link rel="stylesheet" href="/css/addressbar.css" type="text/css" />';
 }
 ?>
 
