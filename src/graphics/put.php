@@ -41,11 +41,22 @@ if ($result == $userid) {
         if ($width == 60 && $height == 60) {
             $newimage = imagecreatetruecolor(80, 80);
             imagecopyresampled($newimage, $image, 0, 0, 0, 0, 80, 80, 60, 60);
+
+            // Convert to palette-based image for GIF compatibility
+            imagetruecolortopalette($newimage, true, 256);
+            $transparent = imagecolorallocate($newimage, 255, 0, 255);
+            imagecolortransparent($newimage, $transparent);
+            imageinterlace($newimage, 0);
+
+            if (ob_get_length()) ob_end_clean(); // Clean any previous output
             ob_start();
             imagegif($newimage);
             $rawdata = ob_get_contents();
             ob_end_clean();
+
+            imagedestroy($newimage);
         }
+
         file_put_contents("gif/" . $id . ".gif", $rawdata);
     } elseif ($type == "sprite") {
         $isprivate = $_GET['isprivate'] == "1" ? 'true' : 'false';
