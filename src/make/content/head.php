@@ -36,26 +36,6 @@ function popUpWindow(URLStr, left, top, width, height)
 }
 
 
-
-function setup_exit() {
-
-    if (userid != "demo") {
-
-        window.onbeforeunload = function() {
-
-            if ((new Date()).getTime() - page_start_time > 5000)
-                return "If you exit thisl page you will lose any unsaved work.";
-
-        };
-
-    }
-
-}
-
-
-
-
-
 function getPhotos() {
 
     popUpWindow("php/uploadform.php?PHPSESSID=", Math.floor(screen.width / 2) - 275, Math.floor(screen.height / 2) -
@@ -132,13 +112,6 @@ function updateMovie(value) {
 
 }
 
-if (userid != "demo") {
-    window.onbeforeunload = function() {
-        return "Are you sure you want to navigate away from this page?";
-    }
-}
-
-setup_exit();
 var flashvars = {
     <?php
         if (strpos($_SERVER['REQUEST_URI'], 'arcade.php') !== false) {
