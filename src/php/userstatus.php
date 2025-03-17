@@ -1,7 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 include('../database/connect.php');
 $db = getDatabase();
 
@@ -27,5 +25,7 @@ if ($result3[0]['lastlogin'] < $last) {
     $status = "making";
 } elseif ($result3[0]['status'] == "playing") {
     $status = "playing";
+} else {
+    $status = "offline";
 }
 echo file_get_contents('../images/profile_status_' . $status . '.gif');
