@@ -25,11 +25,11 @@ if ($id == "0") {
 }
 if ($result == $userid) {
     if ($type == "thumbnail") {
-        // Check image dimensions if it is 80px by 80px to see if they are valid
+        // Check image dimensions if it is 80px by 80px or 60px by 60px to see if they are valid
         $image = imagecreatefromstring($rawdata);
         $width = imagesx($image);
         $height = imagesy($image);
-        if (($width != 80 || $height != 80) || ($width == 60 || $height == 60)) {
+        if (!($width == 80 && $height == 80) && !($width == 60 && $height == 60)) {
             // Remove the graphic from the database if it is not 80px by 80px
             $qs = "DELETE FROM graphics WHERE id=:id";
             $db->execute($qs, [
