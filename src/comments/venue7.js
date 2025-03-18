@@ -278,23 +278,24 @@ function us_setVenue()
 
 
     if (us_config['username'] != "" && us_config['username'] != us_config['owner']) {
-        h += ' |';
+        if (window.location.pathname.indexOf('/games/play.php') === 0) {
+            h += ' |';
+            if ($us_venue_vote != 1) {
+                h += ' <a class="us_button" href="#" onclick="us_vote(' + $us_venue_id + ', 1, \'venue\'); return false;">[+]</a>';
+            } else {
+                h += ' [+]';
+            }
+            if ($us_venue_vote != -1) {
+                h += ' <a class="us_button" href="#" onclick="us_vote(' + $us_venue_id + ', -1, \'venue\'); return false;">[-]</a>';
+            } else {
+                h += ' [-]';
+            }
 
-        if ($us_venue_vote != 1) {
-            h += ' <a class="us_button" href="#" onclick="us_vote(' + $us_venue_id + ', 1, \'venue\'); return false;">[+]</a>';
-        } else {
-            h += ' [+]';
-        }
-        if ($us_venue_vote != -1) {
-            h += ' <a class="us_button" href="#" onclick="us_vote(' + $us_venue_id + ', -1, \'venue\'); return false;">[-]</a>';
-        } else {
-            h += ' [-]';
-        }
-
-        if ($us_venue_favorite == 1) {
-            h += ' <a class="us_button us_symbol us_favorited" href="#" onclick="us_favorite(' + $us_venue_id + ', -1, \'venue\'); return false;">[&hearts;]</a>';
-        } else {
-            h += ' <a class="us_button us_symbol" href="#" onclick="us_favorite(' + $us_venue_id + ', 1, \'venue\'); return false;">[&hearts;]</a>';
+            if ($us_venue_favorite == 1) {
+                h += ' <a class="us_button us_symbol us_favorited" href="#" onclick="us_favorite(' + $us_venue_id + ', -1, \'venue\'); return false;">[&hearts;]</a>';
+            } else {
+                h += ' <a class="us_button us_symbol" href="#" onclick="us_favorite(' + $us_venue_id + ', 1, \'venue\'); return false;">[&hearts;]</a>';
+            }
         }
     }
 
