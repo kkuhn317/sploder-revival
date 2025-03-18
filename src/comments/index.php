@@ -165,7 +165,6 @@ if ($a == "read") {
     if ($_SESSION['username'] != null) {
         include_once('../content/checkban.php');
         if (checkBan($creator_name)) {
-            // set header to 403 (forbidden) and echo a message
             http_response_code(403);
             die("You are banned and will not be able to send any comments.");
         }
@@ -175,29 +174,27 @@ if ($a == "read") {
         $cuser = $_SESSION['username'] . ',';
 
         // Has the user already voted down and is changing their vote?
-        $result2->query("SELECT vote
-            FROM comment_votes
-            WHERE id=:id", [
+        $result2 = $db->query("SELECT vote FROM comment_votes WHERE id=:id", [
             ':id' => $id
         ]);
 
         if (isset($result2[0]['vote']) && ($result2[0]['vote'] == -1)) {
-            $statement->execute("UPDATE comment_votes
+            $db->execute("UPDATE comment_votes
                 SET vote=:vote
                 WHERE id=:id
                 AND username=:username", [
                 ':id' => $id,
                 ':username' => $_SESSION['username'],
                 ':vote' => 1
-                ]);
+            ]);
 
-            $statement->execute("UPDATE comments
+            $db->execute("UPDATE comments
                 SET score=score+2
                 WHERE id=:id", [
                 ':id' => $id
-                ]);
+            ]);
         } elseif (!isset($result2[0]['vote'])) {
-            $statement->execute("INSERT INTO comment_votes (id, username, vote) VALUES (:id, :username, :vote)", [
+            $db->execute("INSERT INTO comment_votes (id, username, vote) VALUES (:id, :username, :vote)", [
                 ':id' => $id,
                 ':username' => $_SESSION['username'],
                 ':vote' => 1
