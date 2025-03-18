@@ -150,7 +150,7 @@ $level = $userRepository->getLevelByUserId($_SESSION['userid']);
                 use_avatar: true,
                 venue_anchor_link: true,
                 show_messages: true,
-                last_login: '1389242996'
+                last_login: '0'
               }
 
              
