@@ -127,7 +127,7 @@ $level = $userRepository->getLevelByUserId($_SESSION['userid']);
       <br>
       <br>
       <div class="notifications">
-          <h4>Messages</h4>
+          <h4>Messages on your Pages</h4>
             </div>
             <div id="venue">
             </div>

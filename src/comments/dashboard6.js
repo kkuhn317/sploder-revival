@@ -317,7 +317,7 @@ function us_setVenue() {
         if (us_config['username'] != us_config['owner']) {
             h += '';
         }
-        h += '<a class="us_button" href="#" onclick="location.hash = \'' + us_config['container'] + '_top\'; return false;" >messages' + total_disp + '</a>';
+        
     }
 
     h += '</div>';
@@ -336,12 +336,7 @@ function us_renderMessages(messages) {
         }
     } else {
         h += '<div class="us_message"><blockquote>';
-        h += 'There are no posts yet. ';
-        if (us_config['username'] != undefined && us_config['username'] != '') {
-            h += ' <a href="#" onclick="us_showPost(); return false;">Click here</a> to be the first to post!';
-        } else {
-            h += ' <strong>Log in</strong> to post a message!';
-        }
+        h += 'There are no posts on your pages yet. :(';
         h += '</blockquote></div>';
     }
 
