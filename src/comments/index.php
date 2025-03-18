@@ -14,43 +14,72 @@ function extracted(IDatabase $db): void
     $page = $_GET['p'];
     $p = $_GET['p'];
 
-    $fulltotal = $db->queryFirstColumn("SELECT count(*)
-        FROM comments
-        WHERE venue=:venue", 0, [
-        ':venue' => $venue
+    if ($venue != "dashboard") {
+        $fulltotal = $db->queryFirstColumn("SELECT count(*)
+            FROM comments
+            WHERE venue=:venue", 0, [
+            ':venue' => $venue
+            ]);
+    } else {
+        $fulltotal = $db->queryFirstColumn("SELECT count(*)
+            FROM comments
+            WHERE venue LIKE :username", 0, [
+            ':username' => "%-".$_SESSION['username']
         ]);
+    }
     $latestp = ceil($fulltotal / 10) - 1;
     if ($p == "-1") {
         $p = max(0, $latestp);
     }
-
-    $result2 = $db->query("SELECT *
-        FROM comments
-        WHERE venue=:venue
-        ORDER BY thread_id ASC
-        LIMIT 10 OFFSET :p", [
-        ':venue' => $venue,
-        ':p' => ($p * 10)
-        ]);
-
-    $total = count($result2);
-    echo '[{"action":"read","status":"1","id":"' . $venue . '","data":[';
-    for ($i = 0; $i <= $total - 1; $i++) {
-        $comment = $result2[$i];
-        echo '{"id":"' . $comment['id']
-            . '","thread_id":"' . $comment['thread_id']
-            . '","creator_name":"' . $comment['creator_name']
-            . '","subject":"","body":"' . $comment['body']
-            . '","visible":"1","score":"' . $comment['score']
-            . '","date":"' . time_elapsed_string('@' . $comment['timestamp'])
-            . '","timestamp":"' . $comment['timestamp'] . '"}';
-        if ($i != $total - 1) {
-            echo ",";
-        }
+    if ($venue != "dashboard") {
+        $result2 = $db->query("SELECT *
+            FROM comments
+            WHERE venue=:venue
+            ORDER BY thread_id ASC
+            LIMIT 10 OFFSET :p", [
+            ':venue' => $venue,
+            ':p' => ($p * 10)
+            ]);
+    } else {
+        $result2 = $db->query("SELECT *
+            FROM comments
+            WHERE venue LIKE :username
+            ORDER BY thread_id ASC
+            LIMIT 10 OFFSET :p", [
+            ':username' => "%-".$_SESSION['username'],
+            ':p' => ($p * 10)
+            ]);
     }
 
-    echo '],"total":' . $fulltotal . ',"page":' . $p . '}]';
-}
+    $data = [];
+    foreach ($result2 as $comment) {
+        $data[] = [
+            'id'            => $comment['id'],
+            'thread_id'     => $comment['thread_id'],
+            'creator_name'  => $comment['creator_name'],
+            'subject'       => '',
+            'venue'         => $comment['venue'],
+            'body'          => $comment['body'],
+            'visible'       => '1',
+            'score'         => $comment['score'],
+            'date'          => time_elapsed_string('@' . $comment['timestamp']),
+            'timestamp'     => $comment['timestamp']
+        ];
+    }
+
+    $response = [
+        [
+            'action' => 'read',
+            'status' => '1',
+            'id'     => $venue,
+            'data'   => $data,
+            'total'  => $fulltotal,
+            'page'   => $p
+        ]
+    ];
+
+    echo json_encode($response);
+    }
 
 if ($a == "read") {
     extracted($db);

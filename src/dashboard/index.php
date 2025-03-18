@@ -127,9 +127,48 @@ $level = $userRepository->getLevelByUserId($_SESSION['userid']);
       <br>
       <br>
       <div class="notifications">
+          <h4>Messages</h4>
+            </div>
+            <div id="venue">
+            </div>
+            <!-- SWFHTTPRequest -->
+
+            
+
+            <!-- End SWFHTTPRequest -->
+
+            <script type="text/javascript">
+              us_config = {
+                container: 'messages',
+                venue: 'dashboard',
+                venue_container: 'venue',
+                owner: '<?= $username ?>',
+                username: '<?= $username ?>',
+                ip_address: '',
+                timestamp: '',
+                auth: '<?= $_SESSION['PHPSESSID'] ?>',
+                use_avatar: true,
+                venue_anchor_link: true,
+                show_messages: true,
+                last_login: '1389242996'
+              }
+
+             
+            </script>
+            <a name="messages_top">
+            </a>
+            <div id="messages" style="text-align: left" ;="">
+            </div>
+            <br>
+            <div class="pagination">
+              <span class="button firstbutton">
+                <a href="/messages/">Messages</a>
+              </span>
+            </div>
+            <br>
         <h4>
         </h4>
-      </div>
+      
       <br>
       <br style="clear: both;">
       <img src="./index_files/pixie.gif" width="1" height="1">

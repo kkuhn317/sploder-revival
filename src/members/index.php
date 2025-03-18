@@ -65,6 +65,7 @@ $gameListRenderService = new GameListRenderService(RepositoryManager::get()->get
                                 ?>
                             </dd>
                         </dl>
+                        <div><div id="venue" class="mprofvenue">...</div></div>
                     </div>
                 </div>
                 <div class="shown">
@@ -130,38 +131,39 @@ $gameListRenderService = new GameListRenderService(RepositoryManager::get()->get
                 <!-- End SWFHTTPRequest -->
 
 
-                <script type="text/javascript">
-                    us_config = {
-                        container: 'messages',
-                        venue: 'games/members/mat7772/',
-                        venue_container: 'venue',
-                        venue_type: 'member',
-                        owner: 'mat7772',
-                        username: '',
-                        ip_address: '162.158.51.177',
-                        timestamp: '1696951113',
-                        auth: '',
-                        use_avatar: true,
-                        venue_anchor_link: true,
-                        show_messages: true,
-                        last_login: '1696864713'
-                    }
+                           <script type="text/javascript">
+            us_config = {
+                container: 'messages',
+                venue: 'messages-<?= $username ?>',
+                venue_container: 'venue',
+                venue_type: 'member',
+                owner: '<?= $username ?>',
+                username: '<?php if (isset($_SESSION['username'])) {
+                        echo $_SESSION['username'];
+                           }?>',
+                ip_address: '',
+                timestamp: '<?= time() ?>',
+                auth: '',
+                use_avatar: true,
+                venue_anchor_link: true,
+                show_messages: true,
+            }
 
-                    window.onload = function() {
-                        return;
-                        var n;
-                        n = document.createElement('link');
-                        n.rel = 'stylesheet';
-                        n.type = 'text/css';
-                        n.href = 'https://sploder.us/css/venue5.css';
-                        document.getElementsByTagName('head')[0].appendChild(n);
-                        n = document.createElement('script');
-                        n.type = 'text/javascript';
-                        n.src = 'https://sploder.us/venue7.js';
-                        document.getElementsByTagName('head')[0].appendChild(n);
-                        if (window.addthis) addthis.button('#btn1', addthis_ui_config, addthis_share_config);
-                    }
-                </script>
+            window.onload = function() {
+                var n;
+                n = document.createElement('link');
+                n.rel = 'stylesheet';
+                n.type = 'text/css';
+                n.href = '/css/venue5.css';
+                document.getElementsByTagName('head')[0].appendChild(n);
+                n = document.createElement('script');
+                n.type = 'text/javascript';
+                n.src = '/comments/venue7.js';
+                document.getElementsByTagName('head')[0].appendChild(n);
+                if (window.addthis) addthis.button('#btn1', addthis_ui_config, addthis_share_config);
+            }
+            </script>
+
 
                 <a id="messages_top"></a>
                 <div id="messages"></div>
