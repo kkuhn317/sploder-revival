@@ -22,9 +22,15 @@ if ($friends == false) {
 $totalgames = $db->queryFirstColumn("SELECT COUNT(g_id) FROM games WHERE author = :username $publicgames", 0, $userParam);
 
 // Fetch user details
-$result = $db->queryFirst("SELECT userid, level, perms, joindate, lastlogin FROM members WHERE username = :username", $userParam);
+$result = $db->queryFirst("SELECT userid, perms, joindate, lastlogin FROM members WHERE username = :username", $userParam);
 $exists = isset($result['userid']) ? 1 : 0;
 $user_id = $exists ? $result['userid'] : null;
+
+// Fetch user level
+require_once('../repositories/repositorymanager.php');
+
+$userRepository = RepositoryManager::get()->getUserRepository();
+$result['level'] = $userRepository->getLevelByUserId($user_id);
 
 // Fetch total plays
 $plays = $db->queryFirstColumn("SELECT COUNT(1) FROM leaderboard WHERE pubkey IN (SELECT g_id FROM games WHERE author = :username $publicgames)", 0, $userParam);
