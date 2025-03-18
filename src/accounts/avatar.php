@@ -209,7 +209,7 @@
             localStorage.setItem("styles", JSON.stringify(styles));
             localStorage.setItem("colors", JSON.stringify(colors));
 
-            $("#newURL").val("https://sploder.xyz/avatar/av.php?c=" + url);
+            $("#newURL").val("/avatar/av.php?c=" + url);
         };
 
 

@@ -80,10 +80,10 @@
 
             <h5>Ownership</h5>
 
-            <p class="note">Sploder.com retains ownership of the game engine and all source code, SWF bytecode,
+            <p class="note">Sploder.net retains ownership of the game engine and all source code, SWF bytecode,
                 graphics, artwork, ideas and concepts presented on and in conjunction with the site. Levels created by
                 users remain the property of the user. By creating or submitting User Content you are granting
-                Sploder.xyz unlimited license to host, cache, store, maintain, use, reproduce, publish, distribute,
+                Sploder.net unlimited license to host, cache, store, maintain, use, reproduce, publish, distribute,
                 display, exhibit, broadcast, transmit, modify, create derivative works of, adapt, reformat, translate,
                 and otherwise exploit your Submitted User Content in part or in total throughout the universe through
                 any medium.</p>
