@@ -350,27 +350,6 @@ function us_setVenue() {
     h += '<div class="us_controls">';
 
 
-    if (us_config['username'] != "" && us_config['username'] != us_config['owner']) {
-        h += ' |';
-
-        if ($us_venue_vote != 1) {
-            h += ' <a class="us_button" href="#" onclick="us_vote(' + $us_venue_id + ', 1, \'venue\'); return false;">[+]</a>';
-        } else {
-            h += ' [+]';
-        }
-        if ($us_venue_vote != -1) {
-            h += ' <a class="us_button" href="#" onclick="us_vote(' + $us_venue_id + ', -1, \'venue\'); return false;">[-]</a>';
-        } else {
-            h += ' [-]';
-        }
-
-        if ($us_venue_favorite == 1) {
-            h += ' <a class="us_button us_symbol us_favorited" href="#" onclick="us_favorite(' + $us_venue_id + ', -1, \'venue\'); return false;">[&hearts;]</a>';
-        } else {
-            h += ' <a class="us_button us_symbol" href="#" onclick="us_favorite(' + $us_venue_id + ', 1, \'venue\'); return false;">[&hearts;]</a>';
-        }
-    }
-
     if (us_config['venue_anchor_link'] == true && us_config['show_messages'] != false) {
         var total_disp = ($us_total_messages > 0) ? ' <strong>[' + $us_total_messages + ']</strong>' : '';
         if (us_config['username'] != us_config['owner']) {

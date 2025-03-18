@@ -14,39 +14,54 @@ function extracted(IDatabase $db): void
     $page = $_GET['p'];
     $p = $_GET['p'];
 
-    if ($venue != "dashboard") {
-        $fulltotal = $db->queryFirstColumn("SELECT count(*)
-            FROM comments
-            WHERE venue=:venue", 0, [
-            ':venue' => $venue
-            ]);
-    } else {
+    if ($venue == "dashboard") {
         $fulltotal = $db->queryFirstColumn("SELECT count(*)
             FROM comments
             WHERE venue LIKE '%-' || :username AND creator_name != :username", 0, [
             ':username' => $_SESSION['username']
         ]);
+        
+    } else if ($venue == "allmsgs") {
+        $fulltotal = $db->queryFirstColumn("SELECT count(*)
+            FROM comments", 0, []);            
+    } else {
+        $fulltotal = $db->queryFirstColumn("SELECT count(*)
+            FROM comments
+            WHERE venue=:venue", 0, [
+            ':venue' => $venue
+            ]);
     }
     $latestp = ceil($fulltotal / 10) - 1;
     if ($p == "-1") {
         $p = max(0, $latestp);
     }
-    if ($venue != "dashboard") {
-        $result2 = $db->query("SELECT *
-            FROM comments
-            WHERE venue=:venue
-            ORDER BY thread_id ASC
-            LIMIT 10 OFFSET :p", [
-            ':venue' => $venue,
-            ':p' => ($p * 10)
-            ]);
-    } else {
+    if ($venue == "dashboard") {
         $result2 = $db->query("SELECT *
             FROM comments
             WHERE venue LIKE '%-' || :username AND creator_name != :username
             ORDER BY thread_id ASC
             LIMIT 10 OFFSET :p", [
             ':username' => $_SESSION['username'],
+            ':p' => ($p * 10)
+            ]);
+
+    } else if ($venue == "allmsgs") {
+        $result2 = $db->query("SELECT *
+            FROM (
+                SELECT * 
+                FROM comments
+                LIMIT 10 OFFSET :p
+            ) AS limited_comments
+            ORDER BY thread_id DESC", [
+            ':p' => ($p * 10)
+        ]);
+    } else {
+        $result2 = $db->query("SELECT *
+            FROM comments
+            WHERE venue=:venue
+            ORDER BY thread_id ASC
+            LIMIT 10 OFFSET :p", [
+            ':venue' => $venue,
             ':p' => ($p * 10)
             ]);
     }
