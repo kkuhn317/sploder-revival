@@ -354,6 +354,8 @@ function determinePage(venue) {
         }
     } else if (venue.indexOf("messages") == 0) {
         url = "/members/index.php?u=" + venue.split("messages-")[1];
+    } else if (venue.indexOf("staff-page") == 0) {
+        url = "/staff.php";
     }
     window.location.href = url;
 }
