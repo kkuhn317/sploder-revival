@@ -62,7 +62,7 @@ function extracted(IDatabase $db): string
         $result2 = $db->query("SELECT *
             FROM comments
             WHERE venue LIKE '%-' || :username AND creator_name != :username
-            ORDER BY thread_id ASC
+            ORDER BY thread_id DESC, id ASC
             LIMIT 10 OFFSET :p", [
             ':username' => $_SESSION['username'],
             ':p' => ($p * 10)
@@ -79,7 +79,7 @@ $result2 = $db->query("SELECT *
     FROM (
         SELECT * 
         FROM comments ".$clause."
-        ORDER BY thread_id DESC
+        ORDER BY thread_id DESC, id ASC
         LIMIT $perPage OFFSET :p
     ) AS limited_comments
     ORDER BY thread_id DESC", $params);
@@ -87,7 +87,7 @@ $result2 = $db->query("SELECT *
         $result2 = $db->query("SELECT *
             FROM comments
             WHERE venue=:venue
-            ORDER BY thread_id DESC
+            ORDER BY thread_id DESC, id ASC
             LIMIT 10 OFFSET :p", [
             ':venue' => $venue,
             ':p' => ($p * 10)
@@ -243,7 +243,7 @@ if ($a == "read") {
                 VALUES (:id, :username, :vote)", [
                 ':id' => $id,
                 ':username' => $_SESSION['username'],
-                ':vote' => 1
+                ':vote' => -1
             ]);
             $db->execute("UPDATE comments SET score=score-1 WHERE id=:id", [
                 ':id' => $id
