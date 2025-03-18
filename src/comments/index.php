@@ -87,7 +87,7 @@ $result2 = $db->query("SELECT *
         $result2 = $db->query("SELECT *
             FROM comments
             WHERE venue=:venue
-            ORDER BY thread_id ASC
+            ORDER BY thread_id DESC
             LIMIT 10 OFFSET :p", [
             ':venue' => $venue,
             ':p' => ($p * 10)
@@ -177,6 +177,8 @@ if ($a == "read") {
         $result2 = $db->query("SELECT vote FROM comment_votes WHERE id=:id", [
             ':id' => $id
         ]);
+
+        print_r($result2);
 
         if (isset($result2[0]['vote']) && ($result2[0]['vote'] == -1)) {
             $db->execute("UPDATE comment_votes
