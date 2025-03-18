@@ -2,31 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.2 (Debian 17.2-1.pgdg120+1)
--- Dumped by pg_dump version 17.2 (Debian 17.2-1.pgdg120+1)
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- Name: sploder; Type: DATABASE; Schema: -; Owner: sploder
---
-
-CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'C.UTF-8';
-
-
-ALTER DATABASE sploder OWNER TO sploder;
-
-\connect sploder
+-- Dumped from database version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
+-- Dumped by pg_dump version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -496,7 +473,6 @@ CREATE TABLE public.members (
     boostpoints integer NOT NULL,
     lastpagechange integer NOT NULL,
     isolate boolean NOT NULL,
-    level integer NOT NULL,
     status text,
     ip_address text
 );
@@ -805,6 +781,20 @@ CREATE INDEX idx_comment_votes ON public.comment_votes USING btree (username);
 --
 
 CREATE INDEX idx_comments_creator_name ON public.comments USING btree (creator_name);
+
+
+--
+-- Name: idx_comments_venue_creator_thread; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_comments_venue_creator_thread ON public.comments USING btree (venue, creator_name, thread_id DESC);
+
+
+--
+-- Name: idx_comments_venue_suffix; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_comments_venue_suffix ON public.comments USING btree ("right"(venue, 10));
 
 
 --

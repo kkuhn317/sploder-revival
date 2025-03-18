@@ -40,7 +40,7 @@ ini_set('display_errors', 1);
         <?php include('content/subnav.php') ?>
         <div id="content">
             <h3>Sploder Revival Staff</h3>
-            <div id="venue" style="margin: -30px 0 -5px 20px; float: right;"></div>
+            <div id="venue" style="display: none;"></div>
 
 
 
@@ -113,6 +113,39 @@ ini_set('display_errors', 1);
                 </script>
             </div>
             -->
+
+            <script type="text/javascript">
+            us_config = {
+                container: 'messages',
+                venue: 'staff-page',
+                venue_container: 'venue',
+                venue_type: 'staff',
+                owner: 'staff',
+                username: '<?php if (isset($_SESSION['username'])) {
+                        echo $_SESSION['username'];
+                           }?>',
+                ip_address: '',
+                timestamp: '<?= time() ?>',
+                auth: '',
+                use_avatar: true,
+                venue_anchor_link: true,
+                show_messages: true,
+            }
+
+            window.onload = function() {
+                var n;
+                n = document.createElement('link');
+                n.rel = 'stylesheet';
+                n.type = 'text/css';
+                n.href = '/css/venue5.css';
+                document.getElementsByTagName('head')[0].appendChild(n);
+                n = document.createElement('script');
+                n.type = 'text/javascript';
+                n.src = '/comments/venue7.js';
+                document.getElementsByTagName('head')[0].appendChild(n);
+                if (window.addthis) addthis.button('#btn1', addthis_ui_config, addthis_share_config);
+            }
+            </script>
 
 
             <a id="messages_top"></a>
