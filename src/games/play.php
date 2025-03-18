@@ -158,7 +158,7 @@ $creator_type = to_creator_type($game['g_swf']);
             <script type="text/javascript">
             us_config = {
                 container: 'messages',
-                venue: 'game-<?= $game['g_id'] . '-' . $game['author'] ?>',
+                venue: 'game-<?= $game['user_id'] ?>_<?= $game['g_id'] . '-' . $game['author'] ?>',
                 venue_container: 'venue',
                 venue_type: 'game',
                 owner: '<?= $game['author'] ?>',

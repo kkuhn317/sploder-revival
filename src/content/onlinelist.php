@@ -1,5 +1,5 @@
 <script>
-onload2()
+//onload2()
 </script>
 <div class="online_box">
     <h3>Who's Online Now.
@@ -22,7 +22,7 @@ window.onload = function() {
     document.getElementsByTagName('head')[0].appendChild(n);
     n = document.createElement('script');
     n.type = 'text/javascript';
-    n.src = 'https://web.archive.org/web/20140608214730/http://sploder.us/dashboard6.js';
+    n.src = '/comments/dashboard6.js';
     document.getElementsByTagName('head')[0].appendChild(n);
     if (onload2) onload2();
 }
