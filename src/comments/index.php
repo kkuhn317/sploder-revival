@@ -29,10 +29,10 @@ function extracted(IDatabase $db): void
     $clause = "WHERE venue != 'staff-page' ";
 
     if ($filter[0] == "creator") {
-        $clause = "AND creator_name = :creator_name";
+        $clause .= "AND creator_name = :creator_name";
         $params[':creator_name'] = $filter[1];
     } else if ($filter[0] == "owned") {
-        $clause = "AND venue LIKE '%-' || :owned";
+        $clause .= "AND venue LIKE '%-' || :owned";
         $params[':owned'] = $filter[1];
     }
 
