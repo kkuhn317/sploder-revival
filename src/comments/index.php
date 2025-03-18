@@ -122,11 +122,11 @@ $result2 = $db->query("SELECT *
         ]
     ];
 
-    echo json_encode($response);
+    return json_encode($response);
     }
 
 if ($a == "read") {
-    extracted($db);
+    echo extracted($db);
 } elseif ($a == "post") {
     $posts = file_get_contents("php://input");
     $formatter = explode("&", $posts);
@@ -159,7 +159,7 @@ if ($a == "read") {
             ':score' => $score,
             ':timestamp' => $t,
         ]);
-        extracted($db);
+        echo extracted($db);
     }
 } elseif ($a == "like") {
     if ($_SESSION['username'] != null) {
@@ -274,6 +274,6 @@ if ($a == "read") {
         $db->execute("DELETE FROM comments WHERE id=:id", [
             ':id' => $id
         ]);
-        extracted($db);
+        echo extracted($db);
     }
 }
