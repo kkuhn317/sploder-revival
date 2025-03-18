@@ -70,14 +70,19 @@ function extracted(IDatabase $db): void
 
     } else if ($venue == "allmsgs") {
         // Add :p only for the actual query
-        $params[':p'] = ($p * 10);
-        $result2 = $db->query("SELECT *
-            FROM (
-                SELECT * 
-                FROM comments ".$clause."
-                LIMIT 10 OFFSET :p
-            ) AS limited_comments
-            ORDER BY thread_id DESC", $params);
+$perPage = 50;
+$latestp = ceil($fulltotal / $perPage) - 1;
+$params[':p'] = max(0, ($latestp - $p) * $perPage);
+$p = $params[':p'];
+
+$result2 = $db->query("SELECT *
+    FROM (
+        SELECT * 
+        FROM comments ".$clause."
+        ORDER BY thread_id DESC
+        LIMIT $perPage OFFSET :p
+    ) AS limited_comments
+    ORDER BY thread_id DESC", $params);
     } else {
         $result2 = $db->query("SELECT *
             FROM comments
