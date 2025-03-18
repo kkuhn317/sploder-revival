@@ -23,8 +23,8 @@ function extracted(IDatabase $db): void
     } else {
         $fulltotal = $db->queryFirstColumn("SELECT count(*)
             FROM comments
-            WHERE venue LIKE :username", 0, [
-            ':username' => "%-".$_SESSION['username']
+            WHERE venue LIKE '%-' || :username AND creator_name != :username", 0, [
+            ':username' => $_SESSION['username']
         ]);
     }
     $latestp = ceil($fulltotal / 10) - 1;
@@ -43,10 +43,10 @@ function extracted(IDatabase $db): void
     } else {
         $result2 = $db->query("SELECT *
             FROM comments
-            WHERE venue LIKE :username
+            WHERE venue LIKE '%-' || :username AND creator_name != :username
             ORDER BY thread_id ASC
             LIMIT 10 OFFSET :p", [
-            ':username' => "%-".$_SESSION['username'],
+            ':username' => $_SESSION['username'],
             ':p' => ($p * 10)
             ]);
     }
