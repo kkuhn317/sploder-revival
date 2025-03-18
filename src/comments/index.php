@@ -254,20 +254,19 @@ if ($a == "read") {
     $formatter = explode("&", $posts);
     $id = substr($formatter[0], 3);
 
-    $result2 = $db->execute("SELECT creator_name, venue FROM comments WHERE id=:id", [
+    $result2 = $db->queryFirst("SELECT creator_name, venue FROM comments WHERE id=:id", [
         ':id' => $id
     ]);
-
-    if ($_SESSION['username'] != $result2[0]['creator_name']) {
+    if ($_SESSION['username'] != $result2['creator_name']) {
         $queriedAuthor = $db->queryFirstColumn("SELECT author FROM games WHERE g_id=:g_id", 0, [
-            ':g_id' => substr($result2[0]['venue'], 5)
+            ':g_id' => substr($result2['venue'], 5)
         ]);
 
         if ($_SESSION['username'] != $queriedAuthor) {
             die("Malicious Request Detected");
         }
     }
-    if ($_SESSION['username'] == $result2[0]['creator_name'] || $_SESSION['username'] == $queriedAuthor) {
+    if ($_SESSION['username'] == $result2['creator_name'] || $_SESSION['username'] == $queriedAuthor) {
         $db->execute("DELETE FROM comments WHERE id=:id", [
             ':id' => $id
         ]);
