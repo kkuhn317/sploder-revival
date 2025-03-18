@@ -7,7 +7,7 @@ $a = $_GET['a'];
 require_once('../database/connect.php');
 $db = getDatabase();
 
-function extracted(IDatabase $db): void
+function extracted(IDatabase $db): string
 {
     require_once(__DIR__ . '/../content/timeelapsed.php');
     $venue = $_GET['v'];
