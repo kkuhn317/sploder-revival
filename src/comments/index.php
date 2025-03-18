@@ -14,46 +14,119 @@ function extracted(IDatabase $db): void
     $page = $_GET['p'];
     $p = $_GET['p'];
 
-    $fulltotal = $db->queryFirstColumn("SELECT count(*)
-        FROM comments
-        WHERE venue=:venue", 0, [
-        ':venue' => $venue
+    if ($venue == "dashboard") {
+        $fulltotal = $db->queryFirstColumn("SELECT count(*)
+            FROM comments
+            WHERE venue LIKE '%-' || :username AND creator_name != :username", 0, [
+            ':username' => $_SESSION['username']
         ]);
+        
+    } else if ($venue == "allmsgs") {
+    $extra = $_GET['o'];
+    $filter = explode("-", $extra);
+
+    $params = [];
+    $clause = "WHERE venue != 'staff-page' ";
+
+    if ($filter[0] == "creator") {
+        $clause .= "AND creator_name = :creator_name";
+        $params[':creator_name'] = $filter[1];
+    } else if ($filter[0] == "owned") {
+        $clause .= "AND venue LIKE '%-' || :owned";
+        $params[':owned'] = $filter[1];
+    }
+
+
+    // Only pass necessary params for queryFirstColumn()
+    $fulltotal = $db->queryFirstColumn(
+        "SELECT COUNT(*)
+         FROM comments $clause", 0,
+        $params
+    );
+
+
+}
+
+ else {
+        $fulltotal = $db->queryFirstColumn("SELECT count(*)
+            FROM comments
+            WHERE venue=:venue", 0, [
+            ':venue' => $venue
+            ]);
+    }
     $latestp = ceil($fulltotal / 10) - 1;
     if ($p == "-1") {
         $p = max(0, $latestp);
     }
+    if ($venue == "dashboard") {
+        $result2 = $db->query("SELECT *
+            FROM comments
+            WHERE venue LIKE '%-' || :username AND creator_name != :username
+            ORDER BY thread_id ASC
+            LIMIT 10 OFFSET :p", [
+            ':username' => $_SESSION['username'],
+            ':p' => ($p * 10)
+            ]);
 
-    $result2 = $db->query("SELECT *
-        FROM comments
-        WHERE venue=:venue
-        ORDER BY thread_id ASC
-        LIMIT 10 OFFSET :p", [
-        ':venue' => $venue,
-        ':p' => ($p * 10)
-        ]);
+    } else if ($venue == "allmsgs") {
+        // Add :p only for the actual query
+$perPage = 50;
+$latestp = ceil($fulltotal / $perPage) - 1;
+$params[':p'] = max(0, ($latestp - $p) * $perPage);
+$p = $params[':p'];
 
-    $total = count($result2);
-    echo '[{"action":"read","status":"1","id":"' . $venue . '","data":[';
-    for ($i = 0; $i <= $total - 1; $i++) {
-        $comment = $result2[$i];
-        echo '{"id":"' . $comment['id']
-            . '","thread_id":"' . $comment['thread_id']
-            . '","creator_name":"' . $comment['creator_name']
-            . '","subject":"","body":"' . $comment['body']
-            . '","visible":"1","score":"' . $comment['score']
-            . '","date":"' . time_elapsed_string('@' . $comment['timestamp'])
-            . '","timestamp":"' . $comment['timestamp'] . '"}';
-        if ($i != $total - 1) {
-            echo ",";
-        }
+$result2 = $db->query("SELECT *
+    FROM (
+        SELECT * 
+        FROM comments ".$clause."
+        ORDER BY thread_id DESC
+        LIMIT $perPage OFFSET :p
+    ) AS limited_comments
+    ORDER BY thread_id DESC", $params);
+    } else {
+        $result2 = $db->query("SELECT *
+            FROM comments
+            WHERE venue=:venue
+            ORDER BY thread_id ASC
+            LIMIT 10 OFFSET :p", [
+            ':venue' => $venue,
+            ':p' => ($p * 10)
+            ]);
     }
 
-    echo '],"total":' . $fulltotal . ',"page":' . $p . '}]';
-}
+    $data = [];
+    foreach ($result2 as $comment) {
+
+        $data[] = [
+            'id'            => $comment['id'],
+            'thread_id'     => $comment['thread_id'],
+            'creator_name'  => $comment['creator_name'],
+            'subject'       => '',
+            'venue'         => $comment['venue'],
+            'body'          => $comment['body'],
+            'visible'       => '1',
+            'score'         => $comment['score'],
+            'date'          => time_elapsed_string('@' . $comment['timestamp']),
+            'timestamp'     => $comment['timestamp']
+        ];
+    }
+
+    $response = [
+        [
+            'action' => 'read',
+            'status' => '1',
+            'id'     => $venue,
+            'data'   => $data,
+            'total'  => $fulltotal,
+            'page'   => $p
+        ]
+    ];
+
+    return json_encode($response);
+    }
 
 if ($a == "read") {
-    extracted($db);
+    echo extracted($db);
 } elseif ($a == "post") {
     $posts = file_get_contents("php://input");
     $formatter = explode("&", $posts);
@@ -86,7 +159,7 @@ if ($a == "read") {
             ':score' => $score,
             ':timestamp' => $t,
         ]);
-        extracted($db);
+        echo extracted($db);
     }
 } elseif ($a == "like") {
     if ($_SESSION['username'] != null) {
@@ -201,6 +274,6 @@ if ($a == "read") {
         $db->execute("DELETE FROM comments WHERE id=:id", [
             ':id' => $id
         ]);
-        extracted($db);
+        echo extracted($db);
     }
 }

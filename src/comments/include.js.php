@@ -1,3 +1,62 @@
+<?php
+
+
+// I hate geoff bro wtf is this
+
+/*
+ORIGINAL CODE
+
+
+
+	try {
+
+		var us_result = '<?= $us_result ?>';
+        // This garbage used to give out the entire output made using PHP even though he already made the api lmfao
+
+		if (document && document.getElementById) {
+
+			var c = document.getElementById("us_container");
+
+			if (c) {
+
+				c.innerHTML = '<div id="us_content"><a name="us_messages_top"></a><div id="us_content_pagination1"></div><div id="us_content_messages"></div><div id="us_content_pagination2"></div></div>';
+
+				var cm = document.getElementById("us_content_messages");
+
+				if (cm) {
+
+					cm.innerHTML = us_result;
+
+				}
+
+	
+				var cp = document.getElementById("us_content_pagination2");
+
+				if (cp) {
+
+					cp.innerHTML = '<a class="us_button" href="' + window.location.href.split('?')[0] + '?start=50&owner=&venue=0&creator=">Older messages &raquo;</a>';
+
+				}
+		
+
+			}
+
+		}
+
+	} catch (err) {
+
+
+	}
+
+
+I SWEAR TO GOD I WON'T EVEN WORK ON THIS
+I'll just rewrite it from scratch
+*/
+
+// Set header to javascript
+header('Content-Type: text/javascript');
+?>
+
 /* json2.js
  * 2008-01-17
  * Public Domain
@@ -6,52 +65,78 @@
 */
 if (!this.JSON) {
     JSON = function () {
-        function f(n)
-        {
-            return n < 10 ? '0' + n : n;}
+        function f(n) {
+            return n < 10 ? '0' + n : n;
+        }
         Date.prototype.toJSON = function () {
             return this.getUTCFullYear() + '-' +
-            f(this.getUTCMonth() + 1) + '-' +
-            f(this.getUTCDate()) + 'T' +
-            f(this.getUTCHours()) + ':' +
-            f(this.getUTCMinutes()) + ':' +
-            f(this.getUTCSeconds()) + 'Z';};var m = {'\b':'\\b','\t':'\\t','\n':'\\n','\f':'\\f','\r':'\\r','"':'\\"','\\':'\\\\'};function stringify(value,whitelist)
-            {
-            var a,i,k,l,r = /["\\\x00-\x1f\x7f-\x9f]/g,v;switch (typeof value) {
-                case'string':return r.test(value) ? '"' + value.replace(r,function (a) {
-                    var c = m[a];if (c) {
-                        return c;}
-                    c = a.charCodeAt();return'\\u00' + Math.floor(c / 16).toString(16) +
-                    (c % 16).toString(16);}) + '"':'"' + value + '"';case'number':return isFinite(value) ? String(value) : 'null';case'boolean':case'null':return String(value);case'object':if (!value) {
-                        return'null';}
+                f(this.getUTCMonth() + 1) + '-' +
+                f(this.getUTCDate()) + 'T' +
+                f(this.getUTCHours()) + ':' +
+                f(this.getUTCMinutes()) + ':' +
+                f(this.getUTCSeconds()) + 'Z';
+        }; var m = { '\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"': '\\"', '\\': '\\\\' }; function stringify(value, whitelist) {
+            var a, i, k, l, r = /["\\\x00-\x1f\x7f-\x9f]/g, v; switch (typeof value) {
+                case 'string': return r.test(value) ? '"' + value.replace(r, function (a) {
+                    var c = m[a]; if (c) {
+                        return c;
+                    }
+                    c = a.charCodeAt(); return '\\u00' + Math.floor(c / 16).toString(16) +
+                        (c % 16).toString(16);
+                }) + '"' : '"' + value + '"'; case 'number': return isFinite(value) ? String(value) : 'null'; case 'boolean': case 'null': return String(value); case 'object': if (!value) {
+                    return 'null';
+                }
                     if (typeof value.toJSON === 'function') {
-                        return stringify(value.toJSON());}
-                    a = [];if (typeof value.length === 'number' && !(value.propertyIsEnumerable('length'))) {
-                        l = value.length;for (i = 0; i < l; i += 1) {
-                            a.push(stringify(value[i],whitelist) || 'null');}
-                        return'[' + a.join(',') + ']';}
+                        return stringify(value.toJSON());
+                    }
+                    a = []; if (typeof value.length === 'number' && !(value.propertyIsEnumerable('length'))) {
+                        l = value.length; for (i = 0; i < l; i += 1) {
+                            a.push(stringify(value[i], whitelist) || 'null');
+                        }
+                        return '[' + a.join(',') + ']';
+                    }
                     if (whitelist) {
-                        l = whitelist.length;for (i = 0; i < l; i += 1) {
-                            k = whitelist[i];if (typeof k === 'string') {
-                                v = stringify(value[k],whitelist);if (v) {
-                                                    a.push(stringify(k) + ':' + v);}}}} else {
+                        l = whitelist.length; for (i = 0; i < l; i += 1) {
+                            k = whitelist[i]; if (typeof k === 'string') {
+                                v = stringify(value[k], whitelist); if (v) {
+                                    a.push(stringify(k) + ':' + v);
+                                }
+                            }
+                        }
+                    } else {
                         for (k in value) {
                             if (typeof k === 'string') {
-                                v = stringify(value[k],whitelist);if (v) {
-                                    a.push(stringify(k) + ':' + v);}}}}
-                        return'{' + a.join(',') + '}';}}
-            return{stringify:stringify,parse:function (text,filter) {
-                var j;function walk(k,v)
-                {
-                    var i,n;if (v && typeof v === 'object') {
+                                v = stringify(value[k], whitelist); if (v) {
+                                    a.push(stringify(k) + ':' + v);
+                                }
+                            }
+                        }
+                    }
+                    return '{' + a.join(',') + '}';
+            }
+        }
+        return {
+            stringify: stringify, parse: function (text, filter) {
+                var j; function walk(k, v) {
+                    var i, n; if (v && typeof v === 'object') {
                         for (i in v) {
-                            if (Object.prototype.hasOwnProperty.apply(v,[i])) {
-                                n = walk(i,v[i]);if (n !== undefined) {
-                                    v[i] = n;}}}}
-                    return filter(k,v);}
-                if (/^[\],:{}\s]*$/.test(text.replace(/\\./g,'@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,']').replace(/(?:^|:|,)(?:\s*\[)+/g,''))) {
-                    j = eval('(' + text + ')');return typeof filter === 'function' ? walk('',j) : j;}
-                throw new SyntaxError('parseJSON');}};}();}
+                            if (Object.prototype.hasOwnProperty.apply(v, [i])) {
+                                n = walk(i, v[i]); if (n !== undefined) {
+                                    v[i] = n;
+                                }
+                            }
+                        }
+                    }
+                    return filter(k, v);
+                }
+                if (/^[\],:{}\s]*$/.test(text.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+                    j = eval('(' + text + ')'); return typeof filter === 'function' ? walk('', j) : j;
+                }
+                throw new SyntaxError('parseJSON');
+            }
+        };
+    }();
+}
 
 // END JSON
 
@@ -59,15 +144,14 @@ if (!this.JSON) {
 //    window.location.href = 'https://sploder.xyz';
 //}
 
-function us_getPathToSelf()
-{
-    var myName = /(^|[\/\\])venue7\.js(\?|$)/;
+function us_getPathToSelf() {
+    var myName = /(^|[\/\\])include\.js\.php(\?|$)/;
     var scripts = document.getElementsByTagName("script");
     for (var i = 0; i < scripts.length; i++) {
         var src = scripts[i].getAttribute("src");
         if (src != undefined) {
             if (src.match(myName)) {
-                return src.split("venue7.js").join("");
+                return src.split("include.js.php").join("");
             }
         }
     }
@@ -76,8 +160,7 @@ function us_getPathToSelf()
 
 // END LIBRARY
 
-function us_animate(obj, prop, startval, endval, duration)
-{
+function us_animate(obj, prop, startval, endval, duration) {
     if (window.us_tweens == undefined) {
         window.us_tweens = 0;
     }
@@ -91,8 +174,7 @@ function us_animate(obj, prop, startval, endval, duration)
     tween.total = Math.floor(duration / 30);
     tween.count = 0;
 }
-function us_anim(tween)
-{
+function us_anim(tween) {
     tween.count++;
     var amt = tween.count / tween.total;
     if (amt >= 1) {
@@ -116,14 +198,13 @@ function us_anim(tween)
 }
 
 var $us_icons = [
-    "[:)]","[=D]","[:&amp;]","[:D]","[:(]","[80]","[:9]","[;)]","[:P]","[=O]"
-    ,"[:/]","[:|]","[d:-)]","[:X]","[O:-)]","[:&#039;(]","[:*]","[^o)]","[&gt;:)]","[B)]"
-    ,"[&gt;:(]","[:8)]","[//_-]","[-_-]","[q.p]","[^-^]","[x_x]","[8-)]","[|-)]","[:^)]"
-    ,"[Y]","[N]","[V]","[NV]","[pi]","[|%|]","[T]","[G]","[(x^x)]","[@]"
+    "[:)]", "[=D]", "[:&amp;]", "[:D]", "[:(]", "[80]", "[:9]", "[;)]", "[:P]", "[=O]"
+    , "[:/]", "[:|]", "[d:-)]", "[:X]", "[O:-)]", "[:&#039;(]", "[:*]", "[^o)]", "[&gt;:)]", "[B)]"
+    , "[&gt;:(]", "[:8)]", "[//_-]", "[-_-]", "[q.p]", "[^-^]", "[x_x]", "[8-)]", "[|-)]", "[:^)]"
+    , "[Y]", "[N]", "[V]", "[NV]", "[pi]", "[|%|]", "[T]", "[G]", "[(x^x)]", "[@]"
 ];
 
-function us_bbcode(body)
-{
+function us_bbcode(body) {
 
     for (var i = 0; i < $us_icons.length; i++) {
         body = body.split($us_icons[i]).join(' <span class="us_icon us_icon_' + i + '">&nbsp;&nbsp;</span>');
@@ -133,8 +214,7 @@ function us_bbcode(body)
 
 }
 
-function us_bbcode_buttons(narrow)
-{
+function us_bbcode_buttons(narrow) {
 
     var h;
 
@@ -154,8 +234,7 @@ function us_bbcode_buttons(narrow)
 
 }
 
-function us_bbcode_add(value)
-{
+function us_bbcode_add(value) {
 
     document.forms["us_form_postmessage"][$us_namespace + "messagebody"].value += value;
 
@@ -185,15 +264,14 @@ var $us_data = null;
 var $us_messages = null;
 var $us_total_messages = 0;
 var $us_current_page = -1;
-var $us_posts_per_page = 10;
+var $us_posts_per_page = 50;
 var $us_total_pages = 1;
 var $us_first_load = true;
 var $us_post_visible = false;
 var $us_is_warned = false;
 
 // Create the XHR object.
-function createCORSRequest(method, url)
-{
+function createCORSRequest(method, url) {
     var xhr = new XMLHttpRequest();
     if ("withCredentials" in xhr) {
         xhr.open(method, url, true);
@@ -203,8 +281,7 @@ function createCORSRequest(method, url)
     return xhr;
 }
 
-function us_doRequest_swf(url, postdata)
-{
+function us_doRequest_swf(url, postdata) {
 
     try {
         var method = (postdata) ? 'POST' : 'GET';
@@ -241,8 +318,7 @@ function us_doRequest_swf(url, postdata)
 
 }
 
-function us_venueGateway(action)
-{
+function us_venueGateway(action) {
     if (action == undefined) {
         action = "read";
     }
@@ -253,18 +329,15 @@ function us_venueGateway(action)
     return $us_gateway + "?v=" + escape(us_config['venue']) + "&o=" + escape(us_config['owner']) + "&p=" + $us_current_page + "&a=" + action + am;
 }
 
-function us_div()
-{
+function us_div() {
     return document.getElementById(us_config['container']);
 }
 
-function us_venue_div()
-{
+function us_venue_div() {
     return document.getElementById(us_config['venue_container']);
 }
 
-function us_setVenue()
-{
+function us_setVenue() {
 
     var h = '<a name="us_venue_top"></a><div id="us_venue">';
 
@@ -277,34 +350,12 @@ function us_setVenue()
     h += '<div class="us_controls">';
 
 
-    if (us_config['username'] != "" && us_config['username'] != us_config['owner']) {
-        if (window.location.pathname.indexOf('/games/play.php') === 0) {
-            h += ' |';
-            if ($us_venue_vote != 1) {
-                h += ' <a class="us_button" href="#" onclick="us_vote(' + $us_venue_id + ', 1, \'venue\'); return false;">[+]</a>';
-            } else {
-                h += ' [+]';
-            }
-            if ($us_venue_vote != -1) {
-                h += ' <a class="us_button" href="#" onclick="us_vote(' + $us_venue_id + ', -1, \'venue\'); return false;">[-]</a>';
-            } else {
-                h += ' [-]';
-            }
-
-            if ($us_venue_favorite == 1) {
-                h += ' <a class="us_button us_symbol us_favorited" href="#" onclick="us_favorite(' + $us_venue_id + ', -1, \'venue\'); return false;">[&hearts;]</a>';
-            } else {
-                h += ' <a class="us_button us_symbol" href="#" onclick="us_favorite(' + $us_venue_id + ', 1, \'venue\'); return false;">[&hearts;]</a>';
-            }
-        }
-    }
-
     if (us_config['venue_anchor_link'] == true && us_config['show_messages'] != false) {
         var total_disp = ($us_total_messages > 0) ? ' <strong>[' + $us_total_messages + ']</strong>' : '';
         if (us_config['username'] != us_config['owner']) {
             h += '';
         }
-        h += '<a class="us_button" href="#" onclick="location.hash = \'' + us_config['container'] + '_top\'; return false;" >messages' + total_disp + '</a>';
+        
     }
 
     h += '</div>';
@@ -313,8 +364,7 @@ function us_setVenue()
 
 }
 
-function us_renderMessages(messages)
-{
+function us_renderMessages(messages) {
 
     var h = '';
 
@@ -324,12 +374,7 @@ function us_renderMessages(messages)
         }
     } else {
         h += '<div class="us_message"><blockquote>';
-        h += 'There are no posts yet. ';
-        if (us_config['username'] != undefined && us_config['username'] != '') {
-            h += ' <a href="#" onclick="us_showPost(); return false;">Click here</a> to be the first to post!';
-        } else {
-            h += ' <strong>Log in</strong> to post a message!';
-        }
+        h += 'There are no posts yet. :(';
         h += '</blockquote></div>';
     }
 
@@ -337,8 +382,23 @@ function us_renderMessages(messages)
 
 }
 
-function us_renderMessage(m, inner)
-{
+function determinePage(venue) {
+    // If venue **starts with** "game"
+    if (venue.indexOf("game") == 0) {
+        url = "/?s=";
+        const match = venue.match(/-(\d+_\d+)-/);
+        if (match) {
+            url += match[1];
+        }
+    } else if (venue.indexOf("messages") == 0) {
+        url = "/members/index.php?u=" + venue.split("messages-")[1];
+    } else if (venue.indexOf("staff-page") == 0) {
+        url = "/staff.php";
+    }
+    window.location.href = url;
+}
+
+function us_renderMessage(m, inner) {
 
     var h = "";
 
@@ -359,32 +419,15 @@ function us_renderMessage(m, inner)
 
     if (m.mute != 1) {
         h += '<div class="us_controls">';
-        h += '<span class="us_button us_score" title="vote score">' + m.score + '</span>';
         if (us_config['username'] != m.creator_name) {
         }
 
-        if (us_config['username'] != "" && us_config['username'] != m.creator_name) {
-            if (m.id == m.thread_id) {
-                h += '<a class="us_button us_symbol" href="#" title="reply to this" onclick="us_reply(' + m.id + '); return false;">&crarr;</a>';
-            } else {
-                h += '<a class="us_button us_symbol" href="#" title="reply to this" onclick="us_reply(' + m.thread_id + ', \'' + m.creator_name + '\'); return false;">&crarr;</a>';
-            }
+        var owned = m.venue.split("-");
+        owned = owned[owned.length - 1];
 
-            if (m.vote != 1) {
-                h += '<a class="us_button" href="#" title="vote up" onclick="us_vote(' + m.id + ', 1); return false;">+</a>';
-            } else {
-                h += '<span class="us_button">+</span>';
-            }
-            if (m.vote != -1) {
-                h += '<a class="us_button" href="#" title="vote down" onclick="us_vote(' + m.id + ', -1); return false;">-</a>';
-            } else {
-                h += '<span class="us_button">-</span>';
-            }
-        }
-
-        if (us_config['username'] == us_config['owner'] || us_config['username'] == m.creator_name) {
-            h += '<a class="us_button" href="#" onclick="us_delete(' + m.id + '); return false;">delete</a>';
-        }
+        h += '<a class="us_button" href="?owned=' + owned + '">owned</a>';
+        h += '<a class="us_button" href="?creator=' + m.creator_name + '">author</a>';
+        h += '<a class="us_button" onclick="determinePage(\'' + m.venue + '\')" style="cursor: pointer">go to page &raquo;</a>';
 
         h += '</div>';
     }
@@ -422,8 +465,7 @@ function us_renderMessage(m, inner)
 
 }
 
-function us_updateMessage(id)
-{
+function us_updateMessage(id) {
 
     var m = $us_messages[id];
     var m_div = document.getElementById("us_message_" + id);
@@ -434,8 +476,7 @@ function us_updateMessage(id)
 
 }
 
-function us_removeDeletedMessage(id)
-{
+function us_removeDeletedMessage(id) {
 
     var m = $us_messages[id];
     var m_div = document.getElementById("us_message_" + id);
@@ -448,49 +489,15 @@ function us_removeDeletedMessage(id)
 
 //
 //
-function us_renderMessagePostForm(parent_id, username)
-{
+function us_renderMessagePostForm(parent_id, username) {
 
-    if (parent_id == undefined) {
-        parent_id = 0;
-    } else if ($us_messages[parent_id] == undefined) {
-        parent_id = 0;
-    }
-    if (username == undefined) {
-        username = "";
-    } else {
-        username = "@" + username + " ";
-    }
-    var h = "";
 
-    if (us_config['username']) {
-        h += '<a name="us_postform_top"></a>';
-        h += '<div class="message_poster">';
 
-        if (parent_id > 0) {
-            h += '<h5>Replying to ' + $us_messages[parent_id].creator_name;
-            h += '. <a class="us_button" href="#" onclick="us_setPost(); return false;">cancel</a></h5>';
-        }
-
-        var rows = ($us_is_warned) ? 7 : 3;
-        var cols = ($us_is_warned) ? 18 : 40;
-
-        h += '<form name="us_form_postmessage" id="' + $us_namespace + 'messagepost">';
-        h += '  <input type="hidden" name="' + $us_namespace + 'thread_id" value="' + parent_id + '" />';
-        h += '  <label for="' + $us_namespace + 'messagebody">Enter a new message:</label>';
-        h += '  <textarea rows="' + rows + '" cols="' + cols + '" name="' + $us_namespace + 'messagebody" id="' + $us_namespace + 'messagebody" maxlength="500" />' + username + '</textarea>';
-        h += '  <input type="button" name="submit" value="Post Message" id="message_poster_submit" onclick="us_postMessage(this)" />';
-        h += '</form>';
-        h += us_bbcode_buttons($us_is_warned);
-        h += '<div class="spacer">&nbsp;</div></div>';
-    }
-
-    return h;
+    return "";
 
 }
 
-function us_renderButton(txt, onclk, active)
-{
+function us_renderButton(txt, onclk, active) {
     if (active) {
         return '<a class="us_button" href="#" onclick="' + onclk + ' return false;">' + txt + '</a>';
     } else {
@@ -499,8 +506,7 @@ function us_renderButton(txt, onclk, active)
 }
 
 
-function us_renderPagination()
-{
+function us_renderPagination() {
 
     var button = us_renderButton;
 
@@ -524,8 +530,7 @@ function us_renderPagination()
 
 }
 
-function us_setStatus(msg, show_icon)
-{
+function us_setStatus(msg, show_icon) {
     var icon = (show_icon) ? '<img src="/chrome/loading_icon.gif" width="24" height="12" /> ' : '';
     if (msg && msg.length > 0) {
         $us_content_status.innerHTML = '<p class="us_prompt">' + icon + msg + '</p>';
@@ -534,51 +539,39 @@ function us_setStatus(msg, show_icon)
     }
 }
 
-function us_setMessages(html)
-{
+function us_setMessages(html) {
     $us_content_messages.innerHTML = html;
 }
 
-function us_setPagination()
-{
+function us_setPagination() {
     $us_content_pagination1.innerHTML = us_renderPagination();
     $us_content_pagination2.innerHTML = us_renderPagination();
 }
 
-function us_setPost(parent_id, username)
-{
+function us_setPost(parent_id, username) {
 
-    if (us_config['username'] != undefined && us_config['username'].length > 0) {
-        if ($us_post_visible) {
-            $us_content_post.innerHTML = us_renderMessagePostForm(parent_id, username);
-        } else if ($us_data == null || $us_data.length != 0) {
-            $us_content_post.innerHTML = '<a class="us_button" href="#" onclick="us_showPost(); return false;">Post a New Message</a>';
-        }
-    }
+
 
 }
 
 //
 //
 //
-function us_showPost()
-{
+function us_showPost() {
     $us_post_visible = true;
     us_setPost();
 }
 
 //
 //
-function us_gotoPage(pagenum)
-{
+function us_gotoPage(pagenum) {
     $us_current_page = pagenum;
     us_doRequest_swf(us_venueGateway());
 }
 
 //
 //
-function us_postMessage(btn)
-{
+function us_postMessage(btn) {
 
     $us_post_visible = false;
     $us_last_action = "post";
@@ -602,8 +595,7 @@ function us_postMessage(btn)
 
 }
 
-function us_reply(id, username)
-{
+function us_reply(id, username) {
 
     $us_post_visible = true;
     us_setPost(id, username);
@@ -611,33 +603,10 @@ function us_reply(id, username)
 
 }
 
-function us_vote(id, vote, type)
-{
-    if (type == undefined) {
-        type = "message";
-    }
-    us_setCookie(type.charAt(0) + "v" + id, vote);
-    var oldvote = 0;
-    if (type == "message") {
-        if ($us_messages[id].vote != undefined && !isNaN(parseInt($us_messages[id].vote))) {
-            oldvote = parseInt($us_messages[id].vote);
-        }
-        $us_messages[id].vote = vote;
-    } else {
-        $us_venue_vote = vote;
-    }
-    var url = us_venueGateway((vote == -1) ? "unlike" : "like");
-    us_doRequest_swf(url, "id=" + id + "&type=" + type + "&u=" + us_config['username']);
-    if (type == "message") {
-        $us_messages[id].score = parseInt($us_messages[id].score) - oldvote + vote;
-        us_updateMessage(id);
-    } else {
-        us_setVenue();
-    }
+function us_vote(id, vote, type) {
 }
 
-function us_favorite(id, vote, type)
-{
+function us_favorite(id, vote, type) {
     if (type == undefined) {
         type = "message";
     }
@@ -656,8 +625,7 @@ function us_favorite(id, vote, type)
     }
 }
 
-function us_mute(user, unmute)
-{
+function us_mute(user, unmute) {
     if (unmute || confirm("Do you really want to mute " + user + "?")) {
         var url = us_venueGateway((unmute == true) ? "unmute" : "mute");
         us_doRequest_swf(url, "id=" + user + "&type=username&u=" + us_config['username']);
@@ -665,8 +633,7 @@ function us_mute(user, unmute)
     }
 }
 
-function us_muteMessagesBy(user, unmute)
-{
+function us_muteMessagesBy(user, unmute) {
     if (user) {
         for (var id in $us_messages) {
             var m = $us_messages[id];
@@ -678,16 +645,14 @@ function us_muteMessagesBy(user, unmute)
     }
 }
 
-function us_delete(id)
-{
+function us_delete(id) {
     if (confirm('Do you really want to delete this post?')) {
         var url = us_venueGateway("delete", id);
         us_doRequest_swf(url, "id=" + id + "&u=" + us_config['username']);
     }
 }
 
-function supports_html5_storage()
-{
+function supports_html5_storage() {
     try {
         return 'localStorage' in window && window['localStorage'] !== null;
     } catch (e) {
@@ -695,8 +660,7 @@ function supports_html5_storage()
     }
 }
 
-function us_getCookie(paramName)
-{
+function us_getCookie(paramName) {
     if (supports_html5_storage()) {
         return localStorage.getItem(paramName);
     } else if (window.SWFHttpRequest) {
@@ -705,8 +669,7 @@ function us_getCookie(paramName)
     return null;
 }
 
-function us_setCookie(paramName, value)
-{
+function us_setCookie(paramName, value) {
     if (supports_html5_storage()) {
         localStorage.setItem(paramName, value);
     } else if (window.SWFHttpRequest) {
@@ -714,8 +677,7 @@ function us_setCookie(paramName, value)
     }
 }
 
-function us_onResult(responseText)
-{
+function us_onResult(responseText) {
 
     us_setStatus('');
 
@@ -820,15 +782,13 @@ function us_onResult(responseText)
 
 }
 
-function us_onError(statusCode, responseText)
-{
+function us_onError(statusCode, responseText) {
 
     us_setStatus("Oops! There was an error " + statusCode + "! Message from server: " + responseText);
 
 }
 
-function us_main()
-{
+function us_main() {
 
     us_div().innerHTML = '<div id="us_content"><a name="us_messages_top"></a><div id="us_content_pagination1"></div><div id="us_content_messages"></div><div id="us_content_pagination2"></div><div id="us_content_status"></div><div id="us_content_post"></div></div>';
 
@@ -864,3 +824,4 @@ function us_main()
 }
 
 us_main();
+	

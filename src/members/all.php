@@ -34,7 +34,7 @@ $totalMembers = $userRepository->getTotalNumberOfMembers()
 
         <div id="content">
                 <h3>All Sploder Members</h3>
-                <p>This is a list of all Sploder members, in order of joining. Go to the <a href="?o=<?= floor($totalMembers/100) ?>">end of the list</a> 
+                <p>This is a list of all Sploder Revival members, in order of joining. Go to the <a href="?o=<?= floor($totalMembers/100) ?>">end of the list</a> 
 	            to see the newest members.</p>
                 <form action="/members/search.php" method="get">
 				<label for="search_username" style="font-size: 16px;">Search for members: &nbsp;</label>
