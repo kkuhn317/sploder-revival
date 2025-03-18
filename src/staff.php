@@ -40,7 +40,7 @@ ini_set('display_errors', 1);
         <?php include('content/subnav.php') ?>
         <div id="content">
             <h3>Sploder Revival Staff</h3>
-            <div id="venue" style="margin: -30px 0 -5px 20px; float: right;"></div>
+            <div id="venue" style="display: none;"></div>
 
 
 
