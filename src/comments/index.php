@@ -254,7 +254,7 @@ if ($a == "read") {
     $formatter = explode("&", $posts);
     $id = substr($formatter[0], 3);
 
-    $result2 = db->execute("SELECT creator_name, venue FROM comments WHERE id=:id", [
+    $result2 = $db->execute("SELECT creator_name, venue FROM comments WHERE id=:id", [
         ':id' => $id
     ]);
 
