@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <?php include('../content/head.php') ?>
+    <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
+    <script type="text/javascript">
+    var _sf_startpt = (new Date()).getTime()
+    </script>
+    <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
+</head>
+<?php include('../content/addressbar.php'); ?>
+
+<body id="members" class="messages">
+
+    <?php include('../content/headernavigation.php') ?>
+    <div id="page">
+        <?php include('../content/subnav.php') ?>
+
+
+        <div id="content">
+            <h3>Sploder Live Messages</h3>
+            <p>This is a feed of all of the messages on Sploder. Remember, for your safety, there are no private messages on Sploder, and they can always be read here.</p>
+                <a id="messages_top"></a>
+                <div id="messages"></div>
+            <div id="venue"></div>
+            <script type="text/javascript">
+
+                window.onload = function () {
+                    var n;
+                    n = document.createElement('link');
+                    n.rel = 'stylesheet';
+                    n.type = 'text/css';
+                    n.href = '/css/venue5.css';
+                    document.getElementsByTagName('head')[0].appendChild(n);
+                    n = document.createElement('script');
+                    n.type = 'text/javascript';
+                    n.src =  '/comments/include.js.php?start=0&owner=&venue=0&creator=&mods=false';
+                    document.getElementsByTagName('head')[0].appendChild(n);
+                    //if (onload2) onload2();
+                }
+                
+            </script>
+            <script type="text/javascript">
+              us_config = {
+                container: 'messages',
+                venue: 'allmsgs',
+                venue_container: 'venue',
+                owner: '0',
+                username: '0',
+                ip_address: '',
+                timestamp: '',
+                auth: '0',
+                use_avatar: true,
+                venue_anchor_link: true,
+                show_messages: true,
+                last_login: '0'
+              }
+
+             
+            </script>
+        </div>
+        <div class="spacer">&nbsp;
+
+        </div>
+
+        <div id="sidebar">
+            <br /><br /><br />
+            <div class="spacer">&nbsp;</div>
+        </div>
+        <div class="spacer">&nbsp;</div>
+        <?php include('../content/footernavigation.php') ?>
+</body>
+
+</html>
