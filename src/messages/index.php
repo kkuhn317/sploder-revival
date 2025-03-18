@@ -37,7 +37,7 @@
                     document.getElementsByTagName('head')[0].appendChild(n);
                     n = document.createElement('script');
                     n.type = 'text/javascript';
-                    n.src =  '/comments/include.js.php?start=0&owner=&venue=0&creator=&mods=false';
+                    n.src =  '/comments/include.js.php';
                     document.getElementsByTagName('head')[0].appendChild(n);
                     //if (onload2) onload2();
                 }
@@ -49,7 +49,7 @@
                 venue: 'allmsgs',
                 venue_container: 'venue',
                 owner: '0',
-                username: '0',
+                username: '<?= $_SESSION['username'] ?? null ?>',
                 ip_address: '',
                 timestamp: '',
                 auth: '0',
