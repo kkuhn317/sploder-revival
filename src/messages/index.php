@@ -21,8 +21,8 @@
 
 
         <div id="content">
-            <h3>Sploder Live Messages</h3>
-            <p>This is a feed of all of the messages on Sploder. Remember, for your safety, there are no private messages on Sploder, and they can always be read here.</p>
+            <h3>Sploder Revival Live Messages</h3>
+            <p>This is a feed of all of the messages on Sploder Revival. Remember, for your safety, there are no private messages on Sploder Revival, and they can always be read here.</p>
                 <a id="messages_top"></a>
                 <div id="messages"></div>
             <div id="venue"></div>
