@@ -178,8 +178,6 @@ if ($a == "read") {
             ':id' => $id
         ]);
 
-        print_r($result2);
-
         if (isset($result2[0]['vote']) && ($result2[0]['vote'] == -1)) {
             $db->execute("UPDATE comment_votes
                 SET vote=:vote
