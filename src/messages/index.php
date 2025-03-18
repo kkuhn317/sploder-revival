@@ -43,12 +43,21 @@
                 }
                 
             </script>
+            <?php
+                if (isset($_GET['creator'])) {
+                    $owner = "creator-".$_GET['creator'];
+                } else if (isset($_GET['owned'])) {
+                    $owner = "owned-".$_GET['owned'];
+                } else {
+                    $owner = '0';
+                }
+            ?>
             <script type="text/javascript">
               us_config = {
                 container: 'messages',
                 venue: 'allmsgs',
                 venue_container: 'venue',
-                owner: '0',
+                owner: '<?= $owner ?>',
                 username: '<?= $_SESSION['username'] ?? null ?>',
                 ip_address: '',
                 timestamp: '',

@@ -22,9 +22,32 @@ function extracted(IDatabase $db): void
         ]);
         
     } else if ($venue == "allmsgs") {
-        $fulltotal = $db->queryFirstColumn("SELECT count(*)
-            FROM comments", 0, []);            
-    } else {
+    $extra = $_GET['o'];
+    $filter = explode("-", $extra);
+
+    $params = [];
+    $clause = "";
+
+    if ($filter[0] == "creator") {
+        $clause = "WHERE creator_name = :creator_name";
+        $params[':creator_name'] = $filter[1];
+    } else if ($filter[0] == "owned") {
+        $clause = "WHERE venue LIKE '%-' || :owned";
+        $params[':owned'] = $filter[1];
+    }
+
+
+    // Only pass necessary params for queryFirstColumn()
+    $fulltotal = $db->queryFirstColumn(
+        "SELECT COUNT(*)
+         FROM comments $clause", 0,
+        $params
+    );
+
+
+}
+
+ else {
         $fulltotal = $db->queryFirstColumn("SELECT count(*)
             FROM comments
             WHERE venue=:venue", 0, [
@@ -46,15 +69,15 @@ function extracted(IDatabase $db): void
             ]);
 
     } else if ($venue == "allmsgs") {
+        // Add :p only for the actual query
+        $params[':p'] = ($p * 10);
         $result2 = $db->query("SELECT *
             FROM (
                 SELECT * 
-                FROM comments
+                FROM comments ".$clause."
                 LIMIT 10 OFFSET :p
             ) AS limited_comments
-            ORDER BY thread_id DESC", [
-            ':p' => ($p * 10)
-        ]);
+            ORDER BY thread_id DESC", $params);
     } else {
         $result2 = $db->query("SELECT *
             FROM comments

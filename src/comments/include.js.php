@@ -420,11 +420,12 @@ function us_renderMessage(m, inner) {
         if (us_config['username'] != m.creator_name) {
         }
 
-       
+        var owned = m.venue.split("-");
+        owned = owned[owned.length - 1];
 
-        if (us_config['username'] == us_config['owner'] || us_config['username'] == m.creator_name) {
-            h += '<a class="us_button" onclick="determinePage(\'' + m.venue + '\')" style="cursor: pointer">go to page &raquo;</a>';
-        }
+        h += '<a class="us_button" href="?owned=' + owned + '">owned</a>';
+        h += '<a class="us_button" href="?creator=' + m.creator_name + '">author</a>';
+        h += '<a class="us_button" onclick="determinePage(\'' + m.venue + '\')" style="cursor: pointer">go to page &raquo;</a>';
 
         h += '</div>';
     }
