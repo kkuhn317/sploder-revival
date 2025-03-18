@@ -26,13 +26,13 @@ function extracted(IDatabase $db): void
     $filter = explode("-", $extra);
 
     $params = [];
-    $clause = "";
+    $clause = "WHERE venue != 'staff-page' ";
 
     if ($filter[0] == "creator") {
-        $clause = "WHERE creator_name = :creator_name";
+        $clause = "AND creator_name = :creator_name";
         $params[':creator_name'] = $filter[1];
     } else if ($filter[0] == "owned") {
-        $clause = "WHERE venue LIKE '%-' || :owned";
+        $clause = "AND venue LIKE '%-' || :owned";
         $params[':owned'] = $filter[1];
     }
 
@@ -96,6 +96,7 @@ $result2 = $db->query("SELECT *
 
     $data = [];
     foreach ($result2 as $comment) {
+
         $data[] = [
             'id'            => $comment['id'],
             'thread_id'     => $comment['thread_id'],
