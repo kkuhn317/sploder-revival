@@ -15,6 +15,6 @@ if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
 ?>
 
 <link rel="stylesheet" type="text/css" href="/css/scrollbar.css" />
-<link rel="canonical" href="https://sploder.xyz/" />
+<link rel="canonical" href="/" />
 <link rel="alternate nofollow" type="application/rss+xml" title="RSS" href="/gamefeed.php" />
 <link href='https://fonts.googleapis.com/css?family=Raleway:800,700,500' rel='stylesheet' type='text/css' />

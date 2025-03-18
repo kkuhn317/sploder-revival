@@ -39,7 +39,7 @@
 
 
             <p class="note">Registrants under the age of 13 are not permitted to submit any personal information on <a
-                    href="/">sploder.xyz</a>. This includes e-mail addresses.
+                    href="/">sploder.net</a>. This includes e-mail addresses.
             </p>
 
 

@@ -31,7 +31,7 @@ class GameFeedService
         $rssFeed .= "<title>{$title}</title>\n";
         $rssFeed .= "<description>{$description}</description>\n";
         $rssFeed .= "<language>en-us</language>\n";
-        $rssFeed .= "<copyright>{$this->getCurrentYear()}, Sploder.xyz</copyright>\n";
+        $rssFeed .= "<copyright>{$this->getCurrentYear()}, Sploder.net</copyright>\n";
         $rssFeed .= "<lastBuildDate>{$this->getCurrentDateTime()}</lastBuildDate>\n";
 
         foreach ($results as $row) {

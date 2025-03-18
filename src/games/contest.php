@@ -109,7 +109,7 @@ $db = getDatabase();
                 foreach ($result as $row) {
                     echo '<div class="game vignette">';
                     echo '<div class="photo">';
-                    echo '<a href="/games/play.php?id=' . $row['g_id'] . '"><img src="https://sploder.xyz/users/user' . $row['user_id'] . '/images/proj' . $row['g_id'] . '/thumbnail.png" alt="' . $row['title'] . ' by ' . $row['author'] . '" title="' . $row['title'] . ' by ' . $row['author'] . '" onerror="r(this)" /></a>';
+                    echo '<a href="/games/play.php?id=' . $row['g_id'] . '"><img src="/users/user' . $row['user_id'] . '/images/proj' . $row['g_id'] . '/thumbnail.png" alt="' . $row['title'] . ' by ' . $row['author'] . '" title="' . $row['title'] . ' by ' . $row['author'] . '" onerror="r(this)" /></a>';
                     echo '</div>';
                     echo '<div class="spacer">&nbsp;</div>';
                     echo '</div>';
