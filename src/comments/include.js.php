@@ -409,7 +409,7 @@ function us_renderMessage(m, inner) {
     }
 
     if (!inner) {
-        var new_message = (us_config['last_login'] != "" && parseInt(us_config['last_login']) < parseInt(m.timestamp)) ? ' us_message_new' : '';
+        var new_message = (us_config['last_login'] != "" && parseInt(us_config['last_login']) < parseInt(m.timestamp)) ? '' : '';
         var my_message = (us_config['username'] == m.creator_name) ? ' us_message_mine' : '';
         var is_reply = (m.id != m.thread_id) ? ' us_message_reply' : '';
         h += '<a name="us_message_' + m.id + '_top"></a><div class="us_message' + my_message + is_reply + new_message + '" id="us_message_' + m.id + '">';
