@@ -41,7 +41,7 @@ $topMembers = $userRepository->getTopMembers();
             $baseurl = "/";
 
             // squash time if necessary.  1 is unsquashed.
-            $timesquash = 10;
+            $timesquash = 1000;
 
             $tagArray = array_column($topMembers, 'total_views', 'author');
             $taggedArray = array_column($topMembers, 'last_view_time', 'author');
