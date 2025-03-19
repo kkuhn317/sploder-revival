@@ -19,13 +19,13 @@ if ($day == 1) {
     // Save contest data
     file_put_contents($file, $updated);
 } elseif ($day == 3) {
-    db->execute("INSERT INTO contest_votes (id)
+    $db->execute("INSERT INTO contest_votes (id)
     SELECT g_id
     FROM contest_nominations
     GROUP BY g_id
     ORDER BY COUNT(*) DESC
     LIMIT 32;");
-    db->execute("DELETE FROM contest_nominations");
+    $db->execute("DELETE FROM contest_nominations");
 } elseif ($day == 6) {
     $db->execute("INSERT INTO contest_winner (g_id, contest_id)
     SELECT id, :contest_id
