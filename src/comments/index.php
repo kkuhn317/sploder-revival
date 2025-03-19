@@ -6,7 +6,6 @@ session_start();
 $a = $_GET['a'];
 require_once('../database/connect.php');
 $db = getDatabase();
-
 function extracted(IDatabase $db): string
 {
     require_once(__DIR__ . '/../content/timeelapsed.php');
@@ -59,15 +58,30 @@ function extracted(IDatabase $db): string
         $p = max(0, $latestp);
     }
     if ($venue == "dashboard") {
-        $result2 = $db->query("SELECT *
-            FROM comments
-            WHERE venue LIKE '%-' || :username AND creator_name != :username
-            ORDER BY thread_id DESC, id ASC
-            LIMIT 10 OFFSET :p", [
+        $result2 = $db->query("
+            SELECT * FROM (
+                SELECT c.id AS thread_id, c.id, c.venue, c.creator_name, c.body, c.score, c.timestamp
+                FROM comments c
+                WHERE (c.venue LIKE '%-' || :username OR c.body LIKE '%@'|| :username || ' %')
+                AND c.creator_name != :username
+
+                UNION
+
+                SELECT c.id AS thread_id, c.id, c.venue, c.creator_name, c.body, c.score, c.timestamp
+                FROM comments c
+                WHERE c.thread_id IN (
+                    SELECT id 
+                    FROM comments 
+                    WHERE creator_name = :username 
+                    AND thread_id = id
+                ) AND c.creator_name != :username
+            ) AS combined_results
+            ORDER BY combined_results.thread_id DESC, combined_results.id ASC
+            LIMIT 10 OFFSET :p
+        ", [
             ':username' => $_SESSION['username'],
             ':p' => ($p * 10)
-            ]);
-
+        ]);
     } else if ($venue == "allmsgs") {
         // Add :p only for the actual query
 $perPage = 50;
