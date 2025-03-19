@@ -230,7 +230,7 @@ $creator_type = to_creator_type($game['g_swf']);
                     <?php
                     //show games
                     foreach ($result as $more_game) {
-                        echo '<li><a href="play.php?id=' . $more_game['g_id'] . '">' . $more_game['title'] . '</a>&nbsp; <span class="viewscomments">' . date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['date'])) . ' &middot; ' . $more_game['views'] . ' views</span></li>';
+                        echo '<li><a href="play.php?s=' . $game['user_id'] . '_' . $more_game['g_id'] . '">' . $more_game['title'] . '</a>&nbsp; <span class="viewscomments">' . date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['date'])) . ' &middot; ' . $more_game['views'] . ' views</span></li>';
                     }
                     ?>
 
