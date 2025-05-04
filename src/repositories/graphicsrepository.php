@@ -63,4 +63,33 @@ on conflict do nothing", [
             }
         }
     }
+	
+	public function getTotal()
+	{
+	    try {
+	        $likesQuery = "SELECT COUNT(*) AS count FROM graphic_likes";
+	        $graphicsQuery = "SELECT COUNT(*) AS count FROM graphics";
+
+	        if ($this->db instanceof PDO) {
+	            $likesStmt = $this->db->query($likesQuery);
+	            $graphicsStmt = $this->db->query($graphicsQuery);
+	            return [
+	                'likes' => (int) $likesStmt->fetchColumn(),
+	                'graphics' => (int) $graphicsStmt->fetchColumn()
+	            ];
+	        } elseif (method_exists($this->db, 'query')) {
+	            $likesResult = $this->db->query($likesQuery);
+	            $graphicsResult = $this->db->query($graphicsQuery);
+	            return [
+	                'likes' => (int) ($likesResult[0]['count'] ?? 0),
+	                'graphics' => (int) ($graphicsResult[0]['count'] ?? 0)
+	            ];
+	        }
+
+	        return ['likes' => 0, 'graphics' => 0];
+	    } catch (Exception $e) {
+	        return ['likes' => 0, 'graphics' => 0];
+	    }
+	}
+
 }

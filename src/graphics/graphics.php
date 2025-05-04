@@ -1,6 +1,13 @@
 <?php
 session_start();
 
+require_once(__DIR__ . '/../database/connect.php');
+require_once(__DIR__ . '/../repositories/graphicsrepository.php');
+
+$db = getDatabase();
+
+$graphicsRepository = new GraphicsRepository($db);
+
 // Set path to the GIF folder
 $gifFolder = __DIR__ . '/gif/'; 
 
@@ -19,6 +26,17 @@ $perPage = 18; //36
 $offset = isset($_GET['o']) ? intval($_GET['o']) : 0;
 $total = count($gifFiles);
 $gifFiles = array_slice($gifFiles, $offset, $perPage);
+
+// Fetch total likes and total graphics from the database using GraphicsRepository
+$total = [];
+try {
+    $total = $graphicsRepository->getTotal();
+    $totalLikes = $total['likes'] ?: 0; // Default to 0 if no result
+    $totalGraphics = $total['graphics'] ?: 0; // Default to 0 if no result
+} catch (Exception $e) {
+    $totalLikes = 0; // Default to 0 if error
+    $totalGraphics = 0; // Default to 0 if error
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -43,6 +61,8 @@ $gifFiles = array_slice($gifFiles, $offset, $perPage);
             <h4>What are these?</h4>
             <p>These are all of the graphics created by Sploder members. You can use these graphics in the <a href="/make/ppg.php">Physics Puzzle Maker</a> or in the <a href="/make/plat.php">Platformer Game Creator</a>. You can also create your own graphics using the online graphics editor.</p>
 
+            <p>There are <?php echo number_format($totalGraphics); ?> graphics so far with <?php echo number_format($totalLikes); ?> total likes.</p>
+            
 
             <form action="" method="post">
                 <input type="hidden" name="graphic_id" value="">
@@ -72,15 +92,16 @@ $gifFiles = array_slice($gifFiles, $offset, $perPage);
                         <div class="spacer">&nbsp;</div>
                     </div>
                 </div>
-				<div class="pagination">
-					<?php if ($offset > 0): ?>
+                
+                <div class="pagination">
+                    <?php if ($offset > 0): ?>
                     <a href="?o=<?php echo max(0, $offset - $perPage); ?>">Previous</a>
-					<?php endif; ?>
-					<?php echo '&nbsp;'; ?>
-					<?php if ($offset + $perPage < $total): ?>
+                    <?php endif; ?>
+                    <?php echo '&nbsp;'; ?>
+                    <?php if ($offset + $perPage < $total): ?>
                     <a href="?o=<?php echo $offset + $perPage; ?>">Next</a>
-					<?php endif; ?>
-				</div>
+                    <?php endif; ?>
+                </div>
             </form>
         </div>
 
