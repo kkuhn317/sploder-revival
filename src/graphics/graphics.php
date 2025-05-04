@@ -22,7 +22,7 @@ $gifFiles = array_filter(scandir($gifFolder), function ($file) use ($gifFolder) 
 });
 
 // Pagination variables
-$perPage = 18; //36
+$perPage = 36;
 $offset = isset($_GET['o']) ? intval($_GET['o']) : 0;
 $total = count($gifFiles);
 $gifFiles = array_slice($gifFiles, $offset, $perPage);
@@ -76,7 +76,7 @@ try {
                             $filename = htmlspecialchars($file);
                             $src = "/src/graphics/gif/{$filename}";
                             ?>
-                            <div class="game vignette">
+                            <div class="vignette">
                                 <div class="photo">
                                     <a href=""><img src="<?= $src ?>" width="80" height="80" alt="gfx" title="<?= $filename ?>" onerror="r(this)"></a>
                                 </div>
@@ -84,7 +84,7 @@ try {
                             </div>
                             <?php
                             $counter++;
-                            if ($counter % 3 === 0): ?>
+                            if ($counter % 4 === 0): ?>
                                 <div class="spacer">&nbsp;</div>
                             <?php endif;
                         }
