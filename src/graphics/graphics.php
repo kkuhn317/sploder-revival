@@ -28,11 +28,11 @@ $total = count($gifFiles);
 $gifFiles = array_slice($gifFiles, $offset, $perPage);
 
 // Fetch total likes and total graphics from the database using GraphicsRepository
-$total = [];
+$stats = [];
 try {
-    $total = $graphicsRepository->getTotal();
-    $totalLikes = $total['likes'] ?: 0; // Default to 0 if no result
-    $totalGraphics = $total['graphics'] ?: 0; // Default to 0 if no result
+    $stats = $graphicsRepository->getTotal();
+    $totalLikes = $stats['likes'] ?: 0; // Default to 0 if no result
+    $totalGraphics = $stats['graphics'] ?: 0; // Default to 0 if no result
 } catch (Exception $e) {
     $totalLikes = 0; // Default to 0 if error
     $totalGraphics = 0; // Default to 0 if error
