@@ -1,8 +1,11 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include('../content/logincheck.php');
-include('content/graphics.php');
+require_once('../repositories/repositorymanager.php');
+$graphicsRepository = RepositoryManager::get()->getGraphicsRepository();
+$perPage = 36;
+$result = $graphicsRepository->get_public_graphics($_GET['o'] ?? 0, $perPage);
+$total = $graphicsRepository->get_total_public_graphics();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -35,23 +38,11 @@ include('content/graphics.php');
 </head>
 <?php include('../content/addressbar.php'); ?>
 
-<body id="home" class="" onload="doLoad();">
+<body id="everyones" class="newest" onload="doLoad();">
     <?php include('../content/headernavigation.php'); ?>
     <div id="page">
-        <div id="subnav">
-            <ul class="nav_dashboard">
-                <li><a href="/">Home</a></li>
-                <li><a href="/dashboard/my-games.php">My Games</a></li>
-                <li><a href="profile-edit.php">Profile</a></li>
-                <li><a href="/friends/index.php">Friends</a></li>
-                <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
-                <li><a href="/awards/index.php">Awards</a></li>
-                <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
-                <li><a href="" class="active">Graphics</a></li>
-                <li style="float: right;"><a href="/accounts/account.php">My Account</a></li>
-            </ul>
-        </div>
-        <div id="content">
+    <?php include('../content/subnav.php'); ?>
+    <div id="content">
     <h3>Game Graphics</h3><h4>What are these?</h4>
 	<p>These are all of the graphics created by Sploder members.
 	You can use these graphics in the <a href="/make/ppg.php">Physics Puzzle Maker</a> or in 
@@ -61,8 +52,8 @@ include('content/graphics.php');
             <div id="viewpage">
                 <div class="set">
                     <?php
-                    if ($total_graphics == "0") {
-                        echo 'You have not made any graphics yet.<div class="spacer">&nbsp;</div>';
+                    if ($total == "0") {
+                        echo 'No public graphics have been made yet.<div class="spacer">&nbsp;</div>';
                     }
 
                     foreach ($result as $counter => $graphic) {
@@ -88,7 +79,7 @@ include('content/graphics.php');
                 </div>
             </div>
             <?php include('../content/pages.php');
-            addPagination($total_graphics ?? 0) ?>
+            addPagination($total ?? 0, $perPage, $_GET['o']) ?>
         </div>
         <div id="sidebar">
             <!-- TODO: <h1>GAME BUZZ INCOMPLETE</h1> -->

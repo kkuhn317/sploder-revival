@@ -92,4 +92,24 @@ on conflict do nothing", [
 	    }
 	}
 
+    public function get_total_public_graphics(): int
+    {
+        $qs = "SELECT COUNT(id) FROM graphics WHERE isprivate=false AND ispublished=true";
+        $total_graphics = $this->db->queryFirstColumn($qs, 0);
+        return $total_graphics;
+    }
+
+    public function get_public_graphics(int $offset = 0, int $perPage = 36): array
+    {
+
+        $queryString = '
+            SELECT g.*, m.username 
+            FROM graphics g
+            LEFT JOIN members m ON g.userid = m.userid
+            WHERE g.isprivate = false AND g.ispublished = true
+            ORDER BY g.id DESC
+            LIMIT ' . $perPage . ' OFFSET ' . $offset*$perPage;
+        return $this->db->query($queryString);
+    }
+
 }
