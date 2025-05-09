@@ -92,14 +92,14 @@ on conflict do nothing", [
 	    }
 	}
 
-    public function get_total_public_graphics(): int
+    public function getTotalPublicGraphics(): int
     {
         $qs = "SELECT COUNT(id) FROM graphics WHERE isprivate=false AND ispublished=true";
         $total_graphics = $this->db->queryFirstColumn($qs, 0);
         return $total_graphics;
     }
 
-    public function get_public_graphics(int $offset = 0, int $perPage = 36): array
+    public function getPublicGraphics(int $offset = 0, int $perPage = 36): array
     {
 
         $queryString = '

@@ -39,7 +39,7 @@ interface IGraphicsRepository
    * 
    * @return int total number of public graphics
    */
-    function get_total_public_graphics(): int;
+    function getTotalPublicGraphics(): int;
   
   /**
    * Gets public graphics
@@ -47,5 +47,5 @@ interface IGraphicsRepository
    * @param $offset
    * @return array of graphics
    */
-    function get_public_graphics(int $offset, int $perPage): array;
+    function getPublicGraphics(int $offset, int $perPage): array;
 }

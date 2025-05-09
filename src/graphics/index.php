@@ -4,8 +4,8 @@ ini_set('display_errors', 1);
 require_once('../repositories/repositorymanager.php');
 $graphicsRepository = RepositoryManager::get()->getGraphicsRepository();
 $perPage = 36;
-$result = $graphicsRepository->get_public_graphics($_GET['o'] ?? 0, $perPage);
-$total = $graphicsRepository->get_total_public_graphics();
+$result = $graphicsRepository->getPublicGraphics($_GET['o'] ?? 0, $perPage);
+$total = $graphicsRepository->getTotalPublicGraphics();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -79,7 +79,7 @@ $total = $graphicsRepository->get_total_public_graphics();
                 </div>
             </div>
             <?php include('../content/pages.php');
-            addPagination($total ?? 0, $perPage, $_GET['o']) ?>
+            addPagination($total ?? 0, $perPage, $_GET['o'] ?? 0) ?>
         </div>
         <div id="sidebar">
             <!-- TODO: <h1>GAME BUZZ INCOMPLETE</h1> -->
