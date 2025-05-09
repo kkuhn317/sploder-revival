@@ -82,14 +82,13 @@ if (intval($responseKeys["success"]) !== 1) {
             }
             if ($status == "alert") {
                 if ($_SESSION['enteredusername'] == $result2[0]['username']) {
-                    $qs = "INSERT INTO members (username, password, joindate, lastlogin, isolate, level, boostpoints, lastpagechange, ip_address) VALUES (:username, :password, :join, :lastlogin, :isolate, :level, :boostpoints, :lastpagechange, :ip_address)";
+                    $qs = "INSERT INTO members (username, password, joindate, lastlogin, isolate, boostpoints, lastpagechange, ip_address) VALUES (:username, :password, :join, :lastlogin, :isolate, :boostpoints, :lastpagechange, :ip_address)";
                     $db->execute($qs, [
                         ':username' => $username,
                         ':password' => $hashed,
                         ':join' => $t,
                         ':lastlogin' => $t,
                         ':isolate' => $isolate,
-                        ':level' => '1',
                         ':boostpoints' => '250',
                         ':lastpagechange' => '0',
                         ':ip_address' => $ip
@@ -100,14 +99,13 @@ if (intval($responseKeys["success"]) !== 1) {
             } elseif ($status == "green") {
                 $length = strlen($username);
                 if ((2 < $length) && ($length < 17)) {
-                    $qs = "INSERT INTO members (username, password, joindate, lastlogin, isolate, level, boostpoints, lastpagechange, ip_address) VALUES (:username, :password, :join, :lastlogin, :isolate, :level, :boostpoints, :lastpagechange, :ip_address)";
+                    $qs = "INSERT INTO members (username, password, joindate, lastlogin, isolate, boostpoints, lastpagechange, ip_address) VALUES (:username, :password, :join, :lastlogin, :isolate, :boostpoints, :lastpagechange, :ip_address)";
                     $db->execute($qs, [
                         ':username' => $username,
                         ':password' => $hashed,
                         ':join' => $t,
                         ':lastlogin' => $t,
                         ':isolate' => $isolate,
-                        ':level' => '1',
                         ':boostpoints' => '250',
                         ':lastpagechange' => '0',
                         ':ip_address' => $ip
