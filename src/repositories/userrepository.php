@@ -130,10 +130,10 @@ LIMIT 90;
             m.username, m.lastlogin, m.lastpagechange, m.status
         ";
 
-        $result3 = $this->db->query($qs2, [':last' => $last]);
+        $onlineMembers = $this->db->query($qs2, [':last' => $last]);
 
 
-        foreach ($result3 as &$row) {
+        foreach ($onlineMembers as &$row) {
             $row['level'] = $this->getLevel(
                 $row['total_ratings_given'],
                 $row['friend_count'],
@@ -143,10 +143,10 @@ LIMIT 90;
         }
 
         // Sort by level descending
-        usort($result3, fn($a, $b) => $b['level'] <=> $a['level']);
+        usort($onlineMembers, fn($a, $b) => $b['level'] <=> $a['level']);
 
         // Limit to top 15
-        $top15 = array_slice($result3, 0, 15);
+        $top15 = array_slice($onlineMembers, 0, 15);
 
         return $top15;
     }
