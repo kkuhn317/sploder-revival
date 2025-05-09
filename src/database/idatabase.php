@@ -14,7 +14,7 @@ interface IDatabase
    * @param $mode
    * @return array
    */
-    public function query(string $query, array $parameters = null, $mode = 0): array;
+    public function query(string $query, ?array $parameters = null, $mode = 0): array;
 
   /**
    * Executes a $query with $parameters and returns the first result
@@ -23,7 +23,7 @@ interface IDatabase
    * @param $mode
    * @return array
    */
-    public function queryFirst(string $query, array $parameters = null, $mode = 0): mixed;
+    public function queryFirst(string $query, ?array $parameters = null, $mode = 0): mixed;
 
   /**
    * Executes a $query with $parameters and returns the first $column result
@@ -32,7 +32,7 @@ interface IDatabase
    * @param $column
    * @return array
    */
-    public function queryFirstColumn(string $query, int $column = 0, array $parameters = null): mixed;
+    public function queryFirstColumn(string $query, int $column = 0, ?array $parameters = null): mixed;
 
     /**
      * Returns a $query results as paginated + metadata on the pagination.
@@ -45,7 +45,7 @@ interface IDatabase
      * @param $parameters
      * @return PaginationData
      */
-    public function queryPaginated(string $query, int $page, int $itemsPerPage, $parameters = null): PaginationData;
+    public function queryPaginated(string $query, int $page, int $itemsPerPage, ?array $parameters = null): PaginationData;
 
   /**
    * Executes a $query with $parameters and returns if the query succeeded or not
@@ -54,7 +54,7 @@ interface IDatabase
    * @param $parameters
    * @return bool
    */
-    public function execute(string $query, array $parameters = null): bool;
+    public function execute(string $query, ?array $parameters = null): bool;
 
   /**
    * Within the block of $callable, a transaction scope will be created and committed. Any failures will rollback the transaction.

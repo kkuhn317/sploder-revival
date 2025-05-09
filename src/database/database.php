@@ -18,7 +18,7 @@ class Database implements IDatabase
         return $this->connectionManager->getConnection();
     }
 
-    public function query(string $query, array $parameters = null, $mode = 0): array
+    public function query(string $query, ?array $parameters = null, $mode = 0): array
     {
         $connection =  $this->getConnection();
         $statement = $this->getConnection()->prepare($query);
@@ -26,21 +26,21 @@ class Database implements IDatabase
         return $statement->fetchAll($mode);
     }
 
-    public function queryFirst(string $query, array $parameters = null, $mode = 0): mixed
+    public function queryFirst(string $query, ?array $parameters = null, $mode = 0): mixed
     {
         $statement = $this->getConnection()->prepare($query);
         $statement->execute($this->mutateParameters($parameters));
         return $statement->fetch($mode);
     }
 
-    public function queryFirstColumn(string $query, int $column = 0, array $parameters = null): mixed
+    public function queryFirstColumn(string $query, int $column = 0, ?array $parameters = null): mixed
     {
         $statement = $this->getConnection()->prepare($query);
         $statement->execute($this->mutateParameters($parameters));
         return $statement->fetchColumn($column);
     }
 
-    public function execute(string $query, array $parameters = null): bool
+    public function execute(string $query, ?array $parameters = null): bool
     {
         $statement = $this->getConnection()->prepare($query);
         return $statement->execute($this->mutateParameters($parameters));
