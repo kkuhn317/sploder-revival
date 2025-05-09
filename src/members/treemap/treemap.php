@@ -128,7 +128,9 @@ function render_treemap ($theArray, $width, $height, $depth = 0, $orientation = 
 					$now = strtotime($towhen);
 				}
 				
-				$latest = strtotime($taggedArray[$tag]);
+				$datetime = $taggedArray[$tag] ?? null;
+				$latest = $datetime !== null ? strtotime($datetime) : false;
+
 				
 				$age = $now - $latest;
 				
