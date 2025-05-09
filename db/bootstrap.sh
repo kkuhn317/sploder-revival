@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Drop and and recreate the database
+# Drop and recreate the database
 psql -U sploder -d postgres --command="drop database sploder;"
 psql -U sploder -d postgres --command="create database sploder;"
 psql -U sploder -d sploder -f /bootstrap/sploder.sql
