@@ -232,8 +232,9 @@ where g_id = :g_id
 		FROM (
 			SELECT contest_id, g_id
 			FROM contest_winner
+            WHERE contest_id <= :id
 			ORDER BY contest_id
-			LIMIT 6 OFFSET (:id * 6)
+			LIMIT 6
 		) AS recent_contests
 		JOIN games ON recent_contests.g_id = games.g_id;";
         return $this->db->query($query, ['id' => $contestId]);

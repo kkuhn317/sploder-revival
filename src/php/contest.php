@@ -83,7 +83,6 @@ if ($a == "status") {
         $result = $db->query("SELECT * FROM contest_votes WHERE id = :id", [
             ':id' => $id,
         ]);
-        print_r($result);
         if (count($result) > 0) {
             $output .= '&can_vote=1';
         } else {
