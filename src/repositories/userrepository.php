@@ -105,6 +105,52 @@ LIMIT 90;
         return $this->db->query($qs)[0]['count'];
     }
 
+    public function getOnlineMembers(): array
+    {
+        $last = time() - 30;
+        $qs2 = "
+        SELECT 
+            m.username,
+            m.lastlogin,
+            m.lastpagechange,
+            m.status,
+            (SELECT COUNT(*) FROM votes v WHERE v.username = m.username) AS total_ratings_given,
+            COUNT(DISTINCT f.user2) AS friend_count,
+            COUNT(DISTINCT g.g_id) AS game_count,
+            COALESCE(SUM(g.views), 0) AS total_views
+        FROM 
+            members m
+        LEFT JOIN 
+            friends f ON m.username = f.user1
+        LEFT JOIN 
+            games g ON m.username = g.author
+        WHERE 
+            m.lastlogin > :last
+        GROUP BY 
+            m.username, m.lastlogin, m.lastpagechange, m.status
+        ";
+
+        $result3 = $this->db->query($qs2, [':last' => $last]);
+
+
+        foreach ($result3 as &$row) {
+            $row['level'] = $this->getLevel(
+                $row['total_ratings_given'],
+                $row['friend_count'],
+                $row['game_count'],
+                $row['total_views']
+            );
+        }
+
+        // Sort by level descending
+        usort($result3, fn($a, $b) => $b['level'] <=> $a['level']);
+
+        // Limit to top 15
+        $top15 = array_slice($result3, 0, 15);
+
+        return $top15;
+    }
+
     public function getLevelByUserId(int $userId)
     {
         $qs = "
