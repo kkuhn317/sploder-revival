@@ -7,9 +7,7 @@ if (session_status() === PHP_SESSION_ACTIVE) {
     session_destroy();
 }
 
-error_reporting(E_ALL);
 
-ini_set('display_errors', 1);
 $username = $_POST['username'] ?? null;
 $password = $_POST['password'] ?? null;
 $db = getDatabase();
