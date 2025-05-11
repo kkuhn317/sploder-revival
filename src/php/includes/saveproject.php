@@ -50,6 +50,7 @@ function saveProject(int $g_swf): int
 
 
             if (!$gameRepository->verifyOwnership($id, $_SESSION['username'])) {
+                http_response_code(403);
                 die('<message result="failed" message="You do not own this game!"/>');
             }
         }

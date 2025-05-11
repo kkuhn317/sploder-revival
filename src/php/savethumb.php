@@ -10,12 +10,14 @@ $gameRepository = RepositoryManager::get()->getGameRepository();
 
 
 if (!$gameRepository->verifyOwnership($id, $_SESSION['username'])) {
+    http_response_code(403);
     die('<message result="failed" message="You do not own this game!"/>');
 }
 $size = $_GET['size'];
 $image_path = "../users/user" . $_SESSION['userid'] . "/images/proj" . $id . "/";
 
 if (!@imagecreatefromstring($data)) {
+    http_response_code(403);
     echo '<message result="error" message="Invalid image data"/>';
     exit();
 }
