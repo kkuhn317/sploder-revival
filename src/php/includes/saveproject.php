@@ -45,15 +45,12 @@ function saveProject(int $g_swf): int
             // Save XML to $xml
             $xml = $xml2->asXML();
         } else {
-            // Check whether user owns the game
-            $queriedAuthor = $db->queryFirstColumn("SELECT author
-                FROM games
-                WHERE g_id = :g_id", 0, [
-                ':g_id' => $id,
-            ]);
-            if ($queriedAuthor != $author) {
-                echo '<message result="failed" message="Haxxor detected!"/>';
-                exit();
+            require_once('../repositories/repositorymanager.php');
+            $gameRepository = RepositoryManager::get()->getGameRepository();
+
+
+            if (!$gameRepository->verifyOwnership($id, $_SESSION['username'])) {
+                die('<message result="failed" message="You do not own this game!"/>');
             }
         }
 

@@ -23,12 +23,11 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     require_once('../database/connect.php');
     $db = getDatabase();
 
-    // Check if the user owns the game
-    $result = $db->query("SELECT author FROM games WHERE g_id=:id", [
-        ':id' => $id
-    ]);
+    require_once('../repositories/repositorymanager.php');
+    $gameRepository = RepositoryManager::get()->getGameRepository();
 
-    if ($result[0]['author'] != $_SESSION['username']) {
+
+    if (!$gameRepository->verifyOwnership($id, $_SESSION['username'])) {
         die('<message result="failed" message="You do not own this game!"/>');
     }
     $db->execute("UPDATE games
