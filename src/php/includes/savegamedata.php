@@ -28,6 +28,7 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
 
 
     if (!$gameRepository->verifyOwnership($id, $_SESSION['username'])) {
+        http_response_code(403);
         die('<message result="failed" message="You do not own this game!"/>');
     }
     $db->execute("UPDATE games
