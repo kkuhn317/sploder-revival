@@ -1,7 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 session_id($_GET['PHPSESSID']);
 session_start();
 if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists

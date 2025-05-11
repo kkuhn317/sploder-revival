@@ -1,10 +1,5 @@
 <?php
 
-/*
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-*/
 $loc = explode("projects/proj", $_GET["loc"]);
 $loc = (int)filter_var($loc[1], FILTER_SANITIZE_NUMBER_INT);
 include('../database/connect.php');
