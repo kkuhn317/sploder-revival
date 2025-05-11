@@ -3,8 +3,6 @@
 include('../../content/logincheck.php');
 include('../../database/connect.php');
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 $username = $_GET['username'];
 $db = getDatabase();
 $qs2 = "SELECT id FROM friends WHERE (user1=:sender_id AND user2=:receiver_id)";

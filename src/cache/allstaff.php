@@ -1,7 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 // Get the list of staff members
 require_once('../database/connect.php');

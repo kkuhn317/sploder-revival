@@ -1,7 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 # Including all the required scripts for demo
 require(__DIR__ . "/discord.php");
 require(__DIR__ . "/functions.php");

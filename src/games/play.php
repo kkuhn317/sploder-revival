@@ -3,8 +3,6 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 require_once('../content/getgameid.php');
 require('../content/playgame.php');

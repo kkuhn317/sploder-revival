@@ -2,9 +2,6 @@
 
 function saveProject(int $g_swf): int
 {
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
-    error_reporting(E_ALL);
     session_start();
     if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
         $xml = $_POST['xml'] ?? file_get_contents('php://input');

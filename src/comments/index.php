@@ -1,7 +1,5 @@
 <?php
 
-error_reporting(E_ERROR);
-ini_set('display_errors', 1);
 session_start();
 $a = $_GET['a'];
 require_once('../database/connect.php');
