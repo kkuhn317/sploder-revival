@@ -142,9 +142,9 @@ interface IGameRepository
     /**
      * Verifies ownership of a game
      * 
-     * @param $gameId
-     * @param $userName
-     * @return true if the user owns the game
+     * @param int $gameId
+     * @param string $userName
+     * @return bool if the user owns the game
      */
     public function verifyOwnership(int $gameId, string $userName): bool;
 }
