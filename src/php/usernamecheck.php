@@ -4,8 +4,6 @@ require_once("../database/connect.php");
 
 $originalMembersDb = getOriginalMembersDatabase();
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 $u = mb_strtolower($_GET['u']);
 #$qs = "UPDATE sploder SET isprivate=" . $isprivate . " WHERE g_id = " . $id;
 $result2 = $originalMembersDb->query("SELECT username FROM members WHERE username=:user LIMIT 1", [

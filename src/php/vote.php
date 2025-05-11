@@ -2,8 +2,6 @@
 
 include('../database/connect.php');
 include('includes/votes.php');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 $g_id = $_GET['ssid'];
 $score = $_GET['score'];
 session_id($_GET['PHPSESSID']);

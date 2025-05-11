@@ -6,8 +6,6 @@ session_start();
 
 require_once("../database/connect.php");
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 $u = mb_strtolower($_POST['username']);
 
 $originalMembersDb = getOriginalMembersDatabase();

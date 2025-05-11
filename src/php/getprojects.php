@@ -1,7 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 header("Content-type: text/xml");
 $version = $_GET['version'] ?? 1;
 if((($_GET['PHPSESSID'] ?? null) == 'demo' || !isset($_GET['PHPSESSID'])) && $version == 7){
