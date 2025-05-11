@@ -5,6 +5,13 @@ session_id($_GET['PHPSESSID']);
 session_start();
 $data = file_get_contents("php://input");
 $id = (int)filter_var(substr($_GET['projid'], 4), FILTER_SANITIZE_NUMBER_INT);
+require_once('../repositories/repositorymanager.php');
+$gameRepository = RepositoryManager::get()->getGameRepository();
+
+
+if (!$gameRepository->verifyOwnership($id, $_SESSION['username'])) {
+    die('<message result="failed" message="You do not own this game!"/>');
+}
 $size = $_GET['size'];
 $image_path = "../users/user" . $_SESSION['userid'] . "/images/proj" . $id . "/";
 

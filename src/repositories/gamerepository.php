@@ -268,4 +268,13 @@ where g_id = :g_id
         ], PDO::FETCH_NUM);
         return new GameMetricsForUser((int)$metrics[0], (int)$metrics[1]);
     }
+
+    public function verifyOwnership(int $gameId, string $userName): bool
+    {
+        $query = "SELECT author FROM games WHERE g_id = :g_id";
+        $result = $this->db->queryFirstColumn($query, 0, [
+            ':g_id' => $gameId,
+        ]);
+        return $result === $userName;
+    }
 }
