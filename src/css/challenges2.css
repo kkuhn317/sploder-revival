@@ -75,6 +75,7 @@ div.challenge_form {
     background: #606 url('/chrome/challenge_simple_large.png') no-repeat 10px 10px;
 
     padding-left: 200px;
+    padding-right: 20px;
     margin-bottom: 40px;
     text-align: left;
     color: #eee;
@@ -259,3 +260,34 @@ p.prize span {
     font-weight: bold;
     color: #fc0 !important;
 }
+
+/* Make the tel (hacky way to remove the spinners consistently) inputs 10px */
+input[type="tel"] {
+    width: 50px;
+    height: 20px;
+    font-size: 12px;                        
+}
+
+/* Remove the spacing between two trs */
+
+table {
+    border-spacing: 0; /* Removes spacing between cells */
+    border-collapse: collapse; /* Ensures no gaps between borders */
+}
+
+tr {
+    margin: 0; /* Removes any margin */
+    padding: 0; /* Removes any padding */
+}
+
+td {
+    padding: 0px;
+    /* Make font bigger */
+    font-size:16px;
+}
+/* Add more margin to the suffix */
+.suffix {
+    padding-left: 5px;
+    
+}
+
