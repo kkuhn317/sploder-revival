@@ -88,7 +88,7 @@ function format_num($num, $precision = 0)
         <ul id="topnav">
             <li id="nav1"><a href="/games/featured.php">Play Games</a></li>
             <li id="nav2"><a href="/make/index.php">Make a Game</a></li>
-            <!-- TODO: Challenges <li id="nav3"><a href="/games/challenges/">Challenges</a></li> -->
+            <li id="nav3"><a href="/games/challenges.php">Challenges</a></li>
             <li id="nav4"><a href="/games/members.php">Members</a></li>
             <li id="nav5"><a href="/games/contest.php">Contest</a></li>
         </ul>

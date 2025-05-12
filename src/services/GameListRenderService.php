@@ -90,7 +90,7 @@ class GameListRenderService
                                         <?php if ($includeBoost) {
                                             echo '&nbsp;';
                                         } ?>
-                                        <input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">
+                                        <a href=''><input title="Challenge" style="width:47px; pointer-events: none;" class="challenge_button" value="Challenge"></a>
                                     <?php } ?>
 
                                 
@@ -162,7 +162,7 @@ class GameListRenderService
             includeDelete: true,
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
-            includeChallenge: false,
+            includeChallenge: true,
             includeUsername: false,
             fixSidebar: false
         );
