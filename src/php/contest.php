@@ -37,7 +37,7 @@ $a = $_POST['action'];
 $day = date("w");
 $lastContest = file_get_contents('../config/currentcontest.txt') - 1;
 // Contest status, 0 = results, 1 = nominations, 2 = voting
-if (is_winner($_POST['game_id'])) {
+if (is_winner($_POST['game_id'] ?? -1)) {
     $output .= '&is_winner=1';
     $output .= '&accepting_entries=0';
     die($output);
@@ -60,14 +60,14 @@ if ($a == "status") {
         $output .= '&voting=0';
     } elseif ($status == 1) {
         $output .= '&accepting_entries=1';
-        $id = $_POST['game_id'];
+        $id = $_POST['game_id'] ?? -1;
         $db = getDatabase();
         $result = $db->query("SELECT *
             FROM contest_nominations
             WHERE g_id = :id
             AND nominator_username = :username", [
             ':id' => $id,
-            ':username' => $_SESSION['username']
+            ':username' => $_SESSION['username'] ?? ''
         ]);
         if (count($result) > 0) {
             $output .= '&already_nominated=1';
@@ -76,7 +76,7 @@ if ($a == "status") {
         }
     } elseif ($status == 2) {
         $output .= "&voting=1";
-        $id = $_POST['game_id'];
+        $id = $_POST['game_id'] ?? -1;
         $db = getDatabase();
         $result = $db->query("SELECT * FROM contest_votes WHERE id = :id", [
             ':id' => $id,
@@ -98,12 +98,12 @@ if ($a == "status") {
     if (!isset($_SESSION['username'])) {
         die('&success=false');
     }
-    $id = $_POST['game_id'];
+    $id = $_POST['game_id'] ?? -1;
 
     $db = getDatabase();
     $result = $db->query("SELECT * FROM contest_nominations WHERE g_id = :id AND nominator_username = :username", [
         ':id' => $id,
-        ':username' => $_SESSION['username']
+        ':username' => $_SESSION['username'] ?? ''
     ]);
 
     if (count($result) > 0) {
@@ -111,7 +111,7 @@ if ($a == "status") {
     } else {
         $db->execute("INSERT INTO contest_nominations (g_id, nominator_username) VALUES (:id, :username)", [
             ':id' => $id,
-            ':username' => $_SESSION['username']
+            ':username' => $_SESSION['username'] ?? ''
         ]);
     }
 
@@ -120,7 +120,7 @@ if ($a == "status") {
     if (!isset($_SESSION['username'])) {
         die('&success=false');
     }
-    $id = $_POST['game_id'];
+    $id = $_POST['game_id'] ?? -1;
 
     $db = getDatabase();
     $result = $db->query("SELECT * FROM contest_votes WHERE id = :id", [
@@ -132,7 +132,7 @@ if ($a == "status") {
     }
 
     $result = $db->query("SELECT * FROM contest_voter_usernames WHERE voter_username = :username", [
-        ':username' => $_SESSION['username'],
+        ':username' => $_SESSION['username'] ?? '',
     ]);
 
     if (count($result) >= 3) {
@@ -143,7 +143,7 @@ if ($a == "status") {
     } else {
         $db->execute("INSERT INTO contest_voter_usernames (id,voter_username) VALUES (:id, :username)", [
             ':id' => $id,
-            ':username' => $_SESSION['username']
+            ':username' => $_SESSION['username'] ?? ''
         ]);
         $db->execute("UPDATE contest_votes SET votes = votes + 1 WHERE id = :id", [
             ':id' => $id
