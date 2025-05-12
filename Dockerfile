@@ -8,6 +8,7 @@ RUN apt-get update \
 	libpng-dev \
   build-essential \
   curl \
+  nodejs \
   gifsicle \
   git \
   jpegoptim \
