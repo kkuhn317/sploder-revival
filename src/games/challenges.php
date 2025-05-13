@@ -35,6 +35,7 @@ $offset = $_GET['o'] ?? 0;
             <?php
             // Display challenges form
             ?>
+            <script type="text/javascript" src="challenges.js"></script>
             <div style="border-radius:10px" class="challenge_form">
                 <br>
                 <h4>Make a Challenge for <i>Ski Jump</i></h4>
@@ -42,7 +43,7 @@ $offset = $_GET['o'] ?? 0;
                 <form action="/php/challenges.php" method="post">
                     
                 <label>
-                    <input type="radio" name="choice" value="option1">Speed Run
+                    <input type="radio" name="choice" value="option1" checked>Speed Run
                 </label>
                 <label>
                     <input type="radio" name="choice" value="option2">Get a Score
@@ -50,18 +51,18 @@ $offset = $_GET['o'] ?? 0;
                 <br><br>
                 <table>
                     <tr>
-                        <td><label for="name">Score at least</label></td>
-                        <td><input type="tel" id="name" name="name" required></td>
-                        <td class="suffix">pts</td>
+                        <td><label for="name">Win in less than</label></td>
+                        <td><input type="text" id="name" name="name" value=60 pattern="[0-9]+" required></td>
+                        <td class="suffix">seconds</td>
                     </tr>
                     <tr>
                         <td><label for="description">Challenge Prize:</label></td>
-                        <td><input type="tel" id="description" name="description" required></td>
+                        <td><input type="text" id="description" name="description" value=50 pattern="[0-9]+" required></td>
                         <td class="suffix">coins</td>
                     </tr>
                     <tr>
                         <td><label for="points">Max Winners:</label></td>
-                        <td><input type="tel" id="points" name="points" required></td>
+                        <td><input type="text" id="points" name="points" value=3 pattern="[0-9]+" required></td>
                         <td class="suffix">winners</td>
                     </tr>
                 </table>
@@ -77,8 +78,8 @@ $offset = $_GET['o'] ?? 0;
                     <tr>
                         <td><label></label></td>
                         <td>
-                            <input class="postbutton" style="width:45px;" value="Cancel"></input>
-                            <input class="postbutton" style="width:47px;" value="Create"></input>
+                            <a href="/dashboard/my-games.php"><input type="button" class="postbutton" value="Cancel"></input></a>
+                            <input value="Create" type="submit" class="postbutton"></input>
                         </td>
                     </tr>
                 </table>
