@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles database interations with friends
+ * Handles database interactions with friends
  */
 interface IFriendsRepository
 {

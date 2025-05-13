@@ -1,10 +1,8 @@
 <?php
 session_start();
-require_once('../services/GameListRenderService.php');
 require_once('../repositories/repositorymanager.php');
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
-$gameListRenderService = new GameListRenderService($gameRepository);
 $perPage = 12;
 $offset = $_GET['o'] ?? 0;
 ?>
@@ -34,6 +32,7 @@ $offset = $_GET['o'] ?? 0;
         <div id="content">
             <?php
             // Display challenges form
+            if(isset($_GET['s'])) {
             ?>
             <script type="text/javascript" src="challenges.js"></script>
             <div style="border-radius:10px" class="challenge_form">
@@ -89,6 +88,7 @@ $offset = $_GET['o'] ?? 0;
                 <p style="text-align: justify;">After your challenge is created, you can <i>verify</i> it by accepting and winning the challenge.</p>
                 <br>
             </div>
+            <?php } ?>
             <div class="challenges_intro">
                 <h3>Game Challenges</h3>
 
