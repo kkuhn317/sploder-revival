@@ -81,16 +81,16 @@ class GameListRenderService
                                     <?php if ($includeDelete) { ?>
                                         <input title="Delete" type="button"
                                             onclick="delproj(<?= $id ?>,'<?= urldecode($title) ?>')"
-                                            style="width:37px" value="Delete">&nbsp;
+                                            type="button" value="Delete">&nbsp;
                                     <?php } ?>
                                     <?php if ($includeBoost) { ?>
-                                        <input title="Boost" style="width:27px" class="boost_button" value="Boost">
+                                        <input title="Boost" type="button" class="boost_button" value="Boost">
                                     <?php } ?>
                                     <?php if ($includeChallenge) { ?>
                                         <?php if ($includeBoost) {
                                             echo '&nbsp;';
                                         } ?>
-                                        <a href=''><input title="Challenge" style="width:47px; pointer-events: none;" class="challenge_button" value="Challenge"></a>
+                                        <a href='/games/challenges.php?s=<?= $_SESSION['userid'] .'_'. $id ?>'><input title="Challenge" type="button" class="challenge_button" value="Challenge"></a>
                                     <?php } ?>
 
                                 

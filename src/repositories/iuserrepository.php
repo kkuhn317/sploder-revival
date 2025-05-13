@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles database interations with users
+ * Handles database interactions with users
  */
 interface IUserRepository
 {

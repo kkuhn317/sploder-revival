@@ -3,7 +3,7 @@
 require_once(__DIR__ . "/../database/PaginationData.php");
 
 /**
- * Handles database interations with games
+ * Handles database interactions with games
  */
 interface IGameRepository
 {
