@@ -261,10 +261,9 @@ p.prize span {
     color: #fc0 !important;
 }
 
-/* Make the tel (hacky way to remove the spinners consistently) inputs 10px */
-input[type="tel"] {
+/* Make the text inputs 10px */
+input[type="text"] {
     width: 50px;
-    height: 20px;
     font-size: 12px;                        
 }
 
