@@ -4,6 +4,5 @@
         "phpunit/phpunit": "^11.5"
     },
     "require": {
-        "nesk/puphpeteer": "^2.0"
     }
 }
