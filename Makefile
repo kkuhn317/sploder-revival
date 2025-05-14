@@ -28,7 +28,7 @@ build:
 dev:
 	$(MAKE) dev.down
 	@if [ "$(WATCH)" = "true" ]; then \
-		(sleep 1; ${OPEN_CMD} ${LOCAL_URL}; ) & ${CONTAINER_CMD} compose -f docker-compose-dev.yaml up; \
+		(sleep 2; ${OPEN_CMD} ${LOCAL_URL}; ) & ${CONTAINER_CMD} compose -f docker-compose-dev.yaml up; \
 	else \
 		${CONTAINER_CMD} compose -f docker-compose-dev.yaml up -d && ${OPEN_CMD} ${LOCAL_URL}; \
 	fi
