@@ -277,4 +277,11 @@ where g_id = :g_id
         ]);
         return $result === $userName;
     }
+    
+    public function getGameTitle(int $gameId): string
+    {
+        return $this->db->queryFirstColumn("SELECT title FROM games WHERE g_id = :g_id", 0, [
+            ':g_id' => $gameId,
+        ]);
+    }
 }

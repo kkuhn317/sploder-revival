@@ -15,6 +15,7 @@ require_once(__DIR__ . "/awardsrepository.php");
 require_once(__DIR__ . "/userrepository.php");
 require_once(__DIR__ . "/contestrepository.php");
 require_once(__DIR__ . "/friendsrepository.php");
+require_once(__DIR__ . "/challengesrepository.php");
 
 class RepositoryManager implements IRepositoryManager
 {
@@ -24,6 +25,7 @@ class RepositoryManager implements IRepositoryManager
     private readonly IGraphicsRepository $graphicsRepository;
     private readonly IUserRepository $userRepository;
     private readonly IFriendsRepository $friendsRepository;
+    private readonly IChallengesRepository $challengesRepository;
 
     private function __construct(IDatabase $database)
     {
@@ -33,6 +35,7 @@ class RepositoryManager implements IRepositoryManager
         $this->graphicsRepository = new GraphicsRepository($database);
         $this->userRepository = new UserRepository($database);
         $this->friendsRepository = new FriendsRepository($database);
+        $this->challengesRepository = new ChallengesRepository($database);
     }
 
     public function getAwardsRepository(): IAwardsRepository
@@ -63,6 +66,11 @@ class RepositoryManager implements IRepositoryManager
     public function getFriendsRepository(): IFriendsRepository
     {
         return $this->friendsRepository;
+    }
+
+    public function getChallengesRepository(): IChallengesRepository
+    {
+        return $this->challengesRepository;
     }
 
     private static IRepositoryManager|null $value = null;

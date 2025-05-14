@@ -106,6 +106,8 @@ $creator_type = to_creator_type($game['g_swf']);
                 beta_version: "<?= $creator_type->swf_version(); ?>",
 
                 onsplodercom: "true",
+                challenge: "1",
+                chscore: "50",
                 modified: <?= rand() ?>,
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";
