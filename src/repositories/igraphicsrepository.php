@@ -33,4 +33,19 @@ interface IGraphicsRepository
    * Insert a like for a specific graphics id and user
    */
     function trackLike(int $graphicsId, int $loggedInUserId): void;
+
+  /**
+   * Gets the total number of public graphics
+   * 
+   * @return int total number of public graphics
+   */
+    function getTotalPublicGraphics(): int;
+  
+  /**
+   * Gets public graphics
+   * 
+   * @param $offset
+   * @return array of graphics
+   */
+    function getPublicGraphics(int $offset, int $perPage): array;
 }
