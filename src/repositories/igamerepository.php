@@ -138,6 +138,15 @@ interface IGameRepository
      * Retrieves the total count of published games for a suer
      */
     public function getTotalMetricsForUser(string $userName): GameMetricsForUser;
+
+    /**
+     * Verifies ownership of a game
+     * 
+     * @param int $gameId
+     * @param string $userName
+     * @return bool if the user owns the game
+     */
+    public function verifyOwnership(int $gameId, string $userName): bool;
 }
 
 class GameMetricsForUser
