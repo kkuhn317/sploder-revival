@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const getScoreRadio = document.querySelector('input[name="choice"][value="option2"]');
     const scoreLabel = document.querySelector('label[for="name"]');
     const scoreSuffix = document.querySelector('td.suffix');
-    const challengePrizeInput = document.querySelector('input[name="description"]');
-    const maxWinnersInput = document.querySelector('input[name="points"]');
+    const challengePrizeInput = document.querySelector('input[name="prize"]');
+    const maxWinnersInput = document.querySelector('input[name="winners"]');
     const costDisplay = document.querySelector('td[colspan="3"] mark');
     const createButton = document.querySelector('input[value="Create"]');
     const boostPoints = document.querySelector('.boostpoints').textContent;

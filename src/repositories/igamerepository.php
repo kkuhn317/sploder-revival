@@ -147,6 +147,11 @@ interface IGameRepository
      * @return bool if the user owns the game
      */
     public function verifyOwnership(int $gameId, string $userName): bool;
+    
+    /**
+     * Retrieves the title of the game
+     */
+    public function getGameTitle(int $gameId): string;
 }
 
 class GameMetricsForUser

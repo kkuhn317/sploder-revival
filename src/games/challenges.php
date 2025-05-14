@@ -3,6 +3,7 @@ session_start();
 require_once('../repositories/repositorymanager.php');
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
+$challengesRepository = RepositoryManager::get()->getChallengesRepository();
 $perPage = 12;
 $offset = $_GET['o'] ?? 0;
 ?>
@@ -31,37 +32,65 @@ $offset = $_GET['o'] ?? 0;
 
         <div id="content">
             <?php
+            if(isset($_GET['accept'])) {
+                // Verify if owner
+                $gameInfo = explode("_", $_GET['accept']);
+                $userId = $gameInfo[0];
+                $gameId = $gameInfo[1];
+                $gameUserId = $gameRepository->getUserId($gameId);
+                if(($userId != $gameUserId) || ($userId != $_SESSION['userid'])) {
+                    echo "<div class='alert'>You cannot play this game!</div>";
+                } else { ?>
+                    <div style="border-radius:10px;" class="challenge_confirm">
+                        <p><strong>Game:</strong> Test</p>
+                        <p><strong>Game:</strong> Test</p>
+                        <p><strong>Game:</strong> Test</p>
+                        <input type="button" class="postbutton" value="Play">
+                        
+                    </div>
+                <?php }
+            }
             // Display challenges form
             if(isset($_GET['s'])) {
+                // Verify if owner
+                $gameInfo = explode("_", $_GET['s']);
+                $userId = $gameInfo[0];
+                $gameId = $gameInfo[1];
+                $gameUserId = $gameRepository->getUserId($gameId);
+                if(($userId != $gameUserId) || ($userId != $_SESSION['userid'])) {
+                    echo "<div class='alert'>You are not the owner of this game!</div>";
+                } else {
+                    $gameTitle = $gameRepository->getGameTitle($gameId);
+                    $gameTitle = htmlspecialchars($gameTitle);
             ?>
             <script type="text/javascript" src="challenges.js"></script>
             <div style="border-radius:10px" class="challenge_form">
                 <br>
-                <h4>Make a Challenge for <i>Ski Jump</i></h4>
+                <h4>Make a Challenge for <i><?= $gameTitle ?></i></h4>
                 <hr>
                 <form action="/php/challenges.php" method="post">
                     
                 <label>
-                    <input type="radio" name="choice" value="option1" checked>Speed Run
+                    <input type="radio" name="choice" value="0" checked>Speed Run
                 </label>
                 <label>
-                    <input type="radio" name="choice" value="option2">Get a Score
+                    <input type="radio" name="choice" value="1">Get a Score
                 </label>
                 <br><br>
                 <table>
                     <tr>
                         <td><label for="name">Win in less than</label></td>
-                        <td><input type="text" id="name" name="name" value=60 pattern="[0-9]+" required></td>
+                        <td><input type="text" id="name" name="challenge" value=60 pattern="[0-9]+" required></td>
                         <td class="suffix">seconds</td>
                     </tr>
                     <tr>
                         <td><label for="description">Challenge Prize:</label></td>
-                        <td><input type="text" id="description" name="description" value=50 pattern="[0-9]+" required></td>
+                        <td><input type="text" id="prize" name="prize" value=50 pattern="[0-9]+" required></td>
                         <td class="suffix">coins</td>
                     </tr>
                     <tr>
                         <td><label for="points">Max Winners:</label></td>
-                        <td><input type="text" id="points" name="points" value=3 pattern="[0-9]+" required></td>
+                        <td><input type="text" id="winners" name="winners" value=3 pattern="[0-9]+" required></td>
                         <td class="suffix">winners</td>
                     </tr>
                 </table>
@@ -88,7 +117,7 @@ $offset = $_GET['o'] ?? 0;
                 <p style="text-align: justify;">After your challenge is created, you can <i>verify</i> it by accepting and winning the challenge.</p>
                 <br>
             </div>
-            <?php } ?>
+            <?php }} ?>
             <div class="challenges_intro">
                 <h3>Game Challenges</h3>
 
