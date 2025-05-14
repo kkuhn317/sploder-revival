@@ -108,8 +108,11 @@ on conflict do nothing", [
             LEFT JOIN members m ON g.userid = m.userid
             WHERE g.isprivate = false AND g.ispublished = true
             ORDER BY g.id DESC
-            LIMIT ' . $perPage . ' OFFSET ' . $offset*$perPage;
-        return $this->db->query($queryString);
+            LIMIT :perPage OFFSET :offset';
+        return $this->db->query($queryString, [
+				':perPage' => $perPage,
+				':offset' => $offset*$perPage
+	]);
     }
 
 }
