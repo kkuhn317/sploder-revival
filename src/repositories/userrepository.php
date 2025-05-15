@@ -189,4 +189,13 @@ LIMIT 90;
         }
     }
 
+    public function addBoostPoints(int $userId, int $points): void
+    {
+        $query = "UPDATE members SET boostpoints = boostpoints + :points WHERE userid = :userid";
+        $this->db->execute($query, [
+            ':points' => $points,
+            ':userid' => $userId,
+        ]);
+    }
+
 }

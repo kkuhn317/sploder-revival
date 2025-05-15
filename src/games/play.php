@@ -18,6 +18,21 @@ if ($game_id['userid'] != $game['user_id']) {
 }
 $status = "playing";
 $creator_type = to_creator_type($game['g_swf']);
+
+
+if(isset($_GET['challenge'])){
+    $challengesRepository = RepositoryManager::get()->getChallengesRepository();
+    $challengeId = $_GET['challenge'];
+
+    // Verify if challengeId is correct
+    if($challengesRepository->verifyChallengeId($game_id['id'], $challengeId, $_SESSION['challenge'] ?? -1)) {
+        $challenge = true;
+        $challengeInfo = $challengesRepository->getChallengeInfo($game_id['id']);
+        $mode = "CHALLENGE ACCEPTED! " . ($challengeInfo['mode'] == 1 ? "time" : "Score at least " . $challengeInfo['challenge'] . " points") . "...";
+    } else {
+        $challenge = false;
+    }
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -62,6 +77,15 @@ $creator_type = to_creator_type($game['g_swf']);
             <div class="alert">This game is private but you have the key!</div>
             <?php } ?>
             <script type="text/javascript" src="play.js"></script>
+            <?php
+            if($game['isprivate'] != 1) { echo '<br><br>'; }
+            if((!$challenge) && (isset($_GET['challenge']))) {
+                echo '<div class="challenge_prompt">Yo ho ho! Log in to accept this challenge!</div>';
+            }
+            if($challenge) {
+                echo '<div class="challenge_prompt">'.$mode.'</div>';
+            }
+            ?>
             <div class="gameobject">
                 <div id="flashcontent">
                     <img class="game_preview"
@@ -106,8 +130,14 @@ $creator_type = to_creator_type($game['g_swf']);
                 beta_version: "<?= $creator_type->swf_version(); ?>",
 
                 onsplodercom: "true",
-                challenge: "1",
-                chscore: "50",
+                <?php
+                if($challenge) {
+                    echo 'challenge: "'.$_GET['challenge'].'",';
+                    if($mode) {
+                        echo 'chscore: "'.$challengeInfo['challenge'].'",';
+                    }
+                }
+                ?>
                 modified: <?= rand() ?>,
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";

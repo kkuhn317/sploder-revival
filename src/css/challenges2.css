@@ -51,7 +51,8 @@ div.challenge_confirm div.button {
 }
 
 div.challenge_confirm div.button a,
-div.challenge_form input.postbutton {
+div.challenge_form input.postbutton,
+div.challenge_confirm input.postbutton {
     font-size: 14px;
     color: #000;
     background: -webkit-gradient(linear, left bottom, left top, from(rgb(193, 105, 10)), to(rgb(254, 233, 32))) #b57f32;

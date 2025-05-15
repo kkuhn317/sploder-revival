@@ -2,8 +2,31 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
--- Dumped by pg_dump version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
+-- Dumped from database version 17.5 (Debian 17.5-1.pgdg120+1)
+-- Dumped by pg_dump version 17.5 (Debian 17.5-1.pgdg120+1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: sploder; Type: DATABASE; Schema: -; Owner: sploder
+--
+
+CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+
+
+ALTER DATABASE sploder OWNER TO sploder;
+
+\connect sploder
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -129,6 +152,37 @@ CREATE TABLE public.banned_members (
 
 
 ALTER TABLE public.banned_members OWNER TO sploder;
+
+--
+-- Name: challenges; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.challenges (
+    c_id integer NOT NULL,
+    g_id integer NOT NULL,
+    mode boolean NOT NULL,
+    challenge integer NOT NULL,
+    prize integer NOT NULL,
+    winners integer NOT NULL,
+    verified boolean NOT NULL
+);
+
+
+ALTER TABLE public.challenges OWNER TO sploder;
+
+--
+-- Name: challenges_c_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.challenges ALTER COLUMN c_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.challenges_c_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
 
 --
 -- Name: comment_votes; Type: TABLE; Schema: public; Owner: sploder
@@ -571,6 +625,14 @@ ALTER TABLE ONLY public.awards
 
 
 --
+-- Name: challenges challenges_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenges
+    ADD CONSTRAINT challenges_pkey PRIMARY KEY (c_id);
+
+
+--
 -- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -664,6 +726,14 @@ ALTER TABLE ONLY public.game_views_anonymous
 
 ALTER TABLE ONLY public.game_views_members
     ADD CONSTRAINT uk_game_views_members_g_id_userid UNIQUE (g_id, userid);
+
+
+--
+-- Name: challenges unique_challenges; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenges
+    ADD CONSTRAINT unique_challenges UNIQUE (g_id, c_id);
 
 
 --
@@ -854,6 +924,14 @@ ALTER TABLE ONLY public.game_views_members
 
 ALTER TABLE ONLY public.game_views_members
     ADD CONSTRAINT fk_game_views_members_members_userid FOREIGN KEY (userid) REFERENCES public.members(userid);
+
+
+--
+-- Name: challenges g_id_contests_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenges
+    ADD CONSTRAINT g_id_contests_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) MATCH FULL;
 
 
 --

@@ -284,4 +284,11 @@ where g_id = :g_id
             ':g_id' => $gameId,
         ]);
     }
+
+    public function getGameAUthor(int $gameId): string
+    {
+        return $this->db->queryFirstColumn("SELECT author FROM games WHERE g_id = :g_id", 0, [
+            ':g_id' => $gameId,
+        ]);
+    }
 }
