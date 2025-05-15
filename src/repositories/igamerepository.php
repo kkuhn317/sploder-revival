@@ -152,6 +152,11 @@ interface IGameRepository
      * Retrieves the title of the game
      */
     public function getGameTitle(int $gameId): string;
+
+    /**
+     * Retrieves the author of the game
+     */
+    public function getGameAuthor(int $gameId): string;
 }
 
 class GameMetricsForUser

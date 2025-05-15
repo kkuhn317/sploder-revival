@@ -38,26 +38,38 @@ $offset = $_GET['o'] ?? 0;
                 $userId = $gameInfo[0];
                 $gameId = $gameInfo[1];
                 $gameUserId = $gameRepository->getUserId($gameId);
-                if(($userId != $gameUserId) || ($userId != $_SESSION['userid'])) {
+                if(!$challengesRepository->verifyIfSIsCorrect($gameId, $userId)) {
                     echo "<div class='alert'>You cannot play this game!</div>";
-                } else { ?>
-                    <div style="border-radius:10px;" class="challenge_confirm">
-                        <p><strong>Game:</strong> Test</p>
-                        <p><strong>Game:</strong> Test</p>
-                        <p><strong>Game:</strong> Test</p>
-                        <input type="button" class="postbutton" value="Play">
+                } else {
+                    $gameTitle = $gameRepository->getGameTitle($gameId);
+                    $gameTitle = htmlspecialchars($gameTitle);
+                    $gameAuthor = $gameRepository->getGameAuthor($gameId);
+                    $gameAuthor = htmlspecialchars($gameAuthor);
+                    $challengeInfo = $challengesRepository->getChallengeInfo($gameId);
+                    $mode = $challengeInfo['mode'] == 0 ? "time" : "Score at least " . $challengeInfo['challenge'] . " points";
+                    $prize = $challengeInfo['prize'];
+                    ?>
+                    <div style="border-radius:10px; overflow: auto; height:auto;" class="challenge_confirm">
+                        <big>
+                        <p><strong>Game:</strong> <i><?= $gameTitle ?></i> by <?= $gameAuthor ?></p>
+                        <p><strong>Challenge:</strong> <?= $mode ?></p>
+                        <p><strong>Reward:</strong> <?= $prize ?> pts</p>
+                        </big>
+                        <form action="/php/challenges.php" method="post">
+                            <input type="hidden" name="accept" value="1">
+                            <input type="hidden" name="s" value="<?= $_GET['accept'] ?>">
+                            <input style="float:right; margin-right:10px;" type="submit" class="postbutton" value="Accept Challenge and Play Now"><br><br><br>
+                        </form>
                         
-                    </div>
+                    </div><br><br>
                 <?php }
             }
             // Display challenges form
             if(isset($_GET['s'])) {
                 // Verify if owner
                 $gameInfo = explode("_", $_GET['s']);
-                $userId = $gameInfo[0];
                 $gameId = $gameInfo[1];
-                $gameUserId = $gameRepository->getUserId($gameId);
-                if(($userId != $gameUserId) || ($userId != $_SESSION['userid'])) {
+                if(!$challengesRepository->verifyIfOwner($gameId, $_SESSION['userid'])) {
                     echo "<div class='alert'>You are not the owner of this game!</div>";
                 } else {
                     $gameTitle = $gameRepository->getGameTitle($gameId);
@@ -107,6 +119,7 @@ $offset = $_GET['o'] ?? 0;
                         <td><label></label></td>
                         <td>
                             <a href="/dashboard/my-games.php"><input type="button" class="postbutton" value="Cancel"></input></a>
+                            <input type="hidden" name="g_id" value="<?= $gameId ?>">
                             <input value="Create" type="submit" class="postbutton"></input>
                         </td>
                     </tr>

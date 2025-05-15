@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const speedRunRadio = document.querySelector('input[name="choice"][value="option1"]');
-    const getScoreRadio = document.querySelector('input[name="choice"][value="option2"]');
+    const speedRunRadio = document.querySelector('input[name="choice"][value="0"]');
+    const getScoreRadio = document.querySelector('input[name="choice"][value="1"]');
     const scoreLabel = document.querySelector('label[for="name"]');
     const scoreSuffix = document.querySelector('td.suffix');
     const challengePrizeInput = document.querySelector('input[name="prize"]');
