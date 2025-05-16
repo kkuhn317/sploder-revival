@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(!isset($_SESSION['user_id']) && isset($_GET['accept'])) {
+    header('Location: /games/play.php?s=' . $_GET['accept'] . '&challenge=1');
+    exit();
+}
 require_once('../repositories/repositorymanager.php');
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
@@ -74,7 +78,9 @@ $offset = $_GET['o'] ?? 0;
                 } else {
                     $gameTitle = $gameRepository->getGameTitle($gameId);
                     $gameTitle = htmlspecialchars($gameTitle);
+                    $userRepository = RepositoryManager::get()->getUserRepository();
             ?>
+            <script>const boostPoints = <?= $userRepository->getBoostPoints($_SESSION['userid']); ?>;</script>
             <script type="text/javascript" src="challenges.js"></script>
             <div style="border-radius:10px" class="challenge_form">
                 <br>
@@ -137,6 +143,40 @@ $offset = $_GET['o'] ?? 0;
                 <p>Make your games even more fun by adding a challenge! Set a goal for everyone to beat, and the first ones to beat it will get a boost points prize! 
 
                 You use your own boost points to make the challenge, and they are awarded to the first winners!</p>
+            </div>
+            <div class="set">
+                <?php
+                $challenges = $challengesRepository->getAllChallenges($offset, $perPage);
+                print_r($challenges);
+                foreach($challenges as $challenge) {
+                    $gameId = $challenge['g_id'];
+                    $userId = $challenge['user_id'];
+                    $gameTitle = htmlspecialchars($challenge['title']);
+                    $gameAuthor = htmlspecialchars($challenge['author']);
+                    $mode = $challenge['mode'] == 0 ? "Win in less than ".floor($challenge['challenge'] / 60)." mins ".($challenge['challenge'] % 60)." secs" : "Score at least " . $challenge['challenge'] . " points";
+                    $prize = $challenge['prize'];
+                    $winners = $challenge['winners'];
+                    ?>
+                    <div class="game challenge_game chal_ver">
+                        <p class="goal"><?= $mode ?></p>
+                        <div class="gameinfo gametype_5">
+                            <a href="/games/challenges.php?accept=<?= $userId ?>_<?= $gameId ?>" title="4 days left in this challenge"><img src="/users/user<?= $userId ?>/images/proj<?= $gameId ?>/image.png" alt="<?= $gameTitle ?>" onerror="r(this)" /></a>
+                            <div class="game_titles">
+                                <h4><a href="/games/challenges.php?accept=<?= $userId ?>_<?= $gameId ?>"><?= $gameTitle ?></a></h4>
+                                <h5><a href="/games/members/<?= $gameAuthor ?>/"><?= $gameAuthor ?></a></h5>
+                            </div>
+                        </div>
+                        <p class="winners"><?= ($winners - 1) ?>/<?= ($winners) ?> winners</p>
+                        <p class="prize">Win and get <span><?= $prize ?></span></p>
+                        <?php if($challenge['verified']) { ?>
+                            <img class="verified" src="http://cdn.sploder.com/chrome/challenge_verified.png" width="24" height="24" alt="Challenge verified" title="This challenge was verified as possible by <?= $gameAuthor ?>" />
+                        <?php } ?>
+                        <div class="spacer">&nbsp;</div>
+
+                    </div>
+                    <?php
+                } ?>
+                
             </div>
             <p class="description">To make a game challenge, go to your My Games page and then click the
 	    <em>Challenge</em> button next to your game.</p>

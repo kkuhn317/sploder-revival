@@ -4,6 +4,7 @@ session_start();
 require_once('../repositories/repositorymanager.php');
 
 $challengesRepository = RepositoryManager::get()->getChallengesRepository();
+$userRepository = RepositoryManager::get()->getUserRepository();
 
 if(isset($_POST['choice'])) {
     $mode = $_POST['choice'];
@@ -13,7 +14,26 @@ if(isset($_POST['choice'])) {
     $winners = $_POST['winners'];
     $g_id = $_POST['g_id'];
 
+    $userBoostPoints = $userRepository->getBoostPoints($_SESSION['userid']);
+    $cost = $prize * $winners;
+
+    if ($userBoostPoints < $cost || $cost < 150 || $prize < 50 || $winners < 1) {
+        header("Location: /games/challenges.php?error=invalid_input");
+        exit();
+    }
+
+    // Check if user has enough boost points
+    $userBoostPoints = $userRepository->getBoostPoints($_SESSION['userid']);
+    if($userBoostPoints < $prize) {
+        header("Location: /games/challenges.php?error=not_enough_boostpoints");
+        exit();
+    }
+
+    // Reduce boost points
+    $userRepository->removeBoostPoints($_SESSION['userid'], $cost);
+
     $challengesRepository->addChallenge($g_id, $mode, $challenge, $prize, $winners);
+
 
     header("Location: /games/challenges.php?accept=".$_SESSION['userid']."_".$g_id);
 } else if(isset($_POST['accept'])) {
