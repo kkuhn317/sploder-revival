@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['user_id']) && isset($_GET['accept'])) {
+if(!isset($_SESSION['userid']) && isset($_GET['accept'])) {
     header('Location: /games/play.php?s=' . $_GET['accept'] . '&challenge=1');
     exit();
 }
