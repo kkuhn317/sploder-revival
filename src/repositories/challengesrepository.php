@@ -57,4 +57,17 @@ class ChallengesRepository implements IChallengesRepository
         $result = $this->db->queryFirst($query, [':g_id' => $gameId]);
         return ($result['c_id'] === $challengeId) && ($result['c_id'] === $sessionChallengeId);
     }
+
+    public function getAllChallenges(int $offset, int $perPage): array
+    {
+
+        $query = "SELECT c.c_id, c.g_id, c.mode, c.challenge, c.prize, c.winners, c.verified, g.user_id, g.title, g.author
+          FROM challenges c
+          JOIN games g ON c.g_id = g.g_id
+          ORDER BY c.c_id DESC OFFSET :offset LIMIT :perPage";
+        return $this->db->query($query, [
+            ':offset' => $offset,
+            ':perPage' => $perPage,
+        ]);
+    }
 }

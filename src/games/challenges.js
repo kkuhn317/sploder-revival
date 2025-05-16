@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const maxWinnersInput = document.querySelector('input[name="winners"]');
     const costDisplay = document.querySelector('td[colspan="3"] mark');
     const createButton = document.querySelector('input[value="Create"]');
-    const boostPoints = document.querySelector('.boostpoints').textContent;
+
 
     
     speedRunRadio.addEventListener("change", function () {
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
         costDisplay.textContent = `${cost}`;
 
         // Disable the "Create" button if cost < 300 or prize < 50
-        if (boostPoints < cost || cost < 150 || prize < 50) {
+        if (boostPoints < cost || cost < 150 || prize < 50 || winners < 1) {
             createButton.disabled = true;
         } else {
             createButton.disabled = false;
