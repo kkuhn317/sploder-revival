@@ -25,7 +25,7 @@ class ChallengesRepository implements IChallengesRepository
         ]);
     }
 
-    public function getChallengeInfo(int $gameId): array
+    public function getChallengeInfo(int $gameId): array|false
     {
         $query = "SELECT mode,prize,challenge FROM challenges WHERE g_id = :id";
         return $this->db->queryFirst($query, [':id' => $gameId]);
