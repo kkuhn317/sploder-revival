@@ -77,7 +77,7 @@ class ChallengesRepository implements IChallengesRepository
           WHERE c.date > NOW() - INTERVAL '15 days'
           GROUP BY c.c_id, c.g_id, c.mode, c.challenge, c.prize, c.winners, c.verified, c.date, g.user_id, g.title, g.author
           HAVING COUNT(w.winner_id) < c.winners
-          ORDER BY c.c_id DESC OFFSET :offset LIMIT :perPage";
+          ORDER BY c.verified DESC OFFSET :offset LIMIT :perPage";
         return $this->db->query($query, [
             ':offset' => $offset,
             ':perPage' => $perPage,
@@ -122,5 +122,24 @@ class ChallengesRepository implements IChallengesRepository
     {
         $query = "SELECT COUNT(*) FROM challenges WHERE date > NOW() - INTERVAL '15 days'";
         return $this->db->queryFirst($query)['count'];
+    }
+
+    public function formatChallengeMode($mode, $challenge): string
+    {
+        if ($mode) {
+            $minutes = floor($challenge / 60);
+            $seconds = $challenge % 60;
+            $result = "Win in less than";
+            if ($minutes > 0) {
+                $result .= " {$minutes} mins";
+            }
+            if ($seconds > 0) {
+                if ($minutes > 0) $result .= " ";
+                $result .= "{$seconds} secs";
+            }
+            return trim($result);
+        } else {
+            return "Score at least {$challenge} points";
+        }
     }
 }
