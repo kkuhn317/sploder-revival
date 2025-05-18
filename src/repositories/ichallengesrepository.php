@@ -10,7 +10,7 @@ interface IChallengesRepository
      * @param int $gameId
      * @return array
      */
-    public function getChallengeInfo(int $gameId): array;
+    public function getChallengeInfo(int $gameId): array|false;
 
     /**
      * Verify if 's' is correct
