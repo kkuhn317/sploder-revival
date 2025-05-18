@@ -66,21 +66,7 @@ $offset = $_GET['o'] ?? 0;
                     $gameAuthor = $gameRepository->getGameAuthor($gameId);
                     $gameAuthor = htmlspecialchars($gameAuthor);
                     $challengeInfo = $challengesRepository->getChallengeInfo($gameId);
-                    if ($challengeInfo['mode'] == true) {
-                        $minutes = floor($challengeInfo['challenge'] / 60);
-                        $seconds = $challengeInfo['challenge'] % 60;
-                        $mode = "Win in less than";
-                        if ($minutes > 0) {
-                            $mode .= " {$minutes} mins";
-                        }
-                        if ($seconds > 0) {
-                            if ($minutes > 0) $mode .= " ";
-                            $mode .= "{$seconds} secs";
-                        }
-                        $mode = trim($mode);
-                    } else {
-                        $mode = "Score at least " . $challengeInfo['challenge'] . " points";
-                    }
+                    $mode = $challengesRepository->formatChallengeMode($challengeInfo['mode'], $challengeInfo['challenge']);
                     $prize = $challengeInfo['prize'];
                     ?>
                     <div style="border-radius:10px; overflow: auto; height:auto;" class="challenge_confirm">
@@ -188,21 +174,7 @@ $offset = $_GET['o'] ?? 0;
                     $userId = $challenge['user_id'];
                     $gameTitle = htmlspecialchars($challenge['title']);
                     $gameAuthor = htmlspecialchars($challenge['author']);
-                    if ($challenge['mode'] == true) {
-                        $minutes = floor($challenge['challenge'] / 60);
-                        $seconds = $challenge['challenge'] % 60;
-                        $mode = "Win in less than";
-                        if ($minutes > 0) {
-                            $mode .= " {$minutes} mins";
-                        }
-                        if ($seconds > 0) {
-                            if ($minutes > 0) $mode .= " ";
-                            $mode .= "{$seconds} secs";
-                        }
-                        $mode = trim($mode);
-                    } else {
-                        $mode = "Score at least " . $challenge['challenge'] . " points";
-                    }
+                    $mode = $challengesRepository->formatChallengeMode($challenge['mode'], $challenge['challenge']);
                     $prize = $challenge['prize'];
                     $winners = $challenge['winners'];
                     $totalWinners = $challenge['total_winners'];

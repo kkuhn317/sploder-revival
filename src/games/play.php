@@ -28,21 +28,7 @@ if(isset($_GET['challenge'])){
     if($challengesRepository->verifyChallengeId($game_id['id'], $challengeId, $_SESSION['challenge'] ?? -1)) {
         $challenge = true;
         $challengeInfo = $challengesRepository->getChallengeInfo($game_id['id']);
-        if ($challengeInfo['mode'] == true) {
-            $minutes = floor($challengeInfo['challenge'] / 60);
-            $seconds = $challengeInfo['challenge'] % 60;
-            $mode = "CHALLENGE ACCEPTED! Win in less than";
-            if ($minutes > 0) {
-                $mode .= " {$minutes} mins";
-            }
-            if ($seconds > 0) {
-                if ($minutes > 0) $mode .= " ";
-                $mode .= "{$seconds} secs";
-            }
-            $mode = trim($mode) . "...";
-        } else {
-            $mode = "CHALLENGE ACCEPTED! Score at least " . $challengeInfo['challenge'] . " points...";
-        }
+        $mode = "CHALLENGE ACCEPTED! ".$challengesRepository->formatChallengeMode($challengeInfo['mode'], $challengeInfo['challenge']);
     } else {
         $challenge = false;
     }

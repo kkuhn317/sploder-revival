@@ -99,4 +99,13 @@ interface IChallengesRepository
      * @return int
      */
     public function getTotalChallengeCount(): int;
+
+    /**
+     * Format the challenge mode
+     * 
+     * @param bool $mode
+     * @param int $challenge
+     * @return string
+     */
+    public function formatChallengeMode(bool $mode, int $challenge): string;
 }
