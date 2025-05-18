@@ -107,4 +107,14 @@ class ChallengesRepository implements IChallengesRepository
         ]);
         return true;
     }
+
+    public function hasWonChallenge(int $g_id, int $userId): bool
+    {
+        $query = "SELECT COUNT(*) FROM challenge_winners WHERE g_id = :g_id AND user_id = :user_id";
+        $result = $this->db->queryFirst($query, [
+            ':g_id' => $g_id,
+            ':user_id' => $userId,
+        ]);
+        return $result['count'] > 0;
+    }
 }

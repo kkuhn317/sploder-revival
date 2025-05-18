@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const scoreSuffix = document.querySelector('td.suffix');
     const challengePrizeInput = document.querySelector('input[name="prize"]');
     const maxWinnersInput = document.querySelector('input[name="winners"]');
+    const challengeInput = document.querySelector('input[name="challenge"]');
     const costDisplay = document.querySelector('td[colspan="3"] mark');
     const createButton = document.querySelector('input[value="Create"]');
 
@@ -28,10 +29,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const prize = parseInt(challengePrizeInput.value) || 0;
         const winners = parseInt(maxWinnersInput.value) || 0;
         const cost = prize * winners;
+        const challenge = parseInt(challengeInput.value) || 0;
         costDisplay.textContent = `${cost}`;
 
-        // Disable the "Create" button if cost < 300 or prize < 50
-        if (boostPoints < cost || cost < 150 || prize < 50 || winners < 1) {
+        if (boostPoints < cost || cost < 150 || prize < 50 || winners < 1 || challenge < 1) {
             createButton.disabled = true;
         } else {
             createButton.disabled = false;

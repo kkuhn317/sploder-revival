@@ -28,7 +28,21 @@ if(isset($_GET['challenge'])){
     if($challengesRepository->verifyChallengeId($game_id['id'], $challengeId, $_SESSION['challenge'] ?? -1)) {
         $challenge = true;
         $challengeInfo = $challengesRepository->getChallengeInfo($game_id['id']);
-        $mode = "CHALLENGE ACCEPTED! " . ($challengeInfo['mode'] == true ? "time" : "Score at least " . $challengeInfo['challenge'] . " points") . "...";
+        if ($challengeInfo['mode'] == true) {
+            $minutes = floor($challengeInfo['challenge'] / 60);
+            $seconds = $challengeInfo['challenge'] % 60;
+            $mode = "CHALLENGE ACCEPTED! Win in less than";
+            if ($minutes > 0) {
+                $mode .= " {$minutes} mins";
+            }
+            if ($seconds > 0) {
+                if ($minutes > 0) $mode .= " ";
+                $mode .= "{$seconds} secs";
+            }
+            $mode = trim($mode) . "...";
+        } else {
+            $mode = "CHALLENGE ACCEPTED! Score at least " . $challengeInfo['challenge'] . " points...";
+        }
     } else {
         $challenge = false;
     }
@@ -80,7 +94,11 @@ if(isset($_GET['challenge'])){
             <?php
             if($game['isprivate'] != 1) { echo '<br><br>'; }
             if((!$challenge) && (isset($_GET['challenge']))) {
-                echo '<div class="challenge_prompt">Yo ho ho! Log in to accept this challenge!</div>';
+                if($challengesRepository->hasWonChallenge($game_id['id'], $_SESSION['userid'])) {
+                    echo '<div class="challenge_prompt">Woo hoo! You won this challenge!</div>';
+                } else {
+                    echo '<div class="challenge_prompt">Yo ho ho! Log in to accept this challenge!</div>';
+                }
             }
             if($challenge) {
                 echo '<div class="challenge_prompt">'.$mode.'</div>';
@@ -135,6 +153,8 @@ if(isset($_GET['challenge'])){
                     echo 'challenge: "'.$_GET['challenge'].'",';
                     if(!$mode) {
                         echo 'chscore: "'.$challengeInfo['challenge'].'",';
+                    } else {
+                        echo 'chtime: "'.$challengeInfo['challenge'].'",';
                     }
                 }
                 ?>

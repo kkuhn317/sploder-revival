@@ -1,13 +1,29 @@
 <?php
 session_start();
-if(!isset($_SESSION['userid']) && isset($_GET['accept'])) {
-    header('Location: /games/play.php?s=' . $_GET['accept'] . '&challenge=1');
-    exit();
-}
 require_once('../repositories/repositorymanager.php');
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
 $challengesRepository = RepositoryManager::get()->getChallengesRepository();
+if(!isset($_SESSION['userid']) && isset($_GET['accept'])) {
+    header('Location: /games/play.php?s=' . $_GET['accept'] . '&challenge=1');
+    exit();
+}
+if(isset($_GET['accept'])) {
+    if($challengesRepository->hasWonChallenge(explode("_",$_GET['accept'])[1], $_SESSION['userid'])) {
+        header('Location: /games/play.php?s=' . $_GET['accept'] . '&challenge=1');
+        exit();
+    }
+}
+if(isset($_GET['s'])) {
+    // Check if a challenge already exists
+    $challengeInfo = $challengesRepository->getChallengeInfo(explode("_",$_GET['s'])[1]);
+    
+    // If a challenge already exists, redirect to the challenges page
+    if($challengeInfo) {
+        header('Location: /games/challenges.php');
+        exit();
+    }
+}
 $perPage = 12;
 $offset = $_GET['o'] ?? 0;
 ?>
@@ -50,7 +66,21 @@ $offset = $_GET['o'] ?? 0;
                     $gameAuthor = $gameRepository->getGameAuthor($gameId);
                     $gameAuthor = htmlspecialchars($gameAuthor);
                     $challengeInfo = $challengesRepository->getChallengeInfo($gameId);
-                    $mode = $challengeInfo['mode'] == true ? "time" : "Score at least " . $challengeInfo['challenge'] . " points";
+                    if ($challengeInfo['mode'] == true) {
+                        $minutes = floor($challengeInfo['challenge'] / 60);
+                        $seconds = $challengeInfo['challenge'] % 60;
+                        $mode = "Win in less than";
+                        if ($minutes > 0) {
+                            $mode .= " {$minutes} mins";
+                        }
+                        if ($seconds > 0) {
+                            if ($minutes > 0) $mode .= " ";
+                            $mode .= "{$seconds} secs";
+                        }
+                        $mode = trim($mode);
+                    } else {
+                        $mode = "Score at least " . $challengeInfo['challenge'] . " points";
+                    }
                     $prize = $challengeInfo['prize'];
                     ?>
                     <div style="border-radius:10px; overflow: auto; height:auto;" class="challenge_confirm">
@@ -147,7 +177,6 @@ $offset = $_GET['o'] ?? 0;
             <div class="set">
                 <?php
                 $challenges = $challengesRepository->getAllChallenges($offset, $perPage);
-                print_r($challenges);
                 foreach($challenges as $index => $challenge) {
                     $gameId = $challenge['g_id'];
                     $userId = $challenge['user_id'];
@@ -197,13 +226,13 @@ $offset = $_GET['o'] ?? 0;
                         <p class="winners"><?= ($totalWinners) ?>/<?= ($winners) ?> winners</p>
                         <p class="prize">Win and get <span><?= $prize ?></span></p>
                         <?php if($challenge['verified']) { ?>
-                            <img class="verified" src="http://cdn.sploder.com/chrome/challenge_verified.png" width="24" height="24" alt="Challenge verified" title="This challenge was verified as possible by <?= $gameAuthor ?>" />
+                            <img class="verified" src="/chrome/challenge_verified.png" width="24" height="24" alt="Challenge verified" title="This challenge was verified as possible by <?= $gameAuthor ?>" />
                         <?php } ?>
                         <div class="spacer">&nbsp;</div>
 
                     </div>
                     <?php
-                    if($index % 2 == 0) {
+                    if($index % 2 == 1 || count($challenges) == 1) {
                         echo "<div class='spacer'>&nbsp;</div>";
                     }
                 } ?>
