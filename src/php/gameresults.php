@@ -35,16 +35,20 @@ if (substr($md5, 0, -1) == $hash) {
         ':w' => $w
     ]);
 
-    // Check if the game is a challenge by checking the refferer in the headers and
-    // extract the challenge ID from the URL format of '/games/play.php?s=userid_gameid&challenge=challengeid'
-    $referer = $_SERVER['HTTP_REFERER'];
-    $challengeId = null;
-    if (preg_match('/\/games\/play\.php\?s=\d+_\d+&challenge=(\d+)/', $referer, $matches)) {
-        $challengeId = $matches[1];
+    if(isset($_SESSION['challenge'])){
+        $challengesRepository = RepositoryManager::get()->getChallengesRepository();
+        $challengeId = $challengesRepository->getChallengeId($id[1]);
+        if($challengeId == $_SESSION['challenge']) {
+            $challengeId = $_SESSION['challenge'];
+        } else {
+            $challengeId = null;
+        }
+    } else {
+        $challengeId = null;
     }
+    
     if($challengeId != null) {
         // Get challenge info to confirm if the game is a challenge and check the requirements
-        $challengesRepository = RepositoryManager::get()->getChallengesRepository();
         $challengeInfo = $challengesRepository->getChallengeInfo($id[1]);
         $challenge = $challengeInfo['challenge'];
         $prize = $challengeInfo['prize'];
@@ -52,7 +56,6 @@ if (substr($md5, 0, -1) == $hash) {
 
         // Verify challenge ID
         $isValidChallenge = $challengesRepository->verifyChallengeId($id[1], $challengeId, $_SESSION['challenge'] ?? -1);
-
         // Verify if the challenge requirements are met
         if ($mode) {
             if($gtm > $challenge) {
@@ -64,6 +67,11 @@ if (substr($md5, 0, -1) == $hash) {
                 $isValidChallenge = false;
             }
         }
+
+        if($challengesRepository->hasWonChallenge($id[1], $_SESSION['userid'])) {
+            $isValidChallenge = false;
+        }
+        
         // If the game is a challenge, insert the result into the challenges table
         if ($isValidChallenge) {
             $challengesRepository->addChallengeWinner($id[1], $_SESSION['userid']);

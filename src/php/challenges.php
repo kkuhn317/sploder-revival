@@ -14,10 +14,18 @@ if(isset($_POST['choice'])) {
     $winners = $_POST['winners'];
     $g_id = $_POST['g_id'];
 
+    $challengeInfo = $challengesRepository->getChallengeInfo($g_id);
+    
+    // If a challenge already exists, redirect to the challenges page
+    if($challengeInfo) {
+        header('Location: /games/challenges.php');
+        exit();
+    }
+
     $userBoostPoints = $userRepository->getBoostPoints($_SESSION['userid']);
     $cost = $prize * $winners;
 
-    if ($userBoostPoints < $cost || $cost < 150 || $prize < 50 || $winners < 1) {
+    if ($userBoostPoints < $cost || $cost < 150 || $prize < 50 || $winners < 1 || $challenge < 1) {
         header("Location: /games/challenges.php?error=invalid_input");
         exit();
     }
@@ -40,7 +48,9 @@ if(isset($_POST['choice'])) {
     $s = explode("_",$_POST['s']);
     if($challengesRepository->verifyIfSIsCorrect($s[1], $s[0])) {
         $c_id = $challengesRepository->getChallengeId($s[1]);
-        $_SESSION['challenge'] = $c_id;
-        header("Location: /games/play.php?s=" . $s[0] . "_" . $s[1] . "&challenge=" . $c_id);
+        if(!($challengesRepository->hasWonChallenge($s[1], $_SESSION['userid']))) {
+            $_SESSION['challenge'] = $c_id;
+            header("Location: /games/play.php?s=" . $s[0] . "_" . $s[1] . "&challenge=" . $c_id);
+        }
     }
 }
