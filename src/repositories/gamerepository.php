@@ -294,4 +294,11 @@ where g_id = :g_id
             ':g_id' => $gameId,
         ]);
     }
+
+    public function getGameSWF(int $gameId): string
+    {
+        return $this->db->queryFirstColumn("SELECT g_swf FROM games WHERE g_id = :g_id", 0, [
+            ':g_id' => $gameId,
+        ]);
+    }
 }

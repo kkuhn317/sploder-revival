@@ -157,6 +157,11 @@ interface IGameRepository
      * Retrieves the author of the game
      */
     public function getGameAuthor(int $gameId): string;
+
+    /**
+     * Retrieves the SWF type of the game
+     */
+    public function getGameSWF(int $gameId): int;
 }
 
 class GameMetricsForUser

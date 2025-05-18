@@ -5,6 +5,7 @@ require_once('../repositories/repositorymanager.php');
 
 $challengesRepository = RepositoryManager::get()->getChallengesRepository();
 $userRepository = RepositoryManager::get()->getUserRepository();
+$gameRepository = RepositoryManager::get()->getGameRepository();
 
 if(isset($_POST['choice'])) {
     $mode = $_POST['choice'];
@@ -13,6 +14,13 @@ if(isset($_POST['choice'])) {
     $prize = $_POST['prize'];
     $winners = $_POST['winners'];
     $g_id = $_POST['g_id'];
+
+    if(!$mode) {
+        $gameSWF = $gameRepository->getGameSWF($g_id);
+        if(!($gameSWF == 5 || $gameSWF == 7)) {
+            $mode = true;
+        }
+    }
 
     $challengeInfo = $challengesRepository->getChallengeInfo($g_id);
     
