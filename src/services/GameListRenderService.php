@@ -90,7 +90,10 @@ class GameListRenderService
                                         <?php if ($includeBoost) {
                                             echo '&nbsp;';
                                         } ?>
-                                        <a href='/games/challenges.php?s=<?= $_SESSION['userid'] .'_'. $id ?>'><input title="Challenge" type="button" class="challenge_button" value="Challenge"></a>
+                                        <?php
+                                        if(!isset($game['challenge_id']) && ($game['isprivate'] == false && $game['ispublished'] == true)){ ?>
+                                            <a href='/games/challenges.php?s=<?= $_SESSION['userid'] .'_'. $id ?>'><input title="Challenge" type="button" class="challenge_button" value="Challenge"></a>
+                                        <?php } ?>
                                     <?php } ?>
 
                                 
