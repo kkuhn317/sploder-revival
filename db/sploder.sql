@@ -884,6 +884,34 @@ CREATE INDEX idx_banned_members_username ON public.banned_members USING btree (u
 
 
 --
+-- Name: idx_challenge_winners_g_id_user_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_challenge_winners_g_id_user_id ON public.challenge_winners USING btree (g_id, user_id);
+
+
+--
+-- Name: idx_challenges_c_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_challenges_c_id ON public.challenges USING btree (c_id);
+
+
+--
+-- Name: idx_challenges_date_verified; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_challenges_date_verified ON public.challenges USING btree (date, verified);
+
+
+--
+-- Name: idx_challenges_g_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_challenges_g_id ON public.challenges USING btree (g_id);
+
+
+--
 -- Name: idx_comment_votes; Type: INDEX; Schema: public; Owner: sploder
 --
 
@@ -940,10 +968,24 @@ CREATE INDEX idx_games_author ON public.games USING btree (author);
 
 
 --
+-- Name: idx_games_g_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_games_g_id ON public.games USING btree (g_id);
+
+
+--
 -- Name: idx_games_is_published_is_private; Type: INDEX; Schema: public; Owner: sploder
 --
 
 CREATE INDEX idx_games_is_published_is_private ON public.games USING btree (ispublished, isprivate);
+
+
+--
+-- Name: idx_games_user_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_games_user_id ON public.games USING btree (user_id);
 
 
 --
