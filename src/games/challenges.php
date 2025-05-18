@@ -50,7 +50,7 @@ $offset = $_GET['o'] ?? 0;
                     $gameAuthor = $gameRepository->getGameAuthor($gameId);
                     $gameAuthor = htmlspecialchars($gameAuthor);
                     $challengeInfo = $challengesRepository->getChallengeInfo($gameId);
-                    $mode = $challengeInfo['mode'] == 0 ? "time" : "Score at least " . $challengeInfo['challenge'] . " points";
+                    $mode = $challengeInfo['mode'] == true ? "time" : "Score at least " . $challengeInfo['challenge'] . " points";
                     $prize = $challengeInfo['prize'];
                     ?>
                     <div style="border-radius:10px; overflow: auto; height:auto;" class="challenge_confirm">
@@ -148,25 +148,53 @@ $offset = $_GET['o'] ?? 0;
                 <?php
                 $challenges = $challengesRepository->getAllChallenges($offset, $perPage);
                 print_r($challenges);
-                foreach($challenges as $challenge) {
+                foreach($challenges as $index => $challenge) {
                     $gameId = $challenge['g_id'];
                     $userId = $challenge['user_id'];
                     $gameTitle = htmlspecialchars($challenge['title']);
                     $gameAuthor = htmlspecialchars($challenge['author']);
-                    $mode = $challenge['mode'] == 0 ? "Win in less than ".floor($challenge['challenge'] / 60)." mins ".($challenge['challenge'] % 60)." secs" : "Score at least " . $challenge['challenge'] . " points";
+                    if ($challenge['mode'] == true) {
+                        $minutes = floor($challenge['challenge'] / 60);
+                        $seconds = $challenge['challenge'] % 60;
+                        $mode = "Win in less than";
+                        if ($minutes > 0) {
+                            $mode .= " {$minutes} mins";
+                        }
+                        if ($seconds > 0) {
+                            if ($minutes > 0) $mode .= " ";
+                            $mode .= "{$seconds} secs";
+                        }
+                        $mode = trim($mode);
+                    } else {
+                        $mode = "Score at least " . $challenge['challenge'] . " points";
+                    }
                     $prize = $challenge['prize'];
                     $winners = $challenge['winners'];
+                    $totalWinners = $challenge['total_winners'];
+                    $expiresAt = new DateTime($challenge['expires_at']);
+                    $now = new DateTime();
+                    $interval = $now->diff($expiresAt);
+
+                    if ($interval->days > 0) {
+                        $timeLeft = $interval->days . " days";
+                    } elseif ($interval->h > 0) {
+                        $timeLeft = $interval->h . " hours";
+                    } elseif ($interval->i > 0) {
+                        $timeLeft = $interval->i . " minutes";
+                    } else {
+                        $timeLeft = $interval->s . " seconds";
+                    }
                     ?>
                     <div class="game challenge_game chal_ver">
                         <p class="goal"><?= $mode ?></p>
                         <div class="gameinfo gametype_5">
-                            <a href="/games/challenges.php?accept=<?= $userId ?>_<?= $gameId ?>" title="4 days left in this challenge"><img src="/users/user<?= $userId ?>/images/proj<?= $gameId ?>/image.png" alt="<?= $gameTitle ?>" onerror="r(this)" /></a>
+                            <a href="/games/challenges.php?accept=<?= $userId ?>_<?= $gameId ?>" title="<?= $timeLeft ?> left in this challenge"><img src="/users/user<?= $userId ?>/images/proj<?= $gameId ?>/image.png" alt="<?= $gameTitle ?>" onerror="r(this)" /></a>
                             <div class="game_titles">
                                 <h4><a href="/games/challenges.php?accept=<?= $userId ?>_<?= $gameId ?>"><?= $gameTitle ?></a></h4>
                                 <h5><a href="/games/members/<?= $gameAuthor ?>/"><?= $gameAuthor ?></a></h5>
                             </div>
                         </div>
-                        <p class="winners"><?= ($winners - 1) ?>/<?= ($winners) ?> winners</p>
+                        <p class="winners"><?= ($totalWinners) ?>/<?= ($winners) ?> winners</p>
                         <p class="prize">Win and get <span><?= $prize ?></span></p>
                         <?php if($challenge['verified']) { ?>
                             <img class="verified" src="http://cdn.sploder.com/chrome/challenge_verified.png" width="24" height="24" alt="Challenge verified" title="This challenge was verified as possible by <?= $gameAuthor ?>" />
@@ -175,6 +203,9 @@ $offset = $_GET['o'] ?? 0;
 
                     </div>
                     <?php
+                    if($index % 2 == 0) {
+                        echo "<div class='spacer'>&nbsp;</div>";
+                    }
                 } ?>
                 
             </div>
