@@ -288,7 +288,7 @@ where g_id = :g_id
         ]);
     }
 
-    public function getGameAUthor(int $gameId): string
+    public function getGameAuthor(int $gameId): string
     {
         return $this->db->queryFirstColumn("SELECT author FROM games WHERE g_id = :g_id", 0, [
             ':g_id' => $gameId,
