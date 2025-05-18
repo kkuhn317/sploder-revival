@@ -117,4 +117,10 @@ class ChallengesRepository implements IChallengesRepository
         ]);
         return $result['count'] > 0;
     }
+
+    public function getTotalChallengeCount(): int
+    {
+        $query = "SELECT COUNT(*) FROM challenges WHERE date > NOW() - INTERVAL '15 days'";
+        return $this->db->queryFirst($query)['count'];
+    }
 }

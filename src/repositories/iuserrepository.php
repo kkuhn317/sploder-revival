@@ -53,4 +53,28 @@ interface IUserRepository
      * @return void
      */
     function saveEvent(string $s, string $e, string $g);
+
+    /**
+     * Add boost points to a user
+     * 
+     * @param $userId
+     * @param $points
+     */
+    function addBoostPoints(int $userId, int $points): void;
+
+    /**
+     * Remove boost points from a user
+     * 
+     * @param $userId
+     * @param $points
+     */
+    function removeBoostPoints(int $userId, int $points): void;
+
+    /**
+     * Get boost points of a user
+     * 
+     * @param $userId
+     * @return int boost points of user
+     */
+    function getBoostPoints(int $userId): int;
 }

@@ -24,7 +24,7 @@ if(isset($_GET['s'])) {
         exit();
     }
 }
-$perPage = 12;
+$perPage = 6;
 $offset = $_GET['o'] ?? 0;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -109,6 +109,10 @@ $offset = $_GET['o'] ?? 0;
                     $gameTitle = $gameRepository->getGameTitle($gameId);
                     $gameTitle = htmlspecialchars($gameTitle);
                     $userRepository = RepositoryManager::get()->getUserRepository();
+                    $gameSWF = $gameRepository->getGameSWF($gameId);
+                    if($gameSWF == 5 || $gameSWF == 7){
+                        $showScore = true;
+                    }
             ?>
             <script>const boostPoints = <?= $userRepository->getBoostPoints($_SESSION['userid']); ?>;</script>
             <script type="text/javascript" src="challenges.js"></script>
@@ -121,9 +125,11 @@ $offset = $_GET['o'] ?? 0;
                 <label>
                     <input type="radio" name="choice" value="0" checked>Speed Run
                 </label>
+                <?php if($showScore) { ?>
                 <label>
                     <input type="radio" name="choice" value="1">Get a Score
                 </label>
+                <?php } ?>
                 <br><br>
                 <table>
                     <tr>
@@ -236,8 +242,13 @@ $offset = $_GET['o'] ?? 0;
                         echo "<div class='spacer'>&nbsp;</div>";
                     }
                 } ?>
-                
             </div>
+            <?php
+                // Add pagination
+                $totalChallenges = $challengesRepository->getTotalChallengeCount();
+                require('../content/pages.php');
+                addPagination($totalChallenges, $perPage, $offset);
+            ?>
             <p class="description">To make a game challenge, go to your My Games page and then click the
 	    <em>Challenge</em> button next to your game.</p>
         </div>
