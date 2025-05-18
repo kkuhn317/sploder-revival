@@ -154,6 +154,33 @@ CREATE TABLE public.banned_members (
 ALTER TABLE public.banned_members OWNER TO sploder;
 
 --
+-- Name: challenge_winners; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.challenge_winners (
+    winner_id integer NOT NULL,
+    g_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.challenge_winners OWNER TO sploder;
+
+--
+-- Name: challenge_winners_winner_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.challenge_winners ALTER COLUMN winner_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.challenge_winners_winner_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
 -- Name: challenges; Type: TABLE; Schema: public; Owner: sploder
 --
 
@@ -164,7 +191,8 @@ CREATE TABLE public.challenges (
     challenge integer NOT NULL,
     prize integer NOT NULL,
     winners integer NOT NULL,
-    verified boolean NOT NULL
+    verified boolean NOT NULL,
+    date date NOT NULL
 );
 
 
@@ -625,6 +653,22 @@ ALTER TABLE ONLY public.awards
 
 
 --
+-- Name: challenge_winners challenge_winners_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenge_winners
+    ADD CONSTRAINT challenge_winners_pkey PRIMARY KEY (winner_id);
+
+
+--
+-- Name: challenge_winners challenge_winners_unique; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenge_winners
+    ADD CONSTRAINT challenge_winners_unique UNIQUE (g_id, user_id);
+
+
+--
 -- Name: challenges challenges_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -924,6 +968,14 @@ ALTER TABLE ONLY public.game_views_members
 
 ALTER TABLE ONLY public.game_views_members
     ADD CONSTRAINT fk_game_views_members_members_userid FOREIGN KEY (userid) REFERENCES public.members(userid);
+
+
+--
+-- Name: challenge_winners g_id_contest_winners_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenge_winners
+    ADD CONSTRAINT g_id_contest_winners_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) MATCH FULL;
 
 
 --
