@@ -28,7 +28,7 @@ if(isset($_GET['challenge'])){
     if($challengesRepository->verifyChallengeId($game_id['id'], $challengeId, $_SESSION['challenge'] ?? -1)) {
         $challenge = true;
         $challengeInfo = $challengesRepository->getChallengeInfo($game_id['id']);
-        $mode = "CHALLENGE ACCEPTED! " . ($challengeInfo['mode'] == 1 ? "time" : "Score at least " . $challengeInfo['challenge'] . " points") . "...";
+        $mode = "CHALLENGE ACCEPTED! " . ($challengeInfo['mode'] == true ? "time" : "Score at least " . $challengeInfo['challenge'] . " points") . "...";
     } else {
         $challenge = false;
     }
@@ -133,7 +133,7 @@ if(isset($_GET['challenge'])){
                 <?php
                 if($challenge) {
                     echo 'challenge: "'.$_GET['challenge'].'",';
-                    if($mode) {
+                    if(!$mode) {
                         echo 'chscore: "'.$challengeInfo['challenge'].'",';
                     }
                 }
