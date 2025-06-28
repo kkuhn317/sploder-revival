@@ -8,7 +8,7 @@ This is to prevent hackers from easily bypassing the checks used in the original
 I know, security through obscurity is not a good idea, but this is the best I can do.
 */
 
-function verifyScore($hash, $pubkey, $gtm, $w, $id)
+function verifyScore($hash, $id0, $id1, $w, $gtm);
 {
     return true;
 }
