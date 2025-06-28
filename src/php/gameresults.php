@@ -10,9 +10,7 @@ function difficulty($wins, $loss)
 }
     $hash = $_GET['ax'];
     $gtm = filter_var($_POST['gtm'], FILTER_VALIDATE_INT);
-    $w = $_POST['w'];
-    $w = $w == true;
-    $w = $w ? "true" : "false";
+    $w = filter_var($_POST['w'], FILTER_VALIDATE_BOOLEAN) ? "true" : "false";
 
     $id = explode("_", $_POST['pubkey']);
     $id[0] = filter_var($id[0], FILTER_VALIDATE_INT);
