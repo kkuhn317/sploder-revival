@@ -15,7 +15,7 @@ function difficulty($wins, $loss)
     $id = explode("_", $_POST['pubkey']);
     $id[0] = filter_var($id[0], FILTER_VALIDATE_INT);
     $id[1] = filter_var($id[1], FILTER_VALIDATE_INT);
-    require_once('../php/verifyscore.php');
+    require_once(__DIR__ . '/verifyscore.php');
     $verifiedScore = verifyScore($hash, $id[0], $id[1], $w, $gtm);
 
 if ($verifiedScore) {
