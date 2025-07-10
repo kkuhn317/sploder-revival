@@ -10,14 +10,15 @@ function difficulty($wins, $loss)
 }
     $hash = $_GET['ax'];
     $gtm = filter_var($_POST['gtm'], FILTER_VALIDATE_INT);
-    $w = $_POST['w'];
-$   $w = $w == true;
-;
+    $w = filter_var($_POST['w'], FILTER_VALIDATE_BOOLEAN) ? "true" : "false";
+
     $id = explode("_", $_POST['pubkey']);
     $id[0] = filter_var($id[0], FILTER_VALIDATE_INT);
     $id[1] = filter_var($id[1], FILTER_VALIDATE_INT);
-    $md5 = `node md5_edited.js $id[0]_$id[1] $w $gtm`;
-if (substr($md5, 0, -1) == $hash) {
+    require_once(__DIR__ . '/verifyscore.php');
+    $verifiedScore = verifyScore($hash, $id[0], $id[1], $w, $gtm);
+
+if ($verifiedScore) {
     session_start();
     if (!isset($_SESSION['username'])) {
         die("&success=true");

@@ -6,3 +6,6 @@ Folders containing different licenses are specified below:
 
 - [src/swf](https://github.com/Sploder-Saptarshi/sploder-revival/tree/main/src/swf) (Copyright of Geoffrey P. Gaudreault)
 
+Files containing different licenses are specified below:
+
+- [src/php/verifyscore.php](https://github.com/Sploder-Saptarshi/sploder-revival/blob/main/src/php/verifyscore.php) (Proprietary code used in the official sploder revival instance)
