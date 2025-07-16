@@ -43,10 +43,17 @@ dev.bootstrap:
 	@echo "---BOOTSTRAP START---";
 	$(MAKE) dev.down
 	${CONTAINER_CMD} compose -f docker-compose-dev.yaml up -d
-	until docker exec sploder_postgres pg_isready -U postgres; do \
+	RETRY_LIMIT=30; \
+	RETRY_COUNT=0; \
+	until docker exec sploder_postgres pg_isready -U postgres || [ $$RETRY_COUNT -ge $$RETRY_LIMIT ]; do \
 		echo "Waiting for PostgreSQL to be ready..."; \
+		RETRY_COUNT=$$((RETRY_COUNT+1)); \
 		sleep 1; \
-	done
+	done; \
+	if [ $$RETRY_COUNT -ge $$RETRY_LIMIT ]; then \
+		echo "PostgreSQL did not become ready within the timeout period."; \
+		exit 1; \
+	fi
 	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "chmod +x /bootstrap/bootstrap.sh && /bootstrap/bootstrap.sh"
 	@echo "---BOOTSTRAP COMPLETE---";
 	$(MAKE) dev.down
