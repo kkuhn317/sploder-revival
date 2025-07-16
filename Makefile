@@ -43,7 +43,10 @@ dev.bootstrap:
 	@echo "---BOOTSTRAP START---";
 	$(MAKE) dev.down
 	${CONTAINER_CMD} compose -f docker-compose-dev.yaml up -d
-	sleep 1
+	until docker exec sploder_postgres pg_isready -U postgres; do \
+		echo "Waiting for PostgreSQL to be ready..."; \
+		sleep 1; \
+	done
 	${CONTAINER_CMD} exec -it sploder_postgres /bin/bash -c "chmod +x /bootstrap/bootstrap.sh && /bootstrap/bootstrap.sh"
 	@echo "---BOOTSTRAP COMPLETE---";
 	$(MAKE) dev.down
