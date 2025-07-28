@@ -135,7 +135,7 @@ interface IGameRepository
     public function getTotalDeletedGameCount($userName): int;
 
     /**
-     * Retrieves the total count of published games for a suer
+     * Retrieves the total count of published games for a user
      */
     public function getTotalMetricsForUser(string $userName): GameMetricsForUser;
 
