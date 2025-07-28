@@ -31,13 +31,6 @@ class ChallengesRepository implements IChallengesRepository
         return $this->db->queryFirst($query, [':id' => $gameId]);
     }
 
-    public function verifyIfOwner(int $gameId, int $userId): bool
-    {
-        $gameRepository = RepositoryManager::get()->getGameRepository();
-        $ownerId = $gameRepository->getUserId($gameId);
-        return $ownerId == $userId;
-    }
-
     public function verifyIfSIsCorrect(int $gameId, int $userId): bool
     {
         $query = "SELECT user_id FROM games WHERE g_id = :g_id";
