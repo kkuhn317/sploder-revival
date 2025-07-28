@@ -213,7 +213,7 @@ if (isset($_GET['s'])) {
 
                 <span class="button"><a href="games/reviews/">Reviews &raquo;</a></span>&nbsp;
 
-                <span class="button"><a href="games/tags/">Tags &raquo;</a></span>
+                <span class="button"><a href="games/tags.php">Tags &raquo;</a></span>
 
             </div>
 
