@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once(__DIR__ . '/../repositories/repositorymanager.php');
 $gameRepository = RepositoryManager::get()->getGameRepository();
 $gameTags = $gameRepository->getGameTags($_GET['offset'] ?? 0,100);
