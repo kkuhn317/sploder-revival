@@ -45,7 +45,7 @@ dev.bootstrap:
 	${CONTAINER_CMD} compose -f docker-compose-dev.yaml up -d
 	RETRY_LIMIT=30; \
 	RETRY_COUNT=0; \
-	until docker exec sploder_postgres pg_isready -U postgres || [ $$RETRY_COUNT -ge $$RETRY_LIMIT ]; do \
+	until ${CONTAINER_CMD} exec sploder_postgres pg_isready -U postgres || [ $$RETRY_COUNT -ge $$RETRY_LIMIT ]; do \
 		echo "Waiting for PostgreSQL to be ready..."; \
 		RETRY_COUNT=$$((RETRY_COUNT+1)); \
 		sleep 1; \
