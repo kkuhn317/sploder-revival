@@ -185,7 +185,7 @@ ALTER TABLE public.challenge_winners ALTER COLUMN winner_id ADD GENERATED ALWAYS
 --
 
 CREATE TABLE public.challenges (
-    c_id integer NOT NULL,
+    challenge_id integer NOT NULL,
     g_id integer NOT NULL,
     mode boolean NOT NULL,
     challenge integer NOT NULL,
@@ -202,7 +202,7 @@ ALTER TABLE public.challenges OWNER TO sploder;
 -- Name: challenges_c_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
 --
 
-ALTER TABLE public.challenges ALTER COLUMN c_id ADD GENERATED ALWAYS AS IDENTITY (
+ALTER TABLE public.challenges ALTER COLUMN challenge_id ADD GENERATED ALWAYS AS IDENTITY (
     SEQUENCE NAME public.challenges_c_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -673,7 +673,7 @@ ALTER TABLE ONLY public.challenge_winners
 --
 
 ALTER TABLE ONLY public.challenges
-    ADD CONSTRAINT challenges_pkey PRIMARY KEY (c_id);
+    ADD CONSTRAINT challenges_pkey PRIMARY KEY (challenge_id);
 
 
 --
@@ -777,7 +777,7 @@ ALTER TABLE ONLY public.game_views_members
 --
 
 ALTER TABLE ONLY public.challenges
-    ADD CONSTRAINT unique_challenges UNIQUE (g_id, c_id);
+    ADD CONSTRAINT unique_challenges UNIQUE (g_id, challenge_id);
 
 
 --
@@ -894,7 +894,7 @@ CREATE INDEX idx_challenge_winners_g_id_user_id ON public.challenge_winners USIN
 -- Name: idx_challenges_c_id; Type: INDEX; Schema: public; Owner: sploder
 --
 
-CREATE INDEX idx_challenges_c_id ON public.challenges USING btree (c_id);
+CREATE INDEX idx_challenges_c_id ON public.challenges USING btree (challenge_id);
 
 
 --

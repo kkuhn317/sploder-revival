@@ -55,10 +55,10 @@ if(isset($_POST['choice'])) {
 } else if(isset($_POST['accept'])) {
     $s = explode("_",$_POST['s']);
     if($challengesRepository->verifyIfSIsCorrect($s[1], $s[0])) {
-        $c_id = $challengesRepository->getChallengeId($s[1]);
+        $challenge_id = $challengesRepository->getChallengeId($s[1]);
         if(!($challengesRepository->hasWonChallenge($s[1], $_SESSION['userid']))) {
-            $_SESSION['challenge'] = $c_id;
-            header("Location: /games/play.php?s=" . $s[0] . "_" . $s[1] . "&challenge=" . $c_id);
+            $_SESSION['challenge'] = $challenge_id;
+            header("Location: /games/play.php?s=" . $s[0] . "_" . $s[1] . "&challenge=" . $challenge_id);
         }
     }
 }
