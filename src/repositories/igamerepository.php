@@ -142,7 +142,7 @@ interface IGameRepository
     /**
      * Retrieves basic information, title, author and SWF type of the game
      */
-    public function getGameTitle(int $gameId): array;
+    public function getGameBasicInfo(int $gameId): array;
 }
 
 class GameMetricsForUser

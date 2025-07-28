@@ -32,14 +32,6 @@ interface IChallengesRepository
     public function addChallenge(int $gameId, bool $mode, int $challenge, int $prize, int $winners);
 
     /**
-     * Verify if the user is the owner of the game
-     * @param int $gameId
-     * @param int $userId
-     * @return bool
-     */
-    public function verifyIfOwner(int $gameId, int $userId): bool;
-
-    /**
      * Get the challenge ID for a game
      * @param int $gameId
      * @return int
