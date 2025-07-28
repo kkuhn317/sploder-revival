@@ -192,7 +192,7 @@ CREATE TABLE public.challenges (
     prize integer NOT NULL,
     winners integer NOT NULL,
     verified boolean NOT NULL,
-    date date NOT NULL
+    insert_date date NOT NULL
 );
 
 
@@ -901,7 +901,7 @@ CREATE INDEX idx_challenges_c_id ON public.challenges USING btree (c_id);
 -- Name: idx_challenges_date_verified; Type: INDEX; Schema: public; Owner: sploder
 --
 
-CREATE INDEX idx_challenges_date_verified ON public.challenges USING btree (date, verified);
+CREATE INDEX idx_challenges_date_verified ON public.challenges USING btree (insert_date, verified);
 
 
 --
