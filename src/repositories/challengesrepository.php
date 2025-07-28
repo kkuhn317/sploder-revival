@@ -47,27 +47,27 @@ class ChallengesRepository implements IChallengesRepository
 
     public function getChallengeId(int $gameId): int
     {
-        $query = "SELECT c_id FROM challenges WHERE g_id = :g_id";
-        return $this->db->queryFirst($query, [':g_id' => $gameId])['c_id'];
+        $query = "SELECT challenge_id FROM challenges WHERE g_id = :g_id";
+        return $this->db->queryFirst($query, [':g_id' => $gameId])['challenge_id'];
     }
 
     public function verifyChallengeId(int $gameId, int $challengeId, int $sessionChallengeId): bool
     {
-        $query = "SELECT c.c_id
+        $query = "SELECT c.challenge_id
           FROM challenges c
           LEFT JOIN challenge_winners w ON w.g_id = c.g_id
           WHERE c.g_id = :g_id
             AND c.insert_date > NOW() - INTERVAL '15 days'
-          GROUP BY c.c_id, c.winners
+          GROUP BY c.challenge_id, c.winners
           HAVING COUNT(w.winner_id) < c.winners";
         $result = $this->db->queryFirst($query, [':g_id' => $gameId]);
-        return ($result['c_id'] === $challengeId) && ($result['c_id'] === $sessionChallengeId);
+        return ($result['challenge_id'] === $challengeId) && ($result['challenge_id'] === $sessionChallengeId);
     }
 
     public function getAllChallenges(int $offset, int $perPage): array
     {
 
-        $query = "SELECT c.c_id, c.g_id, c.mode, c.challenge, c.prize, c.winners, c.verified, 
+        $query = "SELECT c.challenge_id, c.g_id, c.mode, c.challenge, c.prize, c.winners, c.verified, 
                  c.insert_date + INTERVAL '15 days' AS expires_at, 
                  g.user_id, g.title, g.author,
                  COUNT(w.winner_id) AS total_winners
@@ -75,7 +75,7 @@ class ChallengesRepository implements IChallengesRepository
           JOIN games g ON c.g_id = g.g_id
           LEFT JOIN challenge_winners w ON w.g_id = c.g_id
           WHERE c.insert_date > NOW() - INTERVAL '15 days'
-          GROUP BY c.c_id, c.g_id, c.mode, c.challenge, c.prize, c.winners, c.verified, c.insert_date, g.user_id, g.title, g.author
+          GROUP BY c.challenge_id, c.g_id, c.mode, c.challenge, c.prize, c.winners, c.verified, c.insert_date, g.user_id, g.title, g.author
           HAVING COUNT(w.winner_id) < c.winners
           ORDER BY c.verified DESC OFFSET :offset LIMIT :perPage";
         return $this->db->query($query, [
@@ -86,15 +86,15 @@ class ChallengesRepository implements IChallengesRepository
 
     public function checkIfChallengeCreatorIsOwner(int $challengeId, int $userId): bool
     {
-        $query = "SELECT g.user_id FROM challenges c JOIN games g ON c.g_id = g.g_id WHERE c.c_id = :c_id";
-        $result = $this->db->queryFirst($query, [':c_id' => $challengeId]);
+        $query = "SELECT g.user_id FROM challenges c JOIN games g ON c.g_id = g.g_id WHERE c.challenge_id = :challenge_id";
+        $result = $this->db->queryFirst($query, [':challenge_id' => $challengeId]);
         return $result['user_id'] === $userId;
     }
 
     public function verifyChallenge(int $challengeId): bool
     {
-        $query = "UPDATE challenges SET verified = true WHERE c_id = :c_id";
-        $this->db->execute($query, [':c_id' => $challengeId]);
+        $query = "UPDATE challenges SET verified = true WHERE challenge_id = :challenge_id";
+        $this->db->execute($query, [':challenge_id' => $challengeId]);
         return true;
     }
 

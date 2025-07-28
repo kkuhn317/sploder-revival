@@ -137,12 +137,12 @@ where g_id = :g_id
 
         $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, g.isprivate, g.ispublished,
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes,
-            c.c_id as challenge_id
+            c.challenge_id as challenge_id
         FROM games g
         LEFT JOIN votes r ON g.g_id = r.g_id
         LEFT JOIN challenges c ON g.g_id = c.g_id
         WHERE g.author = :userName
-        GROUP BY g.g_id, c.c_id
+        GROUP BY g.g_id, c.challenge_id
         ORDER BY g.g_id DESC";
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
