@@ -26,6 +26,31 @@ if(isset($_GET['s'])) {
 }
 $perPage = 6;
 $offset = $_GET['o'] ?? 0;
+
+function formatChallengeMode($mode, $challenge): string
+{
+    if ($mode) {
+        $minutes = floor($challenge / 60);
+        $seconds = $challenge % 60;
+        $result = "Win in less than";
+
+        if ($minutes > 0 && $seconds == 0) {
+            $unit = $minutes == 1 ? "minute" : "minutes";
+            $result .= " {$minutes} {$unit}";
+        } elseif ($minutes > 0 && $seconds > 0) {
+            $minUnit = $minutes == 1 ? "min" : "mins";
+            $secUnit = $seconds == 1 ? "sec" : "secs";
+            $result .= " {$minutes} {$minUnit} {$seconds} {$secUnit}";
+        } elseif ($minutes == 0 && $seconds > 0) {
+            $unit = $seconds == 1 ? "second" : "seconds";
+            $result .= " {$seconds} {$unit}";
+        }
+
+        return trim($result);
+    } else {
+        return "Score at least {$challenge} points";
+    }
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -66,7 +91,7 @@ $offset = $_GET['o'] ?? 0;
                     $gameAuthor = $gameRepository->getGameAuthor($gameId);
                     $gameAuthor = htmlspecialchars($gameAuthor);
                     $challengeInfo = $challengesRepository->getChallengeInfo($gameId);
-                    $mode = $challengesRepository->formatChallengeMode($challengeInfo['mode'], $challengeInfo['challenge']);
+                    $mode = formatChallengeMode($challengeInfo['mode'], $challengeInfo['challenge']);
                     $prize = $challengeInfo['prize'];
                     ?>
                     <div style="border-radius:10px; overflow: auto; height:auto;" class="challenge_confirm">
@@ -174,7 +199,7 @@ $offset = $_GET['o'] ?? 0;
                     $userId = $challenge['user_id'];
                     $gameTitle = htmlspecialchars($challenge['title']);
                     $gameAuthor = htmlspecialchars($challenge['author']);
-                    $mode = $challengesRepository->formatChallengeMode($challenge['mode'], $challenge['challenge']);
+                    $mode = formatChallengeMode($challenge['mode'], $challenge['challenge']);
                     $prize = $challenge['prize'];
                     $winners = $challenge['winners'];
                     $totalWinners = $challenge['total_winners'];
