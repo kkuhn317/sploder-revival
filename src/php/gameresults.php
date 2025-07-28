@@ -2,6 +2,9 @@
 
 require_once('../repositories/repositorymanager.php');
 
+$challengesRepository = RepositoryManager::get()->getChallengesRepository();
+$userRepository = RepositoryManager::get()->getUserRepository();
+
 function difficulty($wins, $loss)
 {
     if ($wins + $loss === 0) {
@@ -36,7 +39,6 @@ if (substr($md5, 0, -1) == $hash) {
     ]);
 
     if(isset($_SESSION['challenge'])){
-        $challengesRepository = RepositoryManager::get()->getChallengesRepository();
         $challengeId = $challengesRepository->getChallengeId($id[1]);
         if($challengeId == $_SESSION['challenge']) {
             $challengeId = $_SESSION['challenge'];
@@ -82,7 +84,6 @@ if (substr($md5, 0, -1) == $hash) {
             if ($isOwner) {
                 $challengesRepository->verifyChallenge($challengeId);
             } else {
-                $userRepository = RepositoryManager::get()->getUserRepository();
                 $userRepository->addBoostPoints($_SESSION['userid'], $prize);
             }
         } else {
