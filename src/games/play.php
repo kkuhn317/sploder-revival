@@ -80,7 +80,7 @@ if(isset($_GET['challenge'])){
             <?php
             if($game['isprivate'] != 1) { echo '<br><br>'; }
             if((!$challenge) && (isset($_GET['challenge']))) {
-                if($challengesRepository->hasWonChallenge($game_id['id'], $_SESSION['userid'])) {
+                if($challengesRepository->hasWonChallenge($game_id['id'], $_SESSION['userid'] ?? -1)) {
                     echo '<div class="challenge_prompt">Woo hoo! You won this challenge!</div>';
                 } else {
                     echo '<div class="challenge_prompt">Yo ho ho! Log in to accept this challenge!</div>';
