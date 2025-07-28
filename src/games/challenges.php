@@ -114,7 +114,7 @@ function formatChallengeMode($mode, $challenge): string
                 // Verify if owner
                 $gameInfo = explode("_", $_GET['s']);
                 $gameId = $gameInfo[1];
-                if(!$challengesRepository->verifyIfOwner($gameId, $_SESSION['userid'])) {
+                if(!$gameRepository->verifyOwnership($gameId, $_SESSION['username'])) {
                     echo "<div class='alert'>You are not the owner of this game!</div>";
                 } else {
                     $gameTitle = $gameRepository->getGameTitle($gameId);

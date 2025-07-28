@@ -4,6 +4,7 @@ require_once('../repositories/repositorymanager.php');
 
 $challengesRepository = RepositoryManager::get()->getChallengesRepository();
 $userRepository = RepositoryManager::get()->getUserRepository();
+$gameRepository = RepositoryManager::get()->getGameRepository();
 
 function difficulty($wins, $loss)
 {
@@ -79,7 +80,7 @@ if (substr($md5, 0, -1) == $hash) {
             $challengesRepository->addChallengeWinner($id[1], $_SESSION['userid']);
             
             // Check if the user is the owner of the game
-            $isOwner = $challengesRepository->verifyIfOwner($id[1], $_SESSION['userid']);
+            $isOwner = $gameRepository->verifyOwnership($id[1], $_SESSION['username']);
             // If the user is the owner, update the challenge as verified
             if ($isOwner) {
                 $challengesRepository->verifyChallenge($challengeId);
