@@ -281,24 +281,16 @@ where g_id = :g_id
         return $result === $userName;
     }
     
-    public function getGameTitle(int $gameId): string
+    public function getGameBasicInfo(int $gameId): array
     {
-        return $this->db->queryFirstColumn("SELECT title FROM games WHERE g_id = :g_id", 0, [
+        $result = $this->db->queryFirst("SELECT title, author, g_swf FROM games WHERE g_id = :g_id", [
             ':g_id' => $gameId,
         ]);
-    }
-
-    public function getGameAuthor(int $gameId): string
-    {
-        return $this->db->queryFirstColumn("SELECT author FROM games WHERE g_id = :g_id", 0, [
-            ':g_id' => $gameId,
-        ]);
-    }
-
-    public function getGameSWF(int $gameId): int
-    {
-        return (int)$this->db->queryFirstColumn("SELECT g_swf FROM games WHERE g_id = :g_id", 0, [
-            ':g_id' => $gameId,
-        ]);
+        
+        return [
+            'title' => $result['title'],
+            'author' => $result['author'],
+            'g_swf' => (int)$result['g_swf']
+        ];
     }
 }
