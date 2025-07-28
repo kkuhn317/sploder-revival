@@ -8,8 +8,11 @@ require_once('../content/getgameid.php');
 require('../content/playgame.php');
 require_once('../content/taglister.php');
 require_once('../repositories/repositorymanager.php');
+require_once('../services/ChallengesService.php');
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
+$challengesService = new ChallengesService();
+
 
 $game_id = get_game_id($_GET['s']);
 $game = get_game_info($game_id['id']);
@@ -28,7 +31,7 @@ if(isset($_GET['challenge'])){
     if($challengesRepository->verifyChallengeId($game_id['id'], $challengeId, $_SESSION['challenge'] ?? -1)) {
         $challenge = true;
         $challengeInfo = $challengesRepository->getChallengeInfo($game_id['id']);
-        $mode = "CHALLENGE ACCEPTED! ".$challengesRepository->formatChallengeMode($challengeInfo['mode'], $challengeInfo['challenge']);
+        $mode = "CHALLENGE ACCEPTED! ".$challengesService->formatChallengeMode($challengeInfo['mode'], $challengeInfo['challenge']);
     } else {
         $challenge = false;
     }
