@@ -86,10 +86,9 @@ function formatChallengeMode($mode, $challenge): string
                 if(!$challengesRepository->verifyIfSIsCorrect($gameId, $userId)) {
                     echo "<div class='alert'>You cannot play this game!</div>";
                 } else {
-                    $gameTitle = $gameRepository->getGameTitle($gameId);
-                    $gameTitle = htmlspecialchars($gameTitle);
-                    $gameAuthor = $gameRepository->getGameAuthor($gameId);
-                    $gameAuthor = htmlspecialchars($gameAuthor);
+                    $gameInfo = $gameRepository->getGameBasicInfo($gameId);
+                    $gameTitle = htmlspecialchars($gameInfo['title']);
+                    $gameAuthor = htmlspecialchars($gameInfo['author']);
                     $challengeInfo = $challengesRepository->getChallengeInfo($gameId);
                     $mode = formatChallengeMode($challengeInfo['mode'], $challengeInfo['challenge']);
                     $prize = $challengeInfo['prize'];
@@ -117,13 +116,14 @@ function formatChallengeMode($mode, $challenge): string
                 if(!$gameRepository->verifyOwnership($gameId, $_SESSION['username'])) {
                     echo "<div class='alert'>You are not the owner of this game!</div>";
                 } else {
-                    $gameTitle = $gameRepository->getGameTitle($gameId);
-                    $gameTitle = htmlspecialchars($gameTitle);
+                    $gameInfo = $gameRepository->getGameBasicInfo($gameId);
+                    $gameTitle = htmlspecialchars($gameInfo['title']);
                     $userRepository = RepositoryManager::get()->getUserRepository();
-                    $gameSWF = $gameRepository->getGameSWF($gameId);
+                    $gameSWF = $gameInfo['g_swf'];
                     if($gameSWF == 5 || $gameSWF == 7){
                         $showScore = true;
                     }
+
             ?>
             <script>const boostPoints = <?= $userRepository->getBoostPoints($_SESSION['userid']); ?>;</script>
             <script type="text/javascript" src="challenges.js"></script>

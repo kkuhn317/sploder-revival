@@ -138,21 +138,11 @@ interface IGameRepository
      * Retrieves the total count of published games for a suer
      */
     public function getTotalMetricsForUser(string $userName): GameMetricsForUser;
-    
-    /**
-     * Retrieves the title of the game
-     */
-    public function getGameTitle(int $gameId): string;
 
     /**
-     * Retrieves the author of the game
+     * Retrieves basic information, title, author and SWF type of the game
      */
-    public function getGameAuthor(int $gameId): string;
-
-    /**
-     * Retrieves the SWF type of the game
-     */
-    public function getGameSWF(int $gameId): int;
+    public function getGameTitle(int $gameId): array;
 }
 
 class GameMetricsForUser
