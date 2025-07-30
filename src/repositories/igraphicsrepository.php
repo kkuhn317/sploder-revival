@@ -48,4 +48,14 @@ interface IGraphicsRepository
    * @return array of graphics
    */
     function getPublicGraphics(int $offset, int $perPage): array;
+
+  /**
+   * Retrieves all tags for graphics
+   *
+   * @param $perPage
+   * @param $offset
+   * @return all tags for graphics
+   */
+    public function getGraphicTags(int $offset, int $perPage): PaginationData;
+
 }
