@@ -58,4 +58,13 @@ interface IGraphicsRepository
    */
     public function getGraphicTags(int $offset, int $perPage): PaginationData;
 
+  /**
+   * Retrieves graphics with a specific tag
+   * 
+   * @param string $tag
+   * @param int $offset
+   * @param int $perPage
+   * @return PaginationData
+   */
+    public function getGraphicsWithTag(string $tag, int $offset, int $perPage): PaginationData;
 }

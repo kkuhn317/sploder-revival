@@ -1,12 +1,12 @@
 <?php
 $t = $_GET['t']; // Tag by user input
 session_start();
-require_once('../services/GameListRenderService.php');
+require_once('../services/GraphicListRenderService.php');
 require_once('../repositories/repositorymanager.php');
 $perPage = 12;
 $offset = $_GET['o'] ?? 0;
-$gameRepository = RepositoryManager::get()->getGameRepository();
-$gameListRenderService = new GameListRenderService($gameRepository);
+$graphicsRepository = RepositoryManager::get()->getGraphicsRepository();
+$graphicListRenderService = new GraphicListRenderService($graphicsRepository);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -32,14 +32,14 @@ $gameListRenderService = new GameListRenderService($gameRepository);
 
 
         <div id="content">
-            <h3><?= ucfirst($t); ?> Games</h3>
+            <h3><?= ucfirst($t); ?> Graphics</h3>
 
-            <p>Tags are keywords or phrases that describe your game. They help people find your games, and make browsing
+            <p>Tags are keywords or phrases that describe your graphic. They help people find your graphics, and make browsing
                 them more fun! <a href="tags.php">Browse all tags now.</a>
-            <h4>Games with tag <span class="tagcolor1"><?= $t ?></span>:</h4>
+            <h4>Graphics with tag <span class="tagcolor1"><?= $t ?></span>:</h4>
             </p>
             <?php
-            $gameListRenderService->renderPartialViewForGamesWithTag($t, $offset, $perPage);
+            $graphicListRenderService->renderPartialViewForGraphicsWithTag($t, $offset, $perPage);
             ?>
 
         

@@ -98,4 +98,16 @@ class GraphicListRenderService
         
         return $html;
     }
+
+    public function renderPartialViewForGraphicsWithTag(string $tag, int $offset, int $perPage): void
+    {
+        $graphicsResult = $this->graphicsRepository->getGraphicsWithTag($tag, $offset, $perPage);
+        $graphics = $graphicsResult->data ?? $graphicsResult;
+        $total = $graphicsResult->totalCount ?? count($graphics);
+        $this->renderPartialViewForGraphics(
+            $graphics,
+            "No graphics found!"
+        );
+        addPagination($total, $perPage, $offset);
+    }
 }

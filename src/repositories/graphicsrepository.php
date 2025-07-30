@@ -128,4 +128,14 @@ on conflict do nothing", [
         );
     }
 
+    public function getGraphicsWithTag(string $tag, int $offset, int $perPage): PaginationData
+    {
+        $query = "SELECT g.*, m.username FROM graphics g
+                  LEFT JOIN members m ON g.userid = m.userid
+                  JOIN graphic_tags gt ON gt.g_id = g.id
+                  WHERE g.isprivate = false AND g.ispublished = true AND gt.tag = :tag
+                  ORDER BY g.id DESC";
+        return $this->db->queryPaginated($query, $offset, $perPage, [':tag' => $tag]);
+    }
+
 }
