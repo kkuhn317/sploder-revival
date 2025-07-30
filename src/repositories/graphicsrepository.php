@@ -115,4 +115,17 @@ on conflict do nothing", [
 	]);
     }
 
+    public function getGraphicTags(int $offset, int $perPage): PaginationData
+    {
+        return $this->db->queryPaginated(
+            "SELECT DISTINCT gt.tag 
+            FROM graphic_tags gt
+            JOIN graphics g ON gt.g_id = g.id
+            WHERE g.ispublished = true AND g.isprivate = false
+            ORDER BY gt.tag",
+            $offset,
+            $perPage
+        );
+    }
+
 }

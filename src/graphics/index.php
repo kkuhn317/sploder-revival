@@ -47,7 +47,7 @@ $total = $graphicsRepository->getTotalPublicGraphics();
 	You can use these graphics in the <a href="/make/ppg.php">Physics Puzzle Maker</a> or in 
 	the <a href="/make/plat.php">Platformer Game Creator</a>.
 	You can also <a href="/make/graphics.php">create your own graphics</a> using the online graphics editor.
-	All graphics should also be <a href="/graphics/tags/">tagged</a> to make them easy to find!</p><p>There <?= $total == 1 ? 'is' : 'are' ?> <?= $total ?> graphic<?= $total == 1 ? '' : 's' ?> so far with ? likes.</p>
+	All graphics should also be <a href="/graphics/tags.php">tagged</a> to make them easy to find!</p><p>There <?= $total == 1 ? 'is' : 'are' ?> <?= $total ?> graphic<?= $total == 1 ? '' : 's' ?> so far with ? likes.</p>
             <div id="viewpage">
                 <div class="set">
                     <?php
