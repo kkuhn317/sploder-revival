@@ -10,8 +10,6 @@ if (isset($_GET['s'])) {
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -213,7 +211,7 @@ if (isset($_GET['s'])) {
 
                 <span class="button"><a href="games/reviews/">Reviews &raquo;</a></span>&nbsp;
 
-                <span class="button"><a href="games/tags/">Tags &raquo;</a></span>
+                <span class="button"><a href="games/tags.php">Tags &raquo;</a></span>
 
             </div>
 

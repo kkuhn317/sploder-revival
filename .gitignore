@@ -9,7 +9,7 @@ src/users
 .phpunit.result.cache
 src/cache/events.lock
 src/cache/events.xml
-
+src/php/verifyscore.php
 
 # Docker local development folders
 pgdata
