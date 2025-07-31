@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once(__DIR__ . '/../services/GameListRenderService.php');
 require_once(__DIR__ . '/../repositories/repositorymanager.php');
 require_once('../content/taglister.php');
