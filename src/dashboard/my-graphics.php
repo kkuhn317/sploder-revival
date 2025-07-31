@@ -80,7 +80,7 @@ $total_likes = $graphicRepository->getTotalGraphicLikesByUserId($_SESSION['useri
                                 <a><img src="/graphics/gif/<?= $game['id'] ?>.gif" width="80" height="80" /></a>
                                 <div style="text-align: center;">
                                     <div style="height:5px" class="spacer">&nbsp;</div>
-                                    0 likes<br>
+                                    <?= $game['likes'] ?> like<?= $game['likes'] == 1 ? '' : 's' ?><br>
                                     <input title=" Delete" type="button" onclick="delproj(<?= $game['id'] ?>)"
                                         style="width:37px" value="Delete">&nbsp;
                                     <a href="tag-graphic.php?id=<?= $game['id'] ?>"><input title=" Tag" type="button"
@@ -102,7 +102,7 @@ $total_likes = $graphicRepository->getTotalGraphicLikesByUserId($_SESSION['useri
                 </div>
             </div>
             <?php include('../content/pages.php');
-            addPagination($total_games ?? 0) ?>
+            addPagination($total_games ?? 0,  12, $o) ?>
         </div>
         <div id="sidebar">
             <!-- TODO: <h1>GAME BUZZ INCOMPLETE</h1> -->
