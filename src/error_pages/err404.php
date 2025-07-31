@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="/includes/peekaboo.js"></script> 
 	<script type="text/javascript" src="/includes/swfobject_min.js"></script> 
 	<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+	<?php include('../content/ruffle.php'); ?>
 	<?php include('../content/onlinechecker.php'); ?>
 	
 </head>
