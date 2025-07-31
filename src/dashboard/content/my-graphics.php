@@ -16,6 +16,15 @@ $total_games = get_total_graphics($db, $userid);
 $o = isset($_GET['o']) ? $_GET['o'] : "0";
 $offset = 12;
 
-$queryString = 'SELECT * FROM graphics WHERE userid=:userid ORDER BY id DESC LIMIT 12 OFFSET ' . $o;
+$queryString = 'SELECT g.*, COALESCE(l.likes, 0) AS likes
+    FROM graphics g
+    LEFT JOIN (
+        SELECT g_id, COUNT(*) AS likes
+        FROM graphic_likes
+        GROUP BY g_id
+    ) l ON g.id = l.g_id
+    WHERE g.userid=:userid
+    ORDER BY g.id DESC
+    LIMIT 12 OFFSET ' . $o*12;
 $result = $db->query($queryString, [':userid' => $userid]);
 $total = $total_games;
