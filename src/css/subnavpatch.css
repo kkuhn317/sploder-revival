@@ -23,3 +23,6 @@ body#members.halloffame .nav_members li:nth-child(7) a,
 body#members.messages .nav_members li:nth-child(4) a {
     color: #fff !important;
 }
+#topnav {
+    width: 443px !important;
+}
