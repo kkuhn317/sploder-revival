@@ -24,7 +24,7 @@ $graphicListRenderService = new GraphicListRenderService($graphicsRepository);
 </head>
 <?php include('../content/addressbar.php'); ?>
 
-<body id="everyones" class="tags">
+<body id="everyones">
 
     <?php include('../content/headernavigation.php') ?>
     <div id="page">
