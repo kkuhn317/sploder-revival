@@ -16,16 +16,21 @@ class UserRepository implements IUserRepository
     {
         $qs = "
 SELECT
-    username,
-    SIMILARITY(username, :u) AS sim,
-    level
-FROM members
-WHERE SIMILARITY(username, :u) > 0.3 
-ORDER BY sim 
-DESC LIMIT :limit";
+    m.username,
+    SIMILARITY(m.username, :u) AS sim,
+    LEAST(250, FLOOR(
+        (SELECT COUNT(*) FROM votes v WHERE v.username = m.username)/25.0
+        + (SELECT COUNT(DISTINCT f.user2) FROM friends f WHERE f.user1 = m.username)/10.0
+        + (SELECT COUNT(DISTINCT g.g_id) FROM games g WHERE g.author = m.username)/10.0
+        + (SELECT COALESCE(SUM(g2.views),0) FROM games g2 WHERE g2.author = m.username)/1000.0
+    ) + 1) AS level
+FROM members m
+WHERE SIMILARITY(m.username, :u) > 0.3
+ORDER BY sim DESC
+LIMIT :limit";
         return $this->db->query($qs, [
-        ':u' => trim($userName ?? ''),
-        ':limit' => $limit,
+            ':u' => trim($userName ?? ''),
+            ':limit' => $limit,
         ]);
     }
 
