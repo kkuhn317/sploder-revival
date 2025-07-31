@@ -107,7 +107,7 @@ LIMIT 90;
 
     public function getOnlineMembers(): array
     {
-        $last = time() - 30;
+        $last = time() - 30; # 30 seconds
         $qs = "
         SELECT 
             m.username,
