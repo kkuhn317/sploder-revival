@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
+    <?php require('../content/ruffle.php'); ?>
     <?php require('content/head.php'); ?>
 
     var attributes = {
