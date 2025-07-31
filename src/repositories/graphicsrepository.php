@@ -115,4 +115,14 @@ on conflict do nothing", [
 	]);
     }
 
+    public function getTotalGraphicLikesByUserId(int $userId): int
+    {
+        $qs = "SELECT COUNT(gl.g_id) AS total_likes
+                FROM graphic_likes gl
+                JOIN graphics g ON gl.g_id = g.id
+                WHERE g.userid = :userid";
+        $result = $this->db->queryFirst($qs, [':userid' => $userId]);
+        return (int)($result['total_likes'] ?? 0);
+    }
+
 }
