@@ -6,7 +6,7 @@ require_once('php/functions.php');
 require_once('../repositories/repositorymanager.php');
 
 $userRepository = RepositoryManager::get()->getUserRepository();
-$level = getLevel($userRepository);
+$level = $userRepository->getLevelByUserId($_SESSION['userid']);
 if ($level < 10) {
     header("Location: ../index.php");
     die();
