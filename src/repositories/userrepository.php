@@ -189,4 +189,11 @@ LIMIT 90;
         }
     }
 
+    public function getUserIdFromUsername(string $username): int
+    {
+        $qs = "SELECT userid FROM members WHERE username = :username";
+        $result = $this->db->queryFirst($qs, [':username' => $username]);
+        return $result ? (int)$result['userid'] : -1; // Return -1 if not found
+    }
+
 }

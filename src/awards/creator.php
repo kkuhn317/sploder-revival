@@ -28,6 +28,11 @@ if (count($result) == 0) {
     die();
 }
 
+$levelOfReceiver = $userRepository->getLevelByUserId($userRepository->getUserIdFromUsername($_GET['membername'] ?? ''));
+if ($levelOfReceiver < 10) {
+    header("Location: ../awards/index.php?err=level");
+    die();
+}
 $result = $db->query("SELECT username
     FROM award_requests
     WHERE username = :username
