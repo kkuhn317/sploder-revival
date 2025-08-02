@@ -2,8 +2,11 @@
 require_once('content/index.php');
 require_once('../repositories/repositorymanager.php');
 require_once('../services/GameListRenderService.php');
+require_once('../services/FriendsListRenderService.php');
 
 $gameListRenderService = new GameListRenderService(RepositoryManager::get()->getGameRepository());
+$friendsRepository = RepositoryManager::get()->getFriendsRepository();
+$friendsListRenderService = new FriendsListRenderService($friendsRepository);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -166,7 +169,9 @@ $gameListRenderService = new GameListRenderService(RepositoryManager::get()->get
                 <a id="messages_top"></a>
                 <div id="messages"></div>
                 <div class="spacer">&nbsp;</div>
-
+                <?php
+                echo $friendsListRenderService->renderPartialViewForMemberFriends($username);
+                ?>
                 <div class="spacer">&nbsp;</div>
             </div>
             <div class="spacer friends_spacer">&nbsp;</div>

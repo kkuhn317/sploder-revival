@@ -25,7 +25,13 @@ class FriendsListRenderService
 
         $html = "";
 
-        $html .= '<div style="margin-left:7px;height:90px" class="friend friend_48' . $bestClass . '">';
+        if($showActions) {
+            $style = "style='height:90px;'";
+        } else {
+            $style = "";
+        }
+
+        $html .= '<div '.$style.'" class="friend friend_48' . $bestClass . '">';
         $html .= '<a class="name" href="../members/index.php?u=' . htmlspecialchars($friendUsername) . '">';
         $html .= '<img src="../avatar/a/' . htmlspecialchars($avt) . '.png" width="48" height="48" /></a>';
         $html .= '<a class="name" href="../members/index.php?u=' . htmlspecialchars($friendUsername) . '">' . htmlspecialchars($friendUsername) . '</a>';
@@ -42,7 +48,18 @@ class FriendsListRenderService
         return $html;
     }
 
-    private function renderFriendsList(array $bestedFriends, array $acceptedFriends, string $username, bool $showActions, bool $showHeader = true): string 
+    private function getFriendsList(string $username): array {
+        $bestedFriends = $this->friendsRepository->getBestedFriends($username);
+        $newLimit = 30 - count($bestedFriends);
+        $acceptedFriends = $this->friendsRepository->getAcceptedFriends($username, $newLimit);
+        
+        return [
+            'bested' => $bestedFriends,
+            'accepted' => $acceptedFriends
+        ];
+    }
+
+    private function renderFriendsList(array $bestedFriends, array $acceptedFriends, string $username, bool $showActions = false, bool $showHeader = false, bool $showName = false): string 
     {
         $html = "";
         $totalFriends = count($acceptedFriends) + count($bestedFriends);
@@ -56,6 +73,10 @@ class FriendsListRenderService
         }
 
         $html .= '<div id="friends">';
+
+        if ($showName) {
+            $html .= '<h4>' . ucfirst($username) . '\'s Friends</h4>';
+        }
 
         // Render bested friends
         foreach ($bestedFriends as $friend) {
@@ -72,29 +93,15 @@ class FriendsListRenderService
         return $html;
     }
 
-    public function renderPartialViewForRecentFriends(string $username, bool $showActions = false): string
+    public function renderPartialViewForRecentFriends(string $username): string
     {
-        $db = getDatabase(); // TODO: Move to repository when available
-        
-        $bestedFriends = $db->query("SELECT user1,user2
-            FROM friends
-            WHERE (bested=true)
-            AND (user1=:sender_id)
-            ORDER BY id DESC
-            LIMIT 30", [
-                ':sender_id' => $username
-        ]);
-        
-        $newLimit = 30 - count($bestedFriends);
-        
-        $acceptedFriends = $db->query("SELECT user1, user2
-            FROM friends
-            WHERE (bested = false)
-            AND (user1=:sender_id)
-            ORDER BY id DESC LIMIT $newLimit", [
-                ':sender_id' => $username
-        ]);
+        $friends = $this->getFriendsList($username);
+        return $this->renderFriendsList($friends['bested'], $friends['accepted'], $username, true, true);
+    }
 
-        return $this->renderFriendsList($bestedFriends, $acceptedFriends, $username, $showActions);
+    public function renderPartialViewForMemberFriends(string $username): string
+    {
+        $friends = $this->getFriendsList($username);
+        return $this->renderFriendsList($friends['bested'], $friends['accepted'], $username, false, false, true);
     }
 }
