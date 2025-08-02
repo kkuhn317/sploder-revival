@@ -42,12 +42,40 @@ class FriendsListRenderService
         return $html;
     }
 
+    private function renderFriendsList(array $bestedFriends, array $acceptedFriends, string $username, bool $showActions, bool $showHeader = true): string 
+    {
+        $html = "";
+        $totalFriends = count($acceptedFriends) + count($bestedFriends);
+        
+        if ($totalFriends == 0) {
+            return "";
+        }
+
+        if ($showHeader && $showActions) {
+            $html .= '<h4>Recent Friends</h4>';
+        }
+
+        $html .= '<div id="friends">';
+
+        // Render bested friends
+        foreach ($bestedFriends as $friend) {
+            $html .= $this->renderFriend($friend, $username, true, $showActions);
+        }
+
+        // Render regular friends
+        foreach ($acceptedFriends as $friend) {
+            $html .= $this->renderFriend($friend, $username, false, $showActions);
+        }
+
+        $html .= "<div class='spacer'></div></div>";
+        
+        return $html;
+    }
+
     public function renderPartialViewForRecentFriends(string $username, bool $showActions = false): string
     {
         $db = getDatabase(); // TODO: Move to repository when available
         
-        $html = "";
-
         $bestedFriends = $db->query("SELECT user1,user2
             FROM friends
             WHERE (bested=true)
@@ -67,30 +95,6 @@ class FriendsListRenderService
                 ':sender_id' => $username
         ]);
 
-        $totalFriends = count($acceptedFriends) + count($bestedFriends);
-        
-        if ($totalFriends == 0) {
-            return "";
-        }
-
-        if($showActions) {
-            $html .= '<h4>Recent Friends</h4>';
-        }
-
-        $html .= '<div id="friends">';
-
-        // Render bested friends
-        foreach ($bestedFriends as $friend) {
-            $html .= $this->renderFriend($friend, $username, true, $showActions);
-        }
-
-        // Render regular friends
-        foreach ($acceptedFriends as $friend) {
-            $html .= $this->renderFriend($friend, $username, false, $showActions);
-        }
-
-        $html .= "<div class='spacer'></div></div>";
-        
-        return $html;
+        return $this->renderFriendsList($bestedFriends, $acceptedFriends, $username, $showActions);
     }
 }
