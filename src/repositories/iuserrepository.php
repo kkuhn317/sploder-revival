@@ -53,4 +53,12 @@ interface IUserRepository
      * @return void
      */
     function saveEvent(string $s, string $e, string $g);
+
+    /**
+     * Get user ID from username
+     * 
+     * @param $username
+     * @return int user ID or -1 if not found
+     */
+    function getUserIdFromUsername(string $username): int;
 }
