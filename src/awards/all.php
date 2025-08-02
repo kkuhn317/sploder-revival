@@ -4,9 +4,13 @@ require_once('../database/connect.php');
 require_once('php/materials.php');
 require_once('php/functions.php');
 require_once('../repositories/repositorymanager.php');
+require_once('../services/AwardsListRenderService.php');
+require_once('../content/pages.php');
 
 $userRepository = RepositoryManager::get()->getUserRepository();
-$level = getLevel($userRepository);
+$awardsRepository = RepositoryManager::get()->getAwardsRepository();
+$awardsService = new AwardsListRenderService($awardsRepository);
+$level = $userRepository->getLevelByUserId($_SESSION['userid']);
 if ($level < 10) {
     header("Location: ../index.php");
     die();
@@ -94,12 +98,10 @@ if ($level < 10) {
         }
 
         div.award_option a {
-
             position: relative;
             color: #999;
             font-weight: normal;
             z-index: 1;
-
         }
     </style>
     <?php include('../content/onlinechecker.php'); ?>
@@ -125,43 +127,18 @@ if ($level < 10) {
         <div id="content">
             <h3>All My Awards</h3>
             <?php
-            $db = getDatabase();
-            // Get total number of awards
-            $total = $db->queryFirstColumn("SELECT COUNT(*)
-                FROM awards 
-                WHERE membername = :membername", 0, [
-                    ':membername' => $_SESSION['username']]);
-
-            // Get award data
-            // TODO: LIMIT to 50 and add pagination support to avoid hammering database
-            // Higher amount of material takes priority
-            // Higher amount of style takes priority after material
-            $result = $db->query("SELECT *
-                FROM awards
-                WHERE membername = :membername
-                ORDER BY style DESC, material DESC, color DESC, icon DESC", [
-                    ':membername' => $_SESSION['username']]);
+            $perPage = 50;
+            $offset = isset($_GET['o']) ? intval($_GET['o']) : 0;
+            
+            $total = $awardsService->getAwardCount($_SESSION['username']);
+            $awards = $awardsService->getAwardsForPage($_SESSION['username'], $offset, $perPage);
             ?>
 
             <h5><big><?= $total ?></big>&nbsp;Award<?= $total == 1 ? '' : 's' ?></h5>
-            <?php
-            // Display all awards
-            foreach ($result as $award) {
-                $award['material_name'] = $material_list[$award['material']];
-                $shinestyle = "";
-                ?>
-                <div class="award award_64 special_0">
-                    <div class="layer shine" <?= $shinestyle ?>></div>
-                    <div class="layer_mini" style="background-image: url('medals/px64/<?= $award['style'] . $award['material'] . $award['color'] . $award['icon'] ?>.gif');"></div>
-                    <dl class="plaque">
-                        <dt>Level <?= $award['level'] ?><br /> <?= $award['material_name'] . $award['category'] ?> Award:</dt>
-                        <dd><?= $award['message'] ?></dd>
-                        <dd class="award_cite">from <a href="../members/index.php?u=<?= $award['username'] ?>"><?= $award['username'] ?></a></dd>
 
-                    </dl>
-
-                </div>
-            <?php } ?>
+            <?php 
+            echo $awardsService->renderAwardsListWithPagination($awards, $material_list, $offset, $perPage, $total);
+            ?>
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="sidebar">
