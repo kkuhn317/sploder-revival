@@ -1,8 +1,12 @@
 <?php
 
-
 function display_user_info($username)
 {
+    require_once('../repositories/repositorymanager.php');
+    require_once('../services/AwardsListRenderService.php');
+    $awardsRepository = RepositoryManager::get()->getAwardsRepository();
+    $awardsListRenderService = new AwardsListRenderService($awardsRepository);
+
     include_once('../database/connect.php');
     $db = getDatabase();
 
@@ -226,6 +230,28 @@ function setClass(id, c) {
         <div class="spacer">&nbsp;</div>
     </div>
 </div>
-    <?php
+<?php
+    // Get required data for awards
+    $totalAwards = $awardsListRenderService->getAwardCount($username);
+    if ($totalAwards > 0) {
+        
+?>
+<div class="mprofgroup mprofsection">
+    <h4><a href="#" onclick="setClass('mprof_awards', 'shown'); return false;">Awards (<?= $totalAwards ?>)</a></h4>
+    <div class="mprofcontent hidden" id="mprof_awards">
+        <div id="profile_awards">
+            <?php
+            $awards = $awardsListRenderService->getAwardsForPage($username, 0, 50);
+            $material_list = $awardsListRenderService->getMaterialList();
+            $awardsListRenderService->renderAwardsList($awards, 64, 'img');
+            ?>
+        </div>
+        <div class="spacer">&nbsp;</div>
+    </div>
+</div>
+<?php
+    }
+?>
+    <?php   
 }
 ?>
