@@ -137,7 +137,7 @@ require_once(__DIR__ . '/php/materials.php');
                     <?php } elseif ($err == "suc") { ?>
             <div class="prompt">Award sent successfully!</div>
                     <?php } elseif ($err == "level") { ?>
-            <div class="alert">That user is already your friend!</div>
+            <div class="alert">That user does not meet the minimum requirements to receive an award!</div>
                     <?php } elseif ($err == "before") { ?>
             <div class="alert">That user revoked the award before you could accept it!</div>
                     <?php }
