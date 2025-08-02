@@ -3,8 +3,10 @@ include('../content/logincheck.php');
 require_once('../database/connect.php');
 $db = getDatabase();
 require_once('../repositories/repositorymanager.php');
+require_once('../services/FriendsListRenderService.php');
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $friendsRepository->setAllFriendsAsViewed($_SESSION['userid']);
+$friendsService = new FriendsListRenderService($friendsRepository);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -120,81 +122,7 @@ $friendsRepository->setAllFriendsAsViewed($_SESSION['userid']);
                 </form>
             </div>
             <?php
-
-            $bestedfriends = $db->query("SELECT user1,user2
-              FROM friends
-              WHERE (bested=true)
-              AND (user1=:sender_id)
-              ORDER BY id DESC
-              LIMIT 30", [
-                    ':sender_id' => $_SESSION['username']
-                ]);
-            $newLimit = 30 - count($bestedfriends);
-
-
-            $acceptedfriends = $db->query("SELECT user1, user2
-                FROM friends
-                WHERE (bested = false)
-                AND (user1=:sender_id)
-                ORDER BY id DESC LIMIT $newLimit", [
-                    ':sender_id' => $_SESSION['username']
-                ]);
-
-            if ((count($acceptedfriends) + count($bestedfriends)) != 0) {
-                echo '<h4>Recent Friends</h4><div id="friends">';
-            }
-            for ($i = 0; $i < count($bestedfriends); $i++) {
-                if ($bestedfriends[$i]['user1'] == $_SESSION['username']) {
-                    $friendusername = $bestedfriends[$i]['user2'];
-                } else {
-                    $friendusername = $bestedfriends[$i]['user1'];
-                }
-                if (file_exists('../avatar/a/' . $friendusername . '.png')) {
-                    $avt = $friendusername;
-                } else {
-                    $avt = 'fb/noob';
-                }
-                ?>
-            <div style="margin-left:7px;height:90px" class="friend friend_48 friend_48_best">
-                <a class="name" href="../members/index.php?u=<?php echo $friendusername ?>"><img
-                        src="../avatar/a/<?php echo $avt ?>.png" width="48" height="48" /></a>
-                <a class="name"
-                    href="../members/index.php?u=<?php echo $friendusername ?>"><?php echo $friendusername ?></a>
-                <span><a style="color:#666"
-                        href="php/unbest.php?u=<?php echo $friendusername ?>">Unbest</a></span><span><a
-                        style="color:#666" href="php/unfriend.php?u=<?php echo $friendusername ?>">Unfriend</a></span>
-            </div>
-
-                <?php
-            }
-            for ($i = 0; $i < count($acceptedfriends); $i++) {
-                if ($acceptedfriends[$i]['user1'] == $_SESSION['username']) {
-                    $friendusername = $acceptedfriends[$i]['user2'];
-                } else {
-                    $friendusername = $acceptedfriends[$i]['user1'];
-                }
-                if (file_exists('../avatar/a/' . $friendusername . '.png')) {
-                    $avt = $friendusername;
-                } else {
-                    $avt = 'fb/noob';
-                }
-                ?>
-            <div style="margin-left:7px;height:90px" class="friend friend_48">
-                <a class="name" href="../members/index.php?u=<?php echo $friendusername ?>"><img
-                        src="../avatar/a/<?php echo $avt ?>.png" width="48" height="48" /></a>
-                <a class="name"
-                    href="../members/index.php?u=<?php echo $friendusername ?>"><?php echo $friendusername ?></a>
-                <span><a style="color:#666" href="php/best.php?u=<?php echo $friendusername ?>">Best</a></span><span><a
-                        style="color:#666" href="php/unfriend.php?u=<?php echo $friendusername ?>">Unfriend</a></span>
-            </div>
-
-                <?php
-            }
-
-            if ((count($acceptedfriends) + count($bestedfriends)) != 0) {
-                echo "<div class='spacer'></div></div>";
-            }
-
+            echo $friendsService->renderPartialViewForRecentFriends($_SESSION['username'], true);
             ?>
 
 
