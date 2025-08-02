@@ -1,7 +1,6 @@
 <?php
 require_once('../content/logincheck.php');
 require_once('../database/connect.php');
-require_once('php/materials.php');
 require_once('php/functions.php');
 require_once('../repositories/repositorymanager.php');
 require_once('../services/AwardsListRenderService.php');
@@ -137,7 +136,7 @@ if ($level < 10) {
             <h5><big><?= $total ?></big>&nbsp;Award<?= $total == 1 ? '' : 's' ?></h5>
 
             <?php 
-            echo $awardsService->renderAwardsListWithPagination($awards, $material_list, $offset, $perPage, $total);
+            echo $awardsService->renderAwardsListWithPagination($awards, $offset, $perPage, $total);
             ?>
             <div class="spacer">&nbsp;</div>
         </div>

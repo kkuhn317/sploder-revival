@@ -3,12 +3,13 @@ require_once(__DIR__ . '/../content/logincheck.php');
 require_once(__DIR__ . '/../database/connect.php');
 require_once(__DIR__ . '/php/functions.php');
 require_once('../repositories/repositorymanager.php');
+require_once('../services/AwardsListRenderService.php');
 
 $userRepository = RepositoryManager::get()->getUserRepository();
 $level = $userRepository->getLevelByUserId($_SESSION['userid']);
 
-
-require_once(__DIR__ . '/php/materials.php');
+$awardsListRenderService = new AwardsListRenderService(RepositoryManager::get()->getAwardsRepository());
+$material_list = $awardsListRenderService->getMaterialList();
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -306,7 +307,7 @@ require_once(__DIR__ . '/php/materials.php');
                     <label for="friendname">Enter a member's username:</label>
                     <input type="text" id="friendname" name="membername" required autocomplete="off" autocorrect="off"
                         autocapitalize="off" spellcheck="false" maxlength="16" />
-                    <input style="width:50px;text-align:left;padding-left:5px" type="submit" name="submit"
+                    <input style="width:53px;text-align:left;padding-left:5px" type="submit" name="submit"
                         class="postbutton" value="Make" />
                 </form>
             </div>
