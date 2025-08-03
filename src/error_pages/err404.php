@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="/includes/thumb.js"></script> 
 	<script type="text/javascript" src="/includes/peekaboo.js"></script> 
 	<script type="text/javascript" src="/includes/swfobject_min.js"></script> 
-	<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+	<script type="text/javascript">var _sf_startpt=(new Date()).getTime();</script>
 	<?php include('../content/ruffle.php'); ?>
 	<?php include('../content/onlinechecker.php'); ?>
 	
@@ -42,11 +42,11 @@
 				<br style="clear: both;" />
 				
 				<div class="buttons" style="padding: 0;">
-					<span class="button firstbutton"><a href="games/favorites/">Favorite Games &raquo;</a></span>
-					<span class="button"><a href="/members/hall-of-fame">Hall of Fame &raquo;</a></span>
-					<span class="button"><a href="/games/tags.php">Tags &raquo;</a></span>
+					<!-- TODO: <span class="button firstbutton"><a href="games/favorites/">Favorite Games &raquo;</a></span>
+					<span class="button"><a href="/members/hall-of-fame">Hall of Fame &raquo;</a></span> -->
+					<span class="button firstbutton"><a href="/games/tags.php">Tags &raquo;</a></span>
 					<span class="button"><a href="games/members.php">Top Members &raquo;</a></span>
-					<span class="button"><a href="games/groups/">Groups &raquo;</a></span>
+					<!-- <span class="button"><a href="games/groups/">Groups &raquo;</a></span> -->
 				</div>
 				
 				<br style="clear: both;" />

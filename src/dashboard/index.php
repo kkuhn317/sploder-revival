@@ -60,7 +60,7 @@ $level = $userRepository->getLevelByUserId($_SESSION['userid']);
                 width="96" height="96">
             </a>
             <p class="badgename">
-              <a href="https://web.archive.org/web/20140608214730/http://www.sploder.com/games/members/mjduniverse/"
+              <a href="../members/index.php?u=<?= $username ?>"
                 title="View profile"><?php echo $username ?></a>
             </p>
             <p>
