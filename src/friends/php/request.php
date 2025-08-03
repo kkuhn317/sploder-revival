@@ -2,15 +2,13 @@
 
 include('../../content/logincheck.php');
 include('../../database/connect.php');
+require_once('../../repositories/repositorymanager.php');
 
+$friendRepository = RepositoryManager::get()->getFriendRepository();
 $username = $_GET['username'];
 $db = getDatabase();
-$qs2 = "SELECT id FROM friends WHERE (user1=:sender_id AND user2=:receiver_id)";
-$exists = $db->query($qs2, [
-    ':sender_id' => $_SESSION['username'],
-    ':receiver_id' => $username
-]);
-if (!isset($exists[0]['id'])) {
+$alreadyFriends = $friendRepository->alreadyFriends($_SESSION['username'], $username);
+if (!$alreadyFriends) {
     $qs2 = "SELECT userid FROM members WHERE username=:user";
     $receiver = $db->query($qs2, [
         ':user' => $username
