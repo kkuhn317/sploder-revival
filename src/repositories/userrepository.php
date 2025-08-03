@@ -116,13 +116,13 @@ LIMIT 90;
             m.status,
             (SELECT COUNT(*) FROM votes v WHERE v.username = m.username) AS total_ratings_given,
             COUNT(DISTINCT f.user2) AS friend_count,
-            COUNT(DISTINCT g.g_id) AS game_count,
-            COALESCE(SUM(g.views), 0) AS total_views,
+            COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
+            COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END), 0) AS total_views,
             LEAST(250, FLOOR(
                 (SELECT COUNT(*) FROM votes v2 WHERE v2.username = m.username)/25.0
                 + COUNT(DISTINCT f.user2)/10.0
-                + COUNT(DISTINCT g.g_id)/10.0
-                + COALESCE(SUM(g.views),0)/1000.0
+                + COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)/10.0
+                + COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END),0)/1000.0
             ) + 1) AS level
         FROM 
             members m
