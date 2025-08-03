@@ -62,7 +62,7 @@ class GraphicListRenderService
         addPagination($total, $perPage, $offset);
     }
 
-    public function renderGraphicsList(array $graphics, int $total): string
+    private function renderGraphicsList(array $graphics, int $total): string
     {
         if ($total == 0) {
             return '<div id="viewpage"><div class="set">No public graphics have been made yet.<div class="spacer">&nbsp;</div></div></div>';
@@ -109,5 +109,14 @@ class GraphicListRenderService
             "No graphics found!"
         );
         addPagination($total, $perPage, $offset);
+    }
+
+    public function renderPartialViewForMemberPublicGraphics(string $username): void
+    {
+        $graphics = $this->graphicsRepository->getPublicGraphicsByUsername($username, 0, 12);
+        $this->renderPartialViewForGraphics(
+            $graphics,
+            "No public graphics found for this user."
+        );
     }
 }

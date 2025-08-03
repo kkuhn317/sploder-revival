@@ -67,4 +67,22 @@ interface IGraphicsRepository
    * @return PaginationData
    */
     public function getGraphicsWithTag(string $tag, int $offset, int $perPage): PaginationData;
+
+  /**
+   * Gets the total number of public graphics by a user ID
+   * 
+   * @param string $username
+   * @return int Total number of public graphics
+   */
+    public function getTotalPublicGraphicsByUsername(string $username): int;
+
+  /**
+   * Gets public graphics by a user ID
+   * 
+   * @param string $username
+   * @param int $offset
+   * @param int $perPage
+   * @return array
+   */
+    public function getPublicGraphicsByUsername(string $username, int $offset = 0, int $perPage = 36): array;
 }
