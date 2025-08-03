@@ -14,7 +14,7 @@ $gameListRenderService = new GameListRenderService(RepositoryManager::get()->get
 
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/member_profile3.css" />
-
+    <script type="text/javascript" src="js/addFriend.js"></script>
     <?php include('../content/onlinechecker.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
@@ -64,6 +64,13 @@ $gameListRenderService = new GameListRenderService(RepositoryManager::get()->get
                             </dd>
                         </dl>
                         <div><div id="venue" class="mprofvenue">...</div></div>
+                        <?php
+                        if ($username !== $_SESSION['username']) {
+                        ?>
+                        <div style="float:right;"><a style="cursor:pointer;" onclick="handleAddFriend(event, '<?= $username ?>')">ADD FRIEND</a></div>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
                 <div class="shown">
