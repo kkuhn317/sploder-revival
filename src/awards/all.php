@@ -129,7 +129,7 @@ if ($level < 10) {
             $perPage = 50;
             $offset = isset($_GET['o']) ? intval($_GET['o']) : 0;
             
-            $total = $awardsService->getAwardCount($_SESSION['username']);
+            $total = $awardsRepository->getAwardCount($_SESSION['username']);
             $awards = $awardsService->getAwardsForPage($_SESSION['username'], $offset, $perPage);
             ?>
 
