@@ -1,10 +1,11 @@
 <?php
 include('../content/logincheck.php');
 include('content/my-graphics.php');
+require('../repositories/repositorymanager.php');
+$graphicRepository = RepositoryManager::get()->getGraphicsRepository();
+$total_likes = $graphicRepository->getTotalGraphicLikesByUserId($_SESSION['userid']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -56,8 +57,8 @@ include('content/my-graphics.php');
             <?php } ?>
             <p>You've made <?= $total_games ?>
                 graphic<?= $total_games == 1 ? '' : 's' ?> so far,
-                with a total of ?
-                like<?= $total_games == 1 ? '' : 's' ?> so far.
+                with a total of <?= $total_likes ?>
+                like<?= $total_likes == 1 ? '' : 's' ?> so far.
                 <a href="../make/graphics.php">Make
                     some graphics
                 </a> now!
@@ -79,7 +80,7 @@ include('content/my-graphics.php');
                                 <a><img src="/graphics/gif/<?= $game['id'] ?>.gif" width="80" height="80" /></a>
                                 <div style="text-align: center;">
                                     <div style="height:5px" class="spacer">&nbsp;</div>
-                                    0 likes<br>
+                                    <?= $game['likes'] ?> like<?= $game['likes'] == 1 ? '' : 's' ?><br>
                                     <input title=" Delete" type="button" onclick="delproj(<?= $game['id'] ?>)"
                                         style="width:37px" value="Delete">&nbsp;
                                     <a href="tag-graphic.php?id=<?= $game['id'] ?>"><input title=" Tag" type="button"
@@ -101,7 +102,7 @@ include('content/my-graphics.php');
                 </div>
             </div>
             <?php include('../content/pages.php');
-            addPagination($total_games ?? 0) ?>
+            addPagination($total_games ?? 0,  12, $o) ?>
         </div>
         <div id="sidebar">
             <!-- TODO: <h1>GAME BUZZ INCOMPLETE</h1> -->

@@ -1,4 +1,4 @@
-
+<?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="https://www.w3.org/1999/xhtml"> 
@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="/includes/peekaboo.js"></script> 
 	<script type="text/javascript" src="/includes/swfobject_min.js"></script> 
 	<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+	<?php include('../content/ruffle.php'); ?>
 	<?php include('../content/onlinechecker.php'); ?>
 	
 </head>
