@@ -4,7 +4,11 @@
 <?php require(__DIR__ . '/../../repositories/repositorymanager.php'); ?>
 <?php
 $userRepository = RepositoryManager::get()->getUserRepository();
-$level = $userRepository->getLevelByUserId($_SESSION['userid']);
+if(isset($_SESSION['userid'])) {
+    $level = $userRepository->getLevelByUserId($_SESSION['userid']);
+} else {
+    $level = 1;
+}
 ?>
 
 
