@@ -205,16 +205,21 @@ LIMIT 90;
                     COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_games,
                     AVG(g.difficulty) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as avg_difficulty,
                     COUNT(DISTINCT f.user2) as total_friends,
-                    COUNT(v.score) as total_votes,
-                    COALESCE(AVG(l.gtm), 0) as avg_playtime,
-                    COALESCE(AVG(COALESCE(v.score, 3)), 3) as avg_score,
+                    COUNT(v.score) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_votes,
+                    COALESCE(AVG(l.gtm) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 0) as avg_playtime,
+                    COALESCE(AVG(COALESCE(v.score, 3)) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 3) as avg_score,
                     COALESCE(
                         floor(
                             (
-                                (SELECT COUNT(*) FROM votes v2 WHERE v2.username = m.username)/25.0 +
+                                (SELECT COUNT(*) FROM votes v2 
+                                 JOIN games g2 ON g2.g_id = v2.g_id 
+                                 WHERE v2.username = m.username 
+                                 AND g2.ispublished = 1 
+                                 AND g2.isprivate = 0 
+                                 AND g2.isdeleted = 0)/25.0 +
                                 COUNT(DISTINCT f.user2)/10.0 +
-                                COUNT(DISTINCT g.g_id)/10.0 +
-                                COALESCE(SUM(g.views), 0)/1000.0
+                                COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)/10.0 +
+                                COALESCE(SUM(g.views) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 0)/1000.0
                             ) + 1
                         ),
                         1
