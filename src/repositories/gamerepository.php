@@ -266,7 +266,7 @@ where g_id = :g_id
             AND isdeleted=0", [
             ':user' => $userName,
         ], PDO::FETCH_NUM);
-        return new GameMetricsForUser((int)$metrics[0], (int)$metrics[1]);
+        return new GameMetricsForUser((int)$metrics[1], (int)$metrics[0]);
     }
 
     public function verifyOwnership(int $gameId, string $userName): bool
