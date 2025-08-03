@@ -20,16 +20,6 @@ class AwardsListRenderService
         7 => "Platinum"
     ];
 
-    public function getAwardCount(string $username): int
-    {
-        return $this->awardsRepository->getAwardCount($username);
-    }
-
-    public function getAwardsForPage(string $username, int $page, int $perPage = 50): array
-    {
-        return $this->awardsRepository->getAwardsPage($username, $page, $perPage);
-    }
-
     public function renderAwardsList(array $awards, int $size, string $tag = 'div'): void
     {
         $material_list = $this->getMaterialList();

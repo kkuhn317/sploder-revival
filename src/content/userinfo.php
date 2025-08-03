@@ -232,7 +232,7 @@ function setClass(id, c) {
 </div>
 <?php
     // Get required data for awards
-    $totalAwards = $awardsListRenderService->getAwardCount($username);
+    $totalAwards = $awardsRepository->getAwardCount($username);
     if ($totalAwards > 0) {
         
 ?>
@@ -241,7 +241,7 @@ function setClass(id, c) {
     <div class="mprofcontent hidden" id="mprof_awards">
         <div id="profile_awards">
             <?php
-            $awards = $awardsListRenderService->getAwardsForPage($username, 0, 50);
+            $awards = $awardsRepository->getAwardsPage($username, 0, 50);
             $material_list = $awardsListRenderService->getMaterialList();
             $awardsListRenderService->renderAwardsList($awards, 64, 'img');
             ?>
