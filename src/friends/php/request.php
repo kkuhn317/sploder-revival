@@ -4,10 +4,10 @@ include('../../content/logincheck.php');
 include('../../database/connect.php');
 require_once('../../repositories/repositorymanager.php');
 
-$friendRepository = RepositoryManager::get()->getFriendRepository();
+$friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $username = $_GET['username'];
 $db = getDatabase();
-$alreadyFriends = $friendRepository->alreadyFriends($_SESSION['username'], $username);
+$alreadyFriends = $friendsRepository->alreadyFriends($_SESSION['username'], $username);
 if (!$alreadyFriends) {
     $qs2 = "SELECT userid FROM members WHERE username=:user";
     $receiver = $db->query($qs2, [
