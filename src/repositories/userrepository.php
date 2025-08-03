@@ -214,7 +214,7 @@ LIMIT 90;
 
     public function getAverageScoreByUsername(string $username): int
     {
-        $query = "SELECT AVG(COALESCE(v.score, 1)) as avg_score,
+        $query = "SELECT AVG(COALESCE(v.score, 3)) as avg_score,
                         COUNT(g.g_id) as total_games,
                         COUNT(v.score) as games_with_votes
                  FROM games g 
@@ -230,7 +230,7 @@ LIMIT 90;
             return 50; // Default middle value if no games found
         }
         
-        // If there are games without votes, they count as score of 1
+        // If there are games without votes, they count as score of 3 (neutral)
         $avgScore = $result['avg_score'];
         
         // Convert from 1-5 scale to 0-100 scale and round to nearest integer
