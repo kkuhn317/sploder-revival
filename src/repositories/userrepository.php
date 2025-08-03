@@ -196,45 +196,100 @@ LIMIT 90;
         return $result ? (int)$result['userid'] : -1; // Return -1 if not found
     }
 
-    public function getAverageDifficultyByUsername(string $username): int
+    public function getUserStats(string $username): array|null
     {
-        $query = "SELECT AVG(difficulty) as avg_difficulty FROM games 
-                 WHERE author = :author AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0";
-        
-        $result = $this->db->queryFirst($query, [':author' => $username]);
-        
-        if (!$result || $result['avg_difficulty'] === null) {
-            return 50; // Default middle value if no games found
-        }
-        
-        // Convert from 1-10 scale to 0-100 scale and round to nearest integer
-        // (x - 1) * (100 / 9) to map 1-10 to 0-100
-        return (int)round(($result['avg_difficulty'] - 1) * (100 / 9));
-    }
+        $query = "
+            WITH user_stats AS (
+                SELECT 
+                    m.username,
+                    COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_games,
+                    AVG(g.difficulty) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as avg_difficulty,
+                    COUNT(DISTINCT f.user2) as total_friends,
+                    COUNT(v.score) as total_votes,
+                    COALESCE(AVG(l.gtm), 0) as avg_playtime,
+                    COALESCE(AVG(COALESCE(v.score, 3)), 3) as avg_score,
+                    COALESCE(
+                        floor(
+                            (
+                                (SELECT COUNT(*) FROM votes v2 WHERE v2.username = m.username)/25.0 +
+                                COUNT(DISTINCT f.user2)/10.0 +
+                                COUNT(DISTINCT g.g_id)/10.0 +
+                                COALESCE(SUM(g.views), 0)/1000.0
+                            ) + 1
+                        ),
+                        1
+                    ) as calculated_level
+                FROM members m
+                LEFT JOIN games g ON m.username = g.author
+                LEFT JOIN friends f ON m.username = f.user1
+                LEFT JOIN votes v ON g.g_id = v.g_id
+                LEFT JOIN leaderboard l ON g.g_id = l.pubkey
+                WHERE m.username = :username
+                GROUP BY m.username
+            )
+            SELECT *,
+                   LEAST(250, calculated_level) as level
+            FROM user_stats";
 
-    public function getAverageScoreByUsername(string $username): int
-    {
-        $query = "SELECT AVG(COALESCE(v.score, 3)) as avg_score,
-                        COUNT(g.g_id) as total_games,
-                        COUNT(v.score) as games_with_votes
-                 FROM games g 
-                 LEFT JOIN votes v ON g.g_id = v.g_id 
-                 WHERE g.author = :author 
-                 AND g.ispublished = 1 
-                 AND g.isprivate = 0 
-                 AND g.isdeleted = 0";
+        $result = $this->db->queryFirst($query, [':username' => $username]);
         
-        $result = $this->db->queryFirst($query, [':author' => $username]);
+        if (!$result) {
+            // Return default values if no data found
+            return [
+                'avg_difficulty' => 50,
+                'avg_score' => 50,
+                'awesomeness' => 50
+            ];
+        }
+
+        // Calculate stats and return as array
+        $stats = $result;
+
+        // Calculate games score
+        $calcGames = 2 * (min(10, $result['total_games']));
+        $calcFriends = 2 * (min(5, $result['total_friends']));
         
-        if (!$result || $result['total_games'] == 0) {
-            return 50; // Default middle value if no games found
+        // Adjust games and friends calculations
+        if ($calcFriends * 2 >= $calcGames) {
+            $newCalcFriends = $calcGames;
+        } else {
+            $newCalcFriends = $calcFriends;
         }
         
-        // If there are games without votes, they count as score of 3 (neutral)
-        $avgScore = $result['avg_score'];
+        if ($calcGames >= 1) {
+            $newCalcGames = $calcFriends;
+        } else {
+            $newCalcGames = $calcGames;
+        }
+
+        // Calculate remaining components
+        $calcPlays = floor(0.5 * (min(10, $result['total_votes'] - 0.2)));
+        $calcTime = floor(2 * (min(10, $result['avg_playtime'])));
         
-        // Convert from 1-5 scale to 0-100 scale and round to nearest integer
-        // (x - 1) * 25 to map 1-5 to 0-100
-        return (int)round(($avgScore - 1) * 25);
+        // Convert average score (1-5) to feedback score (0-100) then to final feedback component
+        $feedback = floor(min(100/8, (($result['avg_score'] - 1) * 25)/8));
+        
+        // Calculate level component
+        $level = floor(min(250, $result['level']/20));
+        
+        $compulsory = 24;
+
+        // Calculate awesomeness score
+        $awesomeness = min(100, floor(
+            $newCalcGames +
+            $newCalcFriends +
+            $calcPlays +
+            $calcTime +
+            $compulsory +
+            $feedback +
+            $level
+        ));
+
+        // Return only the required stats
+        return [
+            'avg_difficulty' => (int)round(($result['avg_difficulty'] - 1) * (100 / 9)),  // Convert to 0-100 scale
+            'avg_score' => (int)round(($result['avg_score'] - 1) * 25),  // Convert to 0-100 scale
+            'awesomeness' => $awesomeness
+        ];
     }
 }

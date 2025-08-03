@@ -6,8 +6,11 @@ require_once('../services/GameListRenderService.php');
 $gameListRenderService = new GameListRenderService(RepositoryManager::get()->getGameRepository());
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $userRepository = RepositoryManager::get()->getUserRepository();
-$difficulty = $userRepository->getAverageDifficultyByUsername($_GET['u'] ?? '');
-$feedback = $userRepository->getAverageScoreByUsername($_GET['u'] ?? '');
+$stats = $userRepository->getUserStats($_GET['u'] ?? '');
+
+$difficulty = $stats['avg_difficulty'] ?? 50;
+$feedback = $stats['avg_score'] ?? 50;
+$awesomeness = $stats['awesomeness'] ?? 50;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -85,7 +88,7 @@ $feedback = $userRepository->getAverageScoreByUsername($_GET['u'] ?? '');
                 <div class="shown">
                     <div class="mprofgroup">
                         <div class="mprofchart mprofmain" title="Awesomeness - computed using a secret recipe">
-                            <img src="/images/charts/awesomeness/chart_50.png" width="230" height="116" />
+                            <img src="/images/charts/awesomeness/chart_<?php echo $awesomeness ?>.png" width="230" height="116" />
                             <p>Awesomeness</p>
                         </div>
                         <div class="mprofcount" title="total games/featured games">
