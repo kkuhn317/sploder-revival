@@ -5,11 +5,11 @@ include('../../database/connect.php');
 include('../../content/logincheck.php');
 require_once('../../repositories/repositorymanager.php');
 
-$friendRepository = RepositoryManager::get()->getFriendRepository();
+$friendsRepository = RepositoryManager::get()->getFriendsRepository();
 
 $db = getDatabase();
 
-$alreadyFriends = $friendRepository->alreadyFriends($_SESSION['username'], $username);
+$alreadyFriends = $friendsRepository->alreadyFriends($_SESSION['username'], $_GET['u']);
 if (!$alreadyFriends) {
     $exists = $db->query("SELECT request_id
         FROM friend_requests
