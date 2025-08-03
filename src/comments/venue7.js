@@ -1,3 +1,10 @@
+// Prevent scroll for a short time after page load
+window._pageJustLoaded = true;
+setTimeout(() => {
+    window._pageJustLoaded = false;
+}, 500);
+
+
 /* json2.js
  * 2008-01-17
  * Public Domain
@@ -100,7 +107,11 @@ function us_anim(tween)
     }
     var val = tween.startval + (tween.endval - tween.startval) * amt;
     if (tween.prop == "scrollY") {
-        tween.obj.scrollTo(0, val);
+        if (tween.prop == "scrollY") {
+            if (!window._pageJustLoaded) {
+                tween.obj.scrollTo(0, val);
+            }
+        }
     } else if (tween.prop == "opacity") {
         if (tween.obj.filters) {
             tween.obj.filters.alpha.opacity = val;
