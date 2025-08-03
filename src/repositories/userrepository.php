@@ -111,8 +111,8 @@ LIMIT 90;
             SELECT 
                 (SELECT COUNT(*) FROM votes v WHERE v.username = m.username) AS total_ratings_given,
                 COUNT(DISTINCT f.user2) AS friend_count,
-                COUNT(DISTINCT g.g_id) AS game_count,
-                COALESCE(SUM(g.views), 0) AS total_views
+                COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
+                COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END), 0) AS total_views
             FROM 
                 members m
             LEFT JOIN 
