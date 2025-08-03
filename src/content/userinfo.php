@@ -241,7 +241,7 @@ function setClass(id, c) {
     <div class="mprofcontent hidden" id="mprof_awards">
         <div id="profile_awards">
             <?php
-            $awards = $awardsRepository->getAwardsPage($username, 0, 50);
+            $awards = $awardsRepository->getAwardsPage($username, 0, 25);
             $material_list = $awardsListRenderService->getMaterialList();
             $awardsListRenderService->renderAwardsList($awards, 64, 'img');
             ?>
