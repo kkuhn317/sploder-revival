@@ -167,7 +167,7 @@ $level = $userRepository->getLevelByUserId($_SESSION['userid']);
       
       <br>
       <br style="clear: both;">
-      <img src="./index_files/pixie.gif" width="1" height="1">
+      <img src="./pixie.gif" width="1" height="1">
       <div class="spacer">&nbsp;
       </div>
     </div>
