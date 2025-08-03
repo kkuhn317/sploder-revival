@@ -138,4 +138,29 @@ on conflict do nothing", [
         return $this->db->queryPaginated($query, $offset, $perPage, [':tag' => $tag]);
     }
 
+    public function getTotalPublicGraphicsByUsername(string $username): int
+    {
+        $query = "SELECT COUNT(*) FROM graphics WHERE userid = (SELECT userid FROM members WHERE username = :username) AND isprivate = false AND ispublished = true";
+        return $this->db->queryFirstColumn($query, 0, [':username' => $username]);
+    }
+
+    public function getPublicGraphicsByUsername(string $username, int $offset = 0, int $perPage = 36): array
+    {
+        $query = "SELECT g.id, g.userid, g.isprivate, g.ispublished, 
+                         m.username, COUNT(gl.g_id) as like_count 
+                  FROM graphics g
+                  LEFT JOIN members m ON g.userid = m.userid
+                  LEFT JOIN graphic_likes gl ON g.id = gl.g_id
+                  WHERE g.userid = (SELECT userid FROM members WHERE username = :username) 
+                    AND g.isprivate = false 
+                    AND g.ispublished = true
+                  GROUP BY g.id, g.userid, g.isprivate, g.ispublished, m.username
+                  ORDER BY like_count DESC, g.id DESC
+                  LIMIT :perPage OFFSET :offset";
+        return $this->db->query($query, [
+            ':username' => $username,
+            ':perPage' => $perPage,
+            ':offset' => $offset * $perPage
+        ]);
+    }
 }
