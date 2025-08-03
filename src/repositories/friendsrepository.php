@@ -28,4 +28,15 @@ class FriendsRepository implements IFriendsRepository
             ':receiver_id' => $userId
         ]);
     }
+
+    public function alreadyFriends(string $sender, string $receiver): bool
+    {
+        $query = "SELECT id FROM friends WHERE user1 = :sender AND user2 = :receiver";
+        $result = $this->db->query($query, [
+            ':sender' => $sender,
+            ':receiver' => $receiver
+        ]);
+        
+        return !empty($result);
+    }
 }
