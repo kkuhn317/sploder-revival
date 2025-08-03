@@ -1,11 +1,10 @@
 <?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <link rel="stylesheet" type="text/css" href="../css/sploder_v2p22.min.css" />
+    <?php require('../content/ruffle.php'); ?>
     <?php require('../content/swfobject.php'); ?>
     <?php require('../content/head.php'); ?>
 

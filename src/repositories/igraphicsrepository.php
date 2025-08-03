@@ -50,6 +50,14 @@ interface IGraphicsRepository
     function getPublicGraphics(int $offset, int $perPage): array;
 
   /**
+   * Gets the total number of likes on all graphics for a specific user
+   * 
+   * @param int $userId
+   * @return int total number of likes on all graphics
+   */
+    public function getTotalGraphicLikesByUserId(int $userId): int;
+
+  /**
    * Retrieves all tags for graphics
    *
    * @param $perPage
