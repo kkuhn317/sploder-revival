@@ -5,7 +5,9 @@ require_once('../services/GameListRenderService.php');
 
 $gameListRenderService = new GameListRenderService(RepositoryManager::get()->getGameRepository());
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
-
+$userRepository = RepositoryManager::get()->getUserRepository();
+$difficulty = $userRepository->getAverageDifficultyByUsername($_GET['u'] ?? '');
+$feedback = $userRepository->getAverageScoreByUsername($_GET['u'] ?? '');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -98,7 +100,7 @@ $friendsRepository = RepositoryManager::get()->getFriendsRepository();
                             <p>Difficulty</p>
                         </div>
                         <div class="mprofchart mprofend" title="Average votes, from all players">
-                            <img src="/images/charts/feedback/chart_50.png" width="160" height="70" />
+                            <img src="/images/charts/feedback/chart_<?= $feedback ?>.png" width="160" height="70" />
                             <p>Feedback</p>
                             <br>
                         </div>

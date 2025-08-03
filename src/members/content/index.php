@@ -39,9 +39,6 @@ $playtime = gmdate("i:s", round($db->queryFirstColumn("SELECT SUM(gtm) FROM lead
 // Fetch total votes
 $votes = $db->queryFirstColumn("SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = :username $publicgames)", 0, $userParam);
 
-// Fetch average difficulty
-$difficulty = min(100, round($db->queryFirstColumn("SELECT AVG(difficulty) FROM games WHERE author = :username $publicgames", 0, $userParam) * 10));
-
 //Get feedback in percentage by calculating average vote of games (0-5)
 if ($result['lastlogin'] > (time() - 30)) {
     $result['lastlogin'] = time();

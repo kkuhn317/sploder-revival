@@ -196,4 +196,45 @@ LIMIT 90;
         return $result ? (int)$result['userid'] : -1; // Return -1 if not found
     }
 
+    public function getAverageDifficultyByUsername(string $username): int
+    {
+        $query = "SELECT AVG(difficulty) as avg_difficulty FROM games 
+                 WHERE author = :author AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0";
+        
+        $result = $this->db->queryFirst($query, [':author' => $username]);
+        
+        if (!$result || $result['avg_difficulty'] === null) {
+            return 50; // Default middle value if no games found
+        }
+        
+        // Convert from 1-10 scale to 0-100 scale and round to nearest integer
+        // (x - 1) * (100 / 9) to map 1-10 to 0-100
+        return (int)round(($result['avg_difficulty'] - 1) * (100 / 9));
+    }
+
+    public function getAverageScoreByUsername(string $username): int
+    {
+        $query = "SELECT AVG(COALESCE(v.score, 1)) as avg_score,
+                        COUNT(g.g_id) as total_games,
+                        COUNT(v.score) as games_with_votes
+                 FROM games g 
+                 LEFT JOIN votes v ON g.g_id = v.g_id 
+                 WHERE g.author = :author 
+                 AND g.ispublished = 1 
+                 AND g.isprivate = 0 
+                 AND g.isdeleted = 0";
+        
+        $result = $this->db->queryFirst($query, [':author' => $username]);
+        
+        if (!$result || $result['total_games'] == 0) {
+            return 50; // Default middle value if no games found
+        }
+        
+        // If there are games without votes, they count as score of 1
+        $avgScore = $result['avg_score'];
+        
+        // Convert from 1-5 scale to 0-100 scale and round to nearest integer
+        // (x - 1) * 25 to map 1-5 to 0-100
+        return (int)round(($avgScore - 1) * 25);
+    }
 }
