@@ -4,6 +4,7 @@ require_once('../repositories/repositorymanager.php');
 require_once('../services/GameListRenderService.php');
 
 $gameListRenderService = new GameListRenderService(RepositoryManager::get()->getGameRepository());
+$friendsRepository = RepositoryManager::get()->getFriendsRepository();
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -14,7 +15,7 @@ $gameListRenderService = new GameListRenderService(RepositoryManager::get()->get
 
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/member_profile3.css" />
-
+    <script type="text/javascript" src="js/friends.js"></script>
     <?php include('../content/onlinechecker.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
@@ -64,6 +65,19 @@ $gameListRenderService = new GameListRenderService(RepositoryManager::get()->get
                             </dd>
                         </dl>
                         <div><div id="venue" class="mprofvenue">...</div></div>
+                        <?php
+                        if ($username !== $_SESSION['username']) {
+                            // Check if the user is already friends
+                            $isFriend = $friendsRepository->alreadyFriends($_SESSION['username'], $username);
+                            if ($isFriend) {
+                                echo '<div style="float:right;"><a style="cursor:pointer;" onclick="handleRemoveFriend(event, \'' . $username . '\')">REMOVE FRIEND</a></div>';
+                            } else {
+                                echo '<div style="float:right;"><a style="cursor:pointer;" onclick="handleAddFriend(event, \'' . $username . '\')">ADD FRIEND</a></div>';
+                            }
+                        ?>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
                 <div class="shown">

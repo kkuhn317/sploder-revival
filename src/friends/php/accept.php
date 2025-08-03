@@ -3,16 +3,14 @@
 session_start();
 include('../../database/connect.php');
 include('../../content/logincheck.php');
+require_once('../../repositories/repositorymanager.php');
 
+$friendsRepository = RepositoryManager::get()->getFriendsRepository();
 
-$db = getDatabase('friends');
+$db = getDatabase();
 
-$exists = $db->query("SELECT id FROM friends WHERE (user1=:sender_id AND user2=:receiver_id)", [
-        ':sender_id' => $_SESSION['username'],
-        ':receiver_id' => $_GET['u']
-    ]);
-
-if (!isset($exists[0]['id'])) {
+$alreadyFriends = $friendsRepository->alreadyFriends($_SESSION['username'], $_GET['u']);
+if (!$alreadyFriends) {
     $exists = $db->query("SELECT request_id
         FROM friend_requests
         WHERE (sender_username=:sender_id AND receiver_username = :receiver_username)
