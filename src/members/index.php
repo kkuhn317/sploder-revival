@@ -71,7 +71,7 @@ $awesomeness = $stats['awesomeness'] ?? 50;
                         </dl>
                         <div><div id="venue" class="mprofvenue">...</div></div>
                         <?php
-                        if ($username !== $_SESSION['username']) {
+                        if ($username !== ($_SESSION['username'] ?? '') && isset($_SESSION['loggedin'])) {
                             // Check if the user is already friends
                             $isFriend = $friendsRepository->alreadyFriends($_SESSION['username'], $username);
                             if ($isFriend) {
