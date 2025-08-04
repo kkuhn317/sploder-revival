@@ -2,7 +2,7 @@
 window._pageJustLoaded = true;
 setTimeout(() => {
     window._pageJustLoaded = false;
-}, 500);
+}, 2000);
 
 
 /* json2.js
