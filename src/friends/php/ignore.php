@@ -11,7 +11,4 @@ $statement2 = $db->execute("DELETE FROM friend_requests
     ':sender_id' => $_SESSION['username']
     ]);
 
-include("../../content/webhook.php");
-log_data("Friend Request Ignored", $_SESSION['username'] . " has ignored " . $_GET['u'] . "'s friend request", 1);
-
 header('Location: ../index.php');

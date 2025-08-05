@@ -39,9 +39,6 @@ if (!$alreadyFriends) {
             ':sender_username' => $_SESSION['username'],
             ':receiver_username' => $_GET['username']
         ]);
-
-        include("../../content/webhook.php");
-        log_data("Friend Request Attempt", $_SESSION['username'] . " has sent a friend request to " . $_GET['username'], 1);
         header('Location: ../index.php?err=suc');
     }
 } else {
