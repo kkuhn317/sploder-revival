@@ -11,7 +11,4 @@ $db->execute("UPDATE friends
         ':receiver_id' => $_GET['u']
     ]);
 
-include("../../content/webhook.php");
-log_data("Friend Unbested", $_SESSION['username'] . " has unbested " . $_GET['u'], 1);
-
 header('Location: ../index.php');

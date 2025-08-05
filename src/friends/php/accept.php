@@ -70,9 +70,6 @@ if (!$alreadyFriends) {
             ':username' => $_GET['u']
         ]);
 
-        include("../../content/webhook.php");
-        log_data("Friend Request Accepted", $_SESSION['username'] . " is now friends with " . $_GET['u'], 1);
-
         header('Location: ../index.php');
     } else {
         header('Location: ../index.php?err=before');
