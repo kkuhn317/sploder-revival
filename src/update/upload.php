@@ -265,16 +265,6 @@ try {
         ]);
     }
     
-} catch (Exception $e) {
-    if (!headers_sent()) {
-        http_response_code(500);
-    }
-    sendResponse(false, 'Internal server error: ' . $e->getMessage());
-} catch (Error $e) {
-    if (!headers_sent()) {
-        http_response_code(500);
-    }
-    sendResponse(false, 'Internal server error: ' . $e->getMessage());
 } catch (Throwable $e) {
     if (!headers_sent()) {
         http_response_code(500);
