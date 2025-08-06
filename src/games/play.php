@@ -23,6 +23,11 @@ $creator_type = to_creator_type($game['g_swf']);
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
+    <?php
+    if ($game['g_swf'] == 1) {
+        include('../content/ruffle.php');
+    }
+    ?>
     <?php include('../content/head.php') ?>
     <link rel="alternate nofollow" type="application/rss+xml" title="RSS" href="/gamefeed.php" />
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
@@ -33,7 +38,6 @@ $creator_type = to_creator_type($game['g_swf']);
     var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include('../content/onlinechecker.php'); ?>
-    <?php include('../content/ruffle.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
 
@@ -54,12 +58,13 @@ $creator_type = to_creator_type($game['g_swf']);
             <div id="venue" style="margin: 6px 0 0 20px; float: right;"></div>
             <script>
             window.g_id = <?= $game['g_id'] ?>;
+            swfobject.embedSWF("/swf/contest.swf", "contestflash", "150", "30", "8", "/swfobject/expressInstall.swf", { g: window.g_id}, { bgcolor: "#000000", menu: "false", quality: "high", scale: "noscale", salign: "tl", wmode: "opaque" });
             </script>
             <?php if ($game['isprivate'] == 1) { ?>
             <br><br>
             <div class="alert">This game is private but you have the key!</div>
             <?php } ?>
-            <script type="text/javascript" src="play.js"></script>
+
             <div class="gameobject">
                 <div id="flashcontent">
                     <img class="game_preview"
@@ -259,12 +264,6 @@ $creator_type = to_creator_type($game['g_swf']);
                 }?>" }, { bgcolor: "#000000", menu: "false", quality: "low", scale: "noscale", salign: "tl", wmode: "opaque" });
             </script>
     
-
-
-
-            <div class="skyscraper">
-
-            </div>
 
             <br /><br />
             <?php
