@@ -10,6 +10,7 @@ src/users
 src/cache/events.lock
 src/cache/events.xml
 src/php/verifyscore.php
+src/avatar/a
 
 # Docker local development folders
 pgdata
