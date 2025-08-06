@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();

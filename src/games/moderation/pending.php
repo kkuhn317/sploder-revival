@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../../content/disablemobile.php'); ?>
 <?php
 require_once('php/verify.php');
 require_once('../../services/GameListRenderService.php');

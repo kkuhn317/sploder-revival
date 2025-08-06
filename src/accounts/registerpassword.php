@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 require('logincheck.php');
 if (!isset($_SESSION['usermigrate'])) {
