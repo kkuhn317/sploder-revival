@@ -1,6 +1,18 @@
 function start_download() {
     const progressBar = document.getElementById('progress-bar');
-
+    if (os == 'win32') {
+        if(method == 'installed') {
+            var downloadUrl = `uploads/Sploder-Setup-${version}-${arch}.exe`;
+        } else {
+            var downloadUrl = `uploads/Sploder-Portable-${version}-${arch}.zip`;
+        }
+    } else if (os == 'darwin') {
+        var downloadUrl = `uploads/Sploder-macOS-${version}.zip`;
+    } else if (os == 'linux') {
+        // Redirect users to the GitHub releases page for Linux in a new tab
+        window.open(repositoryUrl+'/releases/latest', '_blank');
+        return;
+    }
     fetch(downloadUrl)
         .then(response => {
             if (!response.ok) {
