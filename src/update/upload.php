@@ -7,6 +7,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 define('UPLOAD_DIR', __DIR__ . '/uploads/');
 define('TEMP_DIR', __DIR__ . '/temp/');
+define('VERSION_FILE', __DIR__ . '/currentversion.txt');
 define('ALLOWED_EXTENSIONS', ['.exe', '.zip']);
 
 if (!is_dir(UPLOAD_DIR)) {
@@ -37,6 +38,20 @@ function validateApiKey($key) {
         return false;
     }
     return hash_equals($validKey, $key);
+}
+
+function updateVersion($version) {
+    $version = trim($version);
+    if (empty($version)) {
+        throw new Exception("Version cannot be empty");
+    }
+    
+    $result = file_put_contents(VERSION_FILE, $version);
+    if ($result === false) {
+        throw new Exception("Failed to write version file");
+    }
+    
+    return true;
 }
 
 function isAllowedFile($filename) {
@@ -142,6 +157,34 @@ try {
     cleanupOldFiles();
     
     $apiKey = $_POST['api_key'] ?? null;
+    $requestType = $_POST['request_type'] ?? 'upload';
+    
+    // Validate API key first
+    if (!validateApiKey($apiKey)) {
+        http_response_code(401);
+        sendResponse(false, 'Invalid API key');
+    }
+    
+    // Handle version update request
+    if ($requestType === 'update_version') {
+        $version = $_POST['version'] ?? null;
+        
+        if ($version === null || $version === '') {
+            sendResponse(false, 'Missing version number');
+        }
+        
+        try {
+            updateVersion($version);
+            sendResponse(true, 'Version updated successfully', [
+                'version' => $version,
+                'version_file' => VERSION_FILE
+            ]);
+        } catch (Exception $e) {
+            sendResponse(false, 'Failed to update version: ' . $e->getMessage());
+        }
+    }
+    
+    // Handle file upload request (existing logic)
     $fileName = $_POST['file_name'] ?? null;
     $chunkIndex = $_POST['chunk_index'] ?? null;
     $totalChunks = $_POST['total_chunks'] ?? null;
@@ -186,11 +229,6 @@ try {
     $fileName = basename($fileName);
     $chunkIndex = (int)$chunkIndex;
     $totalChunks = (int)$totalChunks;
-    
-    if (!validateApiKey($apiKey)) {
-        http_response_code(401);
-        sendResponse(false, 'Invalid API key');
-    }
     
     if (!isAllowedFile($fileName)) {
         sendResponse(false, 'File type not allowed');
