@@ -25,7 +25,7 @@ $creator_type = to_creator_type($game['g_swf']);
 <head>
     <?php
     if ($game['g_swf'] == 1) {
-        include('../content/ruffle.php');
+        //include('../content/ruffle.php');
     }
     ?>
     <?php include('../content/head.php') ?>
@@ -72,8 +72,11 @@ $creator_type = to_creator_type($game['g_swf']);
                     <p class="game_loading"
                         style="font-size: 14px; line-height: 16px; width: 500px; padding: 20px; margin-left: -130px; margin-top: 0px;">
                         Your browser does not support the technology to run this game<br><br>
-                        You may download a single-use file to load it separately<br><br>
-                        <img border="0" alt="Download" src="/images/download.gif" />
+                        You must download our launcher to run it<br><br>
+                        Games made with the shooter creator will still work on your browser<br><br>
+                        <a href="<?= getenv("LAUNCHER_REPOSITORY_URL") ?>/releases/latest" target="_blank">
+                            <img border="0" alt="Download" src="/images/download.gif" />
+                        </a>
                     </p>
                 </div>
             </div>
