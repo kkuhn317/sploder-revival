@@ -16,14 +16,14 @@ function start_download() {
     if (os == 'win32') {
         if(method == 'installed') {
             var downloadUrl = `uploads/Sploder-Setup-${version}-${arch}.exe`;
-            downloadCompleteMessage.innerHTML = '&nbsp;&nbsp;&nbsp;The update has been downloaded<br>To install it, click save and run the setup file';
+            downloadCompleteMessage.innerHTML = 'The update has been downloaded<br>To install it, click save and run the setup file';
         } else {
             var downloadUrl = `uploads/Sploder-Portable-${version}-${arch}.zip`;
-            downloadCompleteMessage.innerHTML = '&nbsp;&nbsp;&nbsp;The update has been downloaded<br>To run it, extract the zip file and run the executable';
+            downloadCompleteMessage.innerHTML = 'The update has been downloaded<br>To run it, extract the zip file and run the executable';
         }
     } else if (os == 'darwin') {
         var downloadUrl = `uploads/Sploder-macOS-${version}.zip`;
-        downloadCompleteMessage.innerHTML = '&nbsp;&nbsp;&nbsp;The update has been downloaded<br>To install it, extract the zip file and drag to Applications folder';
+        downloadCompleteMessage.innerHTML = 'The update has been downloaded<br>To install it, extract the zip file and drag to Applications folder';
     } else if (os == 'linux') {
         // Redirect users to the GitHub releases page for Linux in a new tab
         // This is done by setting the anchor element's href and target attributes
