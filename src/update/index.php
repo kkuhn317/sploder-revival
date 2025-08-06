@@ -1,4 +1,5 @@
 <?php
+require(__DIR__.'/../config/env.php');
 $version = file_get_contents('currentversion.txt');
 $userVersion = explode('Sploder/', $_SERVER['HTTP_USER_AGENT'])[1];
 $userVersion = explode(' ', $userVersion)[0];
@@ -61,8 +62,7 @@ if ($os == 'win32') {
 
                 <div class="finished" id="finished" style="display:none">
                     <b>
-                        <p>&nbsp;&nbsp;&nbsp;The update has been downloaded<br>To install it, click save and run the
-                            file</p>
+                        <p id="downloadCompleteMessage"></p>
                     </b>
                 </div>
 
