@@ -96,17 +96,6 @@
             <div id="creatorcontainer" style="width: 860px; height: 626px;">
                 <div id="flashcontent">
                     <div style="margin: 40px auto; text-align: center; width: 600px;">
-
-                        <a href="https://itunes.apple.com/us/app/sploder-arcade-creator/id897669842?ls=1&mt=8">
-                            <img src="../chrome/app_badge_apple.gif" width="203" height="60" /> &nbsp;
-                        </a>
-                        <a href="https://play.google.com/store/apps/details?id=com.sploder.arcadecreator">
-                            <img src="../chrome/app_badge_googleplay.gif" width="170" height="60" /> &nbsp;
-                        </a>
-                        <a href="https://www.amazon.com/gp/product/B00LWFWFVY/ref=mas_pm_sploder_arcade_creator">
-                            <img src="../chrome/app_badge_amazon.gif" width="171" height="60" />
-                        </a>
-
                         <br /><br />
 
                         <img src="../images/retro-arcade-game-maker2.gif" width="420" height="260" /><br /><br />
@@ -117,11 +106,7 @@
                         <p style="width: 420px; margin: auto;">Make your own 8-bit retro arcade game with this game
                             maker. Build fun platformers, RPG stories, boss-battles, and unique games with this game
                             maker.</p>
-                        <p style="width: 420px; margin: auto;">The Flash Arcade Game Maker requires the Adobe Flash
-                            plugin.<br /><br /><br />
-                        <div align="center" style="margin: auto;"><a href="https://get.adobe.com/flashplayer"><img
-                                    border="0" alt="Enable Flash" src="enable_flash.gif" /></a></div>
-                        </p>
+                            <?php include('../content/noflash.php') ?>
                     </div>
                 </div>
             </div>

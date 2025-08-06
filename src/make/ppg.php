@@ -31,13 +31,10 @@
             <div id="creatorcontainer" style="height: 600px; width: 860px">
                 <div id="flashcontent">
                     <div style="margin: 40px auto; text-align: center; width: 420px;">
-                        <img src="images/physics-puzzle-maker.png" width="348" height="172" /><br /><br /><br />
+                        <img src="../images/physics-puzzle-maker.png" width="348" height="172" /><br /><br /><br />
                         <p>Make your own physics puzzle game with this game maker. Build machines, robots, Rube
                             Goldberg devices, and unique games with this game maker.</p>
-                        <p>The Flash Physics Puzzle Game Maker requires the Adobe Flash plugin.<br /><br /><br />
-                        <div align="center" style="margin: auto;"><a href="https://get.adobe.com/flashplayer"><img
-                                    border="0" alt="Enable Flash" src="enable_flash.gif" /></a></div>
-                        </p>
+                        <?php include('../content/noflash.php') ?>
                     </div>
                 </div>
             </div>

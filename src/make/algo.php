@@ -33,9 +33,7 @@
                     <div style="margin: 40px auto; text-align: center; width: 420px;">
                         <p>Make your own 3d space adventure game with this game maker. Create a 3d space station and add
                             aliens, robots, traps and powerups to create your own space missions.</p>
-                        The Flash 3d Game Maker requires the Adobe Flash 10 plugin. <br /><br /><br /><a
-                            href="https://get.adobe.com/flashplayer"><img border="0" alt="Enable Flash"
-                                src="enable_flash.gif" /></a>
+                        <?php include('../content/noflash.php') ?>
                     </div>
                 </div>
             </div>
