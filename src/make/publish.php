@@ -5,6 +5,11 @@ require_once('content/publish.php');
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
+    <?php
+    if ($game['g_swf'] == 1) {
+        include('../content/ruffle.php');
+    }
+    ?>
     <title>Sploder</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="../css/sploder_v2p12.css" type="text/css" />
