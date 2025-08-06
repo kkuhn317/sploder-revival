@@ -6,4 +6,3 @@ if (preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo
 , $_SERVER["HTTP_USER_AGENT"])) {
 header('Location: /error_pages/mob.php');
 }
-?>
