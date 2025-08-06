@@ -51,6 +51,7 @@ services:
       DISCORD_SCOPES: identify
       DISCORD_REDIRECT_URL:
       DISCORD_BOT_TOKEN:
+      UPLOAD_API_KEY:
   db:
     image: postgres:17
     container_name: sploder_postgres
