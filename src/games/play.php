@@ -129,8 +129,7 @@ $creator_type = to_creator_type($game['g_swf']);
                     <img style="float: left;" src="/chrome/social_bar_make.gif" width="210" height="36" alt="make a game" />
                 </a>
                 <?php
-                    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
-                    $currentUrl = $protocol . getenv('DOMAIN_NAME') . $_SERVER['REQUEST_URI'];
+                    $currentUrl = getenv('DOMAIN_NAME') . $_SERVER['REQUEST_URI'];
                     $fbUrl = "https://www.facebook.com/sharer.php?u=" . urlencode($currentUrl);
                     $tweetText = "Playing " . $game['title'] . " by " . $game['author'] . " on @sploder - ";
                     $twitterUrl = "https://twitter.com/intent/tweet?text=" . urlencode($tweetText) . "&url=" . urlencode($currentUrl);
