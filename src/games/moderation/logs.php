@@ -42,15 +42,17 @@ $db = getDatabase();
             <h2>List of all actions performed by moderators</h2>
             <ul>
                 <?php
-                $offset = $_GET['offset'] ?? 0;
+                $offset = $_GET['o'] ?? 0;
+                $perPage = 100;
                 if ($offset < 0) {
                     $offset = 0;
                 }
                 $logs = $db->query("SELECT *
                     FROM moderation_logs
                     ORDER BY time DESC
-                    LIMIT 100 OFFSET :offset", [
-                        ':offset' => $offset
+                    LIMIT :limit OFFSET :offset", [
+                        ':offset' => $offset*$perPage,
+                        ':limit' => $perPage
                     ]);
 
                 // Display logs as a list
@@ -79,10 +81,10 @@ $db = getDatabase();
                 ?>
 
             </ul>
-            <div style="float:right">
-                <a href="logs.php?offset=<?= $offset - 100 ?>">Previous</a>
-                <a href="logs.php?offset=<?= $offset + 100 ?>">Next</a>
-            </div>
+            <?php
+            require_once('../../content/pages.php');
+            addPagination($db->query("SELECT COUNT(*) as total FROM moderation_logs")[0]['total'], $perPage, $offset);
+            ?>
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="sidebar">
