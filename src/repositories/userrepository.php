@@ -306,4 +306,31 @@ LIMIT 90;
         $result = $this->db->queryFirst($query, [':username' => $username]);
         return $result ? (bool)$result['isolate'] : false; // Return false if not found
     }
+
+    public function setIsolation(string $username, bool $isolate): void
+    {
+        $query = "
+            WITH 
+            update_isolation AS (
+                UPDATE members 
+                SET isolate = :isolate 
+                WHERE username = :username
+            ),
+            delete_friend_requests AS (
+                DELETE FROM friend_requests 
+                WHERE (:isolate = true) AND (sender_username = :username OR receiver_username = :username)
+            ),
+            delete_friends AS (
+                DELETE FROM friends 
+                WHERE (:isolate = true) AND (user1 = :username OR user2 = :username)
+            )
+            SELECT 1
+        ";
+    
+        $this->db->execute($query, [
+            ':isolate' => $isolate,
+            ':username' => $username
+        ]);
+
+    }
 }

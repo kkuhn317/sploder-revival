@@ -69,4 +69,13 @@ interface IUserRepository
      * @return bool true if isolated, false otherwise
      */
     function isIsolated(string $username): bool;
+
+    /**
+     * Set isolation status for a user
+     * 
+     * @param $username
+     * @param $isolate
+     * @return void
+     */
+    function setIsolation(string $username, bool $isolate): void;
 }
