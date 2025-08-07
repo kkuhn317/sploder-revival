@@ -10,10 +10,28 @@ $favoriteGames = $_POST["favoriteGames"];
 $favoriteMovies = $_POST["favoriteMovies"];
 $favoriteBands = $_POST["favoriteBands"];
 $whomIRespect = $_POST["whomIRespect"];
+$isolated = $_POST["isolate"] ?? null;
+
+# $isolated is set to "on" if the checkbox is checked
+if ($isolated === "on") {
+    $isolated = true;
+} else {
+    $isolated = false;
+}
 
 // Connect to the PostgreSQL database
 include('../database/connect.php');
+require_once('../repositories/repositorymanager.php');
+$userRepository = RepositoryManager::get()->getUserRepository();
 $db = getDatabase();
+
+# Check if the user was already isolated
+$oldIsolated = $userRepository->isIsolated($username);
+
+if ($isolated !== $oldIsolated) {
+    // Update the user's isolation status
+    $userRepository->setIsolation($username, $isolated);
+}
 
 // Prepare the SQL statement
 //Insert the form data into the user_info table if already exists update the data
