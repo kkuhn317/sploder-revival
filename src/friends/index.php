@@ -6,6 +6,7 @@ $db = getDatabase();
 require_once('../repositories/repositorymanager.php');
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $friendsRepository->setAllFriendsAsViewed($_SESSION['userid']);
+$userRepository = RepositoryManager::get()->getUserRepository();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -66,8 +67,16 @@ $friendsRepository->setAllFriendsAsViewed($_SESSION['userid']);
             <div class="alert">That user is already your friend!</div>
                 <?php } elseif ($err == "before") { ?>
             <div class="alert">That user revoked the request before you could accept it!</div>
+                <?php } elseif ($err == "isolated") { ?>
+            <div class="alert">That user has disabled comments and friending on their profile!</div>
                 <?php }
             } ?>
+            <?php
+            $isolated = $userRepository->isIsolated($_SESSION['username']);
+            if ($isolated) {
+                echo '<div class="alert">You have disabled comments and friending on your profile. You cannot send or receive friend requests.</div>';
+            } else {
+            ?>
             <h4>New Friend Requests</h4>
             <?php
             $result = $db->query("SELECT sender_username
@@ -197,7 +206,7 @@ $friendsRepository->setAllFriendsAsViewed($_SESSION['userid']);
             }
 
             ?>
-
+            <?php } ?>
 
 
             <div class="spacer">&nbsp;</div>
