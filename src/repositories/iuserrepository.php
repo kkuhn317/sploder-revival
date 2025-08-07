@@ -61,4 +61,12 @@ interface IUserRepository
      * @return int user ID or -1 if not found
      */
     function getUserIdFromUsername(string $username): int;
+
+    /**
+     * Checks if a user is isolated
+     * 
+     * @param $username
+     * @return bool true if isolated, false otherwise
+     */
+    function isIsolated(string $username): bool;
 }

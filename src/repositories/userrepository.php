@@ -297,4 +297,13 @@ LIMIT 90;
             'awesomeness' => $awesomeness
         ];
     }
+
+    public function isIsolated(string $username): bool
+    {
+        $query = "
+            SELECT isolate FROM members WHERE username = :username
+        ";
+        $result = $this->db->queryFirst($query, [':username' => $username]);
+        return $result ? (bool)$result['isolate'] : false; // Return false if not found
+    }
 }
