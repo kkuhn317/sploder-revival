@@ -2,8 +2,31 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
--- Dumped by pg_dump version 17.0 (Ubuntu 17.0-1.pgdg24.04+1)
+-- Dumped from database version 17.5 (Debian 17.5-1.pgdg120+1)
+-- Dumped by pg_dump version 17.5 (Debian 17.5-1.pgdg120+1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: sploder; Type: DATABASE; Schema: -; Owner: sploder
+--
+
+CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+
+
+ALTER DATABASE sploder OWNER TO sploder;
+
+\connect sploder
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -129,6 +152,65 @@ CREATE TABLE public.banned_members (
 
 
 ALTER TABLE public.banned_members OWNER TO sploder;
+
+--
+-- Name: challenge_winners; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.challenge_winners (
+    winner_id integer NOT NULL,
+    g_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.challenge_winners OWNER TO sploder;
+
+--
+-- Name: challenge_winners_winner_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.challenge_winners ALTER COLUMN winner_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.challenge_winners_winner_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: challenges; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.challenges (
+    challenge_id integer NOT NULL,
+    g_id integer NOT NULL,
+    mode boolean NOT NULL,
+    challenge integer NOT NULL,
+    prize integer NOT NULL,
+    winners integer NOT NULL,
+    verified boolean NOT NULL,
+    insert_date date NOT NULL
+);
+
+
+ALTER TABLE public.challenges OWNER TO sploder;
+
+--
+-- Name: challenges_c_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.challenges ALTER COLUMN challenge_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.challenges_c_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
 
 --
 -- Name: comment_votes; Type: TABLE; Schema: public; Owner: sploder
@@ -571,6 +653,30 @@ ALTER TABLE ONLY public.awards
 
 
 --
+-- Name: challenge_winners challenge_winners_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenge_winners
+    ADD CONSTRAINT challenge_winners_pkey PRIMARY KEY (winner_id);
+
+
+--
+-- Name: challenge_winners challenge_winners_unique; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenge_winners
+    ADD CONSTRAINT challenge_winners_unique UNIQUE (g_id, user_id);
+
+
+--
+-- Name: challenges challenges_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenges
+    ADD CONSTRAINT challenges_pkey PRIMARY KEY (challenge_id);
+
+
+--
 -- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -664,6 +770,14 @@ ALTER TABLE ONLY public.game_views_anonymous
 
 ALTER TABLE ONLY public.game_views_members
     ADD CONSTRAINT uk_game_views_members_g_id_userid UNIQUE (g_id, userid);
+
+
+--
+-- Name: challenges unique_challenges; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenges
+    ADD CONSTRAINT unique_challenges UNIQUE (g_id, challenge_id);
 
 
 --
@@ -770,6 +884,34 @@ CREATE INDEX idx_banned_members_username ON public.banned_members USING btree (u
 
 
 --
+-- Name: idx_challenge_winners_g_id_user_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_challenge_winners_g_id_user_id ON public.challenge_winners USING btree (g_id, user_id);
+
+
+--
+-- Name: idx_challenges_c_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_challenges_c_id ON public.challenges USING btree (challenge_id);
+
+
+--
+-- Name: idx_challenges_date_verified; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_challenges_date_verified ON public.challenges USING btree (insert_date, verified);
+
+
+--
+-- Name: idx_challenges_g_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_challenges_g_id ON public.challenges USING btree (g_id);
+
+
+--
 -- Name: idx_comment_votes; Type: INDEX; Schema: public; Owner: sploder
 --
 
@@ -826,6 +968,13 @@ CREATE INDEX idx_games_author ON public.games USING btree (author);
 
 
 --
+-- Name: idx_games_g_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_games_g_id ON public.games USING btree (g_id);
+
+
+--
 -- Name: idx_games_is_published_is_private; Type: INDEX; Schema: public; Owner: sploder
 --
 
@@ -833,11 +982,18 @@ CREATE INDEX idx_games_is_published_is_private ON public.games USING btree (ispu
 
 
 --
+-- Name: idx_games_user_id; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_games_user_id ON public.games USING btree (user_id);
+
+
+--
 -- Name: game_views_anonymous fk_game_views_anonymous_games_g_id; Type: FK CONSTRAINT; Schema: public; Owner: sploder
 --
 
 ALTER TABLE ONLY public.game_views_anonymous
-    ADD CONSTRAINT fk_game_views_anonymous_games_g_id FOREIGN KEY (g_id) REFERENCES public.games(g_id);
+    ADD CONSTRAINT fk_game_views_anonymous_games_g_id FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -845,7 +1001,7 @@ ALTER TABLE ONLY public.game_views_anonymous
 --
 
 ALTER TABLE ONLY public.game_views_members
-    ADD CONSTRAINT fk_game_views_members_games_g_id FOREIGN KEY (g_id) REFERENCES public.games(g_id);
+    ADD CONSTRAINT fk_game_views_members_games_g_id FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -853,7 +1009,23 @@ ALTER TABLE ONLY public.game_views_members
 --
 
 ALTER TABLE ONLY public.game_views_members
-    ADD CONSTRAINT fk_game_views_members_members_userid FOREIGN KEY (userid) REFERENCES public.members(userid);
+    ADD CONSTRAINT fk_game_views_members_members_userid FOREIGN KEY (userid) REFERENCES public.members(userid) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: challenge_winners g_id_contest_winners_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenge_winners
+    ADD CONSTRAINT g_id_contest_winners_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: challenges g_id_contests_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenges
+    ADD CONSTRAINT g_id_contests_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -861,7 +1033,7 @@ ALTER TABLE ONLY public.game_views_members
 --
 
 ALTER TABLE ONLY public.game_tags
-    ADD CONSTRAINT g_id_game_tags_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) MATCH FULL NOT VALID;
+    ADD CONSTRAINT g_id_game_tags_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -869,7 +1041,7 @@ ALTER TABLE ONLY public.game_tags
 --
 
 ALTER TABLE ONLY public.graphic_likes
-    ADD CONSTRAINT g_id_graphic_likes_fkey FOREIGN KEY (g_id) REFERENCES public.graphics(id) MATCH FULL;
+    ADD CONSTRAINT g_id_graphic_likes_fkey FOREIGN KEY (g_id) REFERENCES public.graphics(id) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -877,7 +1049,7 @@ ALTER TABLE ONLY public.graphic_likes
 --
 
 ALTER TABLE ONLY public.graphic_tags
-    ADD CONSTRAINT g_id_graphic_tags_fkey FOREIGN KEY (g_id) REFERENCES public.graphics(id) MATCH FULL NOT VALID;
+    ADD CONSTRAINT g_id_graphic_tags_fkey FOREIGN KEY (g_id) REFERENCES public.graphics(id) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -885,7 +1057,7 @@ ALTER TABLE ONLY public.graphic_tags
 --
 
 ALTER TABLE ONLY public.graphic_likes
-    ADD CONSTRAINT userid_graphic_likes_fkey FOREIGN KEY (userid) REFERENCES public.members(userid) MATCH FULL NOT VALID;
+    ADD CONSTRAINT userid_graphic_likes_fkey FOREIGN KEY (userid) REFERENCES public.members(userid) ON DELETE CASCADE NOT VALID;
 
 
 --
