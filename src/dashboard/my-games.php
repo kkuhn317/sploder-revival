@@ -77,9 +77,9 @@ if (isset($_GET['game']) && $_GET['game'] == null) {
                 <?php
                 $perPage = 12;
                 if (isset($_GET['game'])) {
-                    $gameListRenderService->renderPartialViewForMyGamesUserAndGame($username, $_GET['game'], $currentPage, $perPage, isDeleted: true);
+                    $gameListRenderService->renderPartialViewForMyGamesUserAndGame($username, $_GET['game'], $currentPage, $perPage, false);
                 } else {
-                    $gameListRenderService->renderPartialViewForMyGamesUser($username, $currentPage, $perPage, isDeleted: true);
+                    $gameListRenderService->renderPartialViewForMyGamesUser($username, $currentPage, $perPage, false);
                 }
                 ?>
 

@@ -94,14 +94,14 @@ $totalgames = $gameRepository->getTotalDeletedGameCount($username);
                                 $_GET['game'],
                                 $currentPage,
                                 $perPage,
-                                isDeleted: true
+                                true
                             );
                         } else {
                             $total = $gameListRenderService->renderPartialViewForMyGamesUser(
                                 $username,
                                 $currentPage,
                                 $perPage,
-                                isDeleted: true
+                                true
                             );
                         }
                     }
