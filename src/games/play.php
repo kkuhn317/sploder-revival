@@ -209,7 +209,7 @@ $creator_type = to_creator_type($game['g_swf']);
                     AND isprivate = 0
                     AND ispublished = 1
                     AND isdeleted = 0
-                    ORDER BY date DESC LIMIT 11", [
+                    ORDER BY first_published_date DESC LIMIT 11", [
                     ':author' => $game['author']
                     ]);
 
