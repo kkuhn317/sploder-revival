@@ -32,7 +32,7 @@ $isolated = $userRepository->isIsolated($_SESSION['username'] ?? '');
                 <a id="messages_top"></a>
                 <div id="messages"></div>
             <?php } else { ?>
-                <div class="alert">You have disabled comments and friending on your profile. You cannot send or receive friend requests. You can go to your profile settings to enable it.</div>
+                <div class="alert">You have disabled comments and friending on your profile. You cannot send, receive or view messages. You can go to your profile settings to enable it.</div>
             <?php } ?>
             <div id="venue"></div>
             <script type="text/javascript">
