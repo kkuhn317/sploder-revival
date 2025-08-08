@@ -1,6 +1,9 @@
 <?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 session_start();
+require_once('../repositories/repositorymanager.php');
+$userRepository = RepositoryManager::get()->getUserRepository();
+$isolated = $userRepository->isIsolated($_SESSION['username'] ?? '');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -25,8 +28,12 @@ session_start();
         <div id="content">
             <h3 style="white-space:nowrap;">Sploder Revival Live Messages</h3>
             <p>This is a feed of all of the messages on Sploder Revival. Remember, for your safety, there are no private messages on Sploder Revival, and they can always be read here.</p>
+            <?php if (!$isolated) { ?>
                 <a id="messages_top"></a>
                 <div id="messages"></div>
+            <?php } else { ?>
+                <div class="alert">You have disabled comments and friending on your profile. You cannot send or receive friend requests. You can go to your profile settings to enable it.</div>
+            <?php } ?>
             <div id="venue"></div>
             <script type="text/javascript">
 

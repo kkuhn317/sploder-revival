@@ -5,9 +5,15 @@ include('../../database/connect.php');
 require_once('../../repositories/repositorymanager.php');
 
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
+$userRepository = RepositoryManager::get()->getUserRepository();
 $username = $_GET['username'];
 $db = getDatabase();
 $alreadyFriends = $friendsRepository->alreadyFriends($_SESSION['username'], $username);
+$isolatedreceiver = $userRepository->isIsolated($username);
+if ($isolatedreceiver) {
+    header('Location: ../index.php?err=isolated');
+    exit;
+}
 if (!$alreadyFriends) {
     $qs2 = "SELECT userid FROM members WHERE username=:user";
     $receiver = $db->query($qs2, [
