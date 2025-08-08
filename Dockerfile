@@ -53,6 +53,14 @@ RUN composer install \
 
 COPY ./src /var/www/html/
 
+<<<<<<< Updated upstream
+=======
+# Set up cron job
+RUN echo '0 1 * * * /usr/local/bin/php /var/www/html/cronjobs/contest.php' > /etc/cron.d/contest-cron \
+  && chmod 0644 /etc/cron.d/contest-cron \
+  && crontab /etc/cron.d/contest-cron
+
+>>>>>>> Stashed changes
 EXPOSE 80
 
 CMD ["apache2-foreground"]
