@@ -203,7 +203,7 @@ LIMIT 90;
                 SELECT 
                     m.username,
                     COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_games,
-                    AVG(g.difficulty) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as avg_difficulty,
+                    COALESCE(AVG(g.difficulty) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 5.5) as avg_difficulty,
                     COUNT(DISTINCT f.user2) as total_friends,
                     COUNT(v.score) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_votes,
                     COALESCE(AVG(l.gtm) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 0) as avg_playtime,
