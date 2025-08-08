@@ -72,7 +72,7 @@ $awesomeness = $stats['awesomeness'] ?? 50;
                         </dl>
                         <div><div id="venue" class="mprofvenue">...</div></div>
                         <?php
-                        $isolated = $userRepository->isIsolated($username) || $userRepository->isIsolated($_SESSION['username']);
+                        $isolated = $userRepository->isIsolated($username) || $userRepository->isIsolated($_SESSION['username'] ?? '');
                         if ($username !== ($_SESSION['username'] ?? '') && isset($_SESSION['loggedin']) && !$isolated) {
                             // Check if the user is already friends
                             $isFriend = $friendsRepository->alreadyFriends($_SESSION['username'], $username);
@@ -183,9 +183,10 @@ $awesomeness = $stats['awesomeness'] ?? 50;
             }
             </script>
 
-
+                <?php if (!$isolated) { ?>
                 <a id="messages_top"></a>
                 <div id="messages"></div>
+                <?php } ?>
                 <div class="spacer">&nbsp;</div>
 
                 <div class="spacer">&nbsp;</div>
