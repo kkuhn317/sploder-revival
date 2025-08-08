@@ -203,7 +203,7 @@ LIMIT 90;
                 SELECT 
                     m.username,
                     COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_games,
-                    AVG(g.difficulty) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as avg_difficulty,
+                    COALESCE(AVG(g.difficulty) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 5.5) as avg_difficulty,
                     COUNT(DISTINCT f.user2) as total_friends,
                     COUNT(v.score) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_votes,
                     COALESCE(AVG(l.gtm) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 0) as avg_playtime,
@@ -296,5 +296,41 @@ LIMIT 90;
             'avg_score' => (int)round(($result['avg_score'] - 1) * 25),  // Convert to 0-100 scale
             'awesomeness' => $awesomeness
         ];
+    }
+
+    public function isIsolated(string $username): bool
+    {
+        $query = "
+            SELECT isolate FROM members WHERE username = :username
+        ";
+        $result = $this->db->queryFirst($query, [':username' => $username]);
+        return $result ? (bool)$result['isolate'] : false; // Return false if not found
+    }
+
+    public function setIsolation(string $username, bool $isolate): void
+    {
+        $query = "
+            WITH 
+            update_isolation AS (
+                UPDATE members 
+                SET isolate = :isolate 
+                WHERE username = :username
+            ),
+            delete_friend_requests AS (
+                DELETE FROM friend_requests 
+                WHERE (:isolate = true) AND (sender_username = :username OR receiver_username = :username)
+            ),
+            delete_friends AS (
+                DELETE FROM friends 
+                WHERE (:isolate = true) AND (user1 = :username OR user2 = :username)
+            )
+            SELECT 1
+        ";
+    
+        $this->db->execute($query, [
+            ':isolate' => $isolate,
+            ':username' => $username
+        ]);
+
     }
 }

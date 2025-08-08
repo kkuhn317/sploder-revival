@@ -150,10 +150,9 @@ if (!isset($_SESSION['usermigrate'])) {
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="display: none;">
+                                <td colspan="3">
                                     <div class="checkholder">
-                                        <!-- TODO: ACTUALLY USE THIS CHECKBOX -->
-                                        <input style="display:none" name="social" type="checkbox" class="checkbutton"
+                                        <input name="social" type="checkbox" class="checkbutton"
                                             value="1" checked="checked" />
                                     </div>
                                     <p>Allow comments and friending on my profile.</p>
@@ -162,7 +161,7 @@ if (!isset($_SESSION['usermigrate'])) {
                             <tr>
                                 <td colspan="3">
                                     <div class="checkholder">
-                                        <input name="tostest" type="checkbox" class="checkbutton" value="1" />
+                                        <input name="tostest" type="checkbox" class="checkbutton" checked />
                                     </div>
                                     <p>I agree to abide by the terms of service</p>
                                 </td>
