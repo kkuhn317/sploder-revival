@@ -116,7 +116,7 @@ where g_id = :g_id
 
     public function getPublicGamesFromUser(string $userName, int $offset, int $perPage): PaginationData
     {
-        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.first_published_date, g.user_id, g.views, 
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             LEFT JOIN votes r ON g.g_id = r.g_id 
@@ -134,13 +134,13 @@ where g_id = :g_id
 
     public function getAllGamesFromUser(string $userName, int $offset, int $perPage, bool $isDeleted): PaginationData
     {
-        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, g.first_created_date
+        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.first_created_date, g.user_id, g.views
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             LEFT JOIN votes r ON g.g_id = r.g_id 
             WHERE g.author = :userName AND g.isDeleted = :isDeleted
             GROUP BY g.g_id 
-            ORDER BY g.date DESC";
+            ORDER BY g.first_created_date DESC";
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,
@@ -150,7 +150,7 @@ where g_id = :g_id
 
     public function getGamesFromUserAndGameSearch(string $userName, string $game, int $offset, int $perPage, $isDeleted): PaginationData
     {
-        $qs = 'SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+        $qs = 'SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.first_created_date, g.user_id, g.views, 
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             LEFT JOIN votes r ON g.g_id = r.g_id 
@@ -159,7 +159,7 @@ where g_id = :g_id
             AND g.isdeleted = :isDeleted
             AND SIMILARITY(title, :game) > 0.3
             GROUP BY g.g_id 
-            ORDER BY g.g_id DESC';
+            ORDER BY g.first_created_date DESC';
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,

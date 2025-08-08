@@ -208,7 +208,7 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
             <?php
                 $db = getDatabase();
 
-                $result = $db->query("SELECT g_id, date, title, author, views
+                $result = $db->query("SELECT g_id, first_published_date, title, author, views
                     FROM games
                     WHERE author = :author
                     AND isprivate = 0
@@ -240,7 +240,7 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
                     <?php
                     //show games
                     foreach ($result as $more_game) {
-                        echo '<li><a href="play.php?s=' . $game['user_id'] . '_' . $more_game['g_id'] . '">' . $more_game['title'] . '</a>&nbsp; <span class="viewscomments">' . date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['date'])) . ' &middot; ' . $more_game['views'] . ' views</span></li>';
+                        echo '<li><a href="play.php?s=' . $game['user_id'] . '_' . $more_game['g_id'] . '">' . $more_game['title'] . '</a>&nbsp; <span class="viewscomments">' . date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['first_published_date'])) . ' &middot; ' . $more_game['views'] . ' views</span></li>';
                     }
                     ?>
 
