@@ -28,6 +28,7 @@ RUN apt-get update \
   zip \
   zlib1g-dev \
   vim \
+  cron \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* 
 
@@ -53,6 +54,11 @@ RUN composer install \
 
 COPY ./src /var/www/html/
 
+# Set up cron job
+RUN echo '* * * * * /usr/local/bin/php /var/www/html/cronjobs/contest.php' > /etc/cron.d/contest-cron \
+  && chmod 0644 /etc/cron.d/contest-cron \
+  && crontab /etc/cron.d/contest-cron
+
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["sh", "-c", "cron && exec apache2-foreground"]
