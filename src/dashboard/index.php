@@ -10,7 +10,7 @@ $newFriends = $friendsRepository->getFriendRequestCount($_SESSION['userid'], fal
 $db = getDatabase();
 $userRepository = RepositoryManager::get()->getUserRepository();
 $level = $userRepository->getLevelByUserId($_SESSION['userid']);
-
+$isolated = $userRepository->isIsolated($_SESSION['username']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -123,6 +123,7 @@ $level = $userRepository->getLevelByUserId($_SESSION['userid']);
       <?php include('../content/friendactivity.php') ?>
       <br>
       <br>
+      <?php if (!$isolated) { ?>
       <div class="notifications">
           <h4>Messages on your Pages</h4>
             </div>
@@ -171,7 +172,9 @@ $level = $userRepository->getLevelByUserId($_SESSION['userid']);
       <img src="./pixie.gif" width="1" height="1">
       <div class="spacer">&nbsp;
       </div>
+      <?php } ?>
     </div>
+    
     <div id="sidebar">
 
       <?php include('../content/powercharts.php') ?>
