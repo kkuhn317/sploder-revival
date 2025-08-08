@@ -70,6 +70,7 @@
                 <div class="spacer">&nbsp;</div><br>
 
                 <textarea name="reason" id="reason" placeholder="Reason" rows="4" cols="50" required></textarea>
+                <input type="hidden" name="return" value="index.php" />
                 <input type="submit" name="return" hidden value="index.php" />
 
             </form>
