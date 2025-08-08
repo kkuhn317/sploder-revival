@@ -56,10 +56,11 @@ if [ "$ENVIRONMENT" = "dev" ]; then
     
     echo "Development mock data creation completed!"
     
+elif [ "$ENVIRONMENT" = "prod" ]; then
+    echo "Production environment selected. No mock data will be created."
 else
     echo "Invalid environment: $ENVIRONMENT"
     echo "Usage: bootstrap.sh [dev|prod]"
-    echo "Defaulting to development environment..."
     echo "No additional data created"
 fi
 
