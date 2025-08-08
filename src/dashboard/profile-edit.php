@@ -110,8 +110,8 @@ $isolated = $userRepository->isIsolated($_SESSION['username']) || $userRepositor
                 <label for="whomIRespect">Whom You Respect:</label><br><br>
                 <textarea id="whomIRespect" name="whomIRespect" rows="3" style="width: 100%; resize: none;"
                     placeholder="Enter whom you respect..."></textarea><br><br>
-                <input type="checkbox" id="isolate" name="isolate" <?php if($isolated) { echo 'checked'; } ?>>
-                <label for="isolate">Disable comments and friending on your profile <?php if(!$isolated) {echo '<br>Warning! Enabling this option will permanently ERASE all your current friends.'; } ?></label><br><br>
+                <input type="checkbox" id="isolate" name="isolate" <?php if(!$isolated) { echo 'checked'; } ?>>
+                <label for="isolate">Allow comments and friending <?php if(!$isolated) {echo '<br>Warning! Disabling this option will permanently ERASE all your current friends.'; } ?></label><br><br>
                 
                 <input type="submit" value="Submit" style="height: 40px" class="postbutton">
             </form>

@@ -14,9 +14,9 @@ $isolated = $_POST["isolate"] ?? null;
 
 # $isolated is set to "on" if the checkbox is checked
 if ($isolated === "on") {
-    $isolated = true;
-} else {
     $isolated = false;
+} else {
+    $isolated = true;
 }
 
 // Connect to the PostgreSQL database

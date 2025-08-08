@@ -74,7 +74,7 @@ $userRepository = RepositoryManager::get()->getUserRepository();
             <?php
             $isolated = $userRepository->isIsolated($_SESSION['username']);
             if ($isolated) {
-                echo '<div class="alert">You have disabled comments and friending on your profile. You cannot send or receive friend requests.</div>';
+                echo '<div class="alert">You have disabled comments and friending on your profile. You cannot send or receive friend requests. You can go to your profile settings to enable it.</div>';
             } else {
             ?>
             <h4>New Friend Requests</h4>
