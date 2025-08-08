@@ -20,9 +20,10 @@ function getIdFromUrl($url)
     $queryString = $parsedUrl['query'] ?? '';
     parse_str($queryString, $queryParams);
 
-    // Extract the 'id' parameter and return it
-    if (isset($queryParams['id'])) {
-        return $queryParams['id'];
+    // Extract the 's' parameter and return it
+    if (isset($queryParams['s'])) {
+        $parts = explode('_', $queryParams['s']);
+        return $parts[1] ?? null;
     }
 
     return null;
