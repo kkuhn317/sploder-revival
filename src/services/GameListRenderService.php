@@ -16,6 +16,7 @@ class GameListRenderService
         string $noGamesFoundMessage,
         bool $includeStyleWidth,
         bool $includeDelete,
+        bool $includeRestore,
         bool $includeBoost,
         bool $includeChallenge,
         bool $includeUsername,
@@ -26,7 +27,7 @@ class GameListRenderService
             echo $fixSidebar ? '<div>' : '';
             return;
         }
-        $anyModification = $includeDelete || $includeBoost || $includeChallenge;
+        $anyModification = $includeDelete || $includeRestore || $includeBoost || $includeChallenge;
         $counter = -1;
         ?>
             <div id="viewpage">
@@ -83,6 +84,11 @@ class GameListRenderService
                                             onclick="delproj(<?= $id ?>,'<?= urldecode($title) ?>')"
                                             style="width:37px" value="Delete">&nbsp;
                                     <?php } ?>
+                                    <?php if ($includeRestore) { ?>
+                                        <input title="Restore" type="button" class="boost_button"
+                                            onclick="resproj(<?= $id ?>,'<?= urldecode($title) ?>')"
+                                            style="" value="Restore">&nbsp;
+                                    <?php } ?>
                                     <?php if ($includeBoost) { ?>
                                         <input title="Boost" style="width:27px" class="boost_button" value="Boost">
                                     <?php } ?>
@@ -129,6 +135,7 @@ class GameListRenderService
             "No games pending deletion",
             includeStyleWidth: true,
             includeDelete: true,
+            includeRestore: false,
             includeBoost: false,
             includeChallenge: false,
             includeUsername: true,
@@ -144,6 +151,7 @@ class GameListRenderService
             "No games found!",
             includeStyleWidth: false,
             includeDelete: false,
+            includeRestore: false,
             includeBoost: false,
             includeChallenge: false,
             includeUsername: false,
@@ -154,12 +162,13 @@ class GameListRenderService
 
     public function renderPartialViewForMyGamesUser(string $userName, int $offset, int $perPage, bool $isDeleted): void
     {
-        $games = $this->gameRepository->getAllGamesFromUser($userName, $offset, $perPage);
+        $games = $this->gameRepository->getAllGamesFromUser($userName, $offset, $perPage, $isDeleted);
         $this->renderPartialViewForGames(
             $games->data,
             'You have not made any games yet.<div class="spacer">&nbsp;</div>',
             includeStyleWidth: false,
             includeDelete: true,
+            includeRestore: $isDeleted,
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
             includeChallenge: false,
@@ -194,6 +203,7 @@ class GameListRenderService
             "No games found!",
             includeStyleWidth: false,
             includeDelete: false,
+            includeRestore: false,
             includeBoost: false,
             includeChallenge: false,
             includeUsername: true,
@@ -210,6 +220,7 @@ class GameListRenderService
             "No games found!",
             includeStyleWidth: false,
             includeDelete: false,
+            includeRestore: false,
             includeBoost: false,
             includeChallenge: false,
             includeUsername: true,
@@ -227,6 +238,7 @@ class GameListRenderService
             "No games found!",
             includeStyleWidth: false,
             includeDelete: false,
+            includeRestore: false,
             includeBoost: false,
             includeChallenge: false,
             includeUsername: true,

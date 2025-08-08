@@ -11,6 +11,7 @@ require_once('../content/taglister.php');
 require_once('../repositories/repositorymanager.php');
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
+$userRepository = RepositoryManager::get()->getUserRepository();
 
 $game_id = get_game_id($_GET['s']);
 $game = get_game_info($game_id['id']);
@@ -19,6 +20,7 @@ if ($game_id['userid'] != $game['user_id']) {
 }
 $status = "playing";
 $creator_type = to_creator_type($game['g_swf']);
+$isolated = $userRepository->isIsolated($game['author']) || $userRepository->isIsolated($_SESSION['username'] ?? '');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -192,9 +194,12 @@ $creator_type = to_creator_type($game['g_swf']);
                 if (window.addthis) addthis.button('#btn1', addthis_ui_config, addthis_share_config);
             }
             </script>
-
+            <?php
+            if (!$isolated) {
+            ?>
             <a id="messages_top"></a>
             <div id="messages"></div>
+            <?php } ?>
             <div id="venue" class="mprofvenue"></div>
             <script type="text/javascript" src="/comments/venue7.js"></script>
             <div class="spacer">&nbsp;</div>
