@@ -1,5 +1,8 @@
 <?php
 require_once('content/publish.php');
+require_once('../repositories/repositorymanager.php');
+$userRepository = RepositoryManager::get()->getUserRepository();
+$isolated = $userRepository->isIsolated($_SESSION['username']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -147,7 +150,7 @@ require_once('content/publish.php');
                 <input type="submit" onclick="sendTags()" value="Save Tags" class="loginbutton postbutton">
 
             </div>
-            <hr>
+            
             <script type="text/javascript">
             us_config = {
                 container: 'messages',
@@ -181,8 +184,12 @@ require_once('content/publish.php');
             </script>
 
             <div style="text-align:left;">
+            <?php
+            if (!$isolated) {
+            ?><hr>
                 <div id="messages"></div>
                 <div id="venue" class="mprofvenue"></div>
+            <?php } ?>
             </div>
             <?php } ?>
         </div>
