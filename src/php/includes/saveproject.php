@@ -21,20 +21,24 @@ function saveProject(int $g_swf): int
                 $title = urldecode($title); // Screw you geoff
                 $xml2->attributes()['title'] = $title; // Fix the title in the XML as well... Screw geoff again!!
             }
-            $qs = "INSERT INTO games (author, user_id, title, date, description, g_swf, ispublished, isdeleted, isprivate, comments) 
-                VALUES (:username, :user_id, :title, :date, :description, :g_swf, :ispublished, :isdeleted, :isprivate, :comments)
+            $currentDate = date("Y-m-d H:i:s");
+            $qs = "INSERT INTO games (author, user_id, title, date, description, g_swf, ispublished, isdeleted, isprivate, comments, first_created_date, first_published_date, last_published_date) 
+                VALUES (:username, :user_id, :title, :date, :description, :g_swf, :ispublished, :isdeleted, :isprivate, :comments, :first_created_date, :first_published_date, :last_published_date)
                 RETURNING g_id;";
             $id = $db->queryFirstColumn($qs, 0, [
                 ':username' => $author,
                 ':title' => $title,
-                ':date' => date("Y-m-d"),
+                ':date' => $currentDate, // last_edited
                 ':description' => null,
                 ':g_swf' => $g_swf,
                 ':ispublished' => $ispublished,
                 ':isdeleted' => 0,
                 ':isprivate' => 1,
                 ':comments' => 0,
-                ':user_id' => $_SESSION['userid']
+                ':user_id' => $_SESSION['userid'],
+                ':first_created_date' => $currentDate,
+                ':first_published_date' => $currentDate, // Will be updated when first published
+                ':last_published_date' => $currentDate  // Will be updated when published
             ]);
             $new_game = true;
             // Set xml2 "id" attribute to the new game id
@@ -50,6 +54,13 @@ function saveProject(int $g_swf): int
                 http_response_code(403);
                 die('<message result="failed" message="You do not own this game!"/>');
             }
+            
+            // Update the last_edited date when saving existing project
+            $currentDate = date("Y-m-d H:i:s");
+            $db->execute("UPDATE games SET date = :date WHERE g_id = :id", [
+                ':date' => $currentDate,
+                ':id' => $id
+            ]);
         }
 
 

@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../content/pages.php');
+require_once(__DIR__ . '/../content/timeelapsed.php');
 
 class GameListRenderService
 {
@@ -40,13 +41,15 @@ class GameListRenderService
                         $title = $game['title'];
                         $userId = $game['user_id'];
                         $author = $game['author'];
-                        $date = $game['date'];
+                        $date = $game['first_published_date'] ?? $game['first_created_date'];
                         $views = $game['views'];
+                        $lastModified = $game['date'] ?? null;
                         $gameDate = date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($date));
                         $avgRating = $game['avg_rating'] ?? 0;
                         $starUrl = "/chrome/rating" . ($avgRating * 10) . ".gif";
                         $includeTotalVotes = isset($game['total_votes']);
                         $totalVotes = $game['total_votes'] ?? 0;
+                        $isPublished = (bool)($game['ispublished'] ?? 1);
                         ?>
                     <div class="game">
                         <div class="photo">
@@ -76,7 +79,20 @@ class GameListRenderService
                                 <?= $totalVotes ?> vote<?= ($totalVotes == 1 ? '' : 's') ?>
                             </p>
                             <?php } ?>
-                            <p class="gameviews"><?= $views ?> view<?= ($views == 1) ? '' : 's' ?></p>
+                            <p class="gameviews">
+                                <?php
+                                    if ($isPublished) {
+                                ?>
+                                    <?= $views ?> view<?= ($views == 1) ? '' : 's' ?>
+                                <?php
+                                    } else {
+                                        echo '(Unpublished)';
+                                    }
+                                ?>
+                            </p>
+                            <?php if (isset($lastModified)) { ?>
+                                <p class="gameviews">Edited: <?= time_elapsed_string($lastModified, false) ?></p>
+                            <?php } ?>
                             <?php if ($anyModification) { ?>
                                 <div class="game-buttons">
                                     <?php if ($includeDelete) { ?>
