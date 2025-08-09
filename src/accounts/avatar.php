@@ -48,7 +48,7 @@
             <h3>My Avatar</h3>
             <p>Make your own Sploder avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new
                 creation. If you really want to spice up your avatar, create a <a
-                    href="/accounts/avatar.php?set=2">Premium Avatar!</a></p>
+                    href="/accounts/avatar.php?set=2">Premium Avatar</a>!</p>
             <div id="rpc_messages"></div>
             <div id="avatar_editor">
                 <input type="hidden" name="avatar_style" id="avatar_settings" value="000001_000033">
@@ -181,7 +181,7 @@
             $(".firstbutton a").text("Make a Classic Avatar »");
             $(".firstbutton a").attr("href", "/accounts/avatar.php");
             $("#content p").html(
-                'Make your own Sploder avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new creation. If you are bored of premium avatars, go back and create a <a href="/accounts/avatar.php">Classic Avatar!</a>'
+                'Make your own Sploder avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new creation. If you are bored of premium avatars, go back and create a <a href="/accounts/avatar.php">Classic Avatar</a>!<br><br>Premium avatars cost 150 boost points and can be edited for a limited period of time!'
             );
         }
 

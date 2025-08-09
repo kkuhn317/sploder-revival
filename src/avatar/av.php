@@ -16,15 +16,15 @@ $eyec = $data[8];
 $hairc = $data[10];
 $extrasco = $data[12];
 
-$avatarPrefix = $type == 'classic' ? 'avatar_0' : 'avatar_0.1';
+$avatarSuffix = $type == 'classic' ? '' : '.1';
 $avatarFiles = [
-    'skins' => "{$avatarPrefix}1_96.png",
-    'mouths' => "{$avatarPrefix}2_96.png",
-    'noses' => "{$avatarPrefix}3_96.png",
-    'eyes' => "{$avatarPrefix}4_96.png",
-    'hairs' => "{$avatarPrefix}5_96.png",
-    'extras' => "{$avatarPrefix}6_96.png",
-    'default' => "{$avatarPrefix}7_96.png"
+    'skins' => "avatar_01_96.png{$avatarSuffix}",
+    'mouths' => "avatar_02_96.png{$avatarSuffix}",
+    'noses' => "avatar_03_96.png{$avatarSuffix}",
+    'eyes' => "avatar_04_96.png{$avatarSuffix}",
+    'hairs' => "avatar_05_96.png{$avatarSuffix}",
+    'extras' => "avatar_06_96.png{$avatarSuffix}",
+    'default' => "avatar_07_96.png{$avatarSuffix}"
 ];
 
 $width = 96;
