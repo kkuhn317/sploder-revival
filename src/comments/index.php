@@ -99,7 +99,7 @@ $result2 = $db->query("SELECT *
         $result2 = $db->query("SELECT *
             FROM comments
             WHERE venue=:venue
-            ORDER BY thread_id DESC, id ASC
+            ORDER BY thread_id ASC, id ASC
             LIMIT 10 OFFSET :p", [
             ':venue' => $venue,
             ':p' => ($p * 10)
@@ -159,7 +159,7 @@ if ($a == "read") {
     if ($temp[0] == 'game') {
         require('../repositories/repositorymanager.php');
         $gameRepository = RepositoryManager::get()->getGameRepository();
-        $gameId = $temp[1];
+        $gameId = explode("_",$temp[1])[1];
         $allowComment = $gameRepository->allowComment($gameId);
         if (!$allowComment) {
             http_response_code(403);

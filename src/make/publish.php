@@ -154,7 +154,7 @@ $isolated = $userRepository->isIsolated($_SESSION['username']);
             <script type="text/javascript">
             us_config = {
                 container: 'messages',
-                venue: 'game-<?= $id . '-' . $game['author'] ?>',
+                venue: 'game-<?= $_SESSION['userid'] . '_' . $id . '-' . $game['author'] ?>',
                 venue_container: 'venue',
                 venue_type: 'game',
                 owner: '<?= $game['author'] ?>',
