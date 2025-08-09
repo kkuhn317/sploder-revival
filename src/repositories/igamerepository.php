@@ -3,7 +3,7 @@
 require_once(__DIR__ . "/../database/PaginationData.php");
 
 /**
- * Handles database interations with games
+ * Handles database interactions with games
  */
 interface IGameRepository
 {
@@ -135,18 +135,14 @@ interface IGameRepository
     public function getTotalDeletedGameCount($userName): int;
 
     /**
-     * Retrieves the total count of published games for a suer
+     * Retrieves the total count of published games for a user
      */
     public function getTotalMetricsForUser(string $userName): GameMetricsForUser;
 
     /**
-     * Verifies ownership of a game
-     * 
-     * @param int $gameId
-     * @param string $userName
-     * @return bool if the user owns the game
+     * Retrieves basic information, title, author and SWF type of the game
      */
-    public function verifyOwnership(int $gameId, string $userName): bool;
+    public function getGameBasicInfo(int $gameId): array;
 
     /**
      * Checks if comments are allowed for a specific game

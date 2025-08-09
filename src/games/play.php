@@ -9,9 +9,12 @@ require_once('../content/getgameid.php');
 require('../content/playgame.php');
 require_once('../content/taglister.php');
 require_once('../repositories/repositorymanager.php');
+require_once('../services/ChallengesService.php');
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
 $userRepository = RepositoryManager::get()->getUserRepository();
+$challengesService = new ChallengesService();
+
 
 $game_id = get_game_id($_GET['s']);
 $game = get_game_info($game_id['id']);
@@ -21,6 +24,21 @@ if ($game_id['userid'] != $game['user_id']) {
 $status = "playing";
 $creator_type = to_creator_type($game['g_swf']);
 $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isIsolated($_SESSION['username'] ?? '');
+
+
+if(isset($_GET['challenge'])){
+    $challengesRepository = RepositoryManager::get()->getChallengesRepository();
+    $challengeId = $_GET['challenge'];
+
+    // Verify if challengeId is correct
+    if($challengesRepository->verifyChallengeId($game_id['id'], $challengeId, $_SESSION['challenge'] ?? -1)) {
+        $challenge = true;
+        $challengeInfo = $challengesRepository->getChallengeInfo($game_id['id']);
+        $mode = "CHALLENGE ACCEPTED! ".$challengesService->formatChallengeMode($challengeInfo['mode'], $challengeInfo['challenge']);
+    } else {
+        $challenge = false;
+    }
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,7 +46,7 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
 <head>
     <?php
     if ($game['g_swf'] == 1) {
-        //include('../content/ruffle.php');
+        include('../content/ruffle.php');
     }
     ?>
     <?php include('../content/head.php') ?>
@@ -68,6 +86,19 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
             <div class="alert">This game is private but you have the key!</div>
             <?php } ?>
 
+            <?php
+            if($game['isprivate'] != 1) { echo '<br><br>'; }
+            if((!$challenge) && (isset($_GET['challenge']))) {
+                if($challengesRepository->hasWonChallenge($game_id['id'], $_SESSION['userid'] ?? -1)) {
+                    echo '<div class="challenge_prompt">Woo hoo! You won this challenge!</div>';
+                } else {
+                    echo '<div class="challenge_prompt">Yo ho ho! Log in to accept this challenge!</div>';
+                }
+            }
+            if($challenge) {
+                echo '<div class="challenge_prompt">'.$mode.'</div>';
+            }
+            ?>
             <div class="gameobject">
                 <div id="flashcontent">
                     <img class="game_preview"
@@ -115,6 +146,16 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
                 beta_version: "<?= $creator_type->swf_version(); ?>",
 
                 onsplodercom: "true",
+                <?php
+                if($challenge) {
+                    echo 'challenge: "'.$_GET['challenge'].'",';
+                    if(!$mode) {
+                        echo 'chscore: "'.$challengeInfo['challenge'].'",';
+                    } else {
+                        echo 'chtime: "'.$challengeInfo['challenge'].'",';
+                    }
+                }
+                ?>
                 modified: <?= strtotime($game['last_published_date']) ?>,
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";

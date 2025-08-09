@@ -1032,6 +1032,22 @@ ALTER TABLE ONLY public.challenges
 
 
 --
+-- Name: challenge_winners g_id_contest_winners_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenge_winners
+    ADD CONSTRAINT g_id_contest_winners_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) MATCH FULL;
+
+
+--
+-- Name: challenges g_id_contests_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.challenges
+    ADD CONSTRAINT g_id_contests_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) MATCH FULL;
+
+
+--
 -- Name: game_tags g_id_game_tags_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
 --
 

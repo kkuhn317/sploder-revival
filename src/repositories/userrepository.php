@@ -333,4 +333,29 @@ LIMIT 90;
         ]);
 
     }
+    public function addBoostPoints(int $userId, int $points): void
+    {
+        $query = "UPDATE members SET boostpoints = boostpoints + :points WHERE userid = :userid";
+        $this->db->execute($query, [
+            ':points' => $points,
+            ':userid' => $userId,
+        ]);
+    }
+
+    public function removeBoostPoints(int $userId, int $points): void
+    {
+        $query = "UPDATE members SET boostpoints = boostpoints - :points WHERE userid = :userid";
+        $this->db->execute($query, [
+            ':points' => $points,
+            ':userid' => $userId,
+        ]);
+    }
+
+    public function getBoostPoints(int $userId): int
+    {
+        $query = "SELECT boostpoints FROM members WHERE userid = :userid";
+        $result = $this->db->queryFirst($query, [':userid' => $userId]);
+        return $result ? (int)$result['boostpoints'] : 0;
+    }
+
 }

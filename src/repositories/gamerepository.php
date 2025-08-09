@@ -134,13 +134,16 @@ where g_id = :g_id
 
     public function getAllGamesFromUser(string $userName, int $offset, int $perPage, bool $isDeleted): PaginationData
     {
-        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.first_created_date, g.user_id, g.views, g.ispublished,
-            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
-            FROM games g 
-            LEFT JOIN votes r ON g.g_id = r.g_id 
-            WHERE g.author = :userName AND g.isDeleted = :isDeleted
-            GROUP BY g.g_id 
-            ORDER BY g.date DESC";
+
+        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.first_created_date, g.user_id, g.views, g.ispublished,g.isprivate, g.ispublished,
+            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes,
+            c.challenge_id as challenge_id
+        FROM games g
+        LEFT JOIN votes r ON g.g_id = r.g_id
+        LEFT JOIN challenges c ON g.g_id = c.g_id
+        WHERE g.author = :userName AND g.isDeleted = :isDeleted
+        GROUP BY g.g_id, c.challenge_id
+        ORDER BY g.date DESC";
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,
@@ -150,16 +153,17 @@ where g_id = :g_id
 
     public function getGamesFromUserAndGameSearch(string $userName, string $game, int $offset, int $perPage, $isDeleted): PaginationData
     {
-        $qs = 'SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.first_created_date, g.user_id, g.views, g.ispublished,
+        $qs = 'SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.first_created_date, g.user_id, g.views, g.ispublished,g.isprivate, g.ispublished,
         ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes,
+        c.challenge_id as challenge_id,
         SIMILARITY(title, :game) as similarity_score
         FROM games g 
         LEFT JOIN votes r ON g.g_id = r.g_id 
-        WHERE ((g.ispublished = 1 AND g.isprivate = 0) OR :isDeleted = 1)
-        AND g.author = :userName
+        LEFT JOIN challenges c ON g.g_id = c.g_id
+        WHERE g.author = :userName
         AND g.isdeleted = :isDeleted
         AND SIMILARITY(title, :game) > 0.3
-        GROUP BY g.g_id, g.title
+        GROUP BY g.g_id, g.title, c.challenge_id
         ORDER BY similarity_score DESC, g.date DESC';
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
@@ -287,5 +291,18 @@ where g_id = :g_id
             ':g_id' => $gameId,
         ]);
         return $result === 1;
+    }
+    
+    public function getGameBasicInfo(int $gameId): array
+    {
+        $result = $this->db->queryFirst("SELECT title, author, g_swf FROM games WHERE g_id = :g_id", [
+            ':g_id' => $gameId,
+        ]);
+        
+        return [
+            'title' => $result['title'],
+            'author' => $result['author'],
+            'g_swf' => (int)$result['g_swf']
+        ];
     }
 }

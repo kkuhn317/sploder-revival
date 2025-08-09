@@ -98,7 +98,7 @@ class GameListRenderService
                                     <?php if ($includeDelete) { ?>
                                         <input title="Delete" type="button"
                                             onclick="delproj(<?= $id ?>,'<?= urldecode($title) ?>')"
-                                            style="width:37px" value="Delete">&nbsp;
+                                            type="button" value="Delete">&nbsp;
                                     <?php } ?>
                                     <?php if ($includeRestore) { ?>
                                         <input title="Restore" type="button" class="boost_button"
@@ -106,13 +106,16 @@ class GameListRenderService
                                             style="" value="Restore">&nbsp;
                                     <?php } ?>
                                     <?php if ($includeBoost) { ?>
-                                        <input title="Boost" style="width:27px" class="boost_button" value="Boost">
+                                        <input title="Boost" type="button" class="boost_button" value="Boost">
                                     <?php } ?>
                                     <?php if ($includeChallenge) { ?>
                                         <?php if ($includeBoost) {
                                             echo '&nbsp;';
                                         } ?>
-                                        <input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">
+                                        <?php
+                                        if(!isset($game['challenge_id']) && ($game['isprivate'] == false && $game['ispublished'] == true)){ ?>
+                                            <a href='/games/challenges.php?s=<?= $_SESSION['userid'] .'_'. $id ?>'><input title="Challenge" type="button" class="challenge_button" value="Challenge"></a>
+                                        <?php } ?>
                                     <?php } ?>
 
                                 
@@ -187,7 +190,7 @@ class GameListRenderService
             includeRestore: $isDeleted,
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
-            includeChallenge: false,
+            includeChallenge: true,
             includeUsername: false,
             fixSidebar: false
         );
@@ -202,6 +205,7 @@ class GameListRenderService
             'This game was not found.<div class="spacer">&nbsp;</div>',
             includeStyleWidth: false,
             includeDelete: true,
+            includeRestore: $isDeleted,
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
             includeChallenge: false,
