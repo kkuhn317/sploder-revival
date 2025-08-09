@@ -2,10 +2,8 @@
 if (!session_id() && session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+// echo '<big><big><br>THIS IS IN EXTREME ALPHA. DO NOT USE. Instead, use <a href="https://github.com/Sploder-Saptarshi/Sploder-Launcher">this</a> for a better experience.</big></big>';
 ?>
-
-<big><big><br>THIS IS IN EXTREME ALPHA. DO NOT USE. Instead, use <a
-            href="https://github.com/Sploder-Saptarshi/Sploder-Launcher">this</a> for a better experience.</big></big>
 
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/database/connect.php');
