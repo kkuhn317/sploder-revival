@@ -23,6 +23,7 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
 
     require_once('../repositories/repositorymanager.php');
     $gameRepository = RepositoryManager::get()->getGameRepository();
+    $challengeRepository = RepositoryManager::get()->getChallengesRepository();
 
 
     if (!$gameRepository->verifyOwnership($id, $_SESSION['username'])) {
@@ -31,6 +32,8 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     }
     
     $currentDate = date("Y-m-d H:i:s");
+
+    $challengeRepository->unverifyChallenge($id);
     
     $db->execute("UPDATE games
         SET ispublished = :ispublished, 

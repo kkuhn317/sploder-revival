@@ -48,6 +48,13 @@ interface IChallengesRepository
     public function verifyChallengeId(int $gameId, int $challengeId, int $sessionChallengeId): bool;
 
     /**
+     * Unverify a challenge
+     * @param int $gameId
+     * @return void
+     */
+    public function unverifyChallenge(int $gameId): void;
+
+    /**
      * Get all challenges with pagination
      * @param int $offset
      * @param int $perPage
