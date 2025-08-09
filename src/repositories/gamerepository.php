@@ -106,7 +106,7 @@ where g_id = :g_id
     public function getPendingDeletionGames(): array
     {
         return $this->db->query("SELECT
-            games.g_id, games.date, MIN(pending_deletions.timestamp) as deletion_date, g_swf, author, title, userid as user_id, reason, views
+            games.g_id, games.first_published_date, MIN(pending_deletions.timestamp) as deletion_date, g_swf, author, title, userid as user_id, reason, views
             FROM pending_deletions
             JOIN games ON games.g_id = pending_deletions.g_id 
             JOIN members ON games.author = members.username 
@@ -116,7 +116,7 @@ where g_id = :g_id
 
     public function getPublicGamesFromUser(string $userName, int $offset, int $perPage): PaginationData
     {
-        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.first_published_date, g.user_id, g.views, 
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             LEFT JOIN votes r ON g.g_id = r.g_id 
@@ -132,33 +132,39 @@ where g_id = :g_id
         ]);
     }
 
-    public function getAllGamesFromUser(string $userName, int $offset, int $perPage): PaginationData
+    public function getAllGamesFromUser(string $userName, int $offset, int $perPage, bool $isDeleted): PaginationData
     {
-        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
-            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
-            FROM games g 
-            LEFT JOIN votes r ON g.g_id = r.g_id 
-            WHERE g.author = :userName
-            GROUP BY g.g_id 
-            ORDER BY g.g_id DESC";
+
+        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.first_created_date, g.user_id, g.views, g.ispublished,g.isprivate, g.ispublished,
+            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes,
+            c.challenge_id as challenge_id
+        FROM games g
+        LEFT JOIN votes r ON g.g_id = r.g_id
+        LEFT JOIN challenges c ON g.g_id = c.g_id
+        WHERE g.author = :userName AND g.isDeleted = :isDeleted
+        GROUP BY g.g_id, c.challenge_id
+        ORDER BY g.date DESC";
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,
+            ':isDeleted' => $isDeleted ? 1 : 0,
         ]);
     }
 
     public function getGamesFromUserAndGameSearch(string $userName, string $game, int $offset, int $perPage, $isDeleted): PaginationData
     {
-        $qs = 'SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
-            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
-            FROM games g 
-            LEFT JOIN votes r ON g.g_id = r.g_id 
-            WHERE ((g.ispublished = 1 AND g.isprivate = 0) OR :isDeleted = 1)
-            AND g.author = :userName
-            AND g.isdeleted = :isDeleted
-            AND SIMILARITY(title, :game) > 0.3
-            GROUP BY g.g_id 
-            ORDER BY g.g_id DESC';
+        $qs = 'SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.first_created_date, g.user_id, g.views, g.ispublished,g.isprivate, g.ispublished,
+        ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes,
+        c.challenge_id as challenge_id,
+        SIMILARITY(title, :game) as similarity_score
+        FROM games g 
+        LEFT JOIN votes r ON g.g_id = r.g_id 
+        LEFT JOIN challenges c ON g.g_id = c.g_id
+        WHERE g.author = :userName
+        AND g.isdeleted = :isDeleted
+        AND SIMILARITY(title, :game) > 0.3
+        GROUP BY g.g_id, g.title, c.challenge_id
+        ORDER BY similarity_score DESC, g.date DESC';
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,
@@ -169,7 +175,7 @@ where g_id = :g_id
 
     public function getGamesNewest(int $offset, int $perPage): PaginationData
     {
-        return $this->db->queryPaginated("SELECT g.g_id, g.author, g.title, g.description, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+        return $this->db->queryPaginated("SELECT g.g_id, g.author, g.title, g.description, g.user_id, g.g_swf, g.first_published_date, g.user_id, g.views, g.ispublished,
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             LEFT JOIN votes r ON g.g_id = r.g_id 
@@ -177,12 +183,12 @@ where g_id = :g_id
             AND g.isprivate = 0
             and g.isdeleted = 0
             GROUP BY g.g_id 
-            ORDER BY g.g_id DESC", $offset, $perPage);
+            ORDER BY g.first_published_date DESC", $offset, $perPage);
     }
 
     public function getGamesNewestByName(string $game, int $offset, int $perPage): PaginationData
     {
-        return $this->db->queryPaginated("SELECT g.g_id, g.author, g.title, g.description, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+        return $this->db->queryPaginated("SELECT g.g_id, g.author, g.title, g.description, g.user_id, g.g_swf, g.first_published_date, g.user_id, g.views, g.ispublished,
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             LEFT JOIN votes r ON g.g_id = r.g_id 
@@ -191,21 +197,21 @@ where g_id = :g_id
             and g.isdeleted = 0
             AND SIMILARITY(title, :game) > 0.3
             GROUP BY g.g_id 
-            ORDER BY g.g_id DESC", $offset, $perPage, [
+            ORDER BY g.first_published_date DESC", $offset, $perPage, [
             ':game' => $game,
         ]);
     }
 
     public function getGamesWithTag(string $tag, int $offset, int $perPage): PaginationData
     {
-        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.user_id, g.views, 
+        $qs = "SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.first_published_date, g.user_id, g.views, g.ispublished,
             ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
             FROM games g 
             JOIN game_tags gt ON g.g_id = gt.g_id 
             LEFT JOIN votes r ON g.g_id = r.g_id 
             WHERE g.ispublished = 1 AND g.isprivate = 0 AND gt.tag = :tag
             GROUP BY g.g_id 
-            ORDER BY g.g_id DESC";
+            ORDER BY g.first_published_date DESC";
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':tag' => $tag,
@@ -266,7 +272,7 @@ where g_id = :g_id
             AND isdeleted=0", [
             ':user' => $userName,
         ], PDO::FETCH_NUM);
-        return new GameMetricsForUser((int)$metrics[0], (int)$metrics[1]);
+        return new GameMetricsForUser((int)$metrics[1], (int)$metrics[0]);
     }
 
     public function verifyOwnership(int $gameId, string $userName): bool
@@ -276,5 +282,27 @@ where g_id = :g_id
             ':g_id' => $gameId,
         ]);
         return $result === $userName;
+    }
+
+    public function allowComment(int $gameId): bool
+    {
+        $query = "SELECT comments FROM games WHERE g_id = :g_id";
+        $result = $this->db->queryFirstColumn($query, 0, [
+            ':g_id' => $gameId,
+        ]);
+        return $result === 1;
+    }
+    
+    public function getGameBasicInfo(int $gameId): array
+    {
+        $result = $this->db->queryFirst("SELECT title, author, g_swf FROM games WHERE g_id = :g_id", [
+            ':g_id' => $gameId,
+        ]);
+        
+        return [
+            'title' => $result['title'],
+            'author' => $result['author'],
+            'g_swf' => (int)$result['g_swf']
+        ];
     }
 }

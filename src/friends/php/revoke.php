@@ -11,7 +11,5 @@ $db->execute("DELETE FROM friend_requests
         ':sender_id' => $_SESSION['userid']
     ]);
 
-include("../../content/webhook.php");
-log_data("Friend Request Revoked", $_SESSION['username'] . " has revoked a friend request to " . $_GET['u'], 1);
 
 header('Location: ../index.php');

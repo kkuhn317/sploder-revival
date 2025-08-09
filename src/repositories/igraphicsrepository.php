@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles database interations with graphics
+ * Handles database interactions with graphics
  */
 interface IGraphicsRepository
 {
@@ -56,4 +56,41 @@ interface IGraphicsRepository
    * @return int total number of likes on all graphics
    */
     public function getTotalGraphicLikesByUserId(int $userId): int;
+
+  /**
+   * Retrieves all tags for graphics
+   *
+   * @param $perPage
+   * @param $offset
+   * @return all tags for graphics
+   */
+    public function getGraphicTags(int $offset, int $perPage): PaginationData;
+
+  /**
+   * Retrieves graphics with a specific tag
+   * 
+   * @param string $tag
+   * @param int $offset
+   * @param int $perPage
+   * @return PaginationData
+   */
+    public function getGraphicsWithTag(string $tag, int $offset, int $perPage): PaginationData;
+
+  /**
+   * Gets the total number of public graphics by a user ID
+   * 
+   * @param string $username
+   * @return int Total number of public graphics
+   */
+    public function getTotalPublicGraphicsByUsername(string $username): int;
+
+  /**
+   * Gets public graphics by a user ID
+   * 
+   * @param string $username
+   * @param int $offset
+   * @param int $perPage
+   * @return array
+   */
+    public function getPublicGraphicsByUsername(string $username, int $offset = 0, int $perPage = 36): array;
 }

@@ -1,8 +1,15 @@
 <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
 <?php require('../content/swfobject.php'); ?>
 <?php include('../content/head.php'); ?>
-
-
+<?php require(__DIR__ . '/../../repositories/repositorymanager.php'); ?>
+<?php
+$userRepository = RepositoryManager::get()->getUserRepository();
+if(isset($_SESSION['userid'])) {
+    $level = $userRepository->getLevelByUserId($_SESSION['userid']);
+} else {
+    $level = 1;
+}
+?>
 
 
 <script type="text/javascript">
@@ -129,7 +136,8 @@ var flashvars = {
     PHPSESSID: "<?php echo $_SESSION['PHPSESSID']; ?>",
     userid: "<?php echo $_SESSION['userid'] ?>",
     username: "<?php echo $_SESSION['username'] ?>",
-    creationdate: "<?php echo time() ?>"
+    creationdate: "<?php echo time() ?>",
+    userlevel: "<?php echo $level ?>"
 
 
     <?php } ?>

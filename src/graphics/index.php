@@ -1,10 +1,14 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 session_start();
 require_once('../repositories/repositorymanager.php');
+// Get repository and service
 $graphicsRepository = RepositoryManager::get()->getGraphicsRepository();
-$perPage = 36;
-$result = $graphicsRepository->getPublicGraphics($_GET['o'] ?? 0, $perPage);
 $total = $graphicsRepository->getTotalPublicGraphics();
+
+$perPage = 36;
+require_once('../services/GraphicListRenderService.php');
+$graphicListRenderService = new GraphicListRenderService($graphicsRepository);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -41,42 +45,16 @@ $total = $graphicsRepository->getTotalPublicGraphics();
     <?php include('../content/subnav.php'); ?>
     <div id="content">
     <h3>Game Graphics</h3><h4>What are these?</h4>
-	<p>These are all of the graphics created by Sploder members.
-	You can use these graphics in the <a href="/make/ppg.php">Physics Puzzle Maker</a> or in 
-	the <a href="/make/plat.php">Platformer Game Creator</a>.
-	You can also <a href="/make/graphics.php">create your own graphics</a> using the online graphics editor.
-	All graphics should also be <a href="/graphics/tags/">tagged</a> to make them easy to find!</p><p>There <?= $total == 1 ? 'is' : 'are' ?> <?= $total ?> graphic<?= $total == 1 ? '' : 's' ?> so far with ? likes.</p>
-            <div id="viewpage">
-                <div class="set">
-                    <?php
-                    if ($total == "0") {
-                        echo 'No public graphics have been made yet.<div class="spacer">&nbsp;</div>';
-                    }
-
-                    foreach ($result as $counter => $graphic) {
-                        if ($graphic['id'] == null) {
-                            break;
-                        }
-                        $counter++;
-                        ?><div class="game vignette">
-                            <div class="photo">
-                                <a href="/members/index.php?u=<?= $graphic['username'] ?>"><img src="/graphics/gif/<?= $graphic['id'] ?>.gif" width="80" height="80" /></a>
-                            </div>
-
-
-                            <div class="spacer">&nbsp;</div>
-                        </div>
-                        <?php
-                        if ($counter % 4 == 0) {
-                            echo '<div class="spacer">&nbsp;</div>';
-                        }
-                    }
-                    ?>
-                    <div class="spacer">&nbsp;</div>
-                </div>
-            </div>
-            <?php include('../content/pages.php');
-            addPagination($total ?? 0, $perPage, $_GET['o'] ?? 0) ?>
+    <p>These are all of the graphics created by Sploder members.
+    You can use these graphics in the <a href="/make/ppg.php">Physics Puzzle Maker</a> or in 
+    the <a href="/make/plat.php">Platformer Game Creator</a>.
+    You can also <a href="/make/graphics.php">create your own graphics</a> using the online graphics editor.
+    All graphics should also be <a href="/graphics/tags.php">tagged</a> to make them easy to find!</p>
+    <p>There <?= $total == 1 ? 'is' : 'are' ?> <?= $total ?> graphic<?= $total == 1 ? '' : 's' ?> so far with ? likes.</p>
+    <?php
+        // Render the graphics list and pagination using the service
+        $graphicListRenderService->renderPartialViewForPublicGraphics($_GET['o'] ?? 0, $perPage);
+    ?>
         </div>
         <div id="sidebar">
             <!-- TODO: <h1>GAME BUZZ INCOMPLETE</h1> -->

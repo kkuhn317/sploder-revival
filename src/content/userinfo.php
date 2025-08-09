@@ -3,6 +3,10 @@
 
 function display_user_info($username)
 {
+    require_once('../repositories/repositorymanager.php');
+    require_once('../services/GraphicListRenderService.php');
+    $graphicsRepository = RepositoryManager::get()->getGraphicsRepository();
+    $graphicListRenderService = new GraphicListRenderService($graphicsRepository);
     include_once('../database/connect.php');
     $db = getDatabase();
 
@@ -67,7 +71,20 @@ function setClass(id, c) {
     </div>
 </div>
     <?php } ?>
-
+<?php
+$totalGraphics = $graphicsRepository->getTotalPublicGraphicsByUsername($username);
+if ($totalGraphics > 0){
+?>
+<div class="mprofgroup mprofsection">
+    <h4><a href="#" onclick="setClass('mprof_graphics', 'shown'); return false;">Graphics (<?= $totalGraphics ?>)</a><a name="top"></a></h4>
+    <div class="mprofcontent hidden" id="mprof_graphics"><br>
+    <?php        
+        $graphicListRenderService->renderPartialViewForMemberPublicGraphics($username);
+    ?>
+</div></div>
+<?php
+}
+?>
     <?php
 
     // Get required data for votes, comments, vote average, tributes, group memberships, and group ownerships
@@ -132,10 +149,10 @@ function setClass(id, c) {
             </dd>
             <dt>Tributes made:</dt>
             <dd><?= $validTributesCount ?></dd>
-            <dt>Group Memberships:</dt>
+            <!-- <dt>Group Memberships:</dt>
             <dd>??</dd>
             <dt>Group Ownerships:</dt>
-            <dd>??</dd>
+            <dd>??</dd> -->
         </dl>
         <div class="spacer">&nbsp;</div>
     </div>
@@ -214,8 +231,8 @@ function setClass(id, c) {
             <dd><?= $five_star_faves ?></dd>
             <dt>Comments received:</dt>
             <dd><?= $comments_received ?></dd>
-            <dt>Favorites <span style="color: #ff6666;">&hearts;</span>:</dt>
-            <dd>??</dd>
+            <!-- <dt>Favorites <span style="color: #ff6666;">&hearts;</span>:</dt>
+            <dd>??</dd> -->
             <dt>Tributes received:</dt>
             <dd><?= $tributes_received ?></dd>
             <dt>Comment rating:</dt>
