@@ -82,6 +82,10 @@ if ($count >= 3) {
             $db->execute("DELETE FROM pending_deletions WHERE g_id=:g_id", [
                 ':g_id' => $gameId
             ]);
+            // Before deleting the game, back it up in games_backup
+            $db->execute("INSERT INTO games_backup (SELECT * FROM games WHERE g_id=:id)", [
+                ':id' => $gameId
+            ]);
             $db->execute("DELETE FROM games WHERE g_id=:id", [
                 ':id' => $gameId
             ]);

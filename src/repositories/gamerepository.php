@@ -140,7 +140,7 @@ where g_id = :g_id
             LEFT JOIN votes r ON g.g_id = r.g_id 
             WHERE g.author = :userName AND g.isDeleted = :isDeleted
             GROUP BY g.g_id 
-            ORDER BY g.first_created_date DESC";
+            ORDER BY g.date DESC";
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,
@@ -160,7 +160,7 @@ where g_id = :g_id
         AND g.isdeleted = :isDeleted
         AND SIMILARITY(title, :game) > 0.3
         GROUP BY g.g_id, g.title
-        ORDER BY similarity_score DESC, g.first_created_date DESC';
+        ORDER BY similarity_score DESC, g.date DESC';
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,

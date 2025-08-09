@@ -91,7 +91,7 @@ class GameListRenderService
                                 ?>
                             </p>
                             <?php if (isset($lastModified)) { ?>
-                                <p class="gameviews">Edited: <?= time_elapsed_string($lastModified, false, true) ?></p>
+                                <p class="gameviews">Edited: <?= time_elapsed_string($lastModified, false) ?></p>
                             <?php } ?>
                             <?php if ($anyModification) { ?>
                                 <div class="game-buttons">
