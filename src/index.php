@@ -1,4 +1,5 @@
 <?php
+require(__DIR__.'/content/disablemobile.php');
 session_start();
 if (isset($_GET['s'])) {
     header('Location: games/play.php?s=' . $_GET['s']);
@@ -203,15 +204,15 @@ if (isset($_GET['s'])) {
 
             <div class="buttons" style="padding: 0;">
 
-                <span class="button firstbutton"><a href="/members/hall-of-fame/">Hall of Fame &raquo;</a></span>&nbsp;
+                <!-- TODO: <span class="button firstbutton"><a href="/members/hall-of-fame/">Hall of Fame &raquo;</a></span>&nbsp;
 
                 <span class="button"><a href="games/groups/">Groups &raquo;</a></span>&nbsp;
 
                 <span class="button"><a href="games/epic/">Epic Games &raquo;</a></span>&nbsp;
 
-                <span class="button"><a href="games/reviews/">Reviews &raquo;</a></span>&nbsp;
+                <span class="button"><a href="games/reviews/">Reviews &raquo;</a></span>&nbsp; -->
 
-                <span class="button"><a href="games/tags.php">Tags &raquo;</a></span>
+                <span class="firstbutton button"><a href="games/tags.php">Tags &raquo;</a></span>
 
             </div>
 

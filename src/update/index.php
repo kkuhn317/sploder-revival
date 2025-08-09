@@ -1,10 +1,17 @@
 <?php
+require(__DIR__.'/../config/env.php');
 $version = file_get_contents('currentversion.txt');
 $userVersion = explode('Sploder/', $_SERVER['HTTP_USER_AGENT'])[1];
 $userVersion = explode(' ', $userVersion)[0];
 if ($version == $userVersion) {
     header('Location: /');
     exit();
+}
+$info = explode('-', $_GET['info']);
+$os = $info[0];
+if ($os == 'win32') {
+    $arch = $info[1];
+    $method = $info[2];
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -16,10 +23,11 @@ if ($version == $userVersion) {
     <link rel="stylesheet" type="text/css" href="update.css" />
 
     <script type="text/javascript">
-    var _sf_startpt = (new Date()).getTime()
-    </script>
-    <script type="text/javascript">
-    const downloadUrl = 'files/Sploder-Setup-<?= $version ?>.exe';
+        const version = '<?= $version ?>';
+        const os = '<?= $os ?>';
+        const arch = '<?= $arch ?? '' ?>';
+        const method = '<?= $method ?? '' ?>';
+        const repositoryUrl = '<?= getenv('LAUNCHER_REPOSITORY_URL') ?>';
     </script>
     <script src="update.js"></script>
 
@@ -54,8 +62,7 @@ if ($version == $userVersion) {
 
                 <div class="finished" id="finished" style="display:none">
                     <b>
-                        <p>&nbsp;&nbsp;&nbsp;The update has been downloaded<br>To install it, click save and run the
-                            file</p>
+                        <p id="downloadCompleteMessage"></p>
                     </b>
                 </div>
 

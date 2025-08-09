@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 require_once(__DIR__ . '/../content/logincheck.php');
 require_once(__DIR__ . '/../database/connect.php');

@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 require('logincheck.php');
 ?>
@@ -205,7 +206,7 @@ require('logincheck.php');
     </div>
     <div id="bottomnav">
     </div>
-
+<?php require_once(__DIR__.'/../content/versionstring.php'); ?>
 </body>
 
 </html>

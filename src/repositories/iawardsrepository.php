@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles database interations with awards
+ * Handles database interactions with awards
  */
 interface IAwardsRepository
 {

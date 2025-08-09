@@ -159,10 +159,10 @@ function setClass(id, c) {
             </dd>
             <dt>Tributes made:</dt>
             <dd><?= $validTributesCount ?></dd>
-            <dt>Group Memberships:</dt>
+            <!-- <dt>Group Memberships:</dt>
             <dd>??</dd>
             <dt>Group Ownerships:</dt>
-            <dd>??</dd>
+            <dd>??</dd> -->
         </dl>
         <div class="spacer">&nbsp;</div>
     </div>
@@ -241,8 +241,8 @@ function setClass(id, c) {
             <dd><?= $five_star_faves ?></dd>
             <dt>Comments received:</dt>
             <dd><?= $comments_received ?></dd>
-            <dt>Favorites <span style="color: #ff6666;">&hearts;</span>:</dt>
-            <dd>??</dd>
+            <!-- <dt>Favorites <span style="color: #ff6666;">&hearts;</span>:</dt>
+            <dd>??</dd> -->
             <dt>Tributes received:</dt>
             <dd><?= $tributes_received ?></dd>
             <dt>Comment rating:</dt>

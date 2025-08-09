@@ -29,12 +29,24 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
         http_response_code(403);
         die('<message result="failed" message="You do not own this game!"/>');
     }
+    
+    $currentDate = date("Y-m-d H:i:s");
+    
     $db->execute("UPDATE games
-        SET ispublished=:ispublished, isprivate=:isprivate, comments=:comments
-        WHERE g_id=:id", [
+        SET ispublished = :ispublished, 
+            isprivate = :isprivate, 
+            comments = :comments, 
+            first_published_date = CASE 
+                WHEN ispublished = 0 THEN :current_date 
+                ELSE first_published_date 
+            END,
+            last_published_date = :current_date,
+            date = :current_date
+        WHERE g_id = :id", [
         ':ispublished' => $ispublished,
         ':isprivate' => $private,
         ':comments' => $comments,
+        ':current_date' => $currentDate,
         ':id' => $id
     ]);
     $project_path = "../users/user" . $_SESSION['userid'] . "/projects/proj" . $id . "/";

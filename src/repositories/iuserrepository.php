@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles database interations with users
+ * Handles database interactions with users
  */
 interface IUserRepository
 {
@@ -61,4 +61,45 @@ interface IUserRepository
      * @return int user ID or -1 if not found
      */
     function getUserIdFromUsername(string $username): int;
+
+    /**
+     * Checks if a user is isolated
+     * 
+     * @param $username
+     * @return bool true if isolated, false otherwise
+     */
+    function isIsolated(string $username): bool;
+
+    /**
+     * Set isolation status for a user
+     * 
+     * @param $username
+     * @param $isolate
+     * @return void
+     */
+    function setIsolation(string $username, bool $isolate): void;
+
+    /**
+     * Add boost points to a user
+     * 
+     * @param $userId
+     * @param $points
+     */
+    function addBoostPoints(int $userId, int $points): void;
+
+    /**
+     * Remove boost points from a user
+     * 
+     * @param $userId
+     * @param $points
+     */
+    function removeBoostPoints(int $userId, int $points): void;
+
+    /**
+     * Get boost points of a user
+     * 
+     * @param $userId
+     * @return int boost points of user
+     */
+    function getBoostPoints(int $userId): int;
 }
