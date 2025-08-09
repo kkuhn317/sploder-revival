@@ -115,4 +115,62 @@ on conflict do nothing", [
 	]);
     }
 
+    public function getGraphicTags(int $offset, int $perPage): PaginationData
+    {
+        return $this->db->queryPaginated(
+            "SELECT DISTINCT gt.tag 
+            FROM graphic_tags gt
+            JOIN graphics g ON gt.g_id = g.id
+            WHERE g.ispublished = true AND g.isprivate = false
+            ORDER BY gt.tag",
+            $offset,
+            $perPage
+        );
+    }
+
+    public function getGraphicsWithTag(string $tag, int $offset, int $perPage): PaginationData
+    {
+        $query = "SELECT g.*, m.username FROM graphics g
+                  LEFT JOIN members m ON g.userid = m.userid
+                  JOIN graphic_tags gt ON gt.g_id = g.id
+                  WHERE g.isprivate = false AND g.ispublished = true AND gt.tag = :tag
+                  ORDER BY g.id DESC";
+        return $this->db->queryPaginated($query, $offset, $perPage, [':tag' => $tag]);
+    }
+
+    public function getTotalPublicGraphicsByUsername(string $username): int
+    {
+        $query = "SELECT COUNT(*) FROM graphics WHERE userid = (SELECT userid FROM members WHERE username = :username) AND isprivate = false AND ispublished = true";
+        return $this->db->queryFirstColumn($query, 0, [':username' => $username]);
+    }
+
+    public function getPublicGraphicsByUsername(string $username, int $offset = 0, int $perPage = 36): array
+    {
+        $query = "SELECT g.id, g.userid, g.isprivate, g.ispublished, 
+                         m.username, COUNT(gl.g_id) as like_count 
+                  FROM graphics g
+                  LEFT JOIN members m ON g.userid = m.userid
+                  LEFT JOIN graphic_likes gl ON g.id = gl.g_id
+                  WHERE g.userid = (SELECT userid FROM members WHERE username = :username) 
+                    AND g.isprivate = false 
+                    AND g.ispublished = true
+                  GROUP BY g.id, g.userid, g.isprivate, g.ispublished, m.username
+                  ORDER BY like_count DESC, g.id DESC
+                  LIMIT :perPage OFFSET :offset";
+        return $this->db->query($query, [
+            ':username' => $username,
+            ':perPage' => $perPage,
+            ':offset' => $offset * $perPage
+        ]);
+    }
+    public function getTotalGraphicLikesByUserId(int $userId): int
+    {
+        $qs = "SELECT COUNT(gl.g_id) AS total_likes
+                FROM graphic_likes gl
+                JOIN graphics g ON gl.g_id = g.id
+                WHERE g.userid = :userid";
+        $result = $this->db->queryFirst($qs, [':userid' => $userId]);
+        return (int)($result['total_likes'] ?? 0);
+    }
+
 }
