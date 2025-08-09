@@ -173,6 +173,9 @@ $offset = $_GET['o'] ?? 0;
             <div class="set">
                 <?php
                 $challenges = $challengesRepository->getAllChallenges($offset, $perPage);
+                if (empty($challenges)) {
+                    echo "<p class='prompt'>No challenges available.</p>";
+                }
                 foreach($challenges as $index => $challenge) {
                     $gameId = $challenge['g_id'];
                     $userId = $challenge['user_id'];
