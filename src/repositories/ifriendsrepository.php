@@ -27,4 +27,12 @@ interface IFriendsRepository
      * @return boolean true if they are friends, false otherwise
      */
     public function alreadyFriends(string $sender, string $receiver): bool;
+
+    /**
+     * Gets the total number of friends for a user
+     * 
+     * @param $username the username to check
+     * @return int the total number of friends
+     */
+    public function getTotalFriends(string $username): int;
 }

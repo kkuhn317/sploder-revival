@@ -11,6 +11,7 @@ $db = getDatabase();
 $userRepository = RepositoryManager::get()->getUserRepository();
 $level = $userRepository->getLevelByUserId($_SESSION['userid']);
 $isolated = $userRepository->isIsolated($_SESSION['username']);
+$friends = $friendsRepository->getTotalFriends($username);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -64,13 +65,15 @@ $isolated = $userRepository->isIsolated($_SESSION['username']);
               <a href="../members/index.php?u=<?= $username ?>"
                 title="View profile"><?php echo $username ?></a>
             </p>
+            <?php if (!$isolated) { ?>
             <p>
               <a href="../friends/index.php"
-                title="Manage friends">1 friends</a>
+                title="Manage friends"><?= $friends ?> friend<?= $friends == 1 ? '' : 's' ?></a>
             </p>
+            <?php } ?>
             <p class="note"><abbr>Level
                 <?php echo $level ?></abbr>
-              <a class="tooltip">&nbsp;<span><strong>How do I level up?</strong>
+              <a style="background: url(../chrome/help_icon.gif) no-repeat top left" class="tooltip">&nbsp;<span><strong>How do I level up?</strong>
                   <br>You
                   level up by participating in Sploder Revival. Play games and vote on them,
                   create your own games, and make friends. As you do this, your level

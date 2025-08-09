@@ -39,4 +39,12 @@ class FriendsRepository implements IFriendsRepository
         
         return !empty($result);
     }
+
+    public function getTotalFriends(string $username): int
+    {
+        $query = "SELECT COUNT(*) FROM friends WHERE user1 = :username";
+        $result = $this->db->queryFirstColumn($query, 0, [':username' => $username]);
+        
+        return (int)$result;
+    }
 }
