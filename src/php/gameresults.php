@@ -79,15 +79,14 @@ if ($verifiedScore) {
         }
         
         // If the game is a challenge, insert the result into the challenges table
-        if ($isValidChallenge) {
-            $challengesRepository->addChallengeWinner($id[1], $_SESSION['userid']);
-            
+        if ($isValidChallenge) {   
             // Check if the user is the owner of the game
             $isOwner = $gameRepository->verifyOwnership($id[1], $_SESSION['username']);
             // If the user is the owner, update the challenge as verified
             if ($isOwner) {
                 $challengesRepository->verifyChallenge($challengeId);
             } else {
+                $challengesRepository->addChallengeWinner($id[1], $_SESSION['userid']);
                 $userRepository->addBoostPoints($_SESSION['userid'], $prize);
             }
         } else {
