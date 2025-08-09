@@ -1,8 +1,11 @@
 <?php
 
 echo "Service  Running!\n";
+require_once(__DIR__.'/../database/connect.php');
 
-require_once('../database/connect.php');
+// Hacky! But works without having to load the entire environment in cron
+// It never needs to be accessed anyway so it doesn't matter
+putenv('ORIGINAL_MEMBERS_DB=stub');
 $db = getDatabase();
 
 $day = date("w");
