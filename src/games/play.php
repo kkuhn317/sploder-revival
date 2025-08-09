@@ -46,7 +46,7 @@ if(isset($_GET['challenge'])){
 <head>
     <?php
     if ($game['g_swf'] == 1) {
-        //include('../content/ruffle.php');
+        include('../content/ruffle.php');
     }
     ?>
     <?php include('../content/head.php') ?>
