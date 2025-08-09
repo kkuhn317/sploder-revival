@@ -155,11 +155,11 @@ if ($a == "read") {
     $score = 0;
     $creator_name = $_SESSION['username'];
     // Check if the venue is a game
-    $temp = explode('-', $venue);
-    if ($temp[0] == 'game') {
+    $venueParts = explode('-', $venue);
+    if ($venueParts[0] == 'game') {
         require('../repositories/repositorymanager.php');
         $gameRepository = RepositoryManager::get()->getGameRepository();
-        $gameId = explode("_",$temp[1])[1];
+        $gameId = explode("_",$venueParts[1])[1];
         $allowComment = $gameRepository->allowComment($gameId);
         if (!$allowComment) {
             http_response_code(403);
