@@ -195,7 +195,7 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
             }
             </script>
             <?php
-            if (!$isolated) {
+            if (!$isolated && $game['comments'] == 1) {
             ?>
             <a id="messages_top"></a>
             <div id="messages"></div>

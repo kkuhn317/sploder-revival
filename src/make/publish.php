@@ -185,7 +185,7 @@ $isolated = $userRepository->isIsolated($_SESSION['username']);
 
             <div style="text-align:left;">
             <?php
-            if (!$isolated) {
+            if (!$isolated && $game['comments'] == 1) {
             ?><hr>
                 <div id="messages"></div>
                 <div id="venue" class="mprofvenue"></div>

@@ -154,6 +154,18 @@ if ($a == "read") {
     $t = time();
     $score = 0;
     $creator_name = $_SESSION['username'];
+    // Check if the venue is a game
+    $temp = explode('-', $venue);
+    if ($temp[0] == 'game') {
+        require('../repositories/repositorymanager.php');
+        $gameRepository = RepositoryManager::get()->getGameRepository();
+        $gameId = $temp[1];
+        $allowComment = $gameRepository->allowComment($gameId);
+        if (!$allowComment) {
+            http_response_code(403);
+            die("Comments are not allowed for this game.");
+        }
+    }
     include_once('../content/checkban.php');
     if (checkBan($creator_name)) {
         // set header to 403 (forbidden) and echo a message

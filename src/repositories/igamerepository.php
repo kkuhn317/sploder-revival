@@ -147,6 +147,14 @@ interface IGameRepository
      * @return bool if the user owns the game
      */
     public function verifyOwnership(int $gameId, string $userName): bool;
+
+    /**
+     * Checks if comments are allowed for a specific game
+     *
+     * @param int $gameId
+     * @return bool
+     */
+    public function allowComment(int $gameId): bool;
 }
 
 class GameMetricsForUser
