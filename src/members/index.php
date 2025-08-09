@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 require_once('content/index.php');
 require_once('../repositories/repositorymanager.php');
@@ -6,8 +7,15 @@ require_once('../services/FriendsListRenderService.php');
 
 $gameListRenderService = new GameListRenderService(RepositoryManager::get()->getGameRepository());
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
+$friends = $friendsRepository->getTotalFriends($_SESSION['username'] ?? '');
+$userRepository = RepositoryManager::get()->getUserRepository();
+$stats = $userRepository->getUserStats($_GET['u'] ?? '');
+$friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $friendsListRenderService = new FriendsListRenderService($friendsRepository);
 
+$difficulty = $stats['avg_difficulty'] ?? 50;
+$feedback = $stats['avg_score'] ?? 50;
+$awesomeness = $stats['awesomeness'] ?? 50;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -17,7 +25,7 @@ $friendsListRenderService = new FriendsListRenderService($friendsRepository);
 
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/member_profile3.css" />
-
+    <script type="text/javascript" src="js/friends.js"></script>
     <?php include('../content/onlinechecker.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
@@ -66,20 +74,34 @@ $friendsListRenderService = new FriendsListRenderService($friendsRepository);
                                 ?>
                             </dd>
                         </dl>
-                        <div><div id="venue" class="mprofvenue">...</div></div>
+                        <div><div id="venue" class="mprofvenue"></div></div>
+                        <?php
+                        $isolated = $userRepository->isIsolated($username) || $userRepository->isIsolated($_SESSION['username'] ?? '');
+                        if ($username !== ($_SESSION['username'] ?? '') && isset($_SESSION['loggedin']) && !$isolated) {
+                            // Check if the user is already friends
+                            $isFriend = $friendsRepository->alreadyFriends($_SESSION['username'], $username);
+                            if ($isFriend) {
+                                echo '<div style="float:right;"><a style="cursor:pointer;" onclick="handleRemoveFriend(event, \'' . $username . '\')">REMOVE FRIEND</a></div>';
+                            } else {
+                                echo '<div style="float:right;"><a style="cursor:pointer;" onclick="handleAddFriend(event, \'' . $username . '\')">ADD FRIEND</a></div>';
+                            }
+                        ?>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
                 <div class="shown">
                     <div class="mprofgroup">
                         <div class="mprofchart mprofmain" title="Awesomeness - computed using a secret recipe">
-                            <img src="/images/charts/awesomeness/chart_50.png" width="230" height="116" />
+                            <img src="/images/charts/awesomeness/chart_<?php echo $awesomeness ?>.png" width="230" height="116" />
                             <p>Awesomeness</p>
                         </div>
                         <div class="mprofcount" title="total games/featured games">
-                            <div class="stat"><?php echo $totalgames ?> <span>Games</span></div>
+                            <div class="stat"><?php echo $totalgames ?> <span>Game<?= $totalgames == 1 ? '' : 's' ?></span></div>
                         </div>
                         <div class="mprofcount mprofend">
-                            <div class="stat"><?php echo count($friends)/2 ?> <span>Friends</span></div>
+                            <div class="stat"><?php echo $friends ?> <span>Friend<?= $friends == 1 ? '' : 's' ?></span></div>
                         </div>
 
                         <div class="mprofchart" title="Average difficulty, all games combined">
@@ -87,7 +109,7 @@ $friendsListRenderService = new FriendsListRenderService($friendsRepository);
                             <p>Difficulty</p>
                         </div>
                         <div class="mprofchart mprofend" title="Average votes, from all players">
-                            <img src="/images/charts/feedback/chart_50.png" width="160" height="70" />
+                            <img src="/images/charts/feedback/chart_<?= $feedback ?>.png" width="160" height="70" />
                             <p>Feedback</p>
                             <br>
                         </div>
@@ -165,9 +187,10 @@ $friendsListRenderService = new FriendsListRenderService($friendsRepository);
             }
             </script>
 
-
+                <?php if (!$isolated) { ?>
                 <a id="messages_top"></a>
                 <div id="messages"></div>
+                <?php } ?>
                 <div class="spacer">&nbsp;</div>
                 <?php
                 echo $friendsListRenderService->renderPartialViewForMemberFriends($username);

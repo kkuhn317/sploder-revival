@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 include('../content/logincheck.php');
 require_once('../database/connect.php');
@@ -6,6 +7,7 @@ require_once('../repositories/repositorymanager.php');
 require_once('../services/FriendsListRenderService.php');
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $friendsRepository->setAllFriendsAsViewed($_SESSION['userid']);
+$userRepository = RepositoryManager::get()->getUserRepository();
 $friendsService = new FriendsListRenderService($friendsRepository);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
@@ -67,8 +69,16 @@ $friendsService = new FriendsListRenderService($friendsRepository);
             <div class="alert">That user is already your friend!</div>
                 <?php } elseif ($err == "before") { ?>
             <div class="alert">That user revoked the request before you could accept it!</div>
+                <?php } elseif ($err == "isolated") { ?>
+            <div class="alert">That user has disabled comments and friending on their profile!</div>
                 <?php }
             } ?>
+            <?php
+            $isolated = $userRepository->isIsolated($_SESSION['username']);
+            if ($isolated) {
+                echo '<div class="alert">You have disabled comments and friending on your profile. You cannot send or receive friend requests. You can go to your profile settings to enable it.</div>';
+            } else {
+            ?>
             <h4>New Friend Requests</h4>
             <?php
             $result = $db->query("SELECT sender_username
@@ -122,9 +132,9 @@ $friendsService = new FriendsListRenderService($friendsRepository);
                 </form>
             </div>
             <?php
-            echo $friendsService->renderPartialViewForRecentFriends($_SESSION['username'], true);
+echo $friendsService->renderPartialViewForRecentFriends($_SESSION['username'], true);
             ?>
-
+            <?php } ?>
 
 
             <div class="spacer">&nbsp;</div>

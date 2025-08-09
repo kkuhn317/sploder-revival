@@ -1,6 +1,35 @@
+document.addEventListener('DOMContentLoaded', function () {
+    if (os == 'linux') {
+        const downloadLink = document.querySelector('.actions > a');
+        if (downloadLink) {
+            downloadLink.href = repositoryUrl + '/releases/latest';
+            downloadLink.target = '_blank';
+            downloadLink.removeAttribute('onclick');
+        }
+    }
+});
 function start_download() {
     const progressBar = document.getElementById('progress-bar');
-
+    const downloadCompleteMessage = document.getElementById('downloadCompleteMessage');
+    
+    // Set the download complete message based on OS and method
+    if (os == 'win32') {
+        if(method == 'installed') {
+            var downloadUrl = `uploads/Sploder-Setup-${version}-${arch}.exe`;
+            downloadCompleteMessage.innerHTML = 'The update has been downloaded<br>To install it, click save and run the setup file';
+        } else {
+            var downloadUrl = `uploads/Sploder-Portable-${version}-${arch}.zip`;
+            downloadCompleteMessage.innerHTML = 'The update has been downloaded<br>To run it, extract the zip file and run the executable';
+        }
+    } else if (os == 'darwin') {
+        var downloadUrl = `uploads/Sploder-macOS-${version}.zip`;
+        downloadCompleteMessage.innerHTML = 'The update has been downloaded<br>To install it, extract the zip file and drag to Applications folder';
+    } else if (os == 'linux') {
+        // Redirect users to the GitHub releases page for Linux in a new tab
+        // This is done by setting the anchor element's href and target attributes
+        // on DOM content load
+        return;
+    }
     fetch(downloadUrl)
         .then(response => {
             if (!response.ok) {
@@ -28,7 +57,18 @@ function start_download() {
                                     // Trigger the browser save dialog
                                     const a = document.createElement('a');
                                     a.href = url;
-                                    a.download = 'Sploder-Update-Setup.exe'; // Set the desired file name
+                                    
+                                    // Set appropriate filename based on OS and method
+                                    if (os == 'win32') {
+                                        if(method == 'installed') {
+                                            a.download = `Sploder-Setup-${version}-${arch}.exe`;
+                                        } else {
+                                            a.download = `Sploder-Portable-${version}-${arch}.zip`;
+                                        }
+                                    } else if (os == 'darwin') {
+                                        a.download = `Sploder-macOS-${version}.zip`;
+                                    }
+                                    
                                     document.body.appendChild(a);
                                     a.click();
                                     document.body.removeChild(a);

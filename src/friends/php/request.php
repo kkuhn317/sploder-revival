@@ -2,15 +2,19 @@
 
 include('../../content/logincheck.php');
 include('../../database/connect.php');
+require_once('../../repositories/repositorymanager.php');
 
+$friendsRepository = RepositoryManager::get()->getFriendsRepository();
+$userRepository = RepositoryManager::get()->getUserRepository();
 $username = $_GET['username'];
 $db = getDatabase();
-$qs2 = "SELECT id FROM friends WHERE (user1=:sender_id AND user2=:receiver_id)";
-$exists = $db->query($qs2, [
-    ':sender_id' => $_SESSION['username'],
-    ':receiver_id' => $username
-]);
-if (!isset($exists[0]['id'])) {
+$alreadyFriends = $friendsRepository->alreadyFriends($_SESSION['username'], $username);
+$isolatedreceiver = $userRepository->isIsolated($username);
+if ($isolatedreceiver) {
+    header('Location: ../index.php?err=isolated');
+    exit;
+}
+if (!$alreadyFriends) {
     $qs2 = "SELECT userid FROM members WHERE username=:user";
     $receiver = $db->query($qs2, [
         ':user' => $username
@@ -41,9 +45,6 @@ if (!isset($exists[0]['id'])) {
             ':sender_username' => $_SESSION['username'],
             ':receiver_username' => $_GET['username']
         ]);
-
-        include("../../content/webhook.php");
-        log_data("Friend Request Attempt", $_SESSION['username'] . " has sent a friend request to " . $_GET['username'], 1);
         header('Location: ../index.php?err=suc');
     }
 } else {

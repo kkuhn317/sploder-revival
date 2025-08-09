@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 include('../content/logincheck.php');
 include('content/my-graphics.php');

@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 require_once('../content/logincheck.php');
 require_once('../database/connect.php');
@@ -6,7 +7,7 @@ require_once('php/functions.php');
 require_once('../repositories/repositorymanager.php');
 
 $userRepository = RepositoryManager::get()->getUserRepository();
-$level = getLevel($userRepository);
+$level = $userRepository->getLevelByUserId($_SESSION['userid']);
 if ($level < 10) {
     header("Location: ../index.php");
     die();

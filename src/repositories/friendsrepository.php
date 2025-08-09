@@ -29,6 +29,25 @@ class FriendsRepository implements IFriendsRepository
         ]);
     }
 
+    public function alreadyFriends(string $sender, string $receiver): bool
+    {
+        $query = "SELECT id FROM friends WHERE user1 = :sender AND user2 = :receiver";
+        $result = $this->db->query($query, [
+            ':sender' => $sender,
+            ':receiver' => $receiver
+        ]);
+        
+        return !empty($result);
+    }
+
+    public function getTotalFriends(string $username): int
+    {
+        $query = "SELECT COUNT(*) FROM friends WHERE user1 = :username";
+        $result = $this->db->queryFirstColumn($query, 0, [':username' => $username]);
+        
+        return (int)$result;
+    }
+
     public function getBestedFriends(string $username, int $limit = 30): array
     {
         return $this->db->query("SELECT user1, user2

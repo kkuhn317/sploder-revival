@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles database interations with contests
+ * Handles database interactions with contests
  */
 interface IContestRepository
 {
