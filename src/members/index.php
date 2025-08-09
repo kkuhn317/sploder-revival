@@ -71,7 +71,7 @@ $awesomeness = $stats['awesomeness'] ?? 50;
                                 ?>
                             </dd>
                         </dl>
-                        <div><div id="venue" class="mprofvenue">...</div></div>
+                        <div><div id="venue" class="mprofvenue"></div></div>
                         <?php
                         $isolated = $userRepository->isIsolated($username) || $userRepository->isIsolated($_SESSION['username'] ?? '');
                         if ($username !== ($_SESSION['username'] ?? '') && isset($_SESSION['loggedin']) && !$isolated) {
