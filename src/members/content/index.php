@@ -10,12 +10,6 @@ $db = getDatabase();
 $userParam = [':username' => $username];
 $publicgames = " AND isdeleted=0 AND ispublished=1 AND isprivate=0";
 
-// Fetch friends
-$friends = $db->queryFirst("SELECT id FROM friends WHERE user1 = :username", $userParam);
-if ($friends == false) {
-    $friends = [];
-}
-
 // Fetch total games
 $totalgames = $db->queryFirstColumn("SELECT COUNT(g_id) FROM games WHERE author = :username $publicgames", 0, $userParam);
 

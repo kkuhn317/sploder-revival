@@ -6,6 +6,7 @@ require_once('../services/GameListRenderService.php');
 
 $gameListRenderService = new GameListRenderService(RepositoryManager::get()->getGameRepository());
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
+$friends = $friendsRepository->getTotalFriends($_SESSION['username'] ?? '');
 $userRepository = RepositoryManager::get()->getUserRepository();
 $stats = $userRepository->getUserStats($_GET['u'] ?? '');
 
@@ -94,10 +95,10 @@ $awesomeness = $stats['awesomeness'] ?? 50;
                             <p>Awesomeness</p>
                         </div>
                         <div class="mprofcount" title="total games/featured games">
-                            <div class="stat"><?php echo $totalgames ?> <span>Games</span></div>
+                            <div class="stat"><?php echo $totalgames ?> <span>Game<?= $totalgames == 1 ? '' : 's' ?></span></div>
                         </div>
                         <div class="mprofcount mprofend">
-                            <div class="stat"><?php echo count($friends)/2 ?> <span>Friends</span></div>
+                            <div class="stat"><?php echo $friends ?> <span>Friend<?= $friends == 1 ? '' : 's' ?></span></div>
                         </div>
 
                         <div class="mprofchart" title="Average difficulty, all games combined">
