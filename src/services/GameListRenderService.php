@@ -205,6 +205,7 @@ class GameListRenderService
             'This game was not found.<div class="spacer">&nbsp;</div>',
             includeStyleWidth: false,
             includeDelete: true,
+            includeRestore: $isDeleted,
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
             includeChallenge: false,
