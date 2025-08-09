@@ -279,4 +279,13 @@ where g_id = :g_id
         ]);
         return $result === $userName;
     }
+
+    public function allowComment(int $gameId): bool
+    {
+        $query = "SELECT comments FROM games WHERE g_id = :g_id";
+        $result = $this->db->queryFirstColumn($query, 0, [
+            ':g_id' => $gameId,
+        ]);
+        return $result === 1;
+    }
 }
