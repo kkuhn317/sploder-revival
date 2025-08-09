@@ -74,22 +74,25 @@ $count = $db->queryFirstColumn("SELECT COUNT(*) FROM pending_deletions WHERE g_i
     ':g_id' => $gameId
 ]);
 
+$count = $count + 1; // Don't forget to count the current request
+
 // Proceed if 3 moderators opt to delete the game
-// TODO: merge transaciton scope
+
 if ($count >= 3) {
     try {
-        $db->useTransactionScope(function () use ($db, $gameId) {
-            $db->execute("DELETE FROM pending_deletions WHERE g_id=:g_id", [
-                ':g_id' => $gameId
-            ]);
-            // Before deleting the game, back it up in games_backup
-            $db->execute("INSERT INTO games_backup (SELECT * FROM games WHERE g_id=:id)", [
-                ':id' => $gameId
-            ]);
-            $db->execute("DELETE FROM games WHERE g_id=:id", [
-                ':id' => $gameId
-            ]);
-        });
+        // Single query to backup game, delete from games, and delete pending deletions
+        $db->execute("
+            WITH backup_game AS (
+                INSERT INTO games_backup (SELECT * FROM games WHERE g_id = :id)
+            ),
+            delete_game AS (
+                DELETE FROM games WHERE g_id = :id
+            )
+            DELETE FROM pending_deletions WHERE g_id = :g_id
+        ", [
+            ':id' => $gameId,
+            ':g_id' => $gameId
+        ]);
 
         $title = getGameName($gameId);
         include_once('log.php');
