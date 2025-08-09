@@ -46,7 +46,14 @@
         </div>
         <div id="content">
             <h3>My Avatar</h3>
-            <p>Make your own Sploder avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new
+            <?php
+            if (isset($_GET['set']) && $_GET['set'] == 2) {
+                if (isset($_SESSION['premium_avatar']) && time() - $_SESSION['premium_avatar'] < 15*60) {
+                    echo '<p class="prompt">Don\'t like your avatar? You can edit your premium avatar for free, 15 minutes after creation, or until you log out, whichever comes first!</p>';
+                }
+            }
+            ?>
+            <p id="avatar_prompt">Make your own Sploder avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new
                 creation. If you really want to spice up your avatar, create a <a
                     href="/accounts/avatar.php?set=2">Premium Avatar</a>!</p>
             <div id="rpc_messages"></div>
@@ -180,7 +187,7 @@
             type = "premium";
             $(".firstbutton a").text("Make a Classic Avatar »");
             $(".firstbutton a").attr("href", "/accounts/avatar.php");
-            $("#content p").html(
+            $("#avatar_prompt").html(
                 'Make your own Sploder avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new creation. If you are bored of premium avatars, go back and create a <a href="/accounts/avatar.php">Classic Avatar</a>!<br><br>Premium avatars cost 150 boost points and can be edited for a limited period of time!'
             );
         }
@@ -214,11 +221,18 @@
 
         async function fetchAsync(url) {
             let response = await fetch(url);
-            let data = await response.json();
+            let data = await response.text();
             return data;
         }
         $("#control_save").click(function() {
-            fetchAsync($("#newURL").val());
+            fetchAsync($("#newURL").val()).then(function(response) {
+                if (response && response.trim() !== '') {
+                    // Get current prompt text
+                    var currentPrompt = $("#avatar_prompt").html();
+                    // Add the response as an additional prompt
+                    $("#avatar_prompt").html(currentPrompt + '<br><br><p class="alert">' + response.trim() + '</p>');
+                }
+            });
         });
 
         $("#copyButton").click(function() {

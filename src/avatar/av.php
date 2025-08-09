@@ -1,7 +1,8 @@
 <?php
-
-
 session_start();
+
+require_once(__DIR__.'/../repositories/repositorymanager.php');
+$userRepository = RepositoryManager::get()->getUserRepository();
 
 $data = explode("-", $_GET['c']);
 $type = $data[0];
@@ -15,6 +16,21 @@ $skinc = $data[1];
 $eyec = $data[8];
 $hairc = $data[10];
 $extrasco = $data[12];
+
+if ($type == 'premium') {
+    // If the user has a premium avatar for less than 15 minutes, they can edit it for free
+    if (isset($_SESSION['premium_avatar']) && time() - $_SESSION['premium_avatar'] < 15*60) {
+        // Allow editing for free
+    } else {
+        $boostPoints = $userRepository->getBoostPoints($_SESSION['userid']);
+        if ($boostPoints < 150) {
+            die('You do not have enough boost points to create a premium avatar!');
+        }
+        $userRepository->removeBoostPoints($_SESSION['userid'], 150);
+        // Set the premium avatar to be the current time
+        $_SESSION['premium_avatar'] = time();
+    }
+}
 
 $avatarSuffix = $type == 'classic' ? '' : '.1';
 $avatarFiles = [
