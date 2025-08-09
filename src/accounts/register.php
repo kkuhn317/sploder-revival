@@ -206,7 +206,7 @@ require('logincheck.php');
     </div>
     <div id="bottomnav">
     </div>
-
+<?php require_once(__DIR__.'/../content/versionstring.php'); ?>
 </body>
 
 </html>

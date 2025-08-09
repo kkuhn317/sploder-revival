@@ -208,7 +208,7 @@ if (!isset($_SESSION['usermigrate'])) {
 
 
 
-
+<?php require_once(__DIR__.'/../content/versionstring.php'); ?>
 
 </body>
 
