@@ -35,7 +35,7 @@ function addPagination(int $total = 0, int $perPage = 12, int $offset = 0): void
             } else {
                 echo '<span class="page_button page_button_inactive">&laquo;</span>';
             }
-            echo '<br><br><br>';
+            echo '<br>';
         }
         ?>
     </div>

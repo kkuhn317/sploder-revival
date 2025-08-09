@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 include('../content/logincheck.php');
 $username = $_SESSION['username'];
@@ -93,14 +94,14 @@ $totalgames = $gameRepository->getTotalDeletedGameCount($username);
                                 $_GET['game'],
                                 $currentPage,
                                 $perPage,
-                                isDeleted: true
+                                true
                             );
                         } else {
                             $total = $gameListRenderService->renderPartialViewForMyGamesUser(
                                 $username,
                                 $currentPage,
                                 $perPage,
-                                isDeleted: true
+                                true
                             );
                         }
                     }

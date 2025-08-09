@@ -1,3 +1,10 @@
+// Prevent scroll for a short time after page load
+window._pageJustLoaded = true;
+setTimeout(() => {
+    window._pageJustLoaded = false;
+}, 2000);
+
+
 /* json2.js
  * 2008-01-17
  * Public Domain
@@ -100,7 +107,11 @@ function us_anim(tween)
     }
     var val = tween.startval + (tween.endval - tween.startval) * amt;
     if (tween.prop == "scrollY") {
-        tween.obj.scrollTo(0, val);
+        if (tween.prop == "scrollY") {
+            if (!window._pageJustLoaded) {
+                tween.obj.scrollTo(0, val);
+            }
+        }
     } else if (tween.prop == "opacity") {
         if (tween.obj.filters) {
             tween.obj.filters.alpha.opacity = val;
@@ -279,7 +290,7 @@ function us_setVenue()
 
     if (us_config['username'] != "" && us_config['username'] != us_config['owner']) {
         if (window.location.pathname.indexOf('/games/play.php') === 0) {
-            h += ' |';
+            //h += ' |';
             if ($us_venue_vote != 1) {
                 h += ' <a class="us_button" href="#" onclick="us_vote(' + $us_venue_id + ', 1, \'venue\'); return false;">[+]</a>';
             } else {
@@ -292,9 +303,9 @@ function us_setVenue()
             }
 
             if ($us_venue_favorite == 1) {
-                h += ' <a class="us_button us_symbol us_favorited" href="#" onclick="us_favorite(' + $us_venue_id + ', -1, \'venue\'); return false;">[&hearts;]</a>';
+                h += ' <a class="us_button us_symbol us_favorited" href="#" onclick="us_favorite(' + $us_venue_id + ', -1, \'venue\'); return false;">[&hearts;] </a>';
             } else {
-                h += ' <a class="us_button us_symbol" href="#" onclick="us_favorite(' + $us_venue_id + ', 1, \'venue\'); return false;">[&hearts;]</a>';
+                h += ' <a class="us_button us_symbol" href="#" onclick="us_favorite(' + $us_venue_id + ', 1, \'venue\'); return false;">[&hearts;] </a>';
             }
         }
     }

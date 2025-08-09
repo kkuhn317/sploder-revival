@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles database interations with graphics
+ * Handles database interactions with graphics
  */
 interface IGraphicsRepository
 {

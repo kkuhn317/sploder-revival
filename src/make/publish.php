@@ -1,10 +1,18 @@
 <?php
 require_once('content/publish.php');
+require_once('../repositories/repositorymanager.php');
+$userRepository = RepositoryManager::get()->getUserRepository();
+$isolated = $userRepository->isIsolated($_SESSION['username']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
+    <?php
+    if ($game['g_swf'] == 1) {
+        include('../content/ruffle.php');
+    }
+    ?>
     <title>Sploder</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="../css/sploder_v2p12.css" type="text/css" />
@@ -142,11 +150,11 @@ require_once('content/publish.php');
                 <input type="submit" onclick="sendTags()" value="Save Tags" class="loginbutton postbutton">
 
             </div>
-            <hr>
+            
             <script type="text/javascript">
             us_config = {
                 container: 'messages',
-                venue: 'game-<?= $id . '-' . $game['author'] ?>',
+                venue: 'game-<?= $_SESSION['userid'] . '_' . $id . '-' . $game['author'] ?>',
                 venue_container: 'venue',
                 venue_type: 'game',
                 owner: '<?= $game['author'] ?>',
@@ -176,8 +184,12 @@ require_once('content/publish.php');
             </script>
 
             <div style="text-align:left;">
+            <?php
+            if (!$isolated && $game['comments'] == 1) {
+            ?><hr>
                 <div id="messages"></div>
                 <div id="venue" class="mprofvenue"></div>
+            <?php } ?>
             </div>
             <?php } ?>
         </div>

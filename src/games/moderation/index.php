@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../../content/disablemobile.php'); ?>
 <?php include('php/verify.php'); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 
@@ -69,6 +70,7 @@
                 <div class="spacer">&nbsp;</div><br>
 
                 <textarea name="reason" id="reason" placeholder="Reason" rows="4" cols="50" required></textarea>
+                <input type="hidden" name="return" value="index.php" />
                 <input type="submit" name="return" hidden value="index.php" />
 
             </form>

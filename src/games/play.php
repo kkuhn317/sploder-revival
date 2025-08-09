@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -8,8 +9,12 @@ require_once('../content/getgameid.php');
 require('../content/playgame.php');
 require_once('../content/taglister.php');
 require_once('../repositories/repositorymanager.php');
+require_once('../services/ChallengesService.php');
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
+$userRepository = RepositoryManager::get()->getUserRepository();
+$challengesService = new ChallengesService();
+
 
 $game_id = get_game_id($_GET['s']);
 $game = get_game_info($game_id['id']);
@@ -18,11 +23,32 @@ if ($game_id['userid'] != $game['user_id']) {
 }
 $status = "playing";
 $creator_type = to_creator_type($game['g_swf']);
+$isolated = $userRepository->isIsolated($game['author']) || $userRepository->isIsolated($_SESSION['username'] ?? '');
+
+
+if(isset($_GET['challenge'])){
+    $challengesRepository = RepositoryManager::get()->getChallengesRepository();
+    $challengeId = $_GET['challenge'];
+
+    // Verify if challengeId is correct
+    if($challengesRepository->verifyChallengeId($game_id['id'], $challengeId, $_SESSION['challenge'] ?? -1)) {
+        $challenge = true;
+        $challengeInfo = $challengesRepository->getChallengeInfo($game_id['id']);
+        $mode = "CHALLENGE ACCEPTED! ".$challengesService->formatChallengeMode($challengeInfo['mode'], $challengeInfo['challenge']);
+    } else {
+        $challenge = false;
+    }
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
+    <?php
+    if ($game['g_swf'] == 1) {
+        include('../content/ruffle.php');
+    }
+    ?>
     <?php include('../content/head.php') ?>
     <link rel="alternate nofollow" type="application/rss+xml" title="RSS" href="/gamefeed.php" />
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
@@ -33,7 +59,6 @@ $creator_type = to_creator_type($game['g_swf']);
     var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include('../content/onlinechecker.php'); ?>
-    <?php include('../content/ruffle.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
 
@@ -45,7 +70,7 @@ $creator_type = to_creator_type($game['g_swf']);
         <div id="content">
             <h3><?= $game['title'] ?></h3>
             <h4 class="subtitle">By <a href="/members/index.php?u=<?= $game['author'] ?>"><?= $game['author'] ?></a> ::
-                <?= date('l F j\t\h, Y', strtotime($game['date'])) ?></h4>
+                <?= date('l F j\t\h, Y', strtotime($game['last_published_date'])) ?></h4>
 
             <div class="vote" id="contestwidget">
                 <div style="margin-top:-15px; width: 150px; height:45px; overflow: hidden;" id="contestflash">&nbsp;
@@ -54,12 +79,26 @@ $creator_type = to_creator_type($game['g_swf']);
             <div id="venue" style="margin: 6px 0 0 20px; float: right;"></div>
             <script>
             window.g_id = <?= $game['g_id'] ?>;
+            swfobject.embedSWF("/swf/contest.swf", "contestflash", "150", "30", "8", "/swfobject/expressInstall.swf", { g: window.g_id}, { bgcolor: "#000000", menu: "false", quality: "high", scale: "noscale", salign: "tl", wmode: "opaque" });
             </script>
             <?php if ($game['isprivate'] == 1) { ?>
             <br><br>
             <div class="alert">This game is private but you have the key!</div>
             <?php } ?>
-            <script type="text/javascript" src="play.js"></script>
+
+            <?php
+            if($game['isprivate'] != 1) { echo '<br><br>'; }
+            if((!$challenge) && (isset($_GET['challenge']))) {
+                if($challengesRepository->hasWonChallenge($game_id['id'], $_SESSION['userid'] ?? -1)) {
+                    echo '<div class="challenge_prompt">Woo hoo! You won this challenge!</div>';
+                } else {
+                    echo '<div class="challenge_prompt">Yo ho ho! Log in to accept this challenge!</div>';
+                }
+            }
+            if($challenge) {
+                echo '<div class="challenge_prompt">'.$mode.'</div>';
+            }
+            ?>
             <div class="gameobject">
                 <div id="flashcontent">
                     <img class="game_preview"
@@ -67,8 +106,11 @@ $creator_type = to_creator_type($game['g_swf']);
                     <p class="game_loading"
                         style="font-size: 14px; line-height: 16px; width: 500px; padding: 20px; margin-left: -130px; margin-top: 0px;">
                         Your browser does not support the technology to run this game<br><br>
-                        You may download a single-use file to load it separately<br><br>
-                        <img border="0" alt="Download" src="/images/download.gif" />
+                        You must download our launcher to run it<br><br>
+                        Games made with the shooter creator will still work on your browser<br><br>
+                        <a href="<?= getenv("LAUNCHER_REPOSITORY_URL") ?>/releases/latest" target="_blank">
+                            <img border="0" alt="Download" src="/images/download.gif" />
+                        </a>
                     </p>
                 </div>
             </div>
@@ -104,7 +146,17 @@ $creator_type = to_creator_type($game['g_swf']);
                 beta_version: "<?= $creator_type->swf_version(); ?>",
 
                 onsplodercom: "true",
-                modified: <?= rand() ?>,
+                <?php
+                if($challenge) {
+                    echo 'challenge: "'.$_GET['challenge'].'",';
+                    if(!$mode) {
+                        echo 'chscore: "'.$challengeInfo['challenge'].'",';
+                    } else {
+                        echo 'chtime: "'.$challengeInfo['challenge'].'",';
+                    }
+                }
+                ?>
+                modified: <?= strtotime($game['last_published_date']) ?>,
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";
                 } ?>
@@ -183,9 +235,12 @@ $creator_type = to_creator_type($game['g_swf']);
                 if (window.addthis) addthis.button('#btn1', addthis_ui_config, addthis_share_config);
             }
             </script>
-
+            <?php
+            if (!$isolated && $game['comments'] == 1) {
+            ?>
             <a id="messages_top"></a>
             <div id="messages"></div>
+            <?php } ?>
             <div id="venue" class="mprofvenue"></div>
             <script type="text/javascript" src="/comments/venue7.js"></script>
             <div class="spacer">&nbsp;</div>
@@ -194,13 +249,13 @@ $creator_type = to_creator_type($game['g_swf']);
             <?php
                 $db = getDatabase();
 
-                $result = $db->query("SELECT g_id, date, title, author, views
+                $result = $db->query("SELECT g_id, first_published_date, title, author, views
                     FROM games
                     WHERE author = :author
                     AND isprivate = 0
                     AND ispublished = 1
                     AND isdeleted = 0
-                    ORDER BY date DESC LIMIT 11", [
+                    ORDER BY first_published_date DESC LIMIT 11", [
                     ':author' => $game['author']
                     ]);
 
@@ -226,7 +281,7 @@ $creator_type = to_creator_type($game['g_swf']);
                     <?php
                     //show games
                     foreach ($result as $more_game) {
-                        echo '<li><a href="play.php?s=' . $game['user_id'] . '_' . $more_game['g_id'] . '">' . $more_game['title'] . '</a>&nbsp; <span class="viewscomments">' . date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['date'])) . ' &middot; ' . $more_game['views'] . ' views</span></li>';
+                        echo '<li><a href="play.php?s=' . $game['user_id'] . '_' . $more_game['g_id'] . '">' . $more_game['title'] . '</a>&nbsp; <span class="viewscomments">' . date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['first_published_date'])) . ' &middot; ' . $more_game['views'] . ' views</span></li>';
                     }
                     ?>
 
@@ -259,12 +314,6 @@ $creator_type = to_creator_type($game['g_swf']);
                 }?>" }, { bgcolor: "#000000", menu: "false", quality: "low", scale: "noscale", salign: "tl", wmode: "opaque" });
             </script>
     
-
-
-
-            <div class="skyscraper">
-
-            </div>
 
             <br /><br />
             <?php

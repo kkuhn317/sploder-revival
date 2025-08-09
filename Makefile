@@ -1,4 +1,4 @@
-.PHONY: help build dev dev.watch dev.down dev.bootstrap dev.bash.site dev.bash.db dev.backup.db dev.hook clean test
+.PHONY: help build install.composer dev dev.watch dev.down dev.bootstrap dev.bash.site dev.bash.db dev.backup.db dev.hook clean test
 
 ifeq ($(OS),Windows_NT)
   OPEN_CMD = start
@@ -11,20 +11,26 @@ CONTAINER_CMD = docker
 
 help:
 	@echo "Available commands:"
-	@echo "  make build           - build the sploder-revival docker image"
-	@echo "  make dev             - executes the docker-compose-dev file with the PostgreSQL boostrap"
-	@echo "  make dev.hook        - install the pre-commit hook for formatting"
-	@echo "  make dev.watch       - same as dev, but does not detach the docker container"
-	@echo "  make dev.down        - stops the docker container if running"
-	@echo "  make dev.bootsrap    - restores the database dump into the PostgreSQL container"
-	@echo "  make dev.bash.site   - enter the sploder revival container"
-	@echo "  make dev.bash.db     - enter the db container"
-	@echo "  make dev.backup.db   - creates a schema backup of the database into the mounted folder"
-	@echo "  make clean           - cleans docker images and temporary files"
-	@echo "  make test            - runs the unit tests for the project"
+	@echo "  make build            - build the sploder-revival docker image"
+	@echo "  make install.composer - installs composer for php"
+	@echo "  make dev              - executes the docker-compose-dev file with the PostgreSQL boostrap"
+	@echo "  make dev.hook         - install the pre-commit hook for formatting"
+	@echo "  make dev.watch        - same as dev, but does not detach the docker container"
+	@echo "  make dev.down         - stops the docker container if running"
+	@echo "  make dev.bootsrap     - restores the database dump into the PostgreSQL container"
+	@echo "  make dev.bash.site    - enter the sploder revival container"
+	@echo "  make dev.bash.db      - enter the db container"
+	@echo "  make dev.backup.db    - creates a schema backup of the database into the mounted folder"
+	@echo "  make clean            - cleans docker images and temporary files"
+	@echo "  make test             - runs the unit tests for the project"
 build:
 	composer install
 	${CONTAINER_CMD} build . -t sploder-revival
+install.composer:
+	php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+	php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'.PHP_EOL; } else { echo 'Installer corrupt'.PHP_EOL; unlink('composer-setup.php'); exit(1); }"
+	php composer-setup.php
+	php -r "unlink('composer-setup.php');"
 dev:
 	$(MAKE) dev.down
 	@if [ "$(WATCH)" = "true" ]; then \
