@@ -111,8 +111,8 @@ LIMIT 90;
             SELECT 
                 (SELECT COUNT(*) FROM votes v WHERE v.username = m.username) AS total_ratings_given,
                 COUNT(DISTINCT f.user2) AS friend_count,
-                COUNT(DISTINCT g.g_id) AS game_count,
-                COALESCE(SUM(g.views), 0) AS total_views
+                COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
+                COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END), 0) AS total_views
             FROM 
                 members m
             LEFT JOIN 
@@ -189,6 +189,150 @@ LIMIT 90;
         }
     }
 
+    public function getUserIdFromUsername(string $username): int
+    {
+        $qs = "SELECT userid FROM members WHERE username = :username";
+        $result = $this->db->queryFirst($qs, [':username' => $username]);
+        return $result ? (int)$result['userid'] : -1; // Return -1 if not found
+    }
+
+    public function getUserStats(string $username): array|null
+    {
+        $query = "
+            WITH user_stats AS (
+                SELECT 
+                    m.username,
+                    COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_games,
+                    COALESCE(AVG(g.difficulty) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 5.5) as avg_difficulty,
+                    COUNT(DISTINCT f.user2) as total_friends,
+                    COUNT(v.score) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_votes,
+                    COALESCE(AVG(l.gtm) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 0) as avg_playtime,
+                    COALESCE(AVG(COALESCE(v.score, 3)) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 3) as avg_score,
+                    COALESCE(
+                        floor(
+                            (
+                                (SELECT COUNT(*) FROM votes v2 
+                                 JOIN games g2 ON g2.g_id = v2.g_id 
+                                 WHERE v2.username = m.username 
+                                 AND g2.ispublished = 1 
+                                 AND g2.isprivate = 0 
+                                 AND g2.isdeleted = 0)/25.0 +
+                                COUNT(DISTINCT f.user2)/10.0 +
+                                COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)/10.0 +
+                                COALESCE(SUM(g.views) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 0)/1000.0
+                            ) + 1
+                        ),
+                        1
+                    ) as calculated_level
+                FROM members m
+                LEFT JOIN games g ON m.username = g.author
+                LEFT JOIN friends f ON m.username = f.user1
+                LEFT JOIN votes v ON g.g_id = v.g_id
+                LEFT JOIN leaderboard l ON g.g_id = l.pubkey
+                WHERE m.username = :username
+                GROUP BY m.username
+            )
+            SELECT *,
+                   LEAST(250, calculated_level) as level
+            FROM user_stats";
+
+        $result = $this->db->queryFirst($query, [':username' => $username]);
+        
+        if (!$result) {
+            // Return default values if no data found
+            return [
+                'avg_difficulty' => 50,
+                'avg_score' => 50,
+                'awesomeness' => 50
+            ];
+        }
+
+        // Calculate stats and return as array
+        $stats = $result;
+
+        // Calculate games score
+        $calcGames = 2 * (min(10, $result['total_games']));
+        $calcFriends = 2 * (min(5, $result['total_friends']));
+        
+        // Adjust games and friends calculations
+        if ($calcFriends * 2 >= $calcGames) {
+            $newCalcFriends = $calcGames;
+        } else {
+            $newCalcFriends = $calcFriends;
+        }
+        
+        if ($calcGames >= 1) {
+            $newCalcGames = $calcFriends;
+        } else {
+            $newCalcGames = $calcGames;
+        }
+
+        // Calculate remaining components
+        $calcPlays = floor(0.5 * (min(10, $result['total_votes'] - 0.2)));
+        $calcTime = floor(2 * (min(10, $result['avg_playtime'])));
+        
+        // Convert average score (1-5) to feedback score (0-100) then to final feedback component
+        $feedback = floor(min(100/8, (($result['avg_score'] - 1) * 25)/8));
+        
+        // Calculate level component
+        $level = floor(min(250, $result['level']/20));
+        
+        $compulsory = 24;
+
+        // Calculate awesomeness score
+        $awesomeness = min(100, floor(
+            $newCalcGames +
+            $newCalcFriends +
+            $calcPlays +
+            $calcTime +
+            $compulsory +
+            $feedback +
+            $level
+        ));
+
+        // Return only the required stats
+        return [
+            'avg_difficulty' => (int)round(($result['avg_difficulty'] - 1) * (100 / 9)),  // Convert to 0-100 scale
+            'avg_score' => (int)round(($result['avg_score'] - 1) * 25),  // Convert to 0-100 scale
+            'awesomeness' => $awesomeness
+        ];
+    }
+
+    public function isIsolated(string $username): bool
+    {
+        $query = "
+            SELECT isolate FROM members WHERE username = :username
+        ";
+        $result = $this->db->queryFirst($query, [':username' => $username]);
+        return $result ? (bool)$result['isolate'] : false; // Return false if not found
+    }
+
+    public function setIsolation(string $username, bool $isolate): void
+    {
+        $query = "
+            WITH 
+            update_isolation AS (
+                UPDATE members 
+                SET isolate = :isolate 
+                WHERE username = :username
+            ),
+            delete_friend_requests AS (
+                DELETE FROM friend_requests 
+                WHERE (:isolate = true) AND (sender_username = :username OR receiver_username = :username)
+            ),
+            delete_friends AS (
+                DELETE FROM friends 
+                WHERE (:isolate = true) AND (user1 = :username OR user2 = :username)
+            )
+            SELECT 1
+        ";
+    
+        $this->db->execute($query, [
+            ':isolate' => $isolate,
+            ':username' => $username
+        ]);
+
+    }
     public function addBoostPoints(int $userId, int $points): void
     {
         $query = "UPDATE members SET boostpoints = boostpoints + :points WHERE userid = :userid";

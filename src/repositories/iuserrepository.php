@@ -55,6 +55,31 @@ interface IUserRepository
     function saveEvent(string $s, string $e, string $g);
 
     /**
+     * Get user ID from username
+     * 
+     * @param $username
+     * @return int user ID or -1 if not found
+     */
+    function getUserIdFromUsername(string $username): int;
+
+    /**
+     * Checks if a user is isolated
+     * 
+     * @param $username
+     * @return bool true if isolated, false otherwise
+     */
+    function isIsolated(string $username): bool;
+
+    /**
+     * Set isolation status for a user
+     * 
+     * @param $username
+     * @param $isolate
+     * @return void
+     */
+    function setIsolation(string $username, bool $isolate): void;
+
+    /**
      * Add boost points to a user
      * 
      * @param $userId

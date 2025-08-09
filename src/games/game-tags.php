@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 $t = $_GET['t']; // Tag by user input
 session_start();

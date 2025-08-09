@@ -1,4 +1,10 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php include('../content/logincheck.php'); ?>
+<?php
+require_once('../repositories/repositorymanager.php');
+$userRepository = RepositoryManager::get()->getUserRepository();
+$isolated = $userRepository->isIsolated($_SESSION['username']) || $userRepository->isIsolated($_GET['u'] ?? '');
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -103,7 +109,10 @@
                     placeholder="Enter your favorite bands..."></textarea><br><br><br>
                 <label for="whomIRespect">Whom You Respect:</label><br><br>
                 <textarea id="whomIRespect" name="whomIRespect" rows="3" style="width: 100%; resize: none;"
-                    placeholder="Enter whom you respect..."></textarea><br><br><br>
+                    placeholder="Enter whom you respect..."></textarea><br><br>
+                <input type="checkbox" id="isolate" name="isolate" <?php if(!$isolated) { echo 'checked'; } ?>>
+                <label for="isolate">Allow comments and friending <?php if(!$isolated) {echo '<br>Warning! Disabling this option will permanently ERASE all your current friends.'; } ?></label><br><br>
+                
                 <input type="submit" value="Submit" style="height: 40px" class="postbutton">
             </form>
         </div>

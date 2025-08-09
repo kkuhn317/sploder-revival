@@ -19,8 +19,4 @@ $db->execute("DELETE FROM friends
         ':sender_id' => $_GET['u']
     ]);
 
-include("../../content/webhook.php");
-
-log_data("Friend Unfriended", $_SESSION['username'] . " is no longer friends with " . $_GET['u'], 1);
-
 header('Location: ../index.php');

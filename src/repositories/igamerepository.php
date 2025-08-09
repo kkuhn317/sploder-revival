@@ -63,7 +63,7 @@ interface IGameRepository
      */
     public function getPublicGamesFromUser(string $userName, int $offset, int $perPage): PaginationData;
 
-    public function getAllGamesFromUser(string $userName, int $offset, int $perPage): PaginationData;
+    public function getAllGamesFromUser(string $userName, int $offset, int $perPage, bool $isDeleted): PaginationData;
 
     /**
      * Retrieves games for a given member based on a search parameter
@@ -143,6 +143,14 @@ interface IGameRepository
      * Retrieves basic information, title, author and SWF type of the game
      */
     public function getGameBasicInfo(int $gameId): array;
+
+    /**
+     * Checks if comments are allowed for a specific game
+     *
+     * @param int $gameId
+     * @return bool
+     */
+    public function allowComment(int $gameId): bool;
 }
 
 class GameMetricsForUser
