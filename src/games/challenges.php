@@ -101,6 +101,8 @@ $offset = $_GET['o'] ?? 0;
                     $gameSWF = $gameInfo['g_swf'];
                     if($gameSWF == 5 || $gameSWF == 7){
                         $showScore = true;
+                    } else {
+                        $showScore = false;
                     }
 
             ?>
