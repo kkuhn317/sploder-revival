@@ -123,11 +123,12 @@ if ($totalGraphics > 0){
         AND author = :username $publicgames
         AND EXISTS (
             SELECT 1 FROM members
-            WHERE username = SUBSTRING(title FROM 12 FOR LENGTH(title) - 11) 
-            AND username != :username)", 0, [
+            WHERE username ILIKE SUBSTRING(title FROM 12 FOR LENGTH(title) - 11)
+            AND username ILIKE :username = FALSE
+        )
+    ", 0, [
         ':username' => $username
-            ]);
-
+    ]);
     ?>
 <div class="mprofgroup mprofsection">
     <h4><a href="#" onclick="setClass('mprof_activity', 'shown'); return false;"
