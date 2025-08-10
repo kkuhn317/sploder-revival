@@ -13,8 +13,7 @@ services:
       # Production volumes - only expose specific writable directories
       - ./src/users:/var/www/html/users:rw
       - ./src/avatar/a:/var/www/html/avatar/a:rw
-      - ./src/cache/events.lock:/var/www/html/cache/events.lock:rw
-      - ./src/cache/events.xml:/var/www/html/cache/events.xml:rw
+      - ./src/cache:/var/www/html/cache:rw
       - ./src/config/currentcontest.txt:/var/www/html/config/currentcontest.txt:rw
       - ./src/database/originalmembers.db:/var/www/html/database/originalmembers.db:rw
       - ./src/graphics/gif:/var/www/html/graphics/gif:rw
@@ -72,8 +71,7 @@ services:
       sh -c "
         chmod 777 /var/www/html/users
         chmod 777 /var/www/html/avatar/a
-        chmod 777 /var/www/html/cache/events.lock
-        chmod 777 /var/www/html/cache/events.xml
+        chmod 777 /var/www/html/cache/
         chmod 777 /var/www/html/config/currentcontest.txt
         chmod 777 /var/www/html/database/originalmembers.db
         chmod 777 /var/www/html/graphics/gif
