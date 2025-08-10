@@ -1,6 +1,6 @@
 FROM php:8.3-apache
 
-WORKDIR /var/www/sploder-revival
+WORKDIR /var/www/html
 
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
@@ -52,14 +52,10 @@ RUN composer install \
     --no-dev \
     --prefer-dist
 
-COPY ./src /var/www/sploder-revival/
-
-# Configure Apache to serve from the new directory
-RUN sed -i 's|/var/www/html|/var/www/sploder-revival|g' /etc/apache2/sites-available/000-default.conf \
-  && sed -i 's|/var/www/html|/var/www/sploder-revival|g' /etc/apache2/apache2.conf
+COPY ./src /var/www/html/
 
 # Set up cron job
-RUN echo '0 1 * * * /usr/local/bin/php /var/www/sploder-revival/cronjobs/contest.php' > /etc/cron.d/contest-cron \
+RUN echo '0 1 * * * /usr/local/bin/php /var/www/html/cronjobs/contest.php' > /etc/cron.d/contest-cron \
   && chmod 0644 /etc/cron.d/contest-cron \
   && crontab /etc/cron.d/contest-cron
 
