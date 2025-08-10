@@ -10,6 +10,9 @@ function isEditor()
     $permissions = $db->queryFirstColumn($qs, 0, [
       ':username' => $_SESSION['username'],
     ]);
+    if ($permissions === null) {
+        return false;
+    }
     return str_contains($permissions, "E");
 }
 function getMaxCustomization($level, $isEditor)
