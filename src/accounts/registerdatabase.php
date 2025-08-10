@@ -40,23 +40,23 @@ $result = file_get_contents(
 $response =  $result;
 
 $responseKeys = json_decode($response, true);
-//print_r ($responseKeys);
+
 if (intval($responseKeys["success"]) !== 1) {
     header('Location: register.php?err=cap');
 } else {
     session_start();
     $password = $_POST['pass2'];
-    $isolate = $_POST['social'];
-    $tostest = $_POST['tostest'];
+    $isolate = $_POST['social'] ?? "off";
+    $tostest = $_POST['tostest'] ?? "off";
     $username = mb_strtolower($_SESSION['enteredusername']);
     $hashed = password_hash($password, PASSWORD_BCRYPT);
-    if ($isolate == "1") {
+    if ($isolate == "on") {
         $isolate == "0";
     } else {
         $isolate == "1";
     }
     $t = time();
-    if ($tostest == "1") {
+    if ($tostest == "on") {
         require('../database/connect.php');
 
         $originalMembersDb = getOriginalMembersDatabase();

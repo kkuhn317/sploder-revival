@@ -153,7 +153,7 @@ if (!isset($_SESSION['usermigrate'])) {
                                 <td colspan="3">
                                     <div class="checkholder">
                                         <input name="social" type="checkbox" class="checkbutton"
-                                            value="1" checked="checked" />
+                                            checked />
                                     </div>
                                     <p>Allow comments and friending on my profile.</p>
                                 </td>
