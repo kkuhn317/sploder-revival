@@ -51,9 +51,9 @@ if (intval($responseKeys["success"]) !== 1) {
     $username = mb_strtolower($_SESSION['enteredusername']);
     $hashed = password_hash($password, PASSWORD_BCRYPT);
     if ($isolate == "on") {
-        $isolate == "0";
-    } else {
         $isolate == "1";
+    } else {
+        $isolate == "0";
     }
     $t = time();
     if ($tostest == "on") {
