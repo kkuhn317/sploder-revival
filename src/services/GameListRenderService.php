@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../content/pages.php');
+require_once(__DIR__ . '/../content/timeelapsed.php');
 
 class GameListRenderService
 {
@@ -40,13 +41,15 @@ class GameListRenderService
                         $title = $game['title'];
                         $userId = $game['user_id'];
                         $author = $game['author'];
-                        $date = $game['date'];
+                        $date = $game['first_published_date'] ?? $game['first_created_date'];
                         $views = $game['views'];
+                        $lastModified = $game['date'] ?? null;
                         $gameDate = date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($date));
                         $avgRating = $game['avg_rating'] ?? 0;
                         $starUrl = "/chrome/rating" . ($avgRating * 10) . ".gif";
                         $includeTotalVotes = isset($game['total_votes']);
                         $totalVotes = $game['total_votes'] ?? 0;
+                        $isPublished = (bool)($game['ispublished'] ?? 1);
                         ?>
                     <div class="game">
                         <div class="photo">
@@ -76,13 +79,26 @@ class GameListRenderService
                                 <?= $totalVotes ?> vote<?= ($totalVotes == 1 ? '' : 's') ?>
                             </p>
                             <?php } ?>
-                            <p class="gameviews"><?= $views ?> view<?= ($views == 1) ? '' : 's' ?></p>
+                            <p class="gameviews">
+                                <?php
+                                    if ($isPublished) {
+                                ?>
+                                    <?= $views ?> view<?= ($views == 1) ? '' : 's' ?>
+                                <?php
+                                    } else {
+                                        echo '(Unpublished)';
+                                    }
+                                ?>
+                            </p>
+                            <?php if (isset($lastModified)) { ?>
+                                <p class="gameviews">Edited: <?= time_elapsed_string($lastModified, false) ?></p>
+                            <?php } ?>
                             <?php if ($anyModification) { ?>
                                 <div class="game-buttons">
                                     <?php if ($includeDelete) { ?>
                                         <input title="Delete" type="button"
                                             onclick="delproj(<?= $id ?>,'<?= urldecode($title) ?>')"
-                                            style="width:37px" value="Delete">&nbsp;
+                                            type="button" value="Delete">&nbsp;
                                     <?php } ?>
                                     <?php if ($includeRestore) { ?>
                                         <input title="Restore" type="button" class="boost_button"
@@ -90,13 +106,16 @@ class GameListRenderService
                                             style="" value="Restore">&nbsp;
                                     <?php } ?>
                                     <?php if ($includeBoost) { ?>
-                                        <input title="Boost" style="width:27px" class="boost_button" value="Boost">
+                                        <input title="Boost" type="button" class="boost_button" value="Boost">
                                     <?php } ?>
                                     <?php if ($includeChallenge) { ?>
                                         <?php if ($includeBoost) {
                                             echo '&nbsp;';
                                         } ?>
-                                        <input title="Challenge" style="width:46px" class="challenge_button" value="Challenge">
+                                        <?php
+                                        if(!isset($game['challenge_id']) && ($game['isprivate'] == false && $game['ispublished'] == true)){ ?>
+                                            <a href='/games/challenges.php?s=<?= $_SESSION['userid'] .'_'. $id ?>'><input title="Challenge" type="button" class="challenge_button" value="Challenge"></a>
+                                        <?php } ?>
                                     <?php } ?>
 
                                 
@@ -171,7 +190,7 @@ class GameListRenderService
             includeRestore: $isDeleted,
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
-            includeChallenge: false,
+            includeChallenge: true,
             includeUsername: false,
             fixSidebar: false
         );
@@ -186,6 +205,7 @@ class GameListRenderService
             'This game was not found.<div class="spacer">&nbsp;</div>',
             includeStyleWidth: false,
             includeDelete: true,
+            includeRestore: $isDeleted,
             // Boost/Challenge do not currently work, re-enable after implementation
             includeBoost: false,
             includeChallenge: false,

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles database interations with users
+ * Handles database interactions with users
  */
 interface IUserRepository
 {
@@ -35,6 +35,13 @@ interface IUserRepository
      * @return int total number of members
      */
     function getTotalNumberOfMembers(): int;
+
+    /**
+     * Get online members
+     * 
+     * @return array of online members
+     */
+    function getOnlineMembers(): array;
 
     /**
      * Get level of user by user ID
@@ -78,4 +85,28 @@ interface IUserRepository
      * @return void
      */
     function setIsolation(string $username, bool $isolate): void;
+
+    /**
+     * Add boost points to a user
+     * 
+     * @param $userId
+     * @param $points
+     */
+    function addBoostPoints(int $userId, int $points): void;
+
+    /**
+     * Remove boost points from a user
+     * 
+     * @param $userId
+     * @param $points
+     */
+    function removeBoostPoints(int $userId, int $points): void;
+
+    /**
+     * Get boost points of a user
+     * 
+     * @param $userId
+     * @return int boost points of user
+     */
+    function getBoostPoints(int $userId): int;
 }

@@ -16,16 +16,21 @@ class UserRepository implements IUserRepository
     {
         $qs = "
 SELECT
-    username,
-    SIMILARITY(username, :u) AS sim,
-    level
-FROM members
-WHERE SIMILARITY(username, :u) > 0.3 
-ORDER BY sim 
-DESC LIMIT :limit";
+    m.username,
+    SIMILARITY(m.username, :u) AS sim,
+    LEAST(250, FLOOR(
+        (SELECT COUNT(*) FROM votes v WHERE v.username = m.username)/25.0
+        + (SELECT COUNT(DISTINCT f.user2) FROM friends f WHERE f.user1 = m.username)/10.0
+        + (SELECT COUNT(DISTINCT g.g_id) FROM games g WHERE g.author = m.username)/10.0
+        + (SELECT COALESCE(SUM(g2.views),0) FROM games g2 WHERE g2.author = m.username)/1000.0
+    ) + 1) AS level
+FROM members m
+WHERE SIMILARITY(m.username, :u) > 0.3
+ORDER BY sim DESC
+LIMIT :limit";
         return $this->db->query($qs, [
-        ':u' => trim($userName ?? ''),
-        ':limit' => $limit,
+            ':u' => trim($userName ?? ''),
+            ':limit' => $limit,
         ]);
     }
 
@@ -103,6 +108,41 @@ LIMIT 90;
     {
         $qs = "SELECT COUNT(*) FROM members";
         return $this->db->query($qs)[0]['count'];
+    }
+
+    public function getOnlineMembers(): array
+    {
+        $last = time() - 30; # 30 seconds
+        $qs = "
+        SELECT 
+            m.username,
+            m.lastlogin,
+            m.lastpagechange,
+            m.status,
+            (SELECT COUNT(*) FROM votes v WHERE v.username = m.username) AS total_ratings_given,
+            COUNT(DISTINCT f.user2) AS friend_count,
+            COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
+            COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END), 0) AS total_views,
+            LEAST(250, FLOOR(
+                (SELECT COUNT(*) FROM votes v2 WHERE v2.username = m.username)/25.0
+                + COUNT(DISTINCT f.user2)/10.0
+                + COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)/10.0
+                + COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END),0)/1000.0
+            ) + 1) AS level
+        FROM 
+            members m
+        LEFT JOIN 
+            friends f ON m.username = f.user1
+        LEFT JOIN 
+            games g ON m.username = g.author
+        WHERE 
+            m.lastlogin > :last
+        GROUP BY 
+            m.username, m.lastlogin, m.lastpagechange, m.status
+        ORDER BY level DESC
+        LIMIT 15
+        ";
+        return $this->db->query($qs, [':last' => $last]);
     }
 
     public function getLevelByUserId(int $userId)
@@ -333,4 +373,29 @@ LIMIT 90;
         ]);
 
     }
+    public function addBoostPoints(int $userId, int $points): void
+    {
+        $query = "UPDATE members SET boostpoints = boostpoints + :points WHERE userid = :userid";
+        $this->db->execute($query, [
+            ':points' => $points,
+            ':userid' => $userId,
+        ]);
+    }
+
+    public function removeBoostPoints(int $userId, int $points): void
+    {
+        $query = "UPDATE members SET boostpoints = boostpoints - :points WHERE userid = :userid";
+        $this->db->execute($query, [
+            ':points' => $points,
+            ':userid' => $userId,
+        ]);
+    }
+
+    public function getBoostPoints(int $userId): int
+    {
+        $query = "SELECT boostpoints FROM members WHERE userid = :userid";
+        $result = $this->db->queryFirst($query, [':userid' => $userId]);
+        return $result ? (int)$result['boostpoints'] : 0;
+    }
+
 }

@@ -99,7 +99,7 @@ $result2 = $db->query("SELECT *
         $result2 = $db->query("SELECT *
             FROM comments
             WHERE venue=:venue
-            ORDER BY thread_id DESC, id ASC
+            ORDER BY thread_id ASC, id ASC
             LIMIT 10 OFFSET :p", [
             ':venue' => $venue,
             ':p' => ($p * 10)
@@ -154,6 +154,18 @@ if ($a == "read") {
     $t = time();
     $score = 0;
     $creator_name = $_SESSION['username'];
+    // Check if the venue is a game
+    $venueParts = explode('-', $venue);
+    if ($venueParts[0] == 'game') {
+        require('../repositories/repositorymanager.php');
+        $gameRepository = RepositoryManager::get()->getGameRepository();
+        $gameId = explode("_",$venueParts[1])[1];
+        $allowComment = $gameRepository->allowComment($gameId);
+        if (!$allowComment) {
+            http_response_code(403);
+            die("Comments are not allowed for this game.");
+        }
+    }
     include_once('../content/checkban.php');
     if (checkBan($creator_name)) {
         // set header to 403 (forbidden) and echo a message

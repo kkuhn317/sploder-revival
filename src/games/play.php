@@ -9,10 +9,13 @@ require_once('../content/getgameid.php');
 require('../content/playgame.php');
 require_once('../content/taglister.php');
 require_once('../repositories/repositorymanager.php');
+require_once('../services/ChallengesService.php');
 
 $gameRepository = RepositoryManager::get()->getGameRepository();
 $userRepository = RepositoryManager::get()->getUserRepository();
+$challengesService = new ChallengesService();
 
+$challenge = false;
 $game_id = get_game_id($_GET['s']);
 $game = get_game_info($game_id['id']);
 if ($game_id['userid'] != $game['user_id']) {
@@ -21,6 +24,21 @@ if ($game_id['userid'] != $game['user_id']) {
 $status = "playing";
 $creator_type = to_creator_type($game['g_swf']);
 $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isIsolated($_SESSION['username'] ?? '');
+
+
+if(isset($_GET['challenge'])){
+    $challengesRepository = RepositoryManager::get()->getChallengesRepository();
+    $challengeId = $_GET['challenge'];
+
+    // Verify if challengeId is correct
+    if($challengesRepository->verifyChallengeId($game_id['id'], $challengeId, $_SESSION['challenge'] ?? -1)) {
+        $challenge = true;
+        $challengeInfo = $challengesRepository->getChallengeInfo($game_id['id']);
+        $mode = "CHALLENGE ACCEPTED! ".$challengesService->formatChallengeMode($challengeInfo['mode'], $challengeInfo['challenge']);
+    } else {
+        $challenge = false;
+    }
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,7 +46,12 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
 <head>
     <?php
     if ($game['g_swf'] == 1) {
-        //include('../content/ruffle.php');
+        include('../content/ruffle.php');
+        // Ruffle bug
+        $domain = getenv('DOMAIN_NAME');
+        if (strpos($domain, 'https://') === 0) {
+            echo '<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">';
+        }
     }
     ?>
     <?php include('../content/head.php') ?>
@@ -52,7 +75,7 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
         <div id="content">
             <h3><?= $game['title'] ?></h3>
             <h4 class="subtitle">By <a href="/members/index.php?u=<?= $game['author'] ?>"><?= $game['author'] ?></a> ::
-                <?= date('l F j\t\h, Y', strtotime($game['date'])) ?></h4>
+                <?= date('l F j\t\h, Y', strtotime($game['last_published_date'])) ?></h4>
 
             <div class="vote" id="contestwidget">
                 <div style="margin-top:-15px; width: 150px; height:45px; overflow: hidden;" id="contestflash">&nbsp;
@@ -68,6 +91,19 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
             <div class="alert">This game is private but you have the key!</div>
             <?php } ?>
 
+            <?php
+            if($game['isprivate'] != 1) { echo '<br><br>'; }
+            if((!$challenge) && (isset($_GET['challenge']))) {
+                if($challengesRepository->hasWonChallenge($game_id['id'], $_SESSION['userid'] ?? -1)) {
+                    echo '<div class="challenge_prompt">Woo hoo! You won this challenge!</div>';
+                } else {
+                    echo '<div class="challenge_prompt">Yo ho ho! Log in to accept this challenge!</div>';
+                }
+            }
+            if($challenge) {
+                echo '<div class="challenge_prompt">'.$mode.'</div>';
+            }
+            ?>
             <div class="gameobject">
                 <div id="flashcontent">
                     <img class="game_preview"
@@ -115,7 +151,17 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
                 beta_version: "<?= $creator_type->swf_version(); ?>",
 
                 onsplodercom: "true",
-                modified: <?= rand() ?>,
+                <?php
+                if($challenge) {
+                    echo 'challenge: "'.$_GET['challenge'].'",';
+                    if(!$mode) {
+                        echo 'chscore: "'.$challengeInfo['challenge'].'",';
+                    } else {
+                        echo 'chtime: "'.$challengeInfo['challenge'].'",';
+                    }
+                }
+                ?>
+                modified: <?= strtotime($game['last_published_date']) ?>,
                 <?php if (isset($_SESSION['PHPSESSID'])) {
                         echo "PHPSESSID: \"{$_SESSION['PHPSESSID']}\"";
                 } ?>
@@ -136,17 +182,25 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
             </script>
 
             <div class="sharebar">
-                <a href="/make/index.php"><img style="float: left;" src="/chrome/social_bar_make.gif" width="210"
-                        height="36" alt="make a game" /></a>
-                <div class="share_buttons"><a class="facebook"
-                        href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.sploder.com%2Fgames%2Fmembers%2Fgeoff%2Fplay%2Fgenetic-lab-explosion%2F%3Fref%3Dfb"
-                        onclick="javascript:window.open(this.href,
-      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;"
-                        title="share this on facebook"></a>&nbsp;<a class="twitter"
-                        href="https://twitter.com/intent/tweet?text=Playing%20Genetic%20Lab%20Explosion%20by%20geoff%20on%20%40sploder%20-%20&url=https%3A%2F%2Fwww.sploder.com%2Fgames%2Fmembers%2Fgeoff%2Fplay%2Fgenetic-lab-explosion%2F%3Fref%3Dtw"
-                        onclick="javascript:window.open(this.href,
-      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;"
-                        title="tweet this!"></a></div>
+                <a href="/make/index.php">
+                    <img style="float: left;" src="/chrome/social_bar_make.gif" width="210" height="36" alt="make a game" />
+                </a>
+                <?php
+                    $currentUrl = getenv('DOMAIN_NAME') . $_SERVER['REQUEST_URI'];
+                    $fbUrl = "https://www.facebook.com/sharer.php?u=" . urlencode($currentUrl);
+                    $tweetText = "Playing " . $game['title'] . " by " . $game['author'] . " on @sploder - ";
+                    $twitterUrl = "https://twitter.com/intent/tweet?text=" . urlencode($tweetText) . "&url=" . urlencode($currentUrl);
+                ?>
+                <div class="share_buttons">
+                    <!-- <a class="facebook"
+                        href="<?= $fbUrl ?>"
+                        onclick="window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;"
+                        title="share this on facebook"></a> -->
+                    <a class="twitter"
+                        href="<?= $twitterUrl ?>"
+                        onclick="window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;"
+                        title="tweet this!"></a>
+                </div>
             </div>
             <?php
             if (isset($game['description'])) {
@@ -195,7 +249,7 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
             }
             </script>
             <?php
-            if (!$isolated) {
+            if (!$isolated && $game['comments'] == 1) {
             ?>
             <a id="messages_top"></a>
             <div id="messages"></div>
@@ -208,13 +262,13 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
             <?php
                 $db = getDatabase();
 
-                $result = $db->query("SELECT g_id, date, title, author, views
+                $result = $db->query("SELECT g_id, first_published_date, title, author, views
                     FROM games
                     WHERE author = :author
                     AND isprivate = 0
                     AND ispublished = 1
                     AND isdeleted = 0
-                    ORDER BY date DESC LIMIT 11", [
+                    ORDER BY first_published_date DESC LIMIT 11", [
                     ':author' => $game['author']
                     ]);
 
@@ -240,7 +294,7 @@ $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isI
                     <?php
                     //show games
                     foreach ($result as $more_game) {
-                        echo '<li><a href="play.php?s=' . $game['user_id'] . '_' . $more_game['g_id'] . '">' . $more_game['title'] . '</a>&nbsp; <span class="viewscomments">' . date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['date'])) . ' &middot; ' . $more_game['views'] . ' views</span></li>';
+                        echo '<li><a href="play.php?s=' . $game['user_id'] . '_' . $more_game['g_id'] . '">' . $more_game['title'] . '</a>&nbsp; <span class="viewscomments">' . date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($more_game['first_published_date'])) . ' &middot; ' . $more_game['views'] . ' views</span></li>';
                     }
                     ?>
 

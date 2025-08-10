@@ -18,7 +18,7 @@ $gameListRenderService = new GameListRenderService(RepositoryManager::get()->get
     <script>
     function delproj(id, title) {
         if (confirm(("Are you sure you want to delete " + title)) == true) {
-            location.href = ("php/delete.php?return=pending.php&url=h://a/a/a.a?id=" + id);
+            location.href = ("php/delete.php?return=pending.php&url=h://a/a/a.a?s=a_" + id);
         } else {}
     }
     </script>

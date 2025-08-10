@@ -2,6 +2,9 @@
 <?php
 include('../content/logincheck.php');
 include('content/my-graphics.php');
+require('../repositories/repositorymanager.php');
+$graphicRepository = RepositoryManager::get()->getGraphicsRepository();
+$total_likes = $graphicRepository->getTotalGraphicLikesByUserId($_SESSION['userid']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -55,8 +58,8 @@ include('content/my-graphics.php');
             <?php } ?>
             <p>You've made <?= $total_games ?>
                 graphic<?= $total_games == 1 ? '' : 's' ?> so far,
-                with a total of ?
-                like<?= $total_games == 1 ? '' : 's' ?> so far.
+                with a total of <?= $total_likes ?>
+                like<?= $total_likes == 1 ? '' : 's' ?> so far.
                 <a href="../make/graphics.php">Make
                     some graphics
                 </a> now!

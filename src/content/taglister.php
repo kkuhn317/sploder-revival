@@ -3,7 +3,7 @@
 /**
  * A functon that can take an array of string and return colored tags
  */
-function displayTags($tagList, $hyperlink = true)
+function displayTags($tagList, $hyperlink = true, $graphics = false): string
 {
     if (count($tagList) <= 0) {
         return "";
@@ -18,8 +18,13 @@ function displayTags($tagList, $hyperlink = true)
         return $tag[0];
     }, $tagList);
     $placeholders = implode(',', array_fill(0, count($tagParameters), '?'));
+    if($graphics) {
+        $table = 'graphic_tags';
+    } else {
+        $table = 'game_tags';
+    }
     $counts = $db->query("SELECT tag, COUNT(g_id) as count
-        FROM game_tags
+        FROM $table
         WHERE tag IN ($placeholders)
         GROUP BY tag", $tagParameters, PDO::FETCH_KEY_PAIR);
 
@@ -29,8 +34,15 @@ function displayTags($tagList, $hyperlink = true)
 
     $tagString = "";
     if ($hyperlink) {
+        if ($graphics) {
+            $page = "graphic-tags.php";
+            $suffix = "graphic";
+        } else {
+            $page = "game-tags.php";
+            $suffix = "game";
+        }
         for ($i = 0; $i < count($tagList); $i++) {
-            $tagString .= "<a class=\"tagcolor{$colors[$i % 4]}\" href=\"game-tags.php?t={$tagList[$i][0]}\" title=\"{$tagList[$i][0]} - {$tagList[$i][1]} game" . ($tagList[$i][1] == 1 ? "" : "s") . ".\">{$tagList[$i][0]}</a> ";
+            $tagString .= "<a class=\"tagcolor{$colors[$i % 4]}\" href=\"$page?t={$tagList[$i][0]}\" title=\"{$tagList[$i][0]} - {$tagList[$i][1]} $suffix" . ($tagList[$i][1] == 1 ? "" : "s") . ".\">{$tagList[$i][0]}</a> ";
         }
     } else {
         for ($i = 0; $i < count($tagList); $i++) {
