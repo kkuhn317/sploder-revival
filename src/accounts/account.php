@@ -54,7 +54,7 @@
                             <p>Change your public profile settings and details</p>
                         </li>
                         <li>
-                            <a target="_blank" href="https://forums.sploder.xyz">Visit the Community Forums &raquo;</a>
+                            <a target="_blank" href="<?= getenv('FORUMS_URL') ?>">Visit the Community Forums &raquo;</a>
                             <p>If you're 13 or older, you can join separately and participate in the forums.</p>
                         </li>
                         <li>
