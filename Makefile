@@ -8,7 +8,7 @@ endif
 
 # Environment-specific variables
 DEV_URL = http://127.0.0.1:8010
-PROD_URL = http://127.0.0.1:80
+PROD_URL = http://127.0.0.1:8020
 DEV_COMPOSE = docker-compose-dev.yaml
 PROD_COMPOSE = docker-compose-prod.yaml
 DEV_SITE_CONTAINER = sploder_revival

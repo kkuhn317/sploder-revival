@@ -6,7 +6,7 @@ services:
     image: sploder-revival
     container_name: sploder_revival_prod
     ports:
-     - "80:80"
+     - "8020:80"
     depends_on:
      - "db"
     volumes:
