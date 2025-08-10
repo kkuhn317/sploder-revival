@@ -205,7 +205,7 @@ LIMIT 90;
                 $event->addAttribute('e', $e);
                 $event->addAttribute('g', $g);
                 $event->addAttribute('s', $s);
-                $event->addAttribute('d', time());
+                $event->addAttribute('d', round(microtime(true) * 1000));
 
                 // Keep only the last 16 entries
                 $children = $events->children();
