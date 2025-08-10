@@ -15,7 +15,7 @@ $gameRepository = RepositoryManager::get()->getGameRepository();
 $userRepository = RepositoryManager::get()->getUserRepository();
 $challengesService = new ChallengesService();
 
-
+$challenge = false;
 $game_id = get_game_id($_GET['s']);
 $game = get_game_info($game_id['id']);
 if ($game_id['userid'] != $game['user_id']) {
