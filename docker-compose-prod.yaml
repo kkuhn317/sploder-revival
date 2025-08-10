@@ -11,20 +11,20 @@ services:
      - "db"
     volumes:
       # Production volumes - only expose specific writable directories
-      - ./src/users:/var/www/html/users:rw
-      - ./src/avatar/a:/var/www/html/avatar/a:rw
-      - ./src/cache/events.lock:/var/www/html/cache/events.lock:rw
-      - ./src/cache/events.xml:/var/www/html/cache/events.xml:rw
-      - ./src/config/currentcontest.txt:/var/www/html/config/currentcontest.txt:rw
-      - ./src/database/originalmembers.db:/var/www/html/database/originalmembers.db:rw
-      - ./src/graphics/gif:/var/www/html/graphics/gif:rw
-      - ./src/graphics/png:/var/www/html/graphics/png:rw
-      - ./src/graphics/prj:/var/www/html/graphics/prj:rw
-      - ./src/legal:/var/www/html/legal:rw
-      - ./src/update/temp:/var/www/html/update/temp:rw
-      - ./src/update/uploads:/var/www/html/update/uploads:rw
-      - ./src/update/currentversion.txt:/var/www/html/update/currentversion.txt:rw
-      - ./src/php/verifyscore.php:/var/www/html/php/verifyscore.php:rw
+      - ./src/users:/var/www/sploder-revival/users:rw
+      - ./src/avatar/a:/var/www/sploder-revival/avatar/a:rw
+      - ./src/cache/events.lock:/var/www/sploder-revival/cache/events.lock:rw
+      - ./src/cache/events.xml:/var/www/sploder-revival/cache/events.xml:rw
+      - ./src/config/currentcontest.txt:/var/www/sploder-revival/config/currentcontest.txt:rw
+      - ./src/database/originalmembers.db:/var/www/sploder-revival/database/originalmembers.db:rw
+      - ./src/graphics/gif:/var/www/sploder-revival/graphics/gif:rw
+      - ./src/graphics/png:/var/www/sploder-revival/graphics/png:rw
+      - ./src/graphics/prj:/var/www/sploder-revival/graphics/prj:rw
+      - ./src/legal:/var/www/sploder-revival/legal:rw
+      - ./src/update/temp:/var/www/sploder-revival/update/temp:rw
+      - ./src/update/uploads:/var/www/sploder-revival/update/uploads:rw
+      - ./src/update/currentversion.txt:/var/www/sploder-revival/update/currentversion.txt:rw
+      - ./src/php/verifyscore.php:/var/www/sploder-revival/php/verifyscore.php:rw
     environment:
       DOMAIN_NAME: https://yourdomain.com
       # Is this website public via a network?
@@ -70,22 +70,22 @@ services:
     # Set file permissions for writable directories (only if needed)
     command: >
       sh -c "
-        if [ ! -w /var/www/html/users ] || [ ! -w /var/www/html/avatar/a ]; then
+        if [ ! -w /var/www/sploder-revival/users ] || [ ! -w /var/www/sploder-revival/avatar/a ]; then
           echo 'Setting permissions...'
-          chmod -R 777 /var/www/html/users
-          chmod -R 777 /var/www/html/avatar/a
-          chmod 777 /var/www/html/cache/events.lock
-          chmod 777 /var/www/html/cache/events.xml
-          chmod 777 /var/www/html/config/currentcontest.txt
-          chmod 777 /var/www/html/database/originalmembers.db
-          chmod -R 777 /var/www/html/graphics/gif
-          chmod -R 777 /var/www/html/graphics/png
-          chmod -R 777 /var/www/html/graphics/prj
-          chmod -R 777 /var/www/html/legal
-          chmod -R 777 /var/www/html/update/temp
-          chmod -R 777 /var/www/html/update/uploads
-          chmod 777 /var/www/html/update/currentversion.txt
-          chmod 777 /var/www/html/php/verifyscore.php
+          chmod -R 777 /var/www/sploder-revival/users
+          chmod -R 777 /var/www/sploder-revival/avatar/a
+          chmod 777 /var/www/sploder-revival/cache/events.lock
+          chmod 777 /var/www/sploder-revival/cache/events.xml
+          chmod 777 /var/www/sploder-revival/config/currentcontest.txt
+          chmod 777 /var/www/sploder-revival/database/originalmembers.db
+          chmod -R 777 /var/www/sploder-revival/graphics/gif
+          chmod -R 777 /var/www/sploder-revival/graphics/png
+          chmod -R 777 /var/www/sploder-revival/graphics/prj
+          chmod -R 777 /var/www/sploder-revival/legal
+          chmod -R 777 /var/www/sploder-revival/update/temp
+          chmod -R 777 /var/www/sploder-revival/update/uploads
+          chmod 777 /var/www/sploder-revival/update/currentversion.txt
+          chmod 777 /var/www/sploder-revival/php/verifyscore.php
           echo 'Permissions set successfully.'
         else
           echo 'Directories already writable, skipping permissions setup...'
