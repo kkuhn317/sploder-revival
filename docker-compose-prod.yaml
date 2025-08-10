@@ -70,26 +70,20 @@ services:
     # Set file permissions for writable directories (only if needed)
     command: >
       sh -c "
-        if [ ! -w /var/www/html/users ] || [ ! -w /var/www/html/avatar/a ]; then
-          echo 'Setting permissions...'
-          chmod -R 777 /var/www/html/users
-          chmod -R 777 /var/www/html/avatar/a
-          chmod 777 /var/www/html/cache/events.lock
-          chmod 777 /var/www/html/cache/events.xml
-          chmod 777 /var/www/html/config/currentcontest.txt
-          chmod 777 /var/www/html/database/originalmembers.db
-          chmod -R 777 /var/www/html/graphics/gif
-          chmod -R 777 /var/www/html/graphics/png
-          chmod -R 777 /var/www/html/graphics/prj
-          chmod -R 777 /var/www/html/legal
-          chmod -R 777 /var/www/html/update/temp
-          chmod -R 777 /var/www/html/update/uploads
-          chmod 777 /var/www/html/update/currentversion.txt
-          chmod 777 /var/www/html/php/verifyscore.php
-          echo 'Permissions set successfully.'
-        else
-          echo 'Directories already writable, skipping permissions setup...'
-        fi
+        chmod 777 /var/www/html/users
+        chmod 777 /var/www/html/avatar/a
+        chmod 777 /var/www/html/cache/events.lock
+        chmod 777 /var/www/html/cache/events.xml
+        chmod 777 /var/www/html/config/currentcontest.txt
+        chmod 777 /var/www/html/database/originalmembers.db
+        chmod 777 /var/www/html/graphics/gif
+        chmod 777 /var/www/html/graphics/png
+        chmod 777 /var/www/html/graphics/prj
+        chmod 777 /var/www/html/legal
+        chmod 777 /var/www/html/update/temp
+        chmod 777 /var/www/html/update/uploads
+        chmod 777 /var/www/html/update/currentversion.txt
+        chmod 777 /var/www/html/php/verifyscore.php
         cron && exec apache2-foreground
       "
 
