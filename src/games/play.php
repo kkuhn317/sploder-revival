@@ -47,6 +47,11 @@ if(isset($_GET['challenge'])){
     <?php
     if ($game['g_swf'] == 1) {
         include('../content/ruffle.php');
+        // Ruffle bug
+        $domain = getenv('DOMAIN_NAME');
+        if (strpos($domain, 'https://') === 0) {
+            echo '<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">';
+        }
     }
     ?>
     <?php include('../content/head.php') ?>
