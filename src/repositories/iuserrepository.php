@@ -37,6 +37,13 @@ interface IUserRepository
     function getTotalNumberOfMembers(): int;
 
     /**
+     * Get online members
+     * 
+     * @return array of online members
+     */
+    function getOnlineMembers(): array;
+
+    /**
      * Get level of user by user ID
      * 
      * @param $userId

@@ -18,12 +18,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    getScoreRadio.addEventListener("change", function () {
-        if (getScoreRadio.checked) {
-            scoreLabel.textContent = "Score at least";
-            scoreSuffix.textContent = "pts";
-        }
-    });
+    if (getScoreRadio) {
+        getScoreRadio.addEventListener("change", function () {
+            if (getScoreRadio.checked) {
+                scoreLabel.textContent = "Score at least";
+                scoreSuffix.textContent = "pts";
+            }
+        });
+    }
 
     function updateCost() {
         const prize = parseInt(challengePrizeInput.value) || 0;

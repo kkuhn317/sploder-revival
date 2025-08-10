@@ -177,17 +177,25 @@ if(isset($_GET['challenge'])){
             </script>
 
             <div class="sharebar">
-                <a href="/make/index.php"><img style="float: left;" src="/chrome/social_bar_make.gif" width="210"
-                        height="36" alt="make a game" /></a>
-                <div class="share_buttons"><a class="facebook"
-                        href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.sploder.com%2Fgames%2Fmembers%2Fgeoff%2Fplay%2Fgenetic-lab-explosion%2F%3Fref%3Dfb"
-                        onclick="javascript:window.open(this.href,
-      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;"
-                        title="share this on facebook"></a>&nbsp;<a class="twitter"
-                        href="https://twitter.com/intent/tweet?text=Playing%20Genetic%20Lab%20Explosion%20by%20geoff%20on%20%40sploder%20-%20&url=https%3A%2F%2Fwww.sploder.com%2Fgames%2Fmembers%2Fgeoff%2Fplay%2Fgenetic-lab-explosion%2F%3Fref%3Dtw"
-                        onclick="javascript:window.open(this.href,
-      '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;"
-                        title="tweet this!"></a></div>
+                <a href="/make/index.php">
+                    <img style="float: left;" src="/chrome/social_bar_make.gif" width="210" height="36" alt="make a game" />
+                </a>
+                <?php
+                    $currentUrl = getenv('DOMAIN_NAME') . $_SERVER['REQUEST_URI'];
+                    $fbUrl = "https://www.facebook.com/sharer.php?u=" . urlencode($currentUrl);
+                    $tweetText = "Playing " . $game['title'] . " by " . $game['author'] . " on @sploder - ";
+                    $twitterUrl = "https://twitter.com/intent/tweet?text=" . urlencode($tweetText) . "&url=" . urlencode($currentUrl);
+                ?>
+                <div class="share_buttons">
+                    <!-- <a class="facebook"
+                        href="<?= $fbUrl ?>"
+                        onclick="window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;"
+                        title="share this on facebook"></a> -->
+                    <a class="twitter"
+                        href="<?= $twitterUrl ?>"
+                        onclick="window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;"
+                        title="tweet this!"></a>
+                </div>
             </div>
             <?php
             if (isset($game['description'])) {

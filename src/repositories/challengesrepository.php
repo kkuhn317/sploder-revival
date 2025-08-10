@@ -57,6 +57,13 @@ class ChallengesRepository implements IChallengesRepository
         return ($result['challenge_id'] === $challengeId) && ($result['challenge_id'] === $sessionChallengeId);
     }
 
+    public function unverifyChallenge(int $gameId): void
+    {
+        // Unverify the challenge, if it exists in the first place
+        $query = "UPDATE challenges SET verified = false WHERE g_id = :g_id";
+        $this->db->execute($query, [':g_id' => $gameId]);
+    }
+
     public function getAllChallenges(int $offset, int $perPage): array
     {
 
