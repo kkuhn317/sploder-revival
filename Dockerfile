@@ -54,9 +54,6 @@ RUN composer install \
 
 COPY ./src /var/www/html/
 
-RUN touch /var/www/html/cache/events.lock && \
-    touch /var/www/html/cache/events.xml
-
 # Set up cron job
 RUN echo '0 1 * * * /usr/local/bin/php /var/www/html/cronjobs/contest.php' > /etc/cron.d/contest-cron \
   && chmod 0644 /etc/cron.d/contest-cron \
