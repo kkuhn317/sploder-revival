@@ -6,16 +6,18 @@ $userRepository = RepositoryManager::get()->getUserRepository();
 
 $data = explode("-", $_GET['c']);
 $type = $data[0];
-$skins = $data[2];
-$mouths = $data[3];
-$noses = $data[5];
-$eyes = $data[7];
-$hairs = $data[9];
-$extrasch = $data[11];
-$skinc = $data[1];
-$eyec = $data[8];
-$hairc = $data[10];
-$extrasco = $data[12];
+$skinColor = $data[1];
+$skinStyle = $data[2];
+$mouthColor = $data[3];
+$mouthStyle = $data[4];
+$noseColor = $data[5];
+$noseStyle = $data[6];
+$eyeColor = $data[7];
+$eyeStyle = $data[8];
+$hairColor = $data[9];
+$hairStyle = $data[10];
+$extrasColor = $data[11];
+$extrasStyle = $data[12];
 
 if ($type == 'premium') {
     // If the user has a premium avatar for less than 15 minutes, they can edit it for free
@@ -34,53 +36,75 @@ if ($type == 'premium') {
 
 $avatarSuffix = $type == 'classic' ? '' : '.1';
 $avatarFiles = [
-    'skins' => "avatar_01_96.png{$avatarSuffix}",
-    'mouths' => "avatar_02_96.png{$avatarSuffix}",
-    'noses' => "avatar_03_96.png{$avatarSuffix}",
-    'eyes' => "avatar_04_96.png{$avatarSuffix}",
-    'hairs' => "avatar_05_96.png{$avatarSuffix}",
-    'extras' => "avatar_06_96.png{$avatarSuffix}",
-    'default' => "avatar_07_96.png{$avatarSuffix}"
+    'layer_01' => "avatar_01_96.png{$avatarSuffix}", // Skin
+    'layer_02' => "avatar_02_96.png{$avatarSuffix}", // Mouth
+    'layer_03' => "avatar_03_96.png{$avatarSuffix}", // Nose
+    'layer_04' => "avatar_04_96.png{$avatarSuffix}", // Eyes
+    'layer_05' => "avatar_05_96.png{$avatarSuffix}", // Hair
+    'layer_06' => "avatar_06_96.png{$avatarSuffix}", // Extras
+    'layer_07' => "avatar_07_96.png{$avatarSuffix}"  // Base/Background
 ];
 
 $width = 96;
 $height = 96;
 
-$allParts = [];
+// Create final image
+$finalImage = imagecreatetruecolor($width, $height);
+imagesavealpha($finalImage, true);
+$transparent = imagecolorallocatealpha($finalImage, 0, 0, 0, 127);
+imagefill($finalImage, 0, 0, $transparent);
 
-foreach ($avatarFiles as $part => $file) {
-    $image = imagecreatefrompng($file);
-    $source_width = imagesx($image);
-    $source_height = imagesy($image);
+// Layer data: [color, style] for each layer
+$layerData = [
+    'layer_01' => [$skinColor, $skinStyle],    // Skin
+    'layer_02' => [$mouthColor, $mouthStyle],  // Mouth
+    'layer_03' => [$noseColor, $noseStyle],    // Nose
+    'layer_04' => [$eyeColor, $eyeStyle],      // Eyes
+    'layer_05' => [$hairColor, $hairStyle],    // Hair
+    'layer_06' => [$extrasColor, $extrasStyle], // Extras
+    'layer_07' => [0, 0]                       // Base (no color/style variations)
+];
 
-    for ($col = 0; $col < $source_width / $width; $col++) {
-        for ($row = 0; $row < $source_height / $height; $row++) {
-            $allParts[$part][$col][$row] = imagecreatetruecolor($width, $height);
-            imagesavealpha($allParts[$part][$col][$row], true);
-            $color = imagecolorallocatealpha($allParts[$part][$col][$row], 0, 0, 0, 127);
-            imagefill($allParts[$part][$col][$row], 0, 0, $color);
-            imagecopyresized(
-                $allParts[$part][$col][$row],
-                $image,
-                0,
-                0,
-                $col * $width,
-                $row * $height,
-                $width,
-                $height,
-                $width,
-                $height
-            );
-        }
+// Render layers in the correct order (01-06 first, then 07 on top)
+$renderOrder = ['layer_01', 'layer_02', 'layer_03', 'layer_04', 'layer_05', 'layer_06', 'layer_07'];
+
+foreach ($renderOrder as $layerName) {
+    $sourceImage = imagecreatefrompng($avatarFiles[$layerName]);
+    if (!$sourceImage) continue;
+    
+    list($color, $style) = $layerData[$layerName];
+    
+    // Calculate source position based on JavaScript logic: -color*96px -style*96px
+    // BUT: layer_07 (base) always uses position 0,0 (no background-position applied in JS)
+    if ($layerName === 'layer_07') {
+        $sourceX = 0;
+        $sourceY = 0;
+    } else {
+        $sourceX = $color * $width;
+        $sourceY = $style * $height;
     }
+    
+    // Copy the specific part of the source image to the final image
+    imagecopy(
+        $finalImage,     // destination
+        $sourceImage,    // source
+        0,              // dest_x
+        0,              // dest_y
+        $sourceX,       // src_x
+        $sourceY,       // src_y
+        $width,         // width
+        $height         // height
+    );
+    
+    imagedestroy($sourceImage);
 }
 
-$avatarParts = ['skins', 'mouths', 'noses', 'eyes', 'hairs', 'extras', 'default'];
-$avatarIndices = [0, $mouths, $noses, $eyes, $hairs, $extrasch];
-$avatarColors = [0, 0, 0, $eyec, $hairc, $extrasco];
+// Save the final image
+$success = imagepng($finalImage, 'a/' . $_SESSION["username"] . '.png');
+imagedestroy($finalImage);
 
-for ($i = 0; $i < count($avatarParts); $i++) {
-    imagecopy($allParts['skins'][$skinc][$skins], $allParts[$avatarParts[$i]][$avatarIndices[$i]][$avatarColors[$i]], 0, 0, 0, 0, 96, 96);
+if ($success) {
+    echo "prompt:Avatar saved successfully!";
+} else {
+    echo "Error saving avatar!";
 }
-
-$finalimage = imagepng($allParts['skins'][$skinc][$skins], 'a/' . $_SESSION["username"] . '.png');

@@ -227,10 +227,23 @@
         $("#control_save").click(function() {
             fetchAsync($("#newURL").val()).then(function(response) {
                 if (response && response.trim() !== '') {
-                    // Get current prompt text
+                    // Get current prompt text and remove any existing alerts/prompts
                     var currentPrompt = $("#avatar_prompt").html();
-                    // Add the response as an additional prompt
-                    $("#avatar_prompt").html(currentPrompt + '<br><br><p class="alert">' + response.trim() + '</p>');
+                    // Remove any existing alert or prompt paragraphs
+                    currentPrompt = currentPrompt.replace(/<br><br><p class="(alert|prompt)">.*?<\/p>/g, '');
+                    
+                    // Check if response starts with 'prompt:'
+                    var trimmedResponse = response.trim();
+                    var cssClass = 'alert'; // default
+                    var messageText = trimmedResponse;
+                    
+                    if (trimmedResponse.startsWith('prompt:')) {
+                        cssClass = 'prompt';
+                        messageText = trimmedResponse.substring(7); // Remove 'prompt:' prefix
+                    }
+                    
+                    // Add the new response with appropriate CSS class
+                    $("#avatar_prompt").html(currentPrompt + '<br><br><p class="' + cssClass + '">' + messageText + '</p>');
                 }
             });
         });
