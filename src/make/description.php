@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 require('content/verify.php');
 $description = trim($_POST['description']);

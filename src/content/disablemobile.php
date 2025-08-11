@@ -1,4 +1,6 @@
 <?php
+// Let's also use this to measure page execution time
+$pageExecutionStartTime = microtime(true);
 // Check if the visitor is on a mobile device
 // Credits to whoever I stole this from... I honestly forgot
 if (preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo
