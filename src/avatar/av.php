@@ -75,7 +75,7 @@ foreach ($avatarFiles as $part => $file) {
     }
 }
 
-$avatarParts = ['default', 'mouths', 'noses', 'eyes', 'hairs', 'extras'];
+$avatarParts = ['skins', 'mouths', 'noses', 'eyes', 'hairs', 'extras', 'default'];
 $avatarIndices = [0, $mouths, $noses, $eyes, $hairs, $extrasch];
 $avatarColors = [0, 0, 0, $eyec, $hairc, $extrasco];
 
