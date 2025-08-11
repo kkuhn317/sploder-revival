@@ -54,6 +54,10 @@
                             <p>Change your public profile settings and details</p>
                         </li>
                         <li>
+                            <a target="_blank" href="https://discord.com/invite/<?= getenv('DISCORD_INVITE') ?>/">Join the Discord Server &raquo;</a>
+                            <p>If you're 13 or older, you can join separately and participate in the discord server.</p>
+                        </li>
+                        <li>
                             <a target="_blank" href="<?= getenv('FORUMS_URL') ?>">Visit the Community Forums &raquo;</a>
                             <p>If you're 13 or older, you can join separately and participate in the forums.</p>
                         </li>
