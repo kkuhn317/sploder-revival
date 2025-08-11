@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 session_start();
 require_once('../repositories/repositorymanager.php');
