@@ -6,7 +6,7 @@ require_once('../services/GameListRenderService.php');
 
 $gameListRenderService = new GameListRenderService(RepositoryManager::get()->getGameRepository());
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
-$friends = $friendsRepository->getTotalFriends($_SESSION['username'] ?? '');
+$friends = $friendsRepository->getTotalFriends($_GET['u'] ?? '');
 $userRepository = RepositoryManager::get()->getUserRepository();
 $stats = $userRepository->getUserStats($_GET['u'] ?? '');
 
