@@ -51,7 +51,7 @@
                         </li>
                         <li>
                             <a href="/dashboard/profile-edit.php">Edit your profile &raquo;</a>
-                            <p>Change your public profile settings and details</p>
+                            <p>Change your public profile settings and details.</p>
                         </li>
                         <li>
                             <a target="_blank" href="https://discord.com/invite/<?= getenv('DISCORD_INVITE') ?>/">Join the Discord Server &raquo;</a>
