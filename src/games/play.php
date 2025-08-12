@@ -322,6 +322,7 @@ if(isset($_GET['challenge'])){
             <script type="text/javascript">
                 swfobject.embedSWF("/swf/events7.swf", "events_ticker", "260", "480", "9", "/swfobject/expressInstall.swf", { PHPSESSID: "<?php
                 if(isset($_SESSION['loggedin']) && $game['isprivate'] == 0){
+                 echo $_SESSION['PHPSESSID'].'",';
                  echo 'u: "'.$_SESSION['username'];
                 }?>" }, { bgcolor: "#000000", menu: "false", quality: "low", scale: "noscale", salign: "tl", wmode: "opaque" });
             </script>
