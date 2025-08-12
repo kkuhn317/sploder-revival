@@ -99,8 +99,8 @@ if ($verifiedScore) {
         ':g_id' => $id[1]
     ]);
     // If there are no losses, set loss to 0 using ternary operator
-    $result2['loss'] = $result2[1]['count'] ?? 0;
-    $result2['wins'] = $result2[0]['count'] ?? 0;
+    $result2['wins'] = $result2[1]['count'] ?? 0;
+    $result2['loss'] = $result2[0]['count'] ?? 0;
 
     $db->execute("UPDATE games
         SET difficulty = :difficulty
