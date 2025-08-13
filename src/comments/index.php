@@ -37,7 +37,17 @@ function extracted(IDatabase $db): string
     // Only pass necessary params for queryFirstColumn()
     $fulltotal = $db->queryFirstColumn(
         "SELECT COUNT(*)
-         FROM comments $clause", 0,
+         FROM comments c
+         LEFT JOIN games g ON (
+            c.venue LIKE 'game-%' 
+            AND c.venue ~ '_[0-9]+-'
+            AND CAST(SUBSTRING(c.venue FROM '_([0-9]+)-') AS INTEGER) = g.g_id
+         )
+         $clause
+         AND (
+            c.venue NOT LIKE 'game-%' 
+            OR (g.g_id IS NOT NULL AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)
+         )", 0,
         $params
     );
 
@@ -87,14 +97,20 @@ $latestp = ceil($fulltotal / $perPage) - 1;
 $params[':p'] = max(0, ($latestp - $p) * $perPage);
 $p = $params[':p'];
 
-$result2 = $db->query("SELECT *
-    FROM (
-        SELECT * 
-        FROM comments ".$clause."
-        ORDER BY thread_id DESC, id ASC
-        LIMIT $perPage OFFSET :p
-    ) AS limited_comments
-    ORDER BY thread_id DESC", $params);
+$result2 = $db->query("SELECT c.* 
+    FROM comments c
+    LEFT JOIN games g ON (
+        c.venue LIKE 'game-%' 
+        AND c.venue ~ '_[0-9]+-'
+        AND CAST(SUBSTRING(c.venue FROM '_([0-9]+)-') AS INTEGER) = g.g_id
+    )
+    ".$clause."
+    AND (
+        c.venue NOT LIKE 'game-%' 
+        OR (g.g_id IS NOT NULL AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)
+    )
+    ORDER BY c.thread_id DESC, c.id ASC
+    LIMIT $perPage OFFSET :p", $params);
     } else {
         $result2 = $db->query("SELECT *
             FROM comments
