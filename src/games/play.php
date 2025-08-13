@@ -21,6 +21,12 @@ $game = get_game_info($game_id['id']);
 if ($game_id['userid'] != $game['user_id']) {
     die("Invalid game ID");
 }
+if ($game['isdeleted'] == 1 || $game['ispublished'] == 0) {
+    if (($_SESSION['username'] ?? '') != $game['author']) {
+        header('Location: /');
+        die();
+    }
+}
 $status = "playing";
 $creator_type = to_creator_type($game['g_swf']);
 $isolated = $userRepository->isIsolated($game['author']) || $userRepository->isIsolated($_SESSION['username'] ?? '');
@@ -86,13 +92,22 @@ if(isset($_GET['challenge'])){
             window.g_id = <?= $game['g_id'] ?>;
             swfobject.embedSWF("/swf/contest.swf", "contestflash", "150", "30", "8", "/swfobject/expressInstall.swf", { g: window.g_id}, { bgcolor: "#000000", menu: "false", quality: "high", scale: "noscale", salign: "tl", wmode: "opaque" });
             </script>
-            <?php if ($game['isprivate'] == 1) { ?>
+            <?php
+            $showPrompt = false;
+            ?>
+            <?php if ($game['ispublished'] != 1) { $showPrompt = true; ?>
+            <br><br>
+            <div class="alert">This game is not published and cannot be played unless published!</div>
+            <?php } else if ($game['isdeleted'] == 1) { $showPrompt = true; ?>
+            <br><br>
+            <div class="alert">This game is deleted and can only be played by you!</div>
+            <?php } else if ($game['isprivate'] == 1) { $showPrompt = true; ?>
             <br><br>
             <div class="alert">This game is private but you have the key!</div>
             <?php } ?>
 
             <?php
-            if($game['isprivate'] != 1) { echo '<br><br>'; }
+            if(!$showPrompt) { echo '<br><br>'; }
             if((!$challenge) && (isset($_GET['challenge']))) {
                 if($challengesRepository->hasWonChallenge($game_id['id'], $_SESSION['userid'] ?? -1)) {
                     echo '<div class="challenge_prompt">Woo hoo! You won this challenge!</div>';
@@ -108,6 +123,9 @@ if(isset($_GET['challenge'])){
                 <div id="flashcontent">
                     <img class="game_preview"
                         src="../users/user<?= $game['user_id'] ?>/images/proj<?= $game['g_id'] ?>/image.png" />
+                    <?php
+                    if ($game['ispublished'] == 1) {
+                    ?>
                     <p class="game_loading"
                         style="font-size: 14px; line-height: 16px; width: 500px; padding: 20px; margin-left: -130px; margin-top: 0px;">
                         Your browser does not support the technology to run this game<br><br>
@@ -117,6 +135,7 @@ if(isset($_GET['challenge'])){
                             <img border="0" alt="Download" src="/images/download.gif" />
                         </a>
                     </p>
+                    <?php } ?>
                 </div>
             </div>
             <script type="text/javascript">
@@ -176,9 +195,12 @@ if(isset($_GET['challenge'])){
                 wmode: "direct",
                 allowScriptAccess: "always",
             };
-
+            <?php
+            if ($game['ispublished'] == 1) {
+            ?>
             swfobject.embedSWF("/swf/" + g_swf, "flashcontent", "640", "480", g_version,
                 "/swfobject/expressInstall.swf", flashvars, params);
+            <?php } ?>
             </script>
 
             <div class="sharebar">
@@ -314,7 +336,7 @@ if(isset($_GET['challenge'])){
                 </p>
             </div>
 
-            <div id="events" style="width: 260px; height: 480px;">
+            <div id="events" style="width: 260px; height: 480px;<?php if($showPrompt) { echo ' margin-top: 85px;'; } ?>">
             <div id="events_ticker"></div>
 	        </div>
 
