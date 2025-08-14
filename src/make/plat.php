@@ -9,16 +9,10 @@
     var attributes = {
     v: "2"
     };
-    window.addEventListener("pagehide", function (event) {
-  if (event.persisted) {
-    // If the page would be cached, nuke it instead
-    window.location.reload();
-  }
-});
     document.addEventListener("DOMContentLoaded", function () {
         // Check if Ruffle extension is enabled
         if (typeof RufflePlayer === 'undefined') {
-        
+        var noRuffle = <?php echo rand()."\n" ?>;
     swfobject.embedSWF("../swf/creator2_b17.swf", "flashcontent", "860", "540", "10.0.0",
     "/swfobject/expressInstall.swf", flashvars, params);
     }});
@@ -26,7 +20,7 @@
 
 </head>
 <?php include('../content/addressbar.php'); ?>
-<!-- var noRuffle = <?php echo rand()."\n" ?>; -->
+
 <body id="creator" class="platformer">
     <?php include('../content/headernavigation.php'); ?>
 
