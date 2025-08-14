@@ -12,7 +12,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         // Check if Ruffle extension is enabled
         if (typeof RufflePlayer === 'undefined') {
-        // Place a random number over here so the DOM always has to be reloaded: <?php echo rand()."\n" ?>
+        var noRuffle = <?php echo rand()."\n" ?>;
     swfobject.embedSWF("../swf/creator2_b17.swf", "flashcontent", "860", "540", "10.0.0",
     "/swfobject/expressInstall.swf", flashvars, params);
     }});
