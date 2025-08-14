@@ -9,13 +9,9 @@
     var attributes = {
     v: "1"
     };
-    document.addEventListener("DOMContentLoaded", function () {
-        // Check if Ruffle extension is enabled
-        if (typeof RufflePlayer === 'undefined') {
-        // Place a random number over here so the DOM always has to be reloaded: <?php echo rand()."\n" ?>
+
     swfobject.embedSWF("../swf/creator5_b21.swf", "flashcontent", "860", "600", "10.2", "/swfobject/expressInstall.swf",
     flashvars, params);
-    }});
 
     </script>
 

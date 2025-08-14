@@ -73,13 +73,9 @@
 
     document.addEventListener("mousedown", blockMouseEvents, true);
     document.addEventListener("mouseup", blockMouseEvents, true);
-    document.addEventListener("DOMContentLoaded", function () {
-        // Check if Ruffle extension is enabled
-        if (typeof RufflePlayer === 'undefined') {
-        // Place a random number over here so the DOM always has to be reloaded: <?php echo rand()."\n" ?>
+
     swfobject.embedSWF("/swf/creator7preloader2.swf", "flashcontent", "860", "626", "10.2.152",
     "/swfobject/expressInstall.swf", flashvars, params);
-    }});
 
 </script>
 

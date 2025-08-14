@@ -51,7 +51,14 @@ if(isset($_GET['challenge'])){
 
 <head>
     <?php
-    include('../content/ruffle.php');
+    if ($game['g_swf'] == 1) {
+        include('../content/ruffle.php');
+        // Ruffle bug
+        $domain = getenv('DOMAIN_NAME');
+        if (strpos($domain, 'https://') === 0) {
+            echo '<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">';
+        }
+    }
     ?>
     <?php include('../content/head.php') ?>
     <link rel="alternate nofollow" type="application/rss+xml" title="RSS" href="/gamefeed.php" />
@@ -191,21 +198,9 @@ if(isset($_GET['challenge'])){
             <?php
             if ($game['ispublished'] == 1) {
             ?>
-            <?php
-            if ($game['g_swf'] != 1) {
-            ?>
-            document.addEventListener("DOMContentLoaded", function () {
-            // Check if Ruffle extension is enabled
-            if (typeof RufflePlayer === 'undefined') {
-            // Place a random number over here so the DOM always has to be reloaded: <?php echo rand()."\n" ?>
-            <?php } ?>
             swfobject.embedSWF("/swf/" + g_swf, "flashcontent", "640", "480", g_version,
                 "/swfobject/expressInstall.swf", flashvars, params);
-            <?php
-            if ($game['g_swf'] != 1) {
-            ?>
-            }});
-            <?php }} ?>
+            <?php } ?>
             </script>
 
             <div class="sharebar">
