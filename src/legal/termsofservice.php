@@ -154,7 +154,7 @@
 
             <p class="note">Sploder Revival&trade; cannot be held responsible for limitations placed on the system by
                 its service providers at the <a href="../credits.php">credits</a> list. This website runs
-                <em>purely</em> on donations and runs <em>no advertisements</em> in any fasion. All donations are used
+                <em>purely</em> on donations and runs <em>no advertisements</em> in any fashion. All donations are used
                 to improve the quality of our service.
             </p>
             <div class="spacer">&nbsp;</div>
