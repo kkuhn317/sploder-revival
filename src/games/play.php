@@ -50,7 +50,9 @@ if(isset($_GET['challenge'])){
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <?php include('../content/ruffle.php'); ?>
+    <?php
+    include('../content/ruffle.php');
+    ?>
     <?php include('../content/head.php') ?>
     <link rel="alternate nofollow" type="application/rss+xml" title="RSS" href="/gamefeed.php" />
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
@@ -110,7 +112,7 @@ if(isset($_GET['challenge'])){
                 echo '<div class="challenge_prompt">'.$mode.'</div>';
             }
             ?>
-            <div class="gameobject" id="gameobject" style="display:none;">
+            <div class="gameobject">
                 <div id="flashcontent">
                     <img class="game_preview"
                         src="../users/user<?= $game['user_id'] ?>/images/proj<?= $game['g_id'] ?>/image.png" />
@@ -189,21 +191,21 @@ if(isset($_GET['challenge'])){
             <?php
             if ($game['ispublished'] == 1) {
             ?>
-            <?php if ($game['g_swf'] != 1) { ?>
-             document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(function () {
-            document.getElementById('gameobject').style.display = 'block';
+            <?php
+            if ($game['g_swf'] != 1) {
+            ?>
+            document.addEventListener("DOMContentLoaded", function () {
             // Check if Ruffle extension is enabled
             if (typeof RufflePlayer === 'undefined') {
+            // Place a random number over here so the DOM always has to be reloaded: <?php echo rand()."\n" ?>
             <?php } ?>
             swfobject.embedSWF("/swf/" + g_swf, "flashcontent", "640", "480", g_version,
                 "/swfobject/expressInstall.swf", flashvars, params);
-            <?php if ($game['g_swf'] != 1) { ?>
-                            }
-                    }, 90);
-                });
-            <?php } ?>
-            <?php } ?>
+            <?php
+            if ($game['g_swf'] != 1) {
+            ?>
+            }});
+            <?php }} ?>
             </script>
 
             <div class="sharebar">

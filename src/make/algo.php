@@ -19,7 +19,7 @@
     swfobject.embedSWF("../swf/creator3_b01.swf", "flashcontent", "720", "540", "10", "/swfobject/expressInstall.swf",
     flashvars, params);
     }
-        }, 90);
+        }, 20);
     });
     </script>
 
