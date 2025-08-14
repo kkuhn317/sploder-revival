@@ -11,12 +11,13 @@
     };
     document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function () {
-            // Unhide creatorcontainer
-            document.getElementById('creatorcontainer').style.display = 'block';
+            document.getElementById('ruffle_disabler').style.display = 'block';
             // Check if Ruffle extension is enabled
-            if (typeof RufflePlayer === 'undefined') {
+            if (typeof RufflePlayer === 'undefined' && !localStorage.getItem('ruffleEnabled')) {
                 swfobject.embedSWF("../swf/creator5_b21.swf", "flashcontent", "860", "600", "10.2", "/swfobject/expressInstall.swf",
                 flashvars, params);
+            } else {
+                localStorage.setItem('ruffleEnabled', 'true');
             }
         }, 90);
     });
@@ -36,7 +37,8 @@
         <?php include('../content/subnav.php'); ?>
         <div id="content">
             <h3>Physics Puzzle Game Maker</h3>
-            <div id="creatorcontainer" style="height: 600px; width: 860px; display:none">
+            <div id="creatorcontainer" style="height: 600px; width: 860px;">
+                <div id="ruffle_disabler" style="display:none;">
                 <div id="flashcontent">
                     <div style="margin: 40px auto; text-align: center; width: 420px;">
                         <img src="../images/physics-puzzle-maker.png" width="348" height="172" /><br /><br /><br />
@@ -44,6 +46,7 @@
                             Goldberg devices, and unique games with this game maker.</p>
                         <?php include('../content/noflash.php') ?>
                     </div>
+                </div>
                 </div>
             </div>
 
