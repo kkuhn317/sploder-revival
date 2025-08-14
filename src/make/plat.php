@@ -10,16 +10,12 @@
     v: "2"
     };
     document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(function () {
-            // Unhide creatorcontainer
-            document.getElementById('creatorcontainer').style.display = 'block';
-            // Check if Ruffle extension is enabled
-            if (typeof RufflePlayer === 'undefined') {
+        // Check if Ruffle extension is enabled
+        if (typeof RufflePlayer === 'undefined') {
+        // Place a random number over here so the DOM always has to be reloaded: <?php echo rand()."\n" ?>
     swfobject.embedSWF("../swf/creator2_b17.swf", "flashcontent", "860", "540", "10.0.0",
     "/swfobject/expressInstall.swf", flashvars, params);
-                }
-        }, 20);
-    });
+    }});
     </script>
 
 </head>
@@ -38,7 +34,7 @@
         <div id="content">
             <h3>Platformer Game Maker</h3>
 
-            <div id="creatorcontainer" style="width: 860px; display:none;">
+            <div id="creatorcontainer" style="width: 860px;">
                 <div id="flashcontent">
                     <div style="margin: 20px auto; text-align: center; width: 425px;">
                         <img src="../images/platformer-creator.png" width="405px" height="240" /><br />
