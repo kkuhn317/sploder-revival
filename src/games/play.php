@@ -110,8 +110,7 @@ if(isset($_GET['challenge'])){
                 echo '<div class="challenge_prompt">'.$mode.'</div>';
             }
             ?>
-            <div class="gameobject" id="gameobject">
-                <div id="ruffle_disabler" style="display:none;">
+            <div class="gameobject" id="gameobject" style="display:none;">
                 <div id="flashcontent">
                     <img class="game_preview"
                         src="../users/user<?= $game['user_id'] ?>/images/proj<?= $game['g_id'] ?>/image.png" />
@@ -128,7 +127,6 @@ if(isset($_GET['challenge'])){
                         </a>
                     </p>
                     <?php } ?>
-                </div>
                 </div>
             </div>
             <script type="text/javascript">
@@ -194,20 +192,15 @@ if(isset($_GET['challenge'])){
             <?php if ($game['g_swf'] != 1) { ?>
              document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function () {
-            <?php } ?>
-            document.getElementById('ruffle_disabler').style.display = 'block';
-            <?php if ($game['g_swf'] != 1) { ?>
+            document.getElementById('gameobject').style.display = 'block';
             // Check if Ruffle extension is enabled
-                        if (typeof RufflePlayer === 'undefined' && !localStorage.getItem('ruffleEnabled')) {
-
+            if (typeof RufflePlayer === 'undefined') {
             <?php } ?>
             swfobject.embedSWF("/swf/" + g_swf, "flashcontent", "640", "480", g_version,
                 "/swfobject/expressInstall.swf", flashvars, params);
             <?php if ($game['g_swf'] != 1) { ?>
-                            } else {
-                localStorage.setItem('ruffleEnabled', 'true');
-            }
-                    }, 60);
+                            }
+                    }, 90);
                 });
             <?php } ?>
             <?php } ?>

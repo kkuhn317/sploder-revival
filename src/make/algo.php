@@ -11,16 +11,14 @@
     };
     document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function () {
-            document.getElementById('ruffle_disabler').style.display = 'block';
+            // Unhide creatorcontainer
+            document.getElementById('creatorcontainer').style.display = 'block';
             // Check if Ruffle extension is enabled
-                        if (typeof RufflePlayer === 'undefined' && !localStorage.getItem('ruffleEnabled')) {
-
+            if (typeof RufflePlayer === 'undefined') {
 
     swfobject.embedSWF("../swf/creator3_b01.swf", "flashcontent", "720", "540", "10", "/swfobject/expressInstall.swf",
     flashvars, params);
-    } else {
-                localStorage.setItem('ruffleEnabled', 'true');
-            }
+    }
         }, 90);
     });
     </script>
@@ -40,15 +38,13 @@
         <div id="content">
             <h3>3d Game Maker, Space Adventure</h3>
 
-            <div id="creatorcontainer">
-                <div id="ruffle_disabler" style="display:none;">
+            <div id="creatorcontainer" style="display:none;">
                 <div id="flashcontent">
                     <div style="margin: 40px auto; text-align: center; width: 420px;">
                         <p>Make your own 3d space adventure game with this game maker. Create a 3d space station and add
                             aliens, robots, traps and powerups to create your own space missions.</p>
                         <?php include('../content/noflash.php') ?>
                     </div>
-                </div>
                 </div>
             </div>
 

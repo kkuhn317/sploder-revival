@@ -75,14 +75,12 @@
     document.addEventListener("mouseup", blockMouseEvents, true);
     document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function () {
-            document.getElementById('ruffle_disabler').style.display = 'block';
+            // Unhide creatorcontainer
+            document.getElementById('creatorcontainer').style.display = 'block';
             // Check if Ruffle extension is enabled
-                        if (typeof RufflePlayer === 'undefined' && !localStorage.getItem('ruffleEnabled')) {
-
+            if (typeof RufflePlayer === 'undefined') {
     swfobject.embedSWF("/swf/creator7preloader2.swf", "flashcontent", "860", "626", "10.2.152",
     "/swfobject/expressInstall.swf", flashvars, params);
-            } else {
-                localStorage.setItem('ruffleEnabled', 'true');
             }
         }, 90);
     });
@@ -104,8 +102,7 @@
             <div style="border: 1px solid #999; color: #ccc; padding: 6px; margin: 0 19px 10px 19px; font-size: 11px; background: #660066"
                 align="center" id="launchprompt" class="hidden">Playing published game. If you are blocking pop-ups,
                 click <a href="#" onclick="relaunchPubMovie();">play game now</a>.</div>
-            <div id="creatorcontainer" style="width: 860px; height: 626px;">
-                <div id="ruffle_disabler" style="display:none;">
+            <div id="creatorcontainer" style="width: 860px; height: 626px; display:none;">
                 <div id="flashcontent">
                     <div style="margin: 40px auto; text-align: center; width: 600px;">
                         <br /><br />
@@ -120,7 +117,6 @@
                             maker.</p>
                             <?php include('../content/noflash.php') ?>
                     </div>
-                </div>
                 </div>
             </div>
 
