@@ -10,12 +10,16 @@
     v: "1"
     };
     document.addEventListener("DOMContentLoaded", function () {
-        // Check if Ruffle extension is enabled
-        if (typeof RufflePlayer === 'undefined') {
-        // Place a random number over here so the DOM always has to be reloaded: <?php echo rand()."\n" ?>
-    swfobject.embedSWF("../swf/creator5_b21.swf", "flashcontent", "860", "600", "10.2", "/swfobject/expressInstall.swf",
-    flashvars, params);
-    }});
+        setTimeout(function () {
+            // Unhide creatorcontainer
+            document.getElementById('creatorcontainer').style.display = 'block';
+            // Check if Ruffle extension is enabled
+            if (typeof RufflePlayer === 'undefined') {
+                swfobject.embedSWF("../swf/creator5_b21.swf", "flashcontent", "860", "600", "10.2", "/swfobject/expressInstall.swf",
+                flashvars, params);
+            }
+        }, 20);
+    });
 
     </script>
 
@@ -30,10 +34,9 @@
     <?php include('../content/headernavigation.php'); ?>
     <div id="page">
         <?php include('../content/subnav.php'); ?>
-
         <div id="content">
             <h3>Physics Puzzle Game Maker</h3>
-            <div id="creatorcontainer" style="height: 600px; width: 860px">
+            <div id="creatorcontainer" style="height: 600px; width: 860px; display:none">
                 <div id="flashcontent">
                     <div style="margin: 40px auto; text-align: center; width: 420px;">
                         <img src="../images/physics-puzzle-maker.png" width="348" height="172" /><br /><br /><br />

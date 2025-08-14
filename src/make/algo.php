@@ -10,12 +10,17 @@
     v: "1"
     };
     document.addEventListener("DOMContentLoaded", function () {
-        // Check if Ruffle extension is enabled
-        if (typeof RufflePlayer === 'undefined') {
-        // Place a random number over here so the DOM always has to be reloaded: <?php echo rand()."\n" ?>
+        setTimeout(function () {
+            // Unhide creatorcontainer
+            document.getElementById('creatorcontainer').style.display = 'block';
+            // Check if Ruffle extension is enabled
+            if (typeof RufflePlayer === 'undefined') {
+
     swfobject.embedSWF("../swf/creator3_b01.swf", "flashcontent", "720", "540", "10", "/swfobject/expressInstall.swf",
     flashvars, params);
-    }});
+    }
+        }, 20);
+    });
     </script>
 
 </head>
@@ -33,7 +38,7 @@
         <div id="content">
             <h3>3d Game Maker, Space Adventure</h3>
 
-            <div id="creatorcontainer">
+            <div id="creatorcontainer" style="display:none;">
                 <div id="flashcontent">
                     <div style="margin: 40px auto; text-align: center; width: 420px;">
                         <p>Make your own 3d space adventure game with this game maker. Create a 3d space station and add
