@@ -82,7 +82,14 @@ if ($a == "status") {
             ':id' => $id,
         ]);
         if (count($result) > 0) {
-            $output .= '&can_vote=1';
+            $result = $db->query("SELECT * FROM contest_voter_usernames WHERE voter_username = :username", [
+                ':username' => $_SESSION['username']
+            ]);
+            if (count($result) > 0) {
+                $output .= '&already_voted=1';
+            } else {
+                $output .= '&can_vote=1';
+            }  
         } else {
             $output .= '&can_vote=0';
         }
