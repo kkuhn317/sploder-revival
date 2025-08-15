@@ -82,14 +82,17 @@ if ($a == "status") {
             ':id' => $id,
         ]);
         if (count($result) > 0) {
-            $result = $db->query("SELECT * FROM contest_voter_usernames WHERE id = :id AND voter_username = :username", [
-                ':id' => $id,
+            $result = $db->query("SELECT * FROM contest_voter_usernames WHERE voter_username = :username", [
                 ':username' => $_SESSION['username'] ?? ''
             ]);
-            if (count($result) > 0) {
+            if (isset($result[$id])) {
                 $output .= '&already_voted=1';
             } else {
-                $output .= '&can_vote=1';
+                if (count($result) >= 3) {
+                    $output .= '&max_ballots_cast=1';
+                } else {
+                    $output .= '&can_vote=1';
+                }
             }  
         } else {
             $output .= '&can_vote=0';
