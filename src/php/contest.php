@@ -82,8 +82,9 @@ if ($a == "status") {
             ':id' => $id,
         ]);
         if (count($result) > 0) {
-            $result = $db->query("SELECT * FROM contest_voter_usernames WHERE voter_username = :username", [
-                ':username' => $_SESSION['username']
+            $result = $db->query("SELECT * FROM contest_voter_usernames WHERE id = :id AND voter_username = :username", [
+                ':id' => $id,
+                ':username' => $_SESSION['username'] ?? ''
             ]);
             if (count($result) > 0) {
                 $output .= '&already_voted=1';
