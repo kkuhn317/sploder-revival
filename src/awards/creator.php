@@ -1,3 +1,4 @@
+<?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 require_once('../content/logincheck.php');
 require_once('../database/connect.php');
@@ -73,7 +74,7 @@ if (count($result) > 0) {
     <!--[if IE 7]>
 <link rel="stylesheet" type="text/css"  href="/awards/css/ie7.css" />
 <![endif]-->
-
+<?php include('../content/onlinechecker.php'); ?>
 
 </head>
 <?php include('../content/addressbar.php'); ?>
