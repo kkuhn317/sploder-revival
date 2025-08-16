@@ -1,9 +1,12 @@
 <?php
 
-
 function display_user_info($username)
 {
     require_once('../repositories/repositorymanager.php');
+    require_once('../services/AwardsListRenderService.php');
+    $awardsRepository = RepositoryManager::get()->getAwardsRepository();
+    $awardsListRenderService = new AwardsListRenderService($awardsRepository);
+
     require_once('../services/GraphicListRenderService.php');
     $graphicsRepository = RepositoryManager::get()->getGraphicsRepository();
     $graphicListRenderService = new GraphicListRenderService($graphicsRepository);
@@ -70,8 +73,29 @@ function setClass(id, c) {
         <div class="spacer">&nbsp;</div>
     </div>
 </div>
+
     <?php } ?>
 <?php
+    // Get required data for awards
+    $totalAwards = $awardsRepository->getAwardCount($username);
+    if ($totalAwards > 0) {
+        
+?>
+<div class="mprofgroup mprofsection">
+    <h4><a href="#" onclick="setClass('mprof_awards', 'shown'); return false;">Awards (<?= $totalAwards ?>)</a></h4>
+    <div class="mprofcontent hidden" id="mprof_awards">
+        <div id="profile_awards">
+            <?php
+            $awards = $awardsRepository->getAwardsPage($username, 0, 25);
+            $material_list = $awardsListRenderService->getMaterialList();
+            $awardsListRenderService->renderAwardsList($awards, 64, 'img');
+            ?>
+        </div>
+        <div class="spacer">&nbsp;</div>
+    </div>
+</div>
+<?php
+    }
 $totalGraphics = $graphicsRepository->getTotalPublicGraphicsByUsername($username);
 if ($totalGraphics > 0){
 ?>
@@ -244,6 +268,6 @@ if ($totalGraphics > 0){
         <div class="spacer">&nbsp;</div>
     </div>
 </div>
-    <?php
+<?php   
 }
 ?>

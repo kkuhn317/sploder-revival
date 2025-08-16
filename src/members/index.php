@@ -35,13 +35,13 @@ $awesomeness = $stats['awesomeness'] ?? 50;
             <h3></h3>
             <div class="mprof">
                 <div class="mprofgroup mprofvcard">
-                    <a href="/members/index.php?u=<?php echo $username ?>"><img class="mprofavatar96"
-                            src="../php/avatarproxy.php?u=<?php echo $username ?>" width="96" height="96"
-                            alt="mat7772" /></a>
+                    <a href="/members/index.php?u=<?= $username ?>"><img class="mprofavatar96"
+                            src="../php/avatarproxy.php?u=<?= $username ?>" width="96" height="96"
+                            alt="<?= $username ?>" /></a>
                     <div class="mprofvitals">
-                        <h2><a href="/members/index.php?u=<?php echo $username ?>"><?php echo $username ?></a></h2>
+                        <h2><a href="/members/index.php?u=<?= $username ?>"><?= $username ?></a></h2>
                         <div class="mprofstatus">
-                            <img src="../php/userstatus.php?u=<?php echo $username ?>" width="80" height="25"
+                            <img src="../php/userstatus.php?u=<?= $username ?>" width="80" height="25"
                                 alt="online status" />
                             <?php
                             $result['perms'] = $result['perms'] ?? '';
@@ -59,9 +59,9 @@ $awesomeness = $stats['awesomeness'] ?? 50;
                         </div>
                         <dl>
                             <dt><strong>Level</strong></dt>
-                            <dd><strong><?php echo $result['level'] ?></strong></dd>
+                            <dd><strong><?= $result['level'] ?></strong></dd>
                             <dt>Joined:</dt>
-                            <dd><?php echo time_elapsed_string("@" . $result['joindate']) ?></dd>
+                            <dd><?= time_elapsed_string("@" . $result['joindate']) ?></dd>
                             <dt>Last visit:</dt>
                             <dd>
                                 <?php
@@ -132,7 +132,7 @@ $awesomeness = $stats['awesomeness'] ?? 50;
 
                 </div>
             </div>
-            <h4 class="mprofgames">Games by <?php echo $username ?></h4>
+            <h4 class="mprofgames">Games by <?= $username ?></h4>
                 <?php
                     $gameListRenderService->renderPartialViewForUser($username, $_GET['o'] ?? 0, 12);
                 ?>
