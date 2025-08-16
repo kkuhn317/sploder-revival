@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once('../repositories/repositorymanager.php');
-// Get repository and service
 $graphicsRepository = RepositoryManager::get()->getGraphicsRepository();
 $total = $graphicsRepository->getTotalPublicGraphics();
 
