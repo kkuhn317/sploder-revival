@@ -94,8 +94,8 @@ reduceAward();
 
 // Send award
 $db->execute("INSERT INTO award_requests
-    (username, membername, level, category, style, material, icon, color, message)
-    VALUES (:username, :membername, :level, :category, :style, :material, :icon, :color, :message)", [
+    (username, membername, level, category, style, material, icon, color, message, is_viewed)
+    VALUES (:username, :membername, :level, :category, :style, :material, :icon, :color, :message, :is_viewed)", [
     ':username' => $_SESSION['username'],
     ':membername' => $membername,
     ':level' => $level,
@@ -104,7 +104,8 @@ $db->execute("INSERT INTO award_requests
     ':material' => $material,
     ':icon' => $icon,
     ':color' => $color,
-    ':message' => $message
+    ':message' => $message,
+    ':is_viewed' => false
     ]);
 
 header("Location: ../index.php");

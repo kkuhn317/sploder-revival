@@ -67,7 +67,8 @@ LIMIT 90;
     private function getLevel(int $rating, int $friends, int $games, int $views)
     {
         $level = min(250, floor($rating/25 + $friends/10 + $games/10 + $views/1000)+1);
-        return $level;
+        //return $level;
+        return 250;
     }
 
     public function getMembers(int $offset)

@@ -9,6 +9,8 @@ $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $newFriends = $friendsRepository->getFriendRequestCount($_SESSION['userid'], false);
 $db = getDatabase();
 $userRepository = RepositoryManager::get()->getUserRepository();
+$awardsRepository = RepositoryManager::get()->getAwardsRepository();
+$newAwards = $awardsRepository->getAwardRequestCount($_SESSION['username'], false);
 $level = $userRepository->getLevelByUserId($_SESSION['userid']);
 $isolated = $userRepository->isIsolated($_SESSION['username']);
 $friends = $friendsRepository->getTotalFriends($username);
@@ -97,6 +99,14 @@ $friends = $friendsRepository->getTotalFriends($username);
           >
             <a <?= $newFriends == 'No' ? 'style="color:#666"' : '' ?> href="../friends/index.php"><?= $newFriends != 'No' ? '<strong>' : '' ?><?= $newFriends ?><?= $newFriends != 'No' ? '</strong>' : '' ?> new friend request<?= $newFriends == 1 ? '' : 's' ?>!</a>
           </li>
+          <?php
+          // Show new awards count only if there are any
+          if ($newAwards > 0) {
+              echo '<li class="wow">
+              <a href="/awards/index.php"><strong>' . $newAwards . '</strong> new award' . ($newAwards == 1 ? '' : 's') . '!</a>
+              </li>';
+          }
+          ?>
           <li>
             <a href="../make/index.php">Make
               your own game</a>

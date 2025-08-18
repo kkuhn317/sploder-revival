@@ -34,4 +34,22 @@ class AwardsRepository implements IAwardsRepository
 
     }
 
+    public function setAllAwardsAsViewed(string $username): void
+    {
+        $this->db->execute("UPDATE award_requests
+            SET is_viewed = true
+            WHERE membername = :membername", [
+                ':membername' => $username]);
+    }
+
+    public function getAwardRequestCount(string $username, bool $isViewed): int
+    {
+        return $this->db->queryFirstColumn("SELECT COUNT(*)
+            FROM award_requests
+            WHERE membername = :membername AND is_viewed = :is_viewed", 0, [
+                ':membername' => $username,
+                ':is_viewed' => $isViewed
+            ]);
+    }
+
 }

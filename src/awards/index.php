@@ -8,8 +8,9 @@ require_once('../services/AwardsListRenderService.php');
 
 $userRepository = RepositoryManager::get()->getUserRepository();
 $level = $userRepository->getLevelByUserId($_SESSION['userid']);
-
-$awardsListRenderService = new AwardsListRenderService(RepositoryManager::get()->getAwardsRepository());
+$awardsRepository = RepositoryManager::get()->getAwardsRepository();
+$awardsRepository->setAllAwardsAsViewed($_SESSION['username']);
+$awardsListRenderService = new AwardsListRenderService($awardsRepository);
 $material_list = $awardsListRenderService->getMaterialList();
 ?>
 

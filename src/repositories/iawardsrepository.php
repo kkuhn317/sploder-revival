@@ -22,4 +22,20 @@ interface IAwardsRepository
      * @return array Array of award records
      */
     public function getAwardsPage(string $username, int $offset, int $limit): array;
+
+    /**
+     * Marks all awards for a user as viewed
+     * 
+     * @param string $username The username to mark awards as viewed for
+     */
+    public function setAllAwardsAsViewed(string $username): void;
+
+    /**
+     * Gets the count of award requests for a user
+     * 
+     * @param string $username The username to get award request count for
+     * @param bool $isViewed Whether to count viewed or unviewed requests
+     * @return int The number of award requests
+     */
+    public function getAwardRequestCount(string $username, bool $isViewed): int;
 }

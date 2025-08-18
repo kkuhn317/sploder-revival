@@ -72,7 +72,8 @@ CREATE TABLE public.award_requests (
     material integer NOT NULL,
     icon integer NOT NULL,
     color integer NOT NULL,
-    message text
+    message text,
+    is_viewed boolean NOT NULL
 );
 
 
@@ -1029,22 +1030,6 @@ ALTER TABLE ONLY public.challenge_winners
 
 ALTER TABLE ONLY public.challenges
     ADD CONSTRAINT g_id_contests_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
-
-
---
--- Name: challenge_winners g_id_contest_winners_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
---
-
-ALTER TABLE ONLY public.challenge_winners
-    ADD CONSTRAINT g_id_contest_winners_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) MATCH FULL;
-
-
---
--- Name: challenges g_id_contests_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
---
-
-ALTER TABLE ONLY public.challenges
-    ADD CONSTRAINT g_id_contests_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) MATCH FULL;
 
 
 --
