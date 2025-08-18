@@ -4,3 +4,11 @@ ErrorDocument 403 /error_pages/err404.php
 ErrorDocument 500 /error_pages/err50x.php
 ErrorDocument 502 /error_pages/err50x.php
 ErrorDocument 503 /error_pages/err50x.php
+
+# Disable access to all files starting with a dot
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Disable directory listing
+Options -Indexes
