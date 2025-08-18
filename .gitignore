@@ -46,6 +46,11 @@ src/.env.development.local
 src/.env.test.local
 src/.env.production.local
 src/.env.local
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test

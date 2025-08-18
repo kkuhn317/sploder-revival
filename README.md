@@ -52,7 +52,7 @@ Further, whenever you have updated the schema of the database, please run `make 
 
 The provided Makefile provides an easy to use interface for running the development docker compose files.
 
-First, you need to build the image. Anytime you make changes to anything in `./src` you will need to rebuild.
+First, you need to build the image.
 
 ```shell
 make build # build the sploder-image
@@ -62,18 +62,19 @@ After this, you will want to make sure you bootstrap the database for local deve
 
 If you run dev.bootstrap, it will also create two users: `test` and `test2`, with the password `password`.
 
-```shell
-make dev.bootstrap # RUN ONCE - bootstraps the backup database
-```
-
 For development, the following commands will let you run the instance locally
 ```shell
+make dev.bootstrap # RUN ONCE: bootstraps the backup database while inserting test data
 make dev # Runs the dev docker compose, detaching the container
 make dev.watch # Runs the dev docker compose
 ```
 
-TODO - Production docker-compose file does not yet exist
+For production, the following commands will let you run the instance in production
+```shell
+make prod.bootstrap # RUN ONCE: bootstraps the backup schema only
+make prod # Runs the production docker compose
+```
 
 ### Manual
 
-If executing a manual deployment, be sure to copy `./src/.env.example` to `./src/.env` and populate the values with the specified configuration.
+If executing a manual deployment, be sure to copy `.env.example` to `./src/.env` and populate the values with the specified configuration.
