@@ -25,7 +25,12 @@ if ($count == 0) {
 $perms = $db->queryFirstColumn("SELECT perms FROM members WHERE username=:username", 0, [
     ':username' => $username
 ]);
-if (str_contains($perms, 'M')) {
+if ($perms == "") {
+    $isModerator = false;
+} else {
+    $isModerator = str_contains($perms, 'M');
+}
+if ($isModerator) {
     header("Location: ../index.php?err=You cannot ban a moderator");
     die();
 }
