@@ -3,12 +3,15 @@
 require_once('content/index.php');
 require_once('../repositories/repositorymanager.php');
 require_once('../services/GameListRenderService.php');
+require_once('../services/FriendsListRenderService.php');
 
 $gameListRenderService = new GameListRenderService(RepositoryManager::get()->getGameRepository());
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $friends = $friendsRepository->getTotalFriends($_GET['u'] ?? '');
 $userRepository = RepositoryManager::get()->getUserRepository();
 $stats = $userRepository->getUserStats($_GET['u'] ?? '');
+$friendsRepository = RepositoryManager::get()->getFriendsRepository();
+$friendsListRenderService = new FriendsListRenderService($friendsRepository);
 
 $difficulty = $stats['avg_difficulty'] ?? 50;
 $feedback = $stats['avg_score'] ?? 50;
@@ -189,7 +192,9 @@ $awesomeness = $stats['awesomeness'] ?? 50;
                 <div id="messages"></div>
                 <?php } ?>
                 <div class="spacer">&nbsp;</div>
-
+                <?php
+                echo $friendsListRenderService->renderPartialViewForMemberFriends($username);
+                ?>
                 <div class="spacer">&nbsp;</div>
             </div>
             <div class="spacer friends_spacer">&nbsp;</div>

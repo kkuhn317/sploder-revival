@@ -35,4 +35,22 @@ interface IFriendsRepository
      * @return int the total number of friends
      */
     public function getTotalFriends(string $username): int;
+
+    /**
+     * Gets the bested friends for a user, ordered by most recent first
+     * 
+     * @param string $username The username to get bested friends for
+     * @param int $limit Maximum number of friends to return
+     * @return array Array of friend records containing user1 and user2 fields
+     */
+    public function getBestedFriends(string $username, int $limit = 30): array;
+
+    /**
+     * Gets the regular (non-bested) friends for a user, ordered by most recent first
+     * 
+     * @param string $username The username to get friends for
+     * @param int $limit Maximum number of friends to return
+     * @return array Array of friend records containing user1 and user2 fields
+     */
+    public function getAcceptedFriends(string $username, int $limit): array;
 }
