@@ -77,4 +77,4 @@ make prod # Runs the production docker compose
 
 ### Manual
 
-If executing a manual deployment, be sure to copy `./src/.env.example` to `./src/.env` and populate the values with the specified configuration.
+If executing a manual deployment, be sure to copy `.env.example` to `./src/.env` and populate the values with the specified configuration.
