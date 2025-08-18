@@ -43,18 +43,20 @@ $topMembers = $userRepository->getTopMembers();
             $timesquash = 1000;
 
             $tagArray = array_column($topMembers, 'total_views', 'author');
-            $taggedArray = array_column($topMembers, 'last_view_time', 'author');
 
-            // define timespan
-            $fromwhen = date("Y-m-d H:i:s", time() - 60*60*24*7);
-            $towhen = date("Y-m-d H:i:s", time());
+            if (count($tagArray) > 0) {
 
-            // sort the array according to size
-            arsort($tagArray);
-                
-            // call the function
-            echo render_treemap($tagArray, 570, 900, 0, 1);
+                // define timespan
+                $fromwhen = date("Y-m-d H:i:s", time() - 60*60*24*7);
+                $towhen = date("Y-m-d H:i:s", time());
 
+                // sort the array according to size
+                arsort($tagArray);
+                    
+                // call the function
+                echo render_treemap($tagArray, 570, 900, 0, 1);
+            }
+            
             ?>
         </div>
         <div class="spacer">&nbsp;</div>
