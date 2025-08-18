@@ -67,4 +67,4 @@ RUN echo '0 1 * * * /usr/local/bin/php /var/www/html/cronjobs/contest.php' > /et
 
 EXPOSE 80
 
-CMD ["sh", "-c", "cron && exec apache2-foreground"]
+CMD ["sh", "-c", "apache2-foreground"]
