@@ -57,6 +57,7 @@ LEFT JOIN public.game_views_anonymous ga
     ON g.g_id = ga.g_id 
     AND ga.create_date >= (SELECT max_time FROM latest_view) - INTERVAL '24 hours'
 GROUP BY g.author
+HAVING COUNT(gv.g_id) + COUNT(ga.g_id) > 0
 ORDER BY total_views DESC
 LIMIT 90;
 ";
