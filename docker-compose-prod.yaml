@@ -25,17 +25,17 @@ services:
       - ./src/update/currentversion.txt:/var/www/html/update/currentversion.txt:rw
       - ./src/php/verifyscore.php:/var/www/html/php/verifyscore.php:rw
     environment:
-      DOMAIN_NAME: https://yourdomain.com
+      DOMAIN_NAME: ${DOMAIN_NAME}
       # Is this website public via a network?
       # If you are running this PRIVATELY, set this to false
-      NETWORKED: true
+      NETWORKED: ${NETWORKED}
 
       # If yes, you must provide the source code to comply with the AGPL-3.0 license
       # If you do not provide the source code, you are in violation of the AGPL-3.0 license
-      REPOSITORY: https://github.com/Sploder-Saptarshi/sploder-revival
+      REPOSITORY: ${REPOSITORY}
 
       # Link to your forum
-      FORUMS_URL: https://forums.yourdomain.com
+      FORUMS_URL: ${FORUMS_URL}
 
       # Your Discord username, where you can be reached
       # This username will be shown in the privacy policy and other pages
@@ -48,23 +48,23 @@ services:
       # DO NOT INCLUDE THE 'https://discord.gg/' PART
       # DO NOT INCLUDE THE 'https://discord.com/invite/' PART
       # example: cHGz362sdC
-      DISCORD_INVITE: yourInviteCode
-      LAUNCHER_REPOSITORY_URL: https://github.com/Sploder-Saptarshi/Sploder-Launcher
+      DISCORD_INVITE: ${DISCORD_INVITE}
+      LAUNCHER_REPOSITORY_URL: ${LAUNCHER_REPOSITORY_URL}
       POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: sploder
-      POSTGRES_USERNAME: sploder 
-      POSTGRES_PASSWORD: your_secure_password_here
-      POSTGRES_SSLMODE: disable
-      ORIGINAL_MEMBERS_DB: originalmembers
-      CF_TURNSTILE_SECRET_KEY: 1x0000000000000000000000000000000AA
-      CF_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
-      DISCORD_CLIENT_ID:
-      DISCORD_SECRET_ID:
-      DISCORD_SCOPES: identify
-      DISCORD_REDIRECT_URL:
-      DISCORD_BOT_TOKEN:
-      UPLOAD_API_KEY: your_secure_upload_api_key
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_SSLMODE: ${POSTGRES_SSLMODE}
+      ORIGINAL_MEMBERS_DB: ${ORIGINAL_MEMBERS_DB}
+      CF_TURNSTILE_SECRET_KEY: ${CF_TURNSTILE_SECRET_KEY}
+      CF_TURNSTILE_SITE_KEY: ${CF_TURNSTILE_SITE_KEY}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      DISCORD_SECRET_ID: ${DISCORD_SECRET_ID}
+      DISCORD_SCOPES: ${DISCORD_SCOPES}
+      DISCORD_REDIRECT_URL: ${DISCORD_REDIRECT_URL}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
+      UPLOAD_API_KEY: ${UPLOAD_API_KEY}
     restart: unless-stopped
     # Set file permissions for writable directories (only if needed)
     command: >
@@ -89,9 +89,9 @@ services:
     image: postgres:17
     container_name: sploder_postgres_prod
     environment:
-      POSTGRES_DB: sploder
-      POSTGRES_USER: sploder 
-      POSTGRES_PASSWORD: your_secure_password_here
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - ./db:/bootstrap  # Mount the backup file into the container
       - postgres_data:/var/lib/postgresql/data  # Persistent storage for the database
