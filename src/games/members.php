@@ -46,7 +46,6 @@ $topMembers = $userRepository->getTopMembers();
             $taggedArray = array_column($topMembers, 'last_view_time', 'author');
 
             if (count($tagArray) > 0) {
-                print_r($tagArray);
                 // define timespan
                 $fromwhen = date("Y-m-d H:i:s", time() - 60*60*24*7);
                 $towhen = date("Y-m-d H:i:s", time());
