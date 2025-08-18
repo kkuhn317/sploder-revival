@@ -15,7 +15,6 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
     $author = $_SESSION['username'];
     $comments = $_GET['comments'];
     $private = $_GET['private'];
-    $ispublished = 1;
     $id = (int)filter_var($_GET['projid'], FILTER_SANITIZE_NUMBER_INT);
 
     require_once('../database/connect.php');
@@ -30,28 +29,15 @@ if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
         http_response_code(403);
         die('<message result="failed" message="You do not own this game!"/>');
     }
-    
-    $currentDate = date("Y-m-d H:i:s");
 
     $challengeRepository->unverifyChallenge($id);
+
+    $gameRepository->publishGame(
+        $id,
+        $private,
+        $comments
+    );
     
-    $db->execute("UPDATE games
-        SET ispublished = :ispublished, 
-            isprivate = :isprivate, 
-            comments = :comments, 
-            first_published_date = CASE 
-                WHEN ispublished = 0 THEN :current_date 
-                ELSE first_published_date 
-            END,
-            last_published_date = :current_date,
-            date = :current_date
-        WHERE g_id = :id", [
-        ':ispublished' => $ispublished,
-        ':isprivate' => $private,
-        ':comments' => $comments,
-        ':current_date' => $currentDate,
-        ':id' => $id
-    ]);
     $project_path = "../users/user" . $_SESSION['userid'] . "/projects/proj" . $id . "/";
     file_put_contents($project_path . "game.xml", $xml);
     echo '<message result="success" id="proj' . $id . '" pubkey="' . $_SESSION['userid'] . '_' . $id . '" message="Success"/>';

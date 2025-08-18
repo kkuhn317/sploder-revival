@@ -305,4 +305,24 @@ where g_id = :g_id
             'g_swf' => (int)$result['g_swf']
         ];
     }
+
+    public function publishGame(int $id, bool $private, string $comments): void {
+        $this->db->execute("UPDATE games
+        SET ispublished = :ispublished, 
+            isprivate = :isprivate, 
+            comments = :comments, 
+            first_published_date = CASE 
+                WHEN ispublished = 0 THEN :current_date 
+                ELSE first_published_date 
+            END,
+            last_published_date = :current_date,
+            date = :current_date
+        WHERE g_id = :id", [
+        ':ispublished' => 1,
+        ':isprivate' => $private,
+        ':comments' => $comments,
+        ':current_date' => date("Y-m-d H:i:s"),
+        ':id' => $id
+    ]);
+    }
 }

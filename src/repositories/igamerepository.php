@@ -151,6 +151,16 @@ interface IGameRepository
      * @return bool
      */
     public function allowComment(int $gameId): bool;
+
+    /**
+     * Publish a game
+     * 
+     * @param int $id of the game
+     * @param bool $private game
+     * @param string $comments are enabled
+     * @return void
+     */
+    public function publishGame(int $id, bool $private, string $comments): void;
 }
 
 class GameMetricsForUser
