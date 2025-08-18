@@ -67,8 +67,8 @@ on conflict do nothing", [
 	public function getTotal()
 	{
 	    try {
-	        $likesQuery = "SELECT COUNT(*) AS count FROM graphic_likes";
-	        $graphicsQuery = "SELECT COUNT(*) AS count FROM graphics";
+	        $likesQuery = "SELECT COUNT(*) AS count FROM graphic_likes gl JOIN graphics g ON gl.g_id = g.id WHERE g.isprivate = false AND g.ispublished = true";
+	        $graphicsQuery = "SELECT COUNT(*) AS count FROM graphics WHERE isprivate = false AND ispublished = true";
 
 	        if ($this->db instanceof PDO) {
 	            $likesStmt = $this->db->query($likesQuery);

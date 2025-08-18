@@ -3,7 +3,7 @@
 session_start();
 require_once('../repositories/repositorymanager.php');
 $graphicsRepository = RepositoryManager::get()->getGraphicsRepository();
-$total = $graphicsRepository->getTotalPublicGraphics();
+$stats = $graphicsRepository->getTotal();
 
 $perPage = 36;
 require_once('../services/GraphicListRenderService.php');
@@ -49,10 +49,10 @@ $graphicListRenderService = new GraphicListRenderService($graphicsRepository);
     the <a href="/make/plat.php">Platformer Game Creator</a>.
     You can also <a href="/make/graphics.php">create your own graphics</a> using the online graphics editor.
     All graphics should also be <a href="/graphics/tags.php">tagged</a> to make them easy to find!</p>
-    <p>There <?= $total == 1 ? 'is' : 'are' ?> <?= $total ?> graphic<?= $total == 1 ? '' : 's' ?> so far with ? likes.</p>
+    <p>There <?= $stats['graphics'] == 1 ? 'is' : 'are' ?> <?= $stats['graphics'] ?> graphic<?= $stats['graphics'] == 1 ? '' : 's' ?> so far with <?= $stats['likes'] ?> like<?= $stats['likes'] == 1 ? '' : 's' ?>.</p>
     <?php
         // Render the graphics list and pagination using the service
-        $graphicListRenderService->renderPartialViewForPublicGraphics($_GET['o'] ?? 0, $perPage);
+        $graphicListRenderService->renderPartialViewForPublicGraphics($_GET['o'] ?? 0, $perPage, $stats['graphics']);
     ?>
         </div>
         <div id="sidebar">

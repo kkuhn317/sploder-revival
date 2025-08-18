@@ -49,10 +49,9 @@ class GraphicListRenderService
         <?php
     }
 
-    public function renderPartialViewForPublicGraphics(int $offset, int $perPage): void
+    public function renderPartialViewForPublicGraphics(int $offset, int $perPage, int $total): void
     {
         $graphics = $this->graphicsRepository->getPublicGraphics($offset, $perPage);
-        $total = $this->graphicsRepository->getTotalPublicGraphics();
         
         $this->renderPartialViewForGraphics(
             $graphics,
