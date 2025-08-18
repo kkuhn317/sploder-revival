@@ -98,7 +98,7 @@ if ($verified) {
                             Use any words you like: </big>
                         <?php } else { ?>
                         Tags: <?php include('../content/taglister.php');
-                                    echo displayTags($tags, false) ?><br><br>
+                                    echo displayTags($tags, false, TagType::Graphics) ?><br><br>
                         Edit your descriptive tags:
                         <?php } ?><br><br>
                         <form action="../graphics/add-tag.php" method="post">

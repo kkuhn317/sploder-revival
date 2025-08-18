@@ -33,7 +33,7 @@ $graphicTags = $graphicsRepository->getGraphicTags($_GET['offset'] ?? 0,100);
                     <p class="tags" style="line-height: 40px;">Tags:
                         <?php
                         require_once('../content/taglister.php');
-                        echo displayTags($graphicTags->data, true, true);
+                        echo displayTags($graphicTags->data, true, TagType::Graphics);
                         ?>
                     </p>
 

@@ -1,9 +1,15 @@
 <?php
 
+enum TagType: string
+{
+    case Games = 'games';
+    case Graphics = 'graphics';
+}
+
 /**
- * A functon that can take an array of string and return colored tags
+ * A function that can take an array of string and return colored tags
  */
-function displayTags($tagList, $hyperlink = true, $graphics = false): string
+function displayTags($tagList, $hyperlink = true, TagType $tagType = TagType::Games): string
 {
     if (count($tagList) <= 0) {
         return "";
@@ -18,11 +24,12 @@ function displayTags($tagList, $hyperlink = true, $graphics = false): string
         return $tag[0];
     }, $tagList);
     $placeholders = implode(',', array_fill(0, count($tagParameters), '?'));
-    if($graphics) {
-        $table = 'graphic_tags';
-    } else {
-        $table = 'game_tags';
-    }
+    
+    $table = match($tagType) {
+        TagType::Graphics => 'graphic_tags',
+        TagType::Games => 'game_tags'
+    };
+    
     $counts = $db->query("SELECT tag, COUNT(g_id) as count
         FROM $table
         WHERE tag IN ($placeholders)
@@ -34,13 +41,11 @@ function displayTags($tagList, $hyperlink = true, $graphics = false): string
 
     $tagString = "";
     if ($hyperlink) {
-        if ($graphics) {
-            $page = "graphic-tags.php";
-            $suffix = "graphic";
-        } else {
-            $page = "game-tags.php";
-            $suffix = "game";
-        }
+        [$page, $suffix] = match($tagType) {
+            TagType::Graphics => ["graphic-tags.php", "graphic"],
+            TagType::Games => ["game-tags.php", "game"]
+        };
+        
         for ($i = 0; $i < count($tagList); $i++) {
             $tagString .= "<a class=\"tagcolor{$colors[$i % 4]}\" href=\"$page?t={$tagList[$i][0]}\" title=\"{$tagList[$i][0]} - {$tagList[$i][1]} $suffix" . ($tagList[$i][1] == 1 ? "" : "s") . ".\">{$tagList[$i][0]}</a> ";
         }
