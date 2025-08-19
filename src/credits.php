@@ -9,6 +9,11 @@
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="/slider/nivo-slider.css" />
     <link rel="stylesheet" type="text/css" href="/slider/sploder/style_v2p10.css" />
+    <style>
+        .at-symbol {
+            font-family: 'Calibri';
+        }
+    </style>
     <?php include('content/onlinechecker.php'); ?>
 </head>
 <?php include('content/addressbar.php'); ?>
@@ -20,20 +25,23 @@
 
         <div id="content" style="width:92%">
             <h3>Credits</h3>
-            <p>This project would not have been possible without:
+            <p>This project would not have been possible without:</p>
 
 
                 <hr>
-            <h2>Geoff: Our lord and saviour; owner of <a target="_blank" href="https://www.sploder.com">sploder.com</a>
+            <h2>Geoff: Our lord and saviour; owner of sploder.com
             </h2>
             <hr>
-            <h2>Saptarshi (@malware8148): Lead developer; asset management; programming</h2>
-            <h2>Finlay Metcalfe (@ofthemaasses): Programming; code review</h2>
-            <h2>Grant Lanham (@declared7772): Programming; code review</h2>
-            <h2>SmilerRyan (@smilerryan): Code review</h2>
-            <h2>EVEN_STEEL (@even_steel): Domain provider</h2>
-            <h2>TheEmeraldBlock TEB (TheEmeraldBlock TEB#0787): ex-developer; programming</h2>
+            <h2>Saptarshi (<span class="at-symbol">@</span>malware8148): Lead developer; asset management; programming</h2>
+            <h2>Finlay Metcalfe (<span class="at-symbol">@</span>ofthemaasses): Programming; code review</h2>
+            <h2>Grant Lanham (<span class="at-symbol">@</span>declared7772): Programming; code review</h2>
+            <h2>SmilerRyan (<span class="at-symbol">@</span>smilerryan): Code review</h2>
+            <h2>EVEN_STEEL (<span class="at-symbol">@</span>even_steel): Domain provider</h2>
+            <h2>NeoTheb (neotheb): ex-developer; programming</h2>
+            <h2>EVEN_STEEL (<span class="at-symbol">@</span>even_steel): Domain provider</h2>
+            <h2>dmn (<span class="at-symbol">@</span>dmn01): Logo designer</h2>
             <br><br><br><br><br><br><br>
+            Names in parentheses are Discord usernames.
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="sidebar">
