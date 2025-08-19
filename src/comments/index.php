@@ -158,7 +158,8 @@ if ($a == "read") {
 } elseif ($a == "post") {
     $posts = file_get_contents("php://input");
     $formatter = explode("&", $posts);
-    $message = htmlspecialchars((urldecode(substr($formatter[0], 2))), ENT_QUOTES, "UTF-8", false);
+    require_once('../content/censor.php');
+    $message = htmlspecialchars(censorText(urldecode(substr($formatter[0], 2))), ENT_QUOTES, "UTF-8", false);
     $reply = substr($formatter[2], 4);
 
     $venue = $_GET['v'];

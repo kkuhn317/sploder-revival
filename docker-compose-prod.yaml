@@ -65,6 +65,7 @@ services:
       DISCORD_REDIRECT_URL: ${DISCORD_REDIRECT_URL}
       DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
       UPLOAD_API_KEY: ${UPLOAD_API_KEY}
+      CENSORED_WORDS: ${CENSORED_WORDS}
     restart: unless-stopped
     # Set file permissions for writable directories (only if needed)
     command: >

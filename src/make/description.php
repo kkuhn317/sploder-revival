@@ -1,7 +1,8 @@
 <?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 require('content/verify.php');
-$description = trim($_POST['description']);
+require('../content/censor.php');
+$description = trim(censorText($_POST['description']));
 
 // Check whether the description contains characters other than alphabets, numbers, spaces and !@#$%^&*()_+{}|:"<>?`-=[]\;',./
 if (!preg_match('/^[a-zA-Z0-9 !@#$%^&*()_+{}|:"<>?`\-=\[\]\\;\',.\/\n\r]*$/', $description)) {

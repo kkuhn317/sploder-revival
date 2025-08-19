@@ -53,6 +53,7 @@ services:
       DISCORD_REDIRECT_URL:
       DISCORD_BOT_TOKEN:
       UPLOAD_API_KEY:
+      CENSORED_WORDS: example1,example2,example3
   db:
     image: postgres:17
     container_name: sploder_postgres

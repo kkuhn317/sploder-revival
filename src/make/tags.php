@@ -1,12 +1,14 @@
 <?php
 require('content/verify.php');
-$tags = explode(" ", $_POST['tags']);
+require_once('../content/censor.php');
+$tags = explode(" ", censorText($_POST['tags']));
 // Check whether each tag is valid
 // For a tag to be valid, it must be less than 30 characters long
 // It also must have only letters and numbers
 foreach ($tags as $tag) {
     // If a tag is empty, remove it from the array
-    if ($tag == '') {
+    // If a tag is splode, remove it from the array
+    if ($tag == '' || $tag == 'splode') {
         $tags = array_diff($tags, [$tag]);
         continue;
     }
