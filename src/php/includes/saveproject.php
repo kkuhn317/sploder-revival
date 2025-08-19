@@ -3,7 +3,7 @@
 function saveProject(int $g_swf): int
 {
     session_start();
-    if (isset($_SESSION['PHPSESSID'])) { // session ID is valid and exists
+    if (($_SESSION['loggedin'] ?? "false") == "true") {
         $xml = $_POST['xml'] ?? file_get_contents('php://input');
         $xml2 = simplexml_load_string(strval($xml)) or die("INVALID XML FILE!!");
         $author = $_SESSION['username'];
