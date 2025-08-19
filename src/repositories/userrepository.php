@@ -245,7 +245,7 @@ LIMIT 90;
                 SELECT 
                     m.username,
                     COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_games,
-                    COALESCE(AVG(g.difficulty) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 5.5) as avg_difficulty,
+                    COALESCE(AVG(g.difficulty) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 5) as avg_difficulty,
                     COUNT(DISTINCT f.user2) as total_friends,
                     COUNT(v.score) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_votes,
                     COALESCE(AVG(l.gtm) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 0) as avg_playtime,
@@ -334,7 +334,7 @@ LIMIT 90;
 
         // Return only the required stats
         return [
-            'avg_difficulty' => (int)round(($result['avg_difficulty'] - 1) * (100 / 9)),  // Convert to 0-100 scale
+            'avg_difficulty' => (int)round(((min(10, $result['avg_difficulty'] + 0.5)) - 1) * (100 / 9)),
             'avg_score' => (int)round(($result['avg_score'] - 1) * 25),  // Convert to 0-100 scale
             'awesomeness' => $awesomeness
         ];

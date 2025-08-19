@@ -6,13 +6,28 @@ $challengesRepository = RepositoryManager::get()->getChallengesRepository();
 $userRepository = RepositoryManager::get()->getUserRepository();
 $gameRepository = RepositoryManager::get()->getGameRepository();
 
-function difficulty($wins, $loss)
-{
-    if ($wins + $loss === 0) {
-        return 5;
+// Credits to Classic Customs for most of the difficulty formula
+function difficulty(int $wins, int $loss): int {
+    $c = $wins + $loss;
+    if ($c === 0) {
+        return 5; // no games played
     }
-    $diff = (1 - $loss / ($wins + $loss)) * 9;
-    return 10 - ($diff);
+
+    $r = $wins / $c;
+
+    // raw difficulty purely by ratio
+    $d_raw = 10 - (9 * $r);
+
+    // weight grows with more games (tune N = 20, or whatever feels right)
+    $N = 20;
+    $w = min(1, $c / $N);
+
+    // blend baseline 5.5 with raw difficulty
+    $x = (1 - $w) * 5.5 + $w * $d_raw;
+
+    // round to whole number and clamp
+    $x = round($x);
+    return max(1, min(10, $x));
 }
     $hash = $_GET['ax'];
     $gtm = filter_var($_POST['gtm'], FILTER_VALIDATE_INT);
