@@ -18,6 +18,7 @@ get_user();
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header('Location: register.php?err=can');
+    die();
 }
 session_regenerate_id();
 

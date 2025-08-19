@@ -21,6 +21,7 @@ $user = $db->queryFirst(
 
 if ($user == null || !password_verify($password, $user['password'])) {
     header('Location: login.php?err=no');
+    die();
     return;
 }
 
