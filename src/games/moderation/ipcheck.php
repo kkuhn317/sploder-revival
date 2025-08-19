@@ -21,7 +21,7 @@ $db = getDatabase();
 </head>
 <?php include('../../content/addressbar.php'); ?>
 
-<body id="everyones" class="newest">
+<body id="everyones" class="fourth">
     <?php include('../../content/headernavigation.php'); ?>
 
     <div id="page">
