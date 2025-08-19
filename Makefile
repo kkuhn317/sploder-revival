@@ -46,7 +46,13 @@ endef
 
 define backup_db
 	$(call compose_up,$(1))
-	$(call exec_container,$(2),/bin/bash -c "pg_dump -U sploder -d sploder --format=p --schema-only --create > /bootstrap/sploder.sql")
+	@if [ "$(3)" = "schema" ]; then \
+		echo "Creating schema-only backup..."; \
+		$(call exec_container,$(2),/bin/bash -c "pg_dump -U sploder -d sploder --format=p --schema-only --create > /bootstrap/sploder.sql"); \
+	else \
+		echo "Creating full backup..."; \
+		$(call exec_container,$(2),/bin/bash -c "pg_dump -U sploder -d sploder --format=p --create > /bootstrap/sploder-backup-$$(date +%Y%m%d_%H%M%S).sql"); \
+	fi
 	$(call compose_down,$(1))
 endef
 
@@ -97,7 +103,7 @@ help:
 	@echo "  make prod.bootstrap   - restores the database dump into the production PostgreSQL container"
 	@echo "  make prod.bash.site   - enter the production sploder revival container"
 	@echo "  make prod.bash.db     - enter the production db container"
-	@echo "  make prod.backup.db   - creates a schema backup of the production database"
+	@echo "  make prod.backup.db   - creates a full backup of the production database"
 	@echo "  make prod.logs        - view production container logs"
 	@echo ""
 	@echo "Cleanup commands:"
@@ -135,7 +141,7 @@ dev.bash.db:
 	$(call exec_container,${DEV_DB_CONTAINER},/bin/bash)
 dev.backup.db:
 	$(call compose_down,${DEV_COMPOSE})
-	$(call backup_db,${DEV_COMPOSE},${DEV_DB_CONTAINER})
+	$(call backup_db,${DEV_COMPOSE},${DEV_DB_CONTAINER},schema)
 
 # Production commands
 prod:
@@ -151,7 +157,7 @@ prod.bash.db:
 	$(call exec_container,${PROD_DB_CONTAINER},/bin/bash)
 prod.backup.db:
 	$(call compose_down,${PROD_COMPOSE})
-	$(call backup_db,${PROD_COMPOSE},${PROD_DB_CONTAINER})
+	$(call backup_db,${PROD_COMPOSE},${PROD_DB_CONTAINER},full)
 prod.logs:
 	${CONTAINER_CMD} compose -f ${PROD_COMPOSE} logs -f
 clean:
