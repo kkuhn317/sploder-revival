@@ -4,6 +4,7 @@ function display_user_info($username)
 {
     require_once('../repositories/repositorymanager.php');
     require_once('../services/AwardsListRenderService.php');
+    $userRepository = RepositoryManager::get()->getUserRepository();
     $awardsRepository = RepositoryManager::get()->getAwardsRepository();
     $awardsListRenderService = new AwardsListRenderService($awardsRepository);
 
@@ -16,11 +17,7 @@ function display_user_info($username)
     // TODO:: just inline this when migrating to the repository
     $publicgames = " AND isdeleted=0 AND ispublished=1 AND isprivate=0";
 
-    $row = $db->queryFirst("SELECT *
-        FROM user_info
-        WHERE username = :username", [
-        ':username' => $username
-    ]);
+    $row = $userRepository->getUserInfo($username);
     //check if all columns are empty or if row does not exist
     if (
         empty($row['description'])

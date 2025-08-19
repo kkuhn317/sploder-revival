@@ -4,6 +4,7 @@
 require_once('../repositories/repositorymanager.php');
 $userRepository = RepositoryManager::get()->getUserRepository();
 $isolated = $userRepository->isIsolated($_SESSION['username']) || $userRepository->isIsolated($_GET['u'] ?? '');
+$userInfo = $userRepository->getUserInfo($_SESSION['username']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -91,25 +92,25 @@ $isolated = $userRepository->isIsolated($_SESSION['username']) || $userRepositor
             <form action="profile-update.php" method="post">
                 <label for="description">Description:</label><br><br>
                 <textarea id="description" name="description" rows="3" style="width: 100%; resize: none;"
-                    placeholder="Enter a description about yourself..."></textarea><br><br><br>
+                    placeholder="Enter a description about yourself..."><?= $userInfo['description'] ?? '' ?></textarea><br><br><br>
                 <label for="hobbies">Hobbies:</label><br><br>
                 <textarea id="hobbies" name="hobbies" rows="3" style="width: 100%; resize: none;"
-                    placeholder="Enter your hobbies..."></textarea><br><br><br>
+                    placeholder="Enter your hobbies..."><?= $userInfo['hobbies'] ?? '' ?></textarea><br><br><br>
                 <label for="favoriteSports">Favorite Sports:</label><br><br>
                 <textarea id="favoriteSports" name="favoriteSports" rows="3" style="width: 100%; resize: none;"
-                    placeholder="Enter your favorite sports..."></textarea><br><br><br>
+                    placeholder="Enter your favorite sports..."><?= $userInfo['sports'] ?? '' ?></textarea><br><br><br>
                 <label for="favoriteGames">Favorite Games:</label><br><br>
                 <textarea id="favoriteGames" name="favoriteGames" rows="3" style="width: 100%; resize: none;"
-                    placeholder="Enter your favorite games..."></textarea><br><br><br>
+                    placeholder="Enter your favorite games..."><?= $userInfo['games'] ?? '' ?></textarea><br><br><br>
                 <label for="favoriteMovies">Favorite Movies:</label><br><br>
                 <textarea id="favoriteMovies" name="favoriteMovies" rows="3" style="width: 100%; resize: none;"
-                    placeholder="Enter your favorite movies..."></textarea><br><br><br>
+                    placeholder="Enter your favorite movies..."><?= $userInfo['movies'] ?? '' ?></textarea><br><br><br>
                 <label for="favoriteBands">Favorite Bands:</label><br><br>
                 <textarea id="favoriteBands" name="favoriteBands" rows="3" style="width: 100%; resize: none;"
-                    placeholder="Enter your favorite bands..."></textarea><br><br><br>
+                    placeholder="Enter your favorite bands..."><?= $userInfo['bands'] ?? '' ?></textarea><br><br><br>
                 <label for="whomIRespect">Whom You Respect:</label><br><br>
                 <textarea id="whomIRespect" name="whomIRespect" rows="3" style="width: 100%; resize: none;"
-                    placeholder="Enter whom you respect..."></textarea><br><br>
+                    placeholder="Enter whom you respect..."><?= $userInfo['respect'] ?? '' ?></textarea><br><br>
                 <input type="checkbox" id="isolate" name="isolate" <?php if(!$isolated) { echo 'checked'; } ?>>
                 <label for="isolate">Allow comments and friending <?php if(!$isolated) {echo '<br>Warning! Disabling this option will permanently ERASE all your current friends.'; } ?></label><br><br>
                 
