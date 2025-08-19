@@ -5,6 +5,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 require_once('verify.php');
+require_once('../content/censor.php');
 require_once(__DIR__ . '/../repositories/repositorymanager.php');
 
 $id = (int)$_POST['id'];
@@ -20,13 +21,13 @@ if (!$verified) {
     validationError($id, "You are not the owner of this graphic");
 }
 
-$tags = explode(" ", $_POST['tags']);
+$tags = explode(" ", censorText($_POST['tags']));
 // Check whether each tag is valid
 // For a tag to be valid, it must be less than 30 characters long
 // It also must have only letters and numbers
 foreach ($tags as $tag) {
     // If a tag is empty, remove it from the array
-    if ($tag == '') {
+    if ($tag == '' || $tag == 'splode') {
         $tags = array_diff($tags, [$tag]);
         continue;
     }
