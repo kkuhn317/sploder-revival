@@ -10,7 +10,7 @@ function isEditor()
     $permissions = $db->queryFirstColumn($qs, 0, [
       ':username' => $_SESSION['username'],
     ]);
-    if ($permissions === null) {
+    if ($permissions === null || $permissions == "") {
         return false;
     }
     return str_contains($permissions, "E");
