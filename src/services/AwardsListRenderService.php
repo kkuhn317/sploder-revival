@@ -40,7 +40,7 @@ class AwardsListRenderService
             
             $html .= '<dl class="plaque">';
             $html .= '<dt>Level ' . $award['level'] . '<br /> ' . $award['material_name'] . ' ' . $award['category'] . ' Award:</dt>';
-            $html .= '<dd>' . $award['message'] . '</dd>';
+            $html .= '<dd>' . htmlspecialchars($award['message']) . '</dd>';
             $html .= '<dd class="award_cite">from <a href="../members/index.php?u=' . $award['username'] . '">' . $award['username'] . '</a></dd>';
             $html .= '</dl>';
             $html .= '</div>';
