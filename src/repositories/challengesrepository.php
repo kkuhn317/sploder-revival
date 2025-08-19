@@ -75,6 +75,7 @@ class ChallengesRepository implements IChallengesRepository
           JOIN games g ON c.g_id = g.g_id
           LEFT JOIN challenge_winners w ON w.g_id = c.g_id
           WHERE c.insert_date > NOW() - INTERVAL '15 days'
+            AND g.isprivate = 0 AND g.ispublished = 1 AND g.isdeleted = 0
           GROUP BY c.challenge_id, c.g_id, c.mode, c.challenge, c.prize, c.winners, c.verified, c.insert_date, g.user_id, g.title, g.author
           HAVING COUNT(w.winner_id) < c.winners
           ORDER BY c.verified DESC OFFSET :offset LIMIT :perPage";
@@ -120,7 +121,10 @@ class ChallengesRepository implements IChallengesRepository
 
     public function getTotalChallengeCount(): int
     {
-        $query = "SELECT COUNT(*) FROM challenges WHERE insert_date > NOW() - INTERVAL '15 days'";
+        $query = "SELECT COUNT(*) FROM challenges c 
+                  JOIN games g ON c.g_id = g.g_id 
+                  WHERE c.insert_date > NOW() - INTERVAL '15 days'
+                    AND g.isprivate = 0 AND g.ispublished = 1 AND g.isdeleted = 0";
         return $this->db->queryFirst($query)['count'];
     }
 }
