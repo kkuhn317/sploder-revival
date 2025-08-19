@@ -1017,11 +1017,19 @@ ALTER TABLE ONLY public.game_views_members
 
 
 --
--- Name: challenge_winners g_id_contest_winners_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+-- Name: challenge_winners g_id_challenge_winners_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
 --
 
 ALTER TABLE ONLY public.challenge_winners
-    ADD CONSTRAINT g_id_contest_winners_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
+    ADD CONSTRAINT g_id_challenge_winners_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: contest_winner g_id_contest_winner_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.contest_winner
+    ADD CONSTRAINT g_id_contest_winner_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -1054,6 +1062,14 @@ ALTER TABLE ONLY public.graphic_likes
 
 ALTER TABLE ONLY public.graphic_tags
     ADD CONSTRAINT g_id_graphic_tags_fkey FOREIGN KEY (g_id) REFERENCES public.graphics(id) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: votes g_id_votes_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT g_id_votes_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
 
 
 --
