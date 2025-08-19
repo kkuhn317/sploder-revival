@@ -38,7 +38,7 @@ $db = getDatabase();
 
             <form action="ipcheck.php" method="post">
                 <label for="username">Username:</label>
-                <input type="text" name="username" placeholder="Enter username" required />
+                <input type="text" name="username" placeholder="Enter username" value="<?= $_POST['username'] ?? null ?>" required/>
                 <input type="submit" value="Check" />
             </form>
             <?php if (isset($_POST['username'])) : ?>
