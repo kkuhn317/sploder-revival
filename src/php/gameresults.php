@@ -57,6 +57,10 @@ if ($verifiedScore) {
         ':w' => $w
     ]);
 
+    if ($w == 'true') {
+        $userRepository->addBoostPoints($_SESSION['userid'], min(25, $gtm/30));
+    }
+
     if(isset($_SESSION['challenge'])){
         $challengeId = $challengesRepository->getChallengeId($id[1]);
         if($challengeId == $_SESSION['challenge']) {
