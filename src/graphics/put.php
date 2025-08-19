@@ -35,7 +35,7 @@ if ($result == $userid) {
             $db->execute($qs, [
                 ':id' => $id
             ]);
-            die('<message result="error" message="Invalid dimensions! Please note that inappropriate graphics and graphics not made by the creator is strictly forbidden."/>');
+            die('<message result="error" message="Invalid dimensions! Please note that inappropriate graphics and graphics not made by the creator are strictly forbidden."/>');
         }
         // If 60x60, resize to 80x80
         if ($width == 60 && $height == 60) {
