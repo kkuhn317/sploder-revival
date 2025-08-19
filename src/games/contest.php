@@ -118,23 +118,6 @@ $db = getDatabase();
             }
 
             ?>
-            <!--<h4 style="margin-bottom: 12px;">This Week's Contest Nominees</h4>
-        <div class="grid">
-            <div class="game vignette">
-                <div class="photo">
-                    <a href="games/members/hidekigamer/play/quiz/"><img src="https://web.archive.org/web/20190306200957im_/http://cdn.sploder.com/users/group3005/user3005768_20180115074549/thumbs/proj8212698.png" alt="quiz by hidekigamer" title="quiz by hidekigamer" onerror="r(this)" /></a>
-                </div>
-                <div class="spacer">&nbsp;</div>
-            </div>
-            <div class="game vignette">
-                <div class="photo">
-                    <a href="games/members/supersploder987/play/sploder-jungle/"><img src="https://web.archive.org/web/20190306200957im_/http://cdn.sploder.com/users/group2279/user2279751_20150525082123/thumbs/proj6930135.png" alt="sploder jungle by supersploder987" title="sploder jungle by supersploder987" onerror="r(this)" /></a>
-                </div>
-                <div class="spacer">&nbsp;</div>
-            </div>
-            <div class="spacer">&nbsp;</div>
-        </div>-->
-
 
             <br style="clear: both;" /><br />
 
