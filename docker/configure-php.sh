@@ -3,7 +3,7 @@
 # Configure PHP based on environment variables
 # Default to development settings if not specified
 
-if [ "${PHP_ENVIRONMENT:-dev}" = "production" ]; then
+if [ "${PHP_ENVIRONMENT:-development}" = "production" ]; then
     echo "Configuring PHP for production environment..."
     echo "display_errors = Off" >> /usr/local/etc/php/php.ini
     echo "display_startup_errors = Off" >> /usr/local/etc/php/php.ini
