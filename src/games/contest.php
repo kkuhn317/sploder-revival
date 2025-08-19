@@ -81,7 +81,9 @@ $db = getDatabase();
                     FROM contest_votes
                     LIMIT 32
                 ) AS recent_contests
-                JOIN games ON recent_contests.id = games.g_id LIMIT 32;";
+                JOIN games ON recent_contests.id = games.g_id 
+                WHERE games.isprivate = 0 AND games.ispublished = 1 AND games.isdeleted = 0
+                LIMIT 32;";
                 $result = $db->query($qs);
             } else {
                 $qs = "SELECT games.g_id, games.title, games.author, games.user_id
@@ -91,7 +93,9 @@ $db = getDatabase();
                     ORDER BY contest_id DESC
                     LIMIT 24
                 ) AS recent_contests
-                JOIN games ON recent_contests.g_id = games.g_id ORDER BY contest_id DESC LIMIT 24;";
+                JOIN games ON recent_contests.g_id = games.g_id 
+                WHERE games.isprivate = 0 AND games.ispublished = 1 AND games.isdeleted = 0
+                ORDER BY contest_id DESC LIMIT 24;";
                 $result = $db->query($qs);
             }
             // Display everything
