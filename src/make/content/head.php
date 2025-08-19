@@ -45,8 +45,8 @@ function popUpWindow(URLStr, left, top, width, height)
 
 function getPhotos() {
 
-    popUpWindow("php/uploadform.php?PHPSESSID=", Math.floor(screen.width / 2) - 275, Math.floor(screen.height / 2) -
-        225, 550, 450);
+    //popUpWindow("php/uploadform.php?PHPSESSID=", Math.floor(screen.width / 2) - 275, Math.floor(screen.height / 2) -
+    //    225, 550, 450);
 
 }
 
