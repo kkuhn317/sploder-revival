@@ -104,4 +104,8 @@ class FriendsListRenderService
         $friends = $this->getFriendsList($username);
         return $this->renderFriendsList($friends['bested'], $friends['accepted'], $username, false, false, true);
     }
+
+    public function renderPartialViewForMemberList(array $members): string {
+        return $this->renderFriendsList([], $members, '', false, false, false);
+    }
 }

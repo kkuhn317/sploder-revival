@@ -16,7 +16,7 @@ class UserRepository implements IUserRepository
     {
         $qs = "
 SELECT
-    m.username,
+    m.username AS user1,
     SIMILARITY(m.username, :u) AS sim,
     LEAST(250, FLOOR(
         (SELECT COUNT(*) FROM votes v WHERE v.username = m.username)/25.0

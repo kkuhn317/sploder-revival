@@ -209,8 +209,8 @@ if(isset($_GET['challenge'])){
                 </a>
                 <?php
                     $currentUrl = getenv('DOMAIN_NAME') . $_SERVER['REQUEST_URI'];
-                    $fbUrl = "https://www.facebook.com/sharer.php?u=" . urlencode($currentUrl);
-                    $tweetText = "Playing " . $game['title'] . " by " . $game['author'] . " on @sploder - ";
+                    // $fbUrl = "https://www.facebook.com/sharer.php?u=" . urlencode($currentUrl);
+                    $tweetText = "Playing " . htmlspecialchars($game['title']) . " by " . htmlspecialchars($game['author']) . " on @sploder - ";
                     $twitterUrl = "https://twitter.com/intent/tweet?text=" . urlencode($tweetText) . "&url=" . urlencode($currentUrl);
                 ?>
                 <div class="share_buttons">

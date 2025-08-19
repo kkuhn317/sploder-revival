@@ -43,14 +43,11 @@ $searchUserName = $_GET['u'] ?? '';
             ?>
             <h4>Members matching search <span class="tagcolor1"><?= $searchUserName ?? null ?></span>:</h4>
             </p>
-            <div id="friends">
-                <?php
-                    $searchResults = RepositoryManager::get()->getUserRepository()->search($searchUserName);
-                    generateSearchResults($searchResults);
-                    ?>
-                <div class="spacer">&nbsp;</div>
-            </div>
+            
             <?php
+                $searchResults = RepositoryManager::get()->getUserRepository()->search($searchUserName);
+                generateSearchResults($searchResults);
+
             }
             ?>
         </div>
