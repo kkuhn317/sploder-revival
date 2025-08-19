@@ -208,7 +208,7 @@ $offset = $_GET['o'] ?? 0;
                             <a href="/games/challenges.php?accept=<?= $userId ?>_<?= $gameId ?>" title="<?= $timeLeft ?> left in this challenge"><img src="/users/user<?= $userId ?>/images/proj<?= $gameId ?>/image.png" alt="<?= $gameTitle ?>" onerror="r(this)" /></a>
                             <div class="game_titles">
                                 <h4><a href="/games/challenges.php?accept=<?= $userId ?>_<?= $gameId ?>"><?= $gameTitle ?></a></h4>
-                                <h5><a href="/games/members/<?= $gameAuthor ?>/"><?= $gameAuthor ?></a></h5>
+                                <h5><a href="/members/index.php?u=<?= $gameAuthor ?>"><?= $gameAuthor ?></a></h5>
                             </div>
                         </div>
                         <p class="winners"><?= ($totalWinners) ?>/<?= ($winners) ?> winners</p>
