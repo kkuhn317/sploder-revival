@@ -130,7 +130,6 @@ $friends = $friendsRepository->getTotalFriends($username);
         <div class="promo"><b>NOTICE: </b>Your account access has been limited. A moderator has disallowed you from publishing games, making comments or giving awards.</div>
       <?php } ?>
       <?php include('../content/friendgamelist.php'); ?>
-      <?php include('../content/dashboardmessages.php'); ?>
       <br>
       <div class="spacer">&nbsp;</div>
       <?php include('../content/friendactivity.php') ?>
