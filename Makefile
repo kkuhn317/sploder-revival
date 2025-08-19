@@ -1,4 +1,4 @@
-.PHONY: help build build.prod install.composer dev dev.watch dev.down dev.bootstrap dev.bash.site dev.bash.db dev.backup.db dev.hook prod prod.down prod.bootstrap prod.bash.site prod.bash.db prod.backup.db prod.logs clean clean.prod test
+.PHONY: help build build.prod install.composer dev dev.watch dev.down dev.bootstrap dev.bash.site dev.bash.db dev.backup.db dev.hook prod prod.down prod.bootstrap prod.bash.site prod.bash.db prod.backup.db prod.logs clean clean.prod test backup.data
 
 ifeq ($(OS),Windows_NT)
   OPEN_CMD = start
@@ -54,6 +54,23 @@ define backup_db
 		$(call exec_container,$(2),/bin/bash -c "pg_dump -U sploder -d sploder --format=p --create > /bootstrap/sploder-backup-$$(date +%Y%m%d_%H%M%S).sql"); \
 	fi
 	$(call compose_down,$(1))
+endef
+
+define backup_data
+	@echo "Creating data backup..."
+	@BACKUP_DATE=$$(date +%Y%m%d_%H%M%S); \
+	BACKUP_FILE="./db/sploder-data-backup-$$BACKUP_DATE.zip"; \
+	echo "Backing up data directories to $$BACKUP_FILE"; \
+	zip -6 -r "$$BACKUP_FILE" \
+		./src/users \
+		./src/avatar/a \
+		./src/cache \
+		./src/config/currentcontest.txt \
+		./src/graphics/gif \
+		./src/graphics/png \
+		./src/graphics/prj \
+		-x "*/.*"; \
+	echo "Data backup completed: $$BACKUP_FILE"
 endef
 
 define build_image
@@ -112,6 +129,7 @@ help:
 	@echo ""
 	@echo "Utility commands:"
 	@echo "  make test             - runs the unit tests for the project"
+	@echo "  make backup.data      - creates a timestamped zip backup of user data directories"
 build:
 	$(call build_image,sploder-revival)
 install.composer:
@@ -166,3 +184,5 @@ clean.prod:
 	$(call clean_env,${PROD_SITE_CONTAINER},${PROD_DB_CONTAINER},sploder-revival)
 test:
 	./vendor/bin/phpunit
+backup.data:
+	$(call backup_data)
