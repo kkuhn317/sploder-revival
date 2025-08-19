@@ -31,7 +31,7 @@ $isolated = $userRepository->isIsolated($_SESSION['username']);
 <body bgcolor="#FFFFFF">
     <div id="show" style="width: 590px;"><a name="kickdown" style="height:1px; overflow:hidden;"></a>
         <div class="showcontent">
-            <h4><?= $game['title'] ?></h4>
+            <h4><?= htmlspecialchars($game['title']) ?></h4>
             <?php
             if ($game['ispublished'] == 0) {
                 echo '<div class="alert">This is an unpublished game. Either publish it, or test it out in the creator.</div>';

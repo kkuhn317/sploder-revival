@@ -38,7 +38,7 @@ class GameListRenderService
                         $id = $game['g_id'];
                         $reason = $game['reason'] ?? null;
                         $swf = $game['g_swf'];
-                        $title = $game['title'];
+                        $title = htmlspecialchars($game['title']);
                         $userId = $game['user_id'];
                         $author = $game['author'];
                         $date = $game['first_published_date'] ?? $game['first_created_date'];

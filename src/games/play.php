@@ -79,7 +79,7 @@ if(isset($_GET['challenge'])){
         <?php include('../content/subnav.php') ?>
 
         <div id="content">
-            <h3><?= $game['title'] ?></h3>
+            <h3><?= htmlspecialchars($game['title']) ?></h3>
             <h4 class="subtitle">By <a href="/members/index.php?u=<?= $game['author'] ?>"><?= $game['author'] ?></a> ::
                 <?= date('l F j\t\h, Y', strtotime($game['last_published_date'])) ?></h4>
 
