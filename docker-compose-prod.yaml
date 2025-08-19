@@ -25,6 +25,7 @@ services:
       - ./src/update/currentversion.txt:/var/www/html/update/currentversion.txt:rw
       - ./src/php/verifyscore.php:/var/www/html/php/verifyscore.php:rw
     environment:
+      PHP_ENVIRONMENT: production
       DOMAIN_NAME: ${DOMAIN_NAME}
       # Is this website public via a network?
       # If you are running this PRIVATELY, set this to false

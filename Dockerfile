@@ -41,7 +41,12 @@ RUN pecl install imagick \
 RUN echo "upload_max_filesize = 100M" >> /usr/local/etc/php/php.ini \
   && echo "post_max_size = 100M" >> /usr/local/etc/php/php.ini \
   && echo "max_execution_time = 300" >> /usr/local/etc/php/php.ini \
-  && echo "max_input_time = 300" >> /usr/local/etc/php/php.ini
+  && echo "max_input_time = 300" >> /usr/local/etc/php/php.ini \
+  && echo "log_errors = On" >> /usr/local/etc/php/php.ini
+
+# Create a script to configure PHP based on environment
+COPY docker/configure-php.sh /usr/local/bin/configure-php.sh
+RUN chmod +x /usr/local/bin/configure-php.sh
 
 # Install Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
@@ -67,4 +72,4 @@ RUN echo '0 1 * * * /usr/local/bin/php /var/www/html/cronjobs/contest.php' > /et
 
 EXPOSE 80
 
-CMD ["sh", "-c", "apache2-foreground"]
+ENTRYPOINT ["/usr/local/bin/configure-php.sh"]
