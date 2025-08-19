@@ -69,8 +69,8 @@ $awesomeness = $stats['awesomeness'] ?? 50;
                             <dd>
                                 <?php
                                 $lastLoginTime = $result['lastlogin'];
-                                // 30 second buffer
-                                echo (time() - $lastLoginTime < 30) ? 'just now' : time_elapsed_string("@" . $lastLoginTime);
+                                // 120 second buffer
+                                echo (time() - $lastLoginTime < 120) ? 'just now' : time_elapsed_string("@" . $lastLoginTime);
                                 ?>
                             </dd>
                         </dl>
