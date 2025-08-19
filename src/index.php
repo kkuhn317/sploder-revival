@@ -196,7 +196,7 @@ if (isset($_GET['s'])) {
             <p>Want to make your own online games for free? <strong>Sploder &trade;</strong> makes it super easy for you
                 to make your own free games online. Make your own <a href="make/arcade.php">arcade games</a>, <a
                     href="make/plat.php">platformer games</a>, <a href="make/shooter.php">spaceship shooters</a>, or <a
-                    href="/previews/algorithmcrew/">space adventure games</a>. Advanced game maker? Try the <a
+                    href="make/algo.php">space adventure games</a>. Advanced game maker? Try the <a
                     href="make/ppg.php">physics game maker</a> for creating original minigames! You can even customize
                 it with your own game art using our <a href="make/graphics.php">free graphics editor!</a></p>
 
