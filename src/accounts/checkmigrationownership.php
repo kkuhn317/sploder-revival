@@ -30,7 +30,6 @@ if (!isset($_GET["err"])) {
     ]);
 
     if (isset($result2[0])) {
-        print_r($result2[0]);
         if ($_SESSION['enteredusername'] == $result2[0]['username']) {
             header('Location: registerpassword.php');
             $_SESSION['usermigrate'] = "true";
