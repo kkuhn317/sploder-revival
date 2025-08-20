@@ -13,6 +13,10 @@ DB_HOST="${POSTGRES_HOST:-db}"
 
 echo "Using database: $DB_NAME (user=$DB_USER, host=$DB_HOST, port=$DB_PORT, sslmode=$DB_SSLMODE)"
 
+echo "Refreshing collation versions for system databases..."
+psql -U $DB_USER -d postgres -c "ALTER DATABASE postgres REFRESH COLLATION VERSION;" || true
+psql -U $DB_USER -d postgres -c "ALTER DATABASE template1 REFRESH COLLATION VERSION;" || true
+
 if [ "$ENVIRONMENT" = "dev" ]; then
     # Drop & recreate role and db (destructive)
     psql -U $DB_USER -d postgres $PSQL_CONN --command="DROP DATABASE IF EXISTS $DB_NAME;"
