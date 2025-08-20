@@ -5,29 +5,11 @@ ENVIRONMENT=${1:-dev}
 
 echo "Bootstrapping database for environment: $ENVIRONMENT"
 
-# Defaults (for dev mode)
-DB_HOST="localhost"
-DB_PORT=5432
-DB_NAME="sploder"
-DB_USER="sploder"
-DB_PASS="sploder"
-DB_SSLMODE="disable"
-
-# If prod, read from .env
-if [ "$ENVIRONMENT" = "prod" ]; then
-    if [ -f ".env" ]; then
-        export $(grep -v '^#' .env | xargs)
-
-        DB_HOST="${POSTGRES_HOST:-$DB_HOST}"
-        DB_PORT="${POSTGRES_PORT:-$DB_PORT}"
-        DB_NAME="${POSTGRES_DB:-$DB_NAME}"
-        DB_USER="${POSTGRES_USERNAME:-$DB_USER}"
-        DB_PASS="${POSTGRES_PASSWORD:-$DB_PASS}"
-        DB_SSLMODE="${POSTGRES_SSLMODE:-$DB_SSLMODE}"
-    else
-        echo "WARNING: .env file not found, using defaults (user=$DB_USER, db=$DB_NAME)"
-    fi
-fi
+DB_USER="${POSTGRES_USERNAME:-sploder}"
+DB_PASS="${POSTGRES_PASSWORD:-geoff}"
+DB_NAME="${POSTGRES_DB:-sploder}"
+DB_PORT="${POSTGRES_PORT:-5432}"
+DB_HOST="${POSTGRES_HOST:-db}"
 
 echo "Using database: $DB_NAME (user=$DB_USER, host=$DB_HOST, port=$DB_PORT, sslmode=$DB_SSLMODE)"
 
