@@ -5,10 +5,66 @@ ENVIRONMENT=${1:-dev}
 
 echo "Bootstrapping database for environment: $ENVIRONMENT"
 
-# Drop and recreate the database
-psql -U sploder -d postgres --command="drop database IF EXISTS sploder;"
-psql -U sploder -d postgres --command="create database sploder OWNER sploder;"
-psql -U sploder -d sploder -f /bootstrap/sploder.sql
+# Defaults (for dev mode)
+DB_HOST="localhost"
+DB_PORT=5432
+DB_NAME="sploder"
+DB_USER="sploder"
+DB_PASS="sploder"
+DB_SSLMODE="disable"
+
+# If prod, read from .env
+if [ "$ENVIRONMENT" = "prod" ]; then
+    if [ -f "/bootstrap/.env" ]; then
+        export $(grep -v '^#' /bootstrap/.env | xargs)
+
+        DB_HOST="${POSTGRES_HOST:-$DB_HOST}"
+        DB_PORT="${POSTGRES_PORT:-$DB_PORT}"
+        DB_NAME="${POSTGRES_DB:-$DB_NAME}"
+        DB_USER="${POSTGRES_USERNAME:-$DB_USER}"
+        DB_PASS="${POSTGRES_PASSWORD:-$DB_PASS}"
+        DB_SSLMODE="${POSTGRES_SSLMODE:-$DB_SSLMODE}"
+    else
+        echo "WARNING: .env file not found, using defaults (user=$DB_USER, db=$DB_NAME)"
+    fi
+fi
+
+echo "Using database: $DB_NAME (user=$DB_USER, host=$DB_HOST, port=$DB_PORT, sslmode=$DB_SSLMODE)"
+
+if [ "$ENVIRONMENT" = "dev" ]; then
+    # Drop & recreate role and db (destructive)
+    psql -U postgres -d postgres $PSQL_CONN --command="DROP DATABASE IF EXISTS $DB_NAME;"
+    psql -U postgres -d postgres $PSQL_CONN --command="DROP ROLE IF EXISTS $DB_USER;"
+    psql -U postgres -d postgres $PSQL_CONN --command="CREATE ROLE $DB_USER WITH LOGIN PASSWORD '$DB_PASS' CREATEDB;"
+    psql -U postgres -d postgres $PSQL_CONN --command="CREATE DATABASE $DB_NAME OWNER $DB_USER;"
+
+elif [ "$ENVIRONMENT" = "prod" ]; then
+    # Ensure role exists
+    psql -U postgres -d postgres $PSQL_CONN --command="DO \$\$
+    BEGIN
+        IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$DB_USER') THEN
+            CREATE ROLE $DB_USER WITH LOGIN PASSWORD '$DB_PASS' CREATEDB;
+        ELSE
+            ALTER ROLE $DB_USER WITH PASSWORD '$DB_PASS'; -- update password if different
+        END IF;
+    END
+    \$\$;"
+
+    # Ensure database exists
+    psql -U postgres -d postgres $PSQL_CONN --command="DO \$\$
+    BEGIN
+        IF NOT EXISTS (SELECT FROM pg_database WHERE datname = '$DB_NAME') THEN
+            CREATE DATABASE $DB_NAME OWNER $DB_USER;
+        END IF;
+    END
+    \$\$;"
+else
+    echo "Invalid environment: $ENVIRONMENT"
+    echo "Usage: bootstrap.sh [dev|prod]"
+    exit 1
+fi
+
+psql -U "$DB_USER" -d "$DB_NAME" $PSQL_CONN -f /bootstrap/sploder.sql
 
 echo "Database schema loaded successfully"
 
