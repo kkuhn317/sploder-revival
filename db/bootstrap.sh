@@ -15,10 +15,10 @@ echo "Using database: $DB_NAME (user=$DB_USER, host=$DB_HOST, port=$DB_PORT, ssl
 
 if [ "$ENVIRONMENT" = "dev" ]; then
     # Drop & recreate role and db (destructive)
-    psql -U postgres -d postgres $PSQL_CONN --command="DROP DATABASE IF EXISTS $DB_NAME;"
-    psql -U postgres -d postgres $PSQL_CONN --command="DROP ROLE IF EXISTS $DB_USER;"
-    psql -U postgres -d postgres $PSQL_CONN --command="CREATE ROLE $DB_USER WITH LOGIN PASSWORD '$DB_PASS' CREATEDB;"
-    psql -U postgres -d postgres $PSQL_CONN --command="CREATE DATABASE $DB_NAME OWNER $DB_USER;"
+    psql -U $DB_USER -d postgres $PSQL_CONN --command="DROP DATABASE IF EXISTS $DB_NAME;"
+    psql -U $DB_USER -d postgres $PSQL_CONN --command="DROP ROLE IF EXISTS $DB_USER;"
+    psql -U $DB_USER -d postgres $PSQL_CONN --command="CREATE ROLE $DB_USER WITH LOGIN PASSWORD '$DB_PASS' CREATEDB;"
+    psql -U $DB_USER -d postgres $PSQL_CONN --command="CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 
 elif [ "$ENVIRONMENT" = "prod" ]; then
     # Ensure role exists
