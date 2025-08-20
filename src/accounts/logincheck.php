@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if (isset($_SESSION['username'])) {
+if (($_SESSION['loggedin'] ?? false) == true) {
     header("Location: /");
     exit();
 }
