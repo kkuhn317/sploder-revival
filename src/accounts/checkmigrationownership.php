@@ -23,7 +23,7 @@ if (!isset($_SESSION['user_id'])) {
 session_regenerate_id();
 
 if (!isset($_GET["err"])) {
-    require_once(__DIR__ . "../database/connect.php");
+    require_once(__DIR__ . "/../database/connect.php");
     $originalMembersDb = getOriginalMembersDatabase();
     $result2 = $$originalMembersDb->query("SELECT username FROM members WHERE userid=:userid", [
         ':userid' => $_SESSION['user_id']
