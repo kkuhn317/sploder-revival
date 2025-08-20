@@ -6,9 +6,9 @@ $client_id = getenv("DISCORD_CLIENT_ID");
 
 $secret_id = getenv("DISCORD_SECRET_ID");
 
-$scopes = getenv("DISCORD_SCOPES");
+$scopes = "identify";
 
-$redirect_url = getenv("DISCORD_REDIRECT_URL");
+$redirect_url = getenv("DOMAIN_NAME") . "/accounts/checkmigrationownership.php";
 
 # IMPORTANT READ THIS:
 # - Set the `$bot_token` to your bot token if you want to use guilds.join scope to add a member to your server
