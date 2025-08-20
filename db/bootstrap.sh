@@ -21,19 +21,8 @@ if [ "$ENVIRONMENT" = "dev" ]; then
     psql -U $DB_USER -d postgres $PSQL_CONN --command="CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 
 elif [ "$ENVIRONMENT" = "prod" ]; then
-    # Ensure role exists
-    psql -U postgres -d postgres $PSQL_CONN --command="DO \$\$
-    BEGIN
-        IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$DB_USER') THEN
-            CREATE ROLE $DB_USER WITH LOGIN PASSWORD '$DB_PASS' CREATEDB;
-        ELSE
-            ALTER ROLE $DB_USER WITH PASSWORD '$DB_PASS'; -- update password if different
-        END IF;
-    END
-    \$\$;"
-
     # Ensure database exists
-    psql -U postgres -d postgres $PSQL_CONN --command="DO \$\$
+    psql -U $DB_USER -d postgres $PSQL_CONN --command="DO \$\$
     BEGIN
         IF NOT EXISTS (SELECT FROM pg_database WHERE datname = '$DB_NAME') THEN
             CREATE DATABASE $DB_NAME OWNER $DB_USER;
