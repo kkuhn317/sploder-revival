@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+include('../content/logincheck.php');
 
 require_once(__DIR__ . '/../repositories/repositorymanager.php');
 

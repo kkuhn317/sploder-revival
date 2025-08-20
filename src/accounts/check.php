@@ -26,7 +26,7 @@ if ($user == null || !password_verify($password, $user['password'])) {
 }
 
 session_start();
-$_SESSION['loggedin'] = "true";
+$_SESSION['loggedin'] = true;
 $_SESSION['username'] = mb_strtolower($username);
 $_SESSION['userid'] = $user['userid'];
 

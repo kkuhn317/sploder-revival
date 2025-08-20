@@ -2,7 +2,7 @@
 
 session_id($_GET['PHPSESSID']);
 session_start();
-if (($_SESSION['loggedin'] ?? "false") == "true") {
+if (isset($_SESSION['loggedin'])) {
     include('../content/checkban.php');
     if (checkBan($_SESSION['username'])) {
         die('<message result="failed" message="You are banned and will not be able to publish games."/>');

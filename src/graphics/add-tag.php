@@ -1,9 +1,6 @@
 <?php
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-
+include('../content/logincheck.php');
 require_once('verify.php');
 require_once('../content/censor.php');
 require_once(__DIR__ . '/../repositories/repositorymanager.php');

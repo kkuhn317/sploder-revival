@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+include('../content/logincheck.php');
 // Get the form data
 $username = $_SESSION['username'];
 $description = $_POST["description"];
