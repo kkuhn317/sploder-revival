@@ -2,7 +2,7 @@
 
 require_once(__DIR__ . '/../database/connect.php');
 $db = getDatabase();
-$sql = "SELECT username, perms FROM members WHERE perms IS NOT NULL AND perms != '' ORDER BY RANDOM()";
+$sql = "SELECT username, perms FROM members WHERE perms IS NOT NULL AND perms != '' ORDER BY lastlogin DESC";
 $names = $db->query($sql);
 
 // Segregate the names into moderator, reviewer and editor
