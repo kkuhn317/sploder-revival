@@ -40,11 +40,11 @@ services:
 
       # Your Discord username, where you can be reached
       # This username will be shown in the privacy policy and other pages
-      DISCORD_USERNAME: owner
+      DISCORD_USERNAME: ${DISCORD_USERNAME}
 
       # Your email, where you can be reached
       # This email will be shown in the privacy policy and other pages
-      EMAIL: owner@yourdomain.com
+      EMAIL: ${EMAIL}
 
       # DO NOT INCLUDE THE 'https://discord.gg/' PART
       # DO NOT INCLUDE THE 'https://discord.com/invite/' PART
