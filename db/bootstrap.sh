@@ -15,8 +15,8 @@ DB_SSLMODE="disable"
 
 # If prod, read from .env
 if [ "$ENVIRONMENT" = "prod" ]; then
-    if [ -f "/bootstrap/.env" ]; then
-        export $(grep -v '^#' /bootstrap/.env | xargs)
+    if [ -f "../.env" ]; then
+        export $(grep -v '^#' ../.env | xargs)
 
         DB_HOST="${POSTGRES_HOST:-$DB_HOST}"
         DB_PORT="${POSTGRES_PORT:-$DB_PORT}"
