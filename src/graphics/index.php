@@ -44,7 +44,7 @@ $graphicListRenderService = new GraphicListRenderService($graphicsRepository);
     <?php include('../content/subnav.php'); ?>
     <div id="content">
     <h3>Game Graphics</h3><h4>What are these?</h4>
-    <p>These are all of the graphics created by Sploder members.
+    <p>These are all of the graphics created by Sploder Revival members.
     You can use these graphics in the <a href="/make/ppg.php">Physics Puzzle Maker</a> or in 
     the <a href="/make/plat.php">Platformer Game Creator</a>.
     You can also <a href="/make/graphics.php">create your own graphics</a> using the online graphics editor.

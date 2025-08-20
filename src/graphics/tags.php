@@ -28,7 +28,7 @@ $graphicTags = $graphicsRepository->getGraphicTags($_GET['offset'] ?? 0,100);
         <div id="content">
             <h3>Tags</h3>
             <h4>Why Tag Your Graphics?</h4>
-            <p>Tags help other people find your graphics for use in their games.  They also help keep Sploder neat and tidy, and make it more interesting and fun!</p>
+            <p>Tags help other people find your graphics for use in their games.  They also help keep Sploder Revival neat and tidy, and make it more interesting and fun!</p>
             <div id="viewpage">
                 <div class="tagbox">
                     <p class="tags" style="line-height: 40px;">Tags:

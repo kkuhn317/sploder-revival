@@ -20,7 +20,7 @@
 
         <div id="content">
             <h3>Privacy Policy</h3>
-            <p>This is the Sploder Revival&trade; privacy policy. If you have questions about this policy, or about the
+            <p>This is the Sploder Revival privacy policy. If you have questions about this policy, or about the
                 information stored in your account, we can be reached
 
                 via discord at @<?= getenv('DISCORD_USERNAME') ?> or email <a href="mailto:<?= getenv('EMAIL') ?>"><?= getenv('EMAIL') ?></a>.

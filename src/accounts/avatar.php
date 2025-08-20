@@ -188,7 +188,7 @@
             $(".firstbutton a").text("Make a Classic Avatar »");
             $(".firstbutton a").attr("href", "/accounts/avatar.php");
             $("#avatar_prompt").html(
-                'Make your own Sploder avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new creation. If you are bored of premium avatars, go back and create a <a href="/accounts/avatar.php">Classic Avatar</a>!<br><br>Premium avatars cost 150 boost points and can be edited for a limited period of time!'
+                'Make your own Sploder Revival avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new creation. If you are bored of premium avatars, go back and create a <a href="/accounts/avatar.php">Classic Avatar</a>!<br><br>Premium avatars cost 150 boost points and can be edited for a limited period of time!'
             );
         }
 

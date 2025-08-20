@@ -20,7 +20,7 @@
 
         <div id="content">
             <h3>Terms of Service</h3>
-            <p>Yes, every respectable place has rules you have to follow. By becoming a Sploder Revival&trade; member
+            <p>Yes, every respectable place has rules you have to follow. By becoming a Sploder Revival member
                 you agree first and foremost to have <strong>fun</strong>!
 
                 Now for the necessary legal statements...</p>
@@ -29,7 +29,7 @@
 
             <h5>Acceptable Content Guidelines</h5>
 
-            <p class="note">Sploder Revival&trade; is a service that allows you to publish customized content to the
+            <p class="note">Sploder Revival is a service that allows you to publish customized content to the
                 general public.
 
                 You must acknowledge this and make certain that your Submitted User Content is decent, appropriate for a
@@ -48,7 +48,7 @@
 
 
 
-            <p class="note">Sploder Revival&trade; is meant for a general audience. Do not use any profane language or
+            <p class="note">Sploder Revival is meant for a general audience. Do not use any profane language or
                 post any suggestive or inappropriate material to the public. We are not responsible for the views
                 expressed in your games.</p>
 
@@ -91,11 +91,11 @@
 
             <h5>Limitation of Liability</h5>
 
-            <p class="note">Sploder Revival&trade; will do everything it can to make the use of this system a pleasant
+            <p class="note">Sploder Revival will do everything it can to make the use of this system a pleasant
                 one. However, it must always
 
                 remain true that you expressly understand and agree that under no circumstances shall Sploder
-                Revival&trade; be liable to any
+                Revival be liable to any
 
                 user on account of that user's use of or reliance on this service. Such limitation of liability shall
                 apply to
@@ -113,10 +113,10 @@
 
             <h5>Guarantees</h5>
 
-            <p class="note">Sploder Revival&trade; will do everything it can to make sure that the integrity of your
-                data on Sploder Revival&trade; remains intact.
+            <p class="note">Sploder Revival will do everything it can to make sure that the integrity of your
+                data on Sploder Revival remains intact.
 
-                However, Sploder Revival&trade; <em>cannot</em> be held liable for <em>any</em> loss of data.</p>
+                However, Sploder Revival <em>cannot</em> be held liable for <em>any</em> loss of data.</p>
 
 
 
@@ -139,20 +139,20 @@
             <p class="note">If a user uses the system in such a way to adversely effect the performance or efficient
                 operation of the site,
 
-                Sploder Revival&trade; reserves the right to terminate the user's account. Users must not attempt to
+                Sploder Revival reserves the right to terminate the user's account. Users must not attempt to
                 circumvent the security and
 
                 privacy systems in place, or attempt to hack the system.</p>
 
 
 
-            <p class="note">Sploder Revival&trade; reserves the right to terminate service to you if you do not meet
-                these terms. Sploder Revival&trade; will also cooperate with authorities through its respective service
+            <p class="note">Sploder Revival reserves the right to terminate service to you if you do not meet
+                these terms. Sploder Revival will also cooperate with authorities through its respective service
                 providers.</p>
 
 
 
-            <p class="note">Sploder Revival&trade; cannot be held responsible for limitations placed on the system by
+            <p class="note">Sploder Revival cannot be held responsible for limitations placed on the system by
                 its service providers at the <a href="../credits.php">credits</a> list. This website runs
                 <em>purely</em> on donations and runs <em>no advertisements</em> in any fashion. All donations are used
                 to improve the quality of our service.
