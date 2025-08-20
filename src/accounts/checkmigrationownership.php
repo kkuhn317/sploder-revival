@@ -28,10 +28,8 @@ if (!isset($_GET["err"])) {
     $result2 = $originalMembersDb->query("SELECT username FROM members WHERE userid=:userid", [
         ':userid' => $_SESSION['user_id']
     ]);
-    print_r($result2);
-    print_r($_SESSION);
     if (isset($result2[0])) {
-        if ($_SESSION['enteredusername'] == $result2['username']) {
+        if ($_SESSION['enteredusername'] == $result2[0]['username']) {
             $_SESSION['usermigrate'] = "true";
             header('Location: registerpassword.php');
         } else {
