@@ -154,7 +154,7 @@
         </div>
         <?php include('../content/footernavigation.php') ?>
 
-        <input type="hidden" id="newURL" size="40" value="https://sploder.xyz/classic-0">
+        <input type="hidden" id="newURL" size="40" value="https://some.domain/classic-0">
     </div>
     </div>
 

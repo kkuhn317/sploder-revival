@@ -140,10 +140,6 @@ if (!this.JSON) {
 
 // END JSON
 
-//if (window.location.href.indexOf('sploder') == -1) {
-//    window.location.href = 'https://sploder.xyz';
-//}
-
 function us_getPathToSelf() {
     var myName = /(^|[\/\\])include\.js\.php(\?|$)/;
     var scripts = document.getElementsByTagName("script");
