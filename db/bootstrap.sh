@@ -22,13 +22,9 @@ if [ "$ENVIRONMENT" = "dev" ]; then
 
 elif [ "$ENVIRONMENT" = "prod" ]; then
     # Ensure database exists
-    psql -U $DB_USER -d postgres $PSQL_CONN --command="DO \$\$
-    BEGIN
-        IF NOT EXISTS (SELECT FROM pg_database WHERE datname = '$DB_NAME') THEN
-            CREATE DATABASE $DB_NAME OWNER $DB_USER;
-        END IF;
-    END
-    \$\$;"
+    psql -U "$DB_USER" -d postgres $PSQL_CONN --tuples-only --no-align -c \
+  "SELECT 1 FROM pg_database WHERE datname = '$DB_NAME';" | grep -q 1 \
+  || psql -U "$DB_USER" -d postgres $PSQL_CONN -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 else
     echo "Invalid environment: $ENVIRONMENT"
     echo "Usage: bootstrap.sh [dev|prod]"
