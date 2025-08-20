@@ -23,6 +23,9 @@ class GameFeedService
 
     private function generateFeed(string $title, string $description, array $results): string
     {
+        require_once(__DIR__ . '/../content/getdomain.php');
+        $domain = getDomainNameWithoutProtocolWww();
+
         header("Content-Type: application/rss+xml; charset=utf-8");
 
         $rssFeed = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
@@ -31,7 +34,7 @@ class GameFeedService
         $rssFeed .= "<title>{$title}</title>\n";
         $rssFeed .= "<description>{$description}</description>\n";
         $rssFeed .= "<language>en-us</language>\n";
-        $rssFeed .= "<copyright>{$this->getCurrentYear()}, Sploder.net</copyright>\n";
+        $rssFeed .= "<copyright>{$this->getCurrentYear()}, {$domain}</copyright>\n";
         $rssFeed .= "<lastBuildDate>{$this->getCurrentDateTime()}</lastBuildDate>\n";
 
         foreach ($results as $row) {

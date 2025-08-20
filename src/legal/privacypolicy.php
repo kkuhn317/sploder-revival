@@ -1,5 +1,6 @@
 <?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php session_start(); ?>
+<?php require_once(__DIR__.'/../content/getdomain.php'); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -38,7 +39,7 @@
 
 
             <p class="note">Registrants under the age of 13 are not permitted to submit any personal information on <a
-                    href="/">sploder.net</a>. This includes e-mail addresses.
+                    href="/"><?= getDomainNameWithoutProtocolWww() ?></a>. This includes e-mail addresses.
             </p>
 
 
