@@ -22,7 +22,6 @@ if ($level < 10) {
 
 <head>
     <?php include('../content/head.php'); ?>
-    <link href="css/css.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="css/friends2.css" />
     <link rel="stylesheet" type="text/css" href="css/awards.css" />
