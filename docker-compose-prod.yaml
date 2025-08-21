@@ -20,7 +20,6 @@ services:
       - ./src/graphics/png:/var/www/html/graphics/png:rw
       - ./src/graphics/prj:/var/www/html/graphics/prj:rw
       - ./src/legal:/var/www/html/legal:rw
-      - ./src/update/temp:/var/www/html/update/temp:rw
       - ./src/update/uploads:/var/www/html/update/uploads:rw
       - ./src/update/currentversion.txt:/var/www/html/update/currentversion.txt:rw
       - ./src/php/verifyscore.php:/var/www/html/php/verifyscore.php:rw
