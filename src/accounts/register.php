@@ -138,6 +138,9 @@ require('logincheck.php');
                             case "inv":
                                 $errorMsg = 'This username is invalid. Please choose another username.';
                                 break;
+                            case "cens":
+                                $errorMsg = 'This username contains blacklisted words. Please choose another username.';
+                                break;
                         }
                     }
 

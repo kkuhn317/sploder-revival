@@ -8,6 +8,14 @@ require_once("../database/connect.php");
 
 $u = mb_strtolower($_POST['username']);
 
+require_once("../content/censor.php");
+$censoredUsername = censorText($u);
+
+if ($censoredUsername !== $u) {
+    header('Location: register.php?err=cens');
+    exit();
+}
+
 $originalMembersDb = getOriginalMembersDatabase();
 #$qs = "UPDATE sploder SET isprivate=" . $isprivate . " WHERE g_id = " . $id;
 $result2 = $originalMembersDb->query("SELECT username FROM members WHERE username=:user LIMIT 1", [

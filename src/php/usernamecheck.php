@@ -5,7 +5,10 @@ require_once("../database/connect.php");
 $originalMembersDb = getOriginalMembersDatabase();
 
 $u = mb_strtolower($_GET['u']);
-#$qs = "UPDATE sploder SET isprivate=" . $isprivate . " WHERE g_id = " . $id;
+
+require_once("../content/censor.php");
+$censoredUsername = censorText($u);
+
 $result2 = $originalMembersDb->query("SELECT username FROM members WHERE username=:user LIMIT 1", [
     ':user' => mb_strtolower($u)
 ]);
@@ -15,6 +18,8 @@ $result3 = $db->query("SELECT username FROM members WHERE username=:user LIMIT 1
     ':user' => $u
 ]);
 if (isset($result3[0]['username'])) {
+    $status1 = "cant";
+} else if ($censoredUsername !== $u) {
     $status1 = "cant";
 } else {
     $status1 = "can";

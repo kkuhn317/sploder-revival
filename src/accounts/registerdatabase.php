@@ -49,6 +49,13 @@ if (intval($responseKeys["success"]) !== 1) {
     $isolate = $_POST['social'] ?? "off";
     $tostest = $_POST['tostest'] ?? "off";
     $username = mb_strtolower($_SESSION['enteredusername']);
+    require_once("../content/censor.php");
+    $censoredUsername = censorText($username);
+
+    if ($censoredUsername !== $username) {
+        header('Location: register.php?err=cens');
+        exit();
+    }
     $hashed = password_hash($password, PASSWORD_BCRYPT);
     if ($isolate == "on") {
         $isolate = "0";
