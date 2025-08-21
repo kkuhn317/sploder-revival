@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict oEgQhwlcfkHbygw8KneZsHoa44Kc0DshebunUA6xIgsfyU7RSkzohF5Y9Ww8ApA
+\restrict uWQXnCgFM0TLptbhZf8IbNHs1gOUTwjF7PQcgNl8yJHQimD1hllhvtjgS8AP6Qz
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -28,9 +28,9 @@ CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVI
 
 ALTER DATABASE sploder OWNER TO sploder;
 
-\unrestrict oEgQhwlcfkHbygw8KneZsHoa44Kc0DshebunUA6xIgsfyU7RSkzohF5Y9Ww8ApA
+\unrestrict uWQXnCgFM0TLptbhZf8IbNHs1gOUTwjF7PQcgNl8yJHQimD1hllhvtjgS8AP6Qz
 \connect sploder
-\restrict oEgQhwlcfkHbygw8KneZsHoa44Kc0DshebunUA6xIgsfyU7RSkzohF5Y9Ww8ApA
+\restrict uWQXnCgFM0TLptbhZf8IbNHs1gOUTwjF7PQcgNl8yJHQimD1hllhvtjgS8AP6Qz
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -636,7 +636,8 @@ CREATE TABLE public.reviews (
     review_id integer NOT NULL,
     g_id integer NOT NULL,
     userid integer NOT NULL,
-    review text NOT NULL
+    review text NOT NULL,
+    ispublished boolean NOT NULL
 );
 
 
@@ -1284,5 +1285,5 @@ GRANT ALL ON SCHEMA public TO sploder;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict oEgQhwlcfkHbygw8KneZsHoa44Kc0DshebunUA6xIgsfyU7RSkzohF5Y9Ww8ApA
+\unrestrict uWQXnCgFM0TLptbhZf8IbNHs1gOUTwjF7PQcgNl8yJHQimD1hllhvtjgS8AP6Qz
 
