@@ -2,8 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.5 (Debian 17.5-1.pgdg120+1)
--- Dumped by pg_dump version 17.5 (Debian 17.5-1.pgdg120+1)
+\restrict oEgQhwlcfkHbygw8KneZsHoa44Kc0DshebunUA6xIgsfyU7RSkzohF5Y9Ww8ApA
+
+-- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
+-- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -26,7 +28,9 @@ CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVI
 
 ALTER DATABASE sploder OWNER TO sploder;
 
+\unrestrict oEgQhwlcfkHbygw8KneZsHoa44Kc0DshebunUA6xIgsfyU7RSkzohF5Y9Ww8ApA
 \connect sploder
+\restrict oEgQhwlcfkHbygw8KneZsHoa44Kc0DshebunUA6xIgsfyU7RSkzohF5Y9Ww8ApA
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -205,6 +209,46 @@ ALTER TABLE public.challenges OWNER TO sploder;
 
 ALTER TABLE public.challenges ALTER COLUMN challenge_id ADD GENERATED ALWAYS AS IDENTITY (
     SEQUENCE NAME public.challenges_c_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: collection_games; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.collection_games (
+    collection_id integer NOT NULL,
+    g_id integer NOT NULL
+);
+
+
+ALTER TABLE public.collection_games OWNER TO sploder;
+
+--
+-- Name: collections; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.collections (
+    collection_id integer NOT NULL,
+    userid integer NOT NULL,
+    title text NOT NULL,
+    description text NOT NULL
+);
+
+
+ALTER TABLE public.collections OWNER TO sploder;
+
+--
+-- Name: collections_collection_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.collections ALTER COLUMN collection_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.collections_collection_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -421,7 +465,8 @@ CREATE TABLE public.games (
     difficulty numeric DEFAULT 5 NOT NULL,
     first_published_date timestamp without time zone NOT NULL,
     last_published_date timestamp without time zone NOT NULL,
-    first_created_date timestamp without time zone NOT NULL
+    first_created_date timestamp without time zone NOT NULL,
+    isfeatured boolean NOT NULL
 );
 
 
@@ -584,6 +629,34 @@ CREATE TABLE public.pending_deletions (
 ALTER TABLE public.pending_deletions OWNER TO sploder;
 
 --
+-- Name: reviews; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.reviews (
+    review_id integer NOT NULL,
+    g_id integer NOT NULL,
+    userid integer NOT NULL,
+    review text NOT NULL
+);
+
+
+ALTER TABLE public.reviews OWNER TO sploder;
+
+--
+-- Name: reviews_review_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.reviews ALTER COLUMN review_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.reviews_review_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
 -- Name: user_info; Type: TABLE; Schema: public; Owner: sploder
 --
 
@@ -697,6 +770,14 @@ ALTER TABLE ONLY public.challenges
 
 
 --
+-- Name: collections collections_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.collections
+    ADD CONSTRAINT collections_pkey PRIMARY KEY (collection_id);
+
+
+--
 -- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -758,6 +839,14 @@ ALTER TABLE ONLY public.friends
 
 ALTER TABLE ONLY public.friend_requests
     ADD CONSTRAINT request_id PRIMARY KEY (request_id);
+
+
+--
+-- Name: reviews reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_pkey PRIMARY KEY (review_id);
 
 
 --
@@ -993,6 +1082,22 @@ CREATE INDEX idx_games_user_id ON public.games USING btree (user_id);
 
 
 --
+-- Name: collection_games collection_id_collection_games_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.collection_games
+    ADD CONSTRAINT collection_id_collection_games_fkey FOREIGN KEY (collection_id) REFERENCES public.collections(collection_id) ON DELETE CASCADE;
+
+
+--
+-- Name: comments creator_name_comments_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT creator_name_comments_fkey FOREIGN KEY (creator_name) REFERENCES public.members(username) ON DELETE CASCADE NOT VALID;
+
+
+--
 -- Name: game_views_anonymous fk_game_views_anonymous_games_g_id; Type: FK CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -1022,6 +1127,14 @@ ALTER TABLE ONLY public.game_views_members
 
 ALTER TABLE ONLY public.challenge_winners
     ADD CONSTRAINT g_id_challenge_winners_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: contest_nominations g_id_contest_nominations_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.contest_nominations
+    ADD CONSTRAINT g_id_contest_nominations_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -1065,6 +1178,14 @@ ALTER TABLE ONLY public.graphic_tags
 
 
 --
+-- Name: reviews g_id_reviews_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT g_id_reviews_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE;
+
+
+--
 -- Name: votes g_id_votes_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -1073,11 +1194,83 @@ ALTER TABLE ONLY public.votes
 
 
 --
+-- Name: awards membername_awards_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.awards
+    ADD CONSTRAINT membername_awards_fkey FOREIGN KEY (membername) REFERENCES public.members(username) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: contest_nominations nominator_username_contest_nominations_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.contest_nominations
+    ADD CONSTRAINT nominator_username_contest_nominations_fkey FOREIGN KEY (nominator_username) REFERENCES public.members(username) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: leaderboard pubkey_leaderboard_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.leaderboard
+    ADD CONSTRAINT pubkey_leaderboard_fkey FOREIGN KEY (pubkey) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: games user_id_games_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.games
+    ADD CONSTRAINT user_id_games_fkey FOREIGN KEY (user_id) REFERENCES public.members(userid) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: collection_games userid_collection_games_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.collection_games
+    ADD CONSTRAINT userid_collection_games_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE;
+
+
+--
+-- Name: collections userid_collections_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.collections
+    ADD CONSTRAINT userid_collections_fkey FOREIGN KEY (userid) REFERENCES public.members(userid) ON DELETE CASCADE;
+
+
+--
 -- Name: graphic_likes userid_graphic_likes_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
 --
 
 ALTER TABLE ONLY public.graphic_likes
     ADD CONSTRAINT userid_graphic_likes_fkey FOREIGN KEY (userid) REFERENCES public.members(userid) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: graphics userid_graphics_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.graphics
+    ADD CONSTRAINT userid_graphics_fkey FOREIGN KEY (userid) REFERENCES public.members(userid) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: reviews userid_reviews_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT userid_reviews_fkey FOREIGN KEY (userid) REFERENCES public.members(userid) ON DELETE CASCADE;
+
+
+--
+-- Name: awards username_awards_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.awards
+    ADD CONSTRAINT username_awards_fkey FOREIGN KEY (username) REFERENCES public.members(username) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -1090,4 +1283,6 @@ GRANT ALL ON SCHEMA public TO sploder;
 --
 -- PostgreSQL database dump complete
 --
+
+\unrestrict oEgQhwlcfkHbygw8KneZsHoa44Kc0DshebunUA6xIgsfyU7RSkzohF5Y9Ww8ApA
 

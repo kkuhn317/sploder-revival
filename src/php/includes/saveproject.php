@@ -22,8 +22,8 @@ function saveProject(int $g_swf): int
                 $xml2->attributes()['title'] = $title; // Fix the title in the XML as well... Screw geoff again!!
             }
             $currentDate = date("Y-m-d H:i:s");
-            $qs = "INSERT INTO games (author, user_id, title, date, description, g_swf, ispublished, isdeleted, isprivate, comments, first_created_date, first_published_date, last_published_date) 
-                VALUES (:username, :user_id, :title, :date, :description, :g_swf, :ispublished, :isdeleted, :isprivate, :comments, :first_created_date, :first_published_date, :last_published_date)
+            $qs = "INSERT INTO games (author, user_id, title, date, description, g_swf, ispublished, isdeleted, isprivate, comments, first_created_date, first_published_date, last_published_date, isfeatured) 
+                VALUES (:username, :user_id, :title, :date, :description, :g_swf, :ispublished, :isdeleted, :isprivate, :comments, :first_created_date, :first_published_date, :last_published_date, :isfeatured)
                 RETURNING g_id;";
             $id = $db->queryFirstColumn($qs, 0, [
                 ':username' => $author,
@@ -38,7 +38,8 @@ function saveProject(int $g_swf): int
                 ':user_id' => $_SESSION['userid'],
                 ':first_created_date' => $currentDate,
                 ':first_published_date' => $currentDate, // Will be updated when first published
-                ':last_published_date' => $currentDate  // Will be updated when published
+                ':last_published_date' => $currentDate, // Will be updated when published
+                ':isfeatured' => false
             ]);
             $new_game = true;
             // Set xml2 "id" attribute to the new game id
