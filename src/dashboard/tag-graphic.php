@@ -31,14 +31,6 @@ if ($verified) {
     }
     </style>
     <?php include('../content/onlinechecker.php'); ?>
-    <script>
-    function delproj(id) {
-        let text;
-        if (confirm(("Are you sure you want to delete this graphic?")) == true) {
-            location.href = ("../php/delete_graphic.php?id=" + id);
-        } else {}
-    }
-    </script>
     <script type="text/javascript">window.rpcinfo = "Tagging a Graphic";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>

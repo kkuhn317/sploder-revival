@@ -97,12 +97,12 @@ class GameListRenderService
                                 <div class="game-buttons">
                                     <?php if ($includeDelete) { ?>
                                         <input title="Delete" type="button"
-                                            onclick="delproj(<?= $id ?>,'<?= urldecode($title) ?>')"
+                                            onclick="delproj(<?= $id ?>,<?= json_encode(urldecode($title)) ?>)"
                                             type="button" value="Delete">&nbsp;
                                     <?php } ?>
                                     <?php if ($includeRestore) { ?>
                                         <input title="Restore" type="button" class="boost_button"
-                                            onclick="resproj(<?= $id ?>,'<?= urldecode($title) ?>')"
+                                            onclick="resproj(<?= $id ?>,<?= json_encode(urldecode($title)) ?>)"
                                             style="" value="Restore">&nbsp;
                                     <?php } ?>
                                     <?php if ($includeBoost) { ?>
