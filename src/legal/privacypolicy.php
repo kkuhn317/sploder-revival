@@ -76,7 +76,7 @@
 
 
             <p class="note">You cannot disable cookies while using our specialized <a
-                    href="https://github.com/Sploder-Saptarshi/Sploder-Launcher/releases/latest"
+                    href="<?= getenv("LAUNCHER_REPOSITORY_URL") ?>/releases/latest"
                     target="_blank">launcher</a>. If you wish to disable cookies, you can try using a flash enabled
                 browser.</p>
 
