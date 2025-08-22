@@ -48,16 +48,30 @@ define wait_for_db
 	fi
 endef
 
+define is_container_running
+	docker inspect -f '{{.State.Running}}' $(1) 2>/dev/null || echo false
+endef
+
 define backup_db
-	$(call compose_up,$(1))
-	@if [ "$(3)" = "schema" ]; then \
+	@RUNNING=$$($(call is_container_running,$(2))); \
+	if [ "$$RUNNING" != "true" ]; then \
+		echo "Starting container $(2)..."; \
+		$(call compose_up,$(1)); \
+	else \
+		echo "Container $(2) already running."; \
+	fi; \
+	\
+	if [ "$(3)" = "schema" ]; then \
 		echo "Creating schema-only backup..."; \
-		$(call exec_container,$(2),/bin/bash -c "pg_dump -U sploder -d sploder --format=p --schema-only --create > /bootstrap/sploder.sql"); \
+		docker exec -i $(2) /bin/bash -c "pg_dump -U sploder -d sploder --format=p --schema-only --create > /bootstrap/sploder.sql"; \
 	else \
 		echo "Creating full backup..."; \
-		$(call exec_container,$(2),/bin/bash -c "pg_dump -U sploder -d sploder --format=p --create > /bootstrap/sploder-backup-$$(date +%Y%m%d_%H%M%S).sql"); \
+		docker exec -i $(2) /bin/bash -c "pg_dump -U sploder -d sploder --format=p --create > /bootstrap/sploder-backup-$$(date +%Y%m%d_%H%M%S).sql"; \
 	fi
-	$(call compose_down,$(1))
+	if [ "$(3)" = "schema" ]; then \
+		echo "Stopping container $(2)..."; \
+		$(call compose_down,$(1)); \
+	fi
 endef
 
 define backup_data
@@ -178,7 +192,6 @@ prod.bash.site:
 prod.bash.db:
 	$(call exec_container,${PROD_DB_CONTAINER},/bin/bash)
 prod.backup.db:
-	$(call compose_down,${PROD_COMPOSE})
 	$(call backup_db,${PROD_COMPOSE},${PROD_DB_CONTAINER},full)
 prod.logs:
 	${CONTAINER_CMD} compose -f ${PROD_COMPOSE} logs -f
