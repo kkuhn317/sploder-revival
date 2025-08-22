@@ -27,7 +27,11 @@ define compose_down
 endef
 
 define exec_container
-	${CONTAINER_CMD} exec -it $(1) $(2)
+    if [ -t 1 ]; then \
+        ${CONTAINER_CMD} exec -it $(1) $(2); \
+    else \
+        ${CONTAINER_CMD} exec -i $(1) $(2); \
+    fi
 endef
 
 define wait_for_db
