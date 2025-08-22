@@ -11,6 +11,8 @@ src/cache/events.lock
 src/cache/events.xml
 src/php/verifyscore.php
 src/avatar/a
+src/db/sploder-data*
+src/db/sploder-backup*
 
 # Docker local development folders
 pgdata
