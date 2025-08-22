@@ -400,7 +400,7 @@ LIMIT 90;
         return $result ? (int)$result['boostpoints'] : 0;
     }
 
-    public function getUserInfo(string $username): array|null
+    public function getUserInfo(string $username): array|false
     {
         $query = "SELECT * FROM user_info WHERE username = :username";
         $result = $this->db->queryFirst($query, [':username' => $username]);
