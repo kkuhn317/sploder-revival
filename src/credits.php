@@ -14,6 +14,7 @@
             font-family: 'Calibri';
         }
     </style>
+    <script type="text/javascript">window.rpcinfo = "Viewing the Credits";</script>
     <?php include('content/onlinechecker.php'); ?>
 </head>
 <?php include('content/addressbar.php'); ?>

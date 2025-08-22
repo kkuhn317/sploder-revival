@@ -13,6 +13,7 @@ require('logincheck.php');
     <link rel="stylesheet" type="text/css" href="/slider/nivo-slider.css" />
     <link rel="stylesheet" type="text/css" href="/slider/sploder/style_v2p10.css" />
     <?php include('../content/onlinechecker.php'); ?>
+    <script type="text/javascript">window.rpcinfo = "Signing up";</script>
     <script type="text/javascript" language="Javascript">
     <!-- //
     function CheckData() {

@@ -20,7 +20,7 @@ $db = getDatabase();
     </style>
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
 
-
+    <script type="text/javascript">window.rpcinfo = "Idling";</script>
     <?php include('../../content/onlinechecker.php'); ?>
 
 </head>

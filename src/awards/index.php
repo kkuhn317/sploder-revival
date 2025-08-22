@@ -28,7 +28,7 @@ $material_list = $awardsListRenderService->getMaterialList();
     }
     </style>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
-
+    <script type="text/javascript">window.rpcinfo = "Managing their Awards";</script>
     <script type="text/javascript">
     var _sf_startpt = (new Date()).getTime();
     </script>

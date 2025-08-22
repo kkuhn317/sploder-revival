@@ -12,6 +12,7 @@ require('logincheck.php');
 
 
     <?php include('../content/onlinechecker.php'); ?>
+    <script type="text/javascript">window.rpcinfo = "Logging in";</script>
     <script type="text/javascript" src="login.js"></script>
 
 </head>

@@ -46,6 +46,7 @@ $userInfo = $userRepository->getUserInfo($_SESSION['username']);
         -->
     </script>
     <?php include('../content/onlinechecker.php'); ?>
+    <script type="text/javascript">window.rpcinfo = "Editing Profile Information";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

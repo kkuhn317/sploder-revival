@@ -25,7 +25,7 @@ session_start();
 
 
     <link href="/css/members.css" rel="stylesheet" type="text/css" />
-
+    <script type="text/javascript">window.rpcinfo = "Viewing Staff Members";</script>
     <?php include('content/onlinechecker.php'); ?>
 </head>
 <?php include('content/addressbar.php'); ?>

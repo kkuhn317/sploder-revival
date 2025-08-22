@@ -70,6 +70,7 @@ if(isset($_GET['challenge'])){
     var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include('../content/onlinechecker.php'); ?>
+    <script type="text/javascript">window.rpcinfo = "Playing: <?= json_encode($game['title']) ?>";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

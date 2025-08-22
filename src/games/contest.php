@@ -31,6 +31,7 @@ $db = getDatabase();
 
 
     <?php include('../content/onlinechecker.php'); ?>
+    <script type="text/javascript">window.rpcinfo = "Viewing Contest";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

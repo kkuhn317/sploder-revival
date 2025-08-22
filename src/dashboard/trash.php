@@ -50,7 +50,7 @@ $totalgames = $gameRepository->getTotalDeletedGameCount($username);
             } else {}
         }
     </script>
-
+    <script type="text/javascript">window.rpcinfo = "Managing their Games";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

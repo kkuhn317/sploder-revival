@@ -22,6 +22,7 @@ $graphicListRenderService = new GraphicListRenderService($graphicsRepository);
     var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
+    <script type="text/javascript">window.rpcinfo = "Viewing Graphics with Tag: <?= json_encode($t) ?>";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

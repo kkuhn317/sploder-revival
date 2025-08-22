@@ -22,7 +22,7 @@ $gameListRenderService = new GameListRenderService(RepositoryManager::get()->get
         } else {}
     }
     </script>
-
+    <script type="text/javascript">window.rpcinfo = "Idling";</script>
     <?php include('../../content/onlinechecker.php'); ?>
 
 </head>

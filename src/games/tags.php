@@ -16,6 +16,7 @@ $gameTags = $gameRepository->getGameTags($_GET['offset'] ?? 0,100);
     var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
+    <script type="text/javascript">window.rpcinfo = "Viewing Game Tags";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

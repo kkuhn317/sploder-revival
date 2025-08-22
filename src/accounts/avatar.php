@@ -12,7 +12,7 @@
     </script>
     <script type="text/javascript" src="../common/jquery-3.7.1.min.js"></script>
 
-
+    <script type="text/javascript">window.rpcinfo = "Editing Avatar";</script>
     <!--[if IE 6]>
 <link rel="stylesheet" type="text/css"  href="/awards/css/ie6.css" />
 <![endif]-->

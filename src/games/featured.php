@@ -11,6 +11,7 @@
     var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
+    <script type="text/javascript">window.rpcinfo = "Viewing Featured Games";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

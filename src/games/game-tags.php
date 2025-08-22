@@ -20,6 +20,7 @@ $gameListRenderService = new GameListRenderService($gameRepository);
     var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
+    <script type="text/javascript">window.rpcinfo = "Viewing Games with Tag: <?= json_encode($t) ?>";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

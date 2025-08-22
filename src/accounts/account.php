@@ -11,7 +11,7 @@
 
     <?php include('../content/onlinechecker.php'); ?>
 
-
+    <script type="text/javascript">window.rpcinfo = "Viewing Account Information";</script>
     <script type="text/javascript">
     var _sf_startpt = (new Date()).getTime()
     </script>

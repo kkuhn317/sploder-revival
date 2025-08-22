@@ -20,6 +20,7 @@ $totalMembers = $userRepository->getTotalNumberOfMembers()
     <script type="text/javascript">
         var _sf_startpt = (new Date()).getTime()
     </script>
+    <script type="text/javascript">window.rpcinfo = "Viewing the Members List";</script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>

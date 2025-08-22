@@ -34,6 +34,7 @@ $graphicListRenderService = new GraphicListRenderService($graphicsRepository);
             } else {}
         }
     </script>
+    <script type="text/javascript">window.rpcinfo = "Viewing all Graphics";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

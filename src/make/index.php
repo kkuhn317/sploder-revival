@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="/slider/nivo-slider.css" />
     <link rel="stylesheet" type="text/css" href="/slider/sploder/style_v2p10.css" />
+    <script type="text/javascript">window.rpcinfo = "Deciding on a Game Type";</script>
     <?php include('../content/onlinechecker.php'); ?>
 
 </head>

@@ -66,7 +66,7 @@ if (count($result) > 0) {
     </script>
 
 
-
+    <script type="text/javascript">window.rpcinfo = "Making an Award";</script>
     <!--[if IE 6]>
 <link rel="stylesheet" type="text/css"  href="/awards/css/ie6.css" />
 <![endif]-->

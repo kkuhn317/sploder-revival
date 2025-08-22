@@ -35,7 +35,7 @@ if ($level < 10) {
     <script type="text/javascript">
         var _sf_startpt = (new Date()).getTime();
     </script>
-
+    <script type="text/javascript">window.rpcinfo = "Viewing all Awards";</script>
 
     <link href="/css/members.css" rel="stylesheet" type="text/css" />
     <style>

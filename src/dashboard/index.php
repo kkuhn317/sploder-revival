@@ -32,6 +32,7 @@ $friends = $friendsRepository->getTotalFriends($username);
       visibility: hidden
     }
   </style>
+  <script type="text/javascript">window.rpcinfo = "On the Dashboard";</script>
   <?php include('../content/onlinechecker.php'); ?>
 
 </head>

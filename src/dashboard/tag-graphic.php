@@ -39,6 +39,7 @@ if ($verified) {
         } else {}
     }
     </script>
+    <script type="text/javascript">window.rpcinfo = "Tagging a Graphic";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

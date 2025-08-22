@@ -26,6 +26,7 @@ $awesomeness = $stats['awesomeness'] ?? 50;
     <link rel="stylesheet" type="text/css" href="/css/sploder_v2p22.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/member_profile3.css" />
     <script type="text/javascript" src="js/friends.js"></script>
+    <script type="text/javascript">window.rpcinfo = "Viewing Member";</script>
     <?php include('../content/onlinechecker.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
