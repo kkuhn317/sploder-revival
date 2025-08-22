@@ -78,7 +78,7 @@
     "/swfobject/expressInstall.swf", flashvars, params);
 
 </script>
-
+<script type="text/javascript">window.rpcinfo = "Making an Arcade Game";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 

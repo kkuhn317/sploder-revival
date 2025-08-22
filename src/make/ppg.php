@@ -14,7 +14,7 @@
     flashvars, params);
 
     </script>
-
+    <script type="text/javascript">window.rpcinfo = "Making a Physics Puzzle Game";</script>
 
 
 

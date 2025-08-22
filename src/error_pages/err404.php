@@ -12,7 +12,8 @@
 	<script type="text/javascript">var _sf_startpt=(new Date()).getTime();</script>
 	<?php include('../content/ruffle.php'); ?>
 	<?php include('../content/onlinechecker.php'); ?>
-	
+	<script type="text/javascript">window.rpcinfo = "Got lost wandering around";</script>
+
 </head>
 <?php include('../content/addressbar.php'); ?>
 

@@ -13,6 +13,7 @@
     swfobject.embedSWF("../swf/creator3_b01.swf", "flashcontent", "720", "540", "10", "/swfobject/expressInstall.swf",
     flashvars, params);
     </script>
+    <script type="text/javascript">window.rpcinfo = "Making a 3d Game";</script>
 
 </head>
 <?php include('../content/addressbar.php'); ?>

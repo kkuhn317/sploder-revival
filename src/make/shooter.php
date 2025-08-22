@@ -15,6 +15,7 @@
     flashvars, params);
 
     </script>
+    <script type="text/javascript">window.rpcinfo = "Making a Shooter Game";</script>
 </head>
 
 <body id="creator" class="shooter">

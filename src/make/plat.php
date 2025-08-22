@@ -13,6 +13,7 @@
     swfobject.embedSWF("../swf/creator2_b17.swf", "flashcontent", "860", "540", "10.0.0",
     "/swfobject/expressInstall.swf", flashvars, params);
     </script>
+    <script type="text/javascript">window.rpcinfo = "Making a Platformer Game";</script>
 
 </head>
 <?php include('../content/addressbar.php'); ?>

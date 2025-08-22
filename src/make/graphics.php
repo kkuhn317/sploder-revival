@@ -58,6 +58,7 @@
             flashvars, params);
         
     </script>
+    <script type="text/javascript">window.rpcinfo = "Making a Graphic";</script>
 
 
 </head>
