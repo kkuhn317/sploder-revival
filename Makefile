@@ -109,7 +109,7 @@ help:
 	@echo "  make dev.hook         - install the pre-commit hook for formatting"
 	@echo "  make dev.watch        - same as dev, but does not detach the docker container"
 	@echo "  make dev.down         - stops the docker container if running"
-	@echo "  make dev.bootsrap     - restores the database dump into the PostgreSQL container"
+	@echo "  make dev.bootstrap     - restores the database dump into the PostgreSQL container"
 	@echo "  make dev.bash.site    - enter the sploder revival container"
 	@echo "  make dev.bash.db      - enter the db container"
 	@echo "  make dev.backup.db    - creates a schema backup of the database into the mounted folder"
@@ -164,7 +164,7 @@ dev.backup.db:
 # Production commands
 prod:
 	$(call compose_down,${PROD_COMPOSE})
-	$(call compose_up,${PROD_COMPOSE}) && ${OPEN_CMD} ${PROD_URL}
+	$(call compose_up,${PROD_COMPOSE})
 prod.down:
 	$(call compose_down,${PROD_COMPOSE})
 prod.bootstrap:
