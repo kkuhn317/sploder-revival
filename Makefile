@@ -27,7 +27,7 @@ define compose_down
 endef
 
 define exec_container
-    if [ -t 1 ]; then \
+    @if [ -t 1 ]; then \
         ${CONTAINER_CMD} exec -it $(1) $(2); \
     else \
         ${CONTAINER_CMD} exec -i $(1) $(2); \
