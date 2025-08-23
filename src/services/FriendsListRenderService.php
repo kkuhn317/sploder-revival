@@ -78,14 +78,24 @@ class FriendsListRenderService
             $html .= '<h4>' . ucfirst($username) . '\'s Friends</h4>';
         }
 
+        $friendId = 0;
+
         // Render bested friends
         foreach ($bestedFriends as $friend) {
             $html .= $this->renderFriend($friend, $username, true, $showActions);
+            $friendId++;
+            if ($friendId%5 == 0) {
+                $html .= "<div class='spacer'>&nbsp;</div>";
+            }
         }
 
         // Render regular friends
         foreach ($acceptedFriends as $friend) {
             $html .= $this->renderFriend($friend, $username, false, $showActions);
+            $friendId++;
+            if ($friendId%5 == 0) {
+                $html .= "<div class='spacer'>&nbsp;</div>";
+            }
         }
 
         $html .= "<div class='spacer'></div></div>";
