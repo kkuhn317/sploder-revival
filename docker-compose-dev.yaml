@@ -53,6 +53,7 @@ services:
       DISCORD_BOT_TOKEN:
       UPLOAD_API_KEY:
       CENSORED_WORDS: example1,example2,example3
+      DISALLOWED_USERNAMES: admin,administrator,root,moderator,mod,sploder,sploderadmin,sploderadministrator,geoff,lpa,soundburst,doncato,moonove,vim
   db:
     image: postgres:17
     container_name: sploder_postgres
