@@ -46,7 +46,7 @@ class GameListRenderService
                         $lastModified = $game['date'] ?? null;
                         $gameDate = date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($date));
                         $avgRating = $game['avg_rating'] ?? 0;
-                        $starUrl = "/chrome/rating" . ($avgRating * 10) . ".gif";
+                        $starUrl = "/chrome/rating" . (round($avgRating * 10 / 5) * 5) . ".gif";
                         $includeTotalVotes = isset($game['total_votes']);
                         $totalVotes = $game['total_votes'] ?? 0;
                         $isPublished = (bool)($game['ispublished'] ?? 1);
