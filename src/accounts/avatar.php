@@ -53,7 +53,7 @@
                 }
             }
             ?>
-            <p id="avatar_prompt">Make your own Sploder avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new
+            <p id="avatar_prompt">Make your own Sploder Revival avatar. Change the settings below and click <em>SAVE AVATAR</em> to save your new
                 creation. If you really want to spice up your avatar, create a <a
                     href="/accounts/avatar.php?set=2">Premium Avatar</a>!</p>
             <div id="rpc_messages"></div>
