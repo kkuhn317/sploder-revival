@@ -1,16 +1,17 @@
 <?php
 
 include('../content/logincheck.php');
+require_once('../content/censor.php');
 // Get the form data
 $username = $_SESSION['username'];
-$description = $_POST["description"];
-$hobbies = $_POST["hobbies"];
-$favoriteSports = $_POST["favoriteSports"];
-$favoriteGames = $_POST["favoriteGames"];
-$favoriteMovies = $_POST["favoriteMovies"];
-$favoriteBands = $_POST["favoriteBands"];
-$whomIRespect = $_POST["whomIRespect"];
-$isolated = $_POST["isolate"] ?? null;
+$description = censorText($_POST["description"]);
+$hobbies = censorText($_POST["hobbies"]);
+$favoriteSports = censorText($_POST["favoriteSports"]);
+$favoriteGames = censorText($_POST["favoriteGames"]);
+$favoriteMovies = censorText($_POST["favoriteMovies"]);
+$favoriteBands = censorText($_POST["favoriteBands"]);
+$whomIRespect = censorText($_POST["whomIRespect"]);
+$isolated = censorText($_POST["isolate"]) ?? null;
 
 # $isolated is set to "on" if the checkbox is checked
 if ($isolated === "on") {
