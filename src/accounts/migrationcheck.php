@@ -32,6 +32,14 @@ if (isset($result3[0]['username'])) {
 } else {
     $status1 = "can";
 }
+
+$disallowedUsernames = explode(',', getenv('DISALLOWED_USERNAMES') ?: '');
+
+if (in_array($u, $disallowedUsernames)) {
+    header('Location: register.php?err=cens');
+    exit();
+}
+
 if ($status1 == "can") {
     if (isset($result2[0]['username'])) {
         $status = "alert";

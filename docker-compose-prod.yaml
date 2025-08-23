@@ -64,6 +64,7 @@ services:
       DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
       UPLOAD_API_KEY: ${UPLOAD_API_KEY}
       CENSORED_WORDS: ${CENSORED_WORDS}
+      DISALLOWED_USERNAMES: ${DISALLOWED_USERNAMES}
     restart: unless-stopped
 
   db:

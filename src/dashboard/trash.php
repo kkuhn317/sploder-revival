@@ -77,9 +77,9 @@ $totalgames = $gameRepository->getTotalDeletedGameCount($username);
 
 
             <form action="trash.php" method="GET"><label for="title">Search by title:
-                    &nbsp;</label><input style="width:98.5%;height:26px" placeholder="My deleted game" value="<?php if (isset($_GET['game'])) {
-                                                                                                                    echo $_GET['game'];
-                                                                                                              } ?>"
+                    &nbsp;</label><input style="width:98.5%;height:26px" placeholder="My deleted game" value=<?php if (isset($_GET['game'])) {
+                                                                                                                    echo json_encode($_GET['game']);
+                                                                                                              } else {echo '""';} ?>
                     class="urlthing" type="text" id="game" name="game" autocomplete="off" autocorrect="off"
                     autocapitalize="off" spellcheck="false" maxlength="100" /><br><br><br></form>
                     <?php

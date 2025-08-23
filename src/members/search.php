@@ -36,13 +36,13 @@ $searchUserName = $_GET['u'] ?? '';
 
             <form action="/members/search.php" method="GET">
                 <label for="username" style="font-size: 16px;">Search for members: &nbsp;</label>
-                <input type="text" name="u" value="<?= $searchUserName ?? null ?>" size="16" maxlength="16" class="biginput" />
+                <input type="text" name="u" value=<?= json_encode($searchUserName) ?? '""' ?> size="16" maxlength="16" class="biginput" />
                 <input type="submit" value="Search" class="postbutton" />
             </form>
             <?php
             if ($searchUserName != null || $searchUserName != '') {
             ?>
-            <h4>Members matching search <span class="tagcolor1"><?= $searchUserName ?? null ?></span>:</h4>
+            <h4>Members matching search <span class="tagcolor1"><?= htmlspecialchars($searchUserName) ?? null ?></span>:</h4>
             </p>
             
             <?php
