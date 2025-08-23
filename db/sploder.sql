@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict uWQXnCgFM0TLptbhZf8IbNHs1gOUTwjF7PQcgNl8yJHQimD1hllhvtjgS8AP6Qz
+\restrict oFDBfTLxUAFHgoekr6JgwjdGs9d7of9xCh2NqsWfjofQbHre76InFVCwBxhf2qU
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -28,9 +28,9 @@ CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVI
 
 ALTER DATABASE sploder OWNER TO sploder;
 
-\unrestrict uWQXnCgFM0TLptbhZf8IbNHs1gOUTwjF7PQcgNl8yJHQimD1hllhvtjgS8AP6Qz
+\unrestrict oFDBfTLxUAFHgoekr6JgwjdGs9d7of9xCh2NqsWfjofQbHre76InFVCwBxhf2qU
 \connect sploder
-\restrict uWQXnCgFM0TLptbhZf8IbNHs1gOUTwjF7PQcgNl8yJHQimD1hllhvtjgS8AP6Qz
+\restrict oFDBfTLxUAFHgoekr6JgwjdGs9d7of9xCh2NqsWfjofQbHre76InFVCwBxhf2qU
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1275,6 +1275,14 @@ ALTER TABLE ONLY public.awards
 
 
 --
+-- Name: user_info username_user_info_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.user_info
+    ADD CONSTRAINT username_user_info_fkey FOREIGN KEY (username) REFERENCES public.members(username) ON DELETE CASCADE NOT VALID;
+
+
+--
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: pg_database_owner
 --
 
@@ -1285,5 +1293,5 @@ GRANT ALL ON SCHEMA public TO sploder;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict uWQXnCgFM0TLptbhZf8IbNHs1gOUTwjF7PQcgNl8yJHQimD1hllhvtjgS8AP6Qz
+\unrestrict oFDBfTLxUAFHgoekr6JgwjdGs9d7of9xCh2NqsWfjofQbHre76InFVCwBxhf2qU
 
