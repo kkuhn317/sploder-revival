@@ -72,21 +72,27 @@ LIMIT 90;
 
     public function getMembers(int $offset)
     {
-        $offset = $offset * 100;
-        $qs = "
-            SELECT
-                m.username,
-                m.joindate,
-                (SELECT COUNT(DISTINCT f.user2) FROM friends f WHERE f.user1 = m.username) AS friend_count,
-                (SELECT COUNT(DISTINCT g.g_id) FROM games g WHERE g.author = m.username AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
-                (SELECT COALESCE(SUM(g.views), 0) FROM games g WHERE g.author = m.username AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS total_views,
-                (SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = m.username AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0)) AS total_ratings_received
-            FROM
-                members m
-            ORDER BY
-                m.joindate
-            LIMIT 100 OFFSET :offset
-        ";
+    $offset = $offset * 100;
+    $qs = "
+        SELECT
+            m.username,
+            m.joindate,
+            COUNT(DISTINCT f.user2) AS friend_count,
+            COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
+            COALESCE(SUM(DISTINCT g.views), 0) AS total_views,
+            (SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = m.username AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0)) AS total_ratings_received
+        FROM
+            members m
+        LEFT JOIN
+            friends f ON m.username = f.user1
+        LEFT JOIN
+            games g ON m.username = g.author
+        GROUP BY
+            m.username, m.joindate
+        ORDER BY
+            m.joindate
+        LIMIT 100 OFFSET :offset
+    ";
         $result = $this->db->query($qs, [':offset' => $offset]);
         foreach ($result as &$row) {
             $row['level'] = $this->getLevel(
