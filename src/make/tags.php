@@ -5,11 +5,11 @@ $tags = explode(" ", censorText($_POST['tags']));
 // Check whether each tag is valid
 // For a tag to be valid, it must be less than 30 characters long
 // It also must have only letters and numbers
+$newTags = [];
 foreach ($tags as $tag) {
     // If a tag is empty, remove it from the array
     // If a tag is splode, remove it from the array
     if ($tag == '' || $tag == 'splode') {
-        $tags = array_diff($tags, [$tag]);
         continue;
     }
     // Change tag to lowercase 
@@ -22,7 +22,9 @@ foreach ($tags as $tag) {
         // Send 400
         http_response_code(400);
     }
+    $newTags[] = $tag;
 }
+$tags = $newTags;
 // There must not be more than 25 tags
 if (count($tags) > 25) {
     // Send 400

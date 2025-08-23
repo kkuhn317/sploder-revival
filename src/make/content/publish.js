@@ -59,10 +59,11 @@ function sendTags() {
     // For a tag to be valid, it must be less than 30 characters long
     // It also must have only letters and numbers
     var tagArray = tags.split(' ');
+    var cleanTagArray = [];
+
     for (let tag of tagArray) {
         // If a tag is empty, remove it from the array
         if (tag == '') {
-            tagArray.splice(tagArray.indexOf(tag), 1);
             continue;
         }
         // Change tag to lowercase
@@ -73,13 +74,15 @@ function sendTags() {
             showMessage();
             return;
         }
-        if (!/^[a-zA-Z0-9]*$/.test(tag)) {
+        if (!/^[a-z0-9]*$/.test(tag)) {
             setMessageType('alert');
             document.getElementById('message').innerHTML = 'Tags must contain only letters and numbers. Use spaces to separate tags';
             showMessage();
             return;
         }
+        cleanTagArray.push(tag);
     }
+    tagArray = cleanTagArray;
     // There must not be more than 25 tags
     if (tagArray.length > 25) {
         setMessageType('alert');
