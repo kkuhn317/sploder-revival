@@ -2,7 +2,7 @@
 session_start();
 
 // Check if the user is logged in
-if (isset($_SESSION['loggedin'])) {
+if (!isset($_SESSION['loggedin'])) {
     die('Your session expired! Please log in again.');
 }
 
