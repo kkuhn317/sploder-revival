@@ -52,7 +52,7 @@ $totalMembers = $userRepository->getTotalNumberOfMembers()
                         echo "<td class=\"stat\">{$user['game_count']}</td>";
                         echo "<td class=\"stat\">{$user['friend_count']}</td>";
                         echo "<td class=\"stat\">{$user['total_views']}</td>";
-                        echo "<td class=\"stat\">{$user['total_ratings_given']}</td>";
+                        echo "<td class=\"stat\">{$user['total_ratings_received']}</td>";
                         echo "</tr>";
                         $rowClass = ($rowClass === 'even') ? 'odd' : 'even';
                     }

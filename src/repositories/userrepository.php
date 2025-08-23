@@ -19,7 +19,7 @@ SELECT
     m.username AS user1,
     SIMILARITY(m.username, :u) AS sim,
     LEAST(250, FLOOR(
-        (SELECT COUNT(*) FROM votes v WHERE v.username = m.username)/25.0
+        (SELECT COUNT(*) FROM votes v JOIN games g ON v.g_id = g.g_id WHERE g.author = m.username)/25.0
         + (SELECT COUNT(DISTINCT f.user2) FROM friends f WHERE f.user1 = m.username)/10.0
         + (SELECT COUNT(DISTINCT g.g_id) FROM games g WHERE g.author = m.username)/10.0
         + (SELECT COALESCE(SUM(g2.views),0) FROM games g2 WHERE g2.author = m.username)/1000.0
@@ -79,8 +79,8 @@ LIMIT 90;
             m.joindate,
             COUNT(DISTINCT f.user2) AS friend_count,
             COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
-            COALESCE(SUM(DISTINCT g.views), 0) AS total_views,  -- Ensure no duplicate views
-            (SELECT COUNT(*) FROM votes v2 WHERE v2.username = m.username) AS total_ratings_given
+            COALESCE(SUM(DISTINCT g.views), 0) AS total_views,
+            (SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = m.username AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0)) AS total_ratings_received
         FROM
             members m
         LEFT JOIN
@@ -96,7 +96,7 @@ LIMIT 90;
         $result = $this->db->query($qs, [':offset' => $offset]);
         foreach ($result as &$row) {
             $row['level'] = $this->getLevel(
-                $row['total_ratings_given'],
+                $row['total_ratings_received'],
                 $row['friend_count'],
                 $row['game_count'],
                 $row['total_views']
@@ -120,12 +120,12 @@ LIMIT 90;
             m.lastlogin,
             m.lastpagechange,
             m.status,
-            (SELECT COUNT(*) FROM votes v WHERE v.username = m.username) AS total_ratings_given,
+            (SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = m.username AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0)) AS total_ratings_received,
             COUNT(DISTINCT f.user2) AS friend_count,
             COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
             COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END), 0) AS total_views,
             LEAST(250, FLOOR(
-                (SELECT COUNT(*) FROM votes v2 WHERE v2.username = m.username)/25.0
+                (SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = m.username AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0))/25.0
                 + COUNT(DISTINCT f.user2)/10.0
                 + COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)/10.0
                 + COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END),0)/1000.0
@@ -150,7 +150,7 @@ LIMIT 90;
     {
         $qs = "
             SELECT 
-                (SELECT COUNT(*) FROM votes v WHERE v.username = m.username) AS total_ratings_given,
+                (SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = m.username AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0)) AS total_ratings_received,
                 COUNT(DISTINCT f.user2) AS friend_count,
                 COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
                 COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END), 0) AS total_views
@@ -170,7 +170,7 @@ LIMIT 90;
 
         if ($result) {
             return $this->getLevel(
-                $result['total_ratings_given'],
+                $result['total_ratings_received'],
                 $result['friend_count'],
                 $result['game_count'],
                 $result['total_views']
