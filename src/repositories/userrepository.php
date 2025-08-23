@@ -74,22 +74,22 @@ LIMIT 90;
     {
     $offset = $offset * 100;
     $qs = "
-        SELECT 
+        SELECT
             m.username,
             m.joindate,
             COUNT(DISTINCT f.user2) AS friend_count,
             COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
-            COALESCE(SUM(g.views), 0) AS total_views,
+            COALESCE(SUM(DISTINCT g.views), 0) AS total_views,  -- Ensure no duplicate views
             (SELECT COUNT(*) FROM votes v2 WHERE v2.username = m.username) AS total_ratings_given
-        FROM 
+        FROM
             members m
-        LEFT JOIN 
+        LEFT JOIN
             friends f ON m.username = f.user1
-        LEFT JOIN 
+        LEFT JOIN
             games g ON m.username = g.author
-        GROUP BY 
+        GROUP BY
             m.username, m.joindate
-        ORDER BY 
+        ORDER BY
             m.joindate
         LIMIT 100 OFFSET :offset
     ";

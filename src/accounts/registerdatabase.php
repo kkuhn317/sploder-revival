@@ -84,7 +84,7 @@ if (intval($responseKeys["success"]) !== 1) {
 
         $disallowedUsernames = explode(',', getenv('DISALLOWED_USERNAMES') ?: '');
 
-        if (in_array($u, $disallowedUsernames)) {
+        if (in_array($username, $disallowedUsernames)) {
             header('Location: register.php?err=cens');
             exit();
         }
