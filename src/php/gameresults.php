@@ -58,7 +58,7 @@ if ($verifiedScore) {
     ]);
 
     if ($w == 'true') {
-        $userRepository->addBoostPoints($_SESSION['userid'], min(25, $gtm/30));
+        $userRepository->addBoostPoints($_SESSION['userid'], min(25, round($gtm/30)));
     }
 
     if(isset($_SESSION['challenge'])){
@@ -114,17 +114,20 @@ if ($verifiedScore) {
     }
     echo "&success=true";
     // Update difficulty in game table
-    $result2 = $db->query("SELECT w, COUNT(*) as count FROM leaderboard WHERE pubkey = :g_id GROUP BY w;", [
+    $result2 = $db->query("
+    SELECT 
+        SUM(CASE WHEN w = TRUE THEN 1 ELSE 0 END) AS wins,
+        SUM(CASE WHEN w = FALSE THEN 1 ELSE 0 END) AS losses
+    FROM leaderboard 
+    WHERE pubkey = :g_id;
+    ",  [
         ':g_id' => $id[1]
-    ]);
-    // If there are no losses, set loss to 0 using ternary operator
-    $result2['wins'] = $result2[1]['count'] ?? 0;
-    $result2['loss'] = $result2[0]['count'] ?? 0;
+        ])[0];
 
     $db->execute("UPDATE games
         SET difficulty = :difficulty
         WHERE g_id = :g_id", [
-        ':difficulty' => difficulty($result2['wins'], $result2['loss']),
+        ':difficulty' => difficulty($result2['wins'], $result2['losses']),
         ':g_id' => $id[1]
     ]);
 } else {
