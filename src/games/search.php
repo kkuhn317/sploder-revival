@@ -37,9 +37,9 @@ $gameListRenderService = new GameListRenderService($gameRepository);
             <form action="search.php" method="GET">
                 <label for="game" style="font-size: 16px;">Enter a search term: &nbsp;</label>
                 <input type="text" name="game" size="16" maxlength="40" class="biginput" 
-                       value="<?php if (isset($_GET['game'])) {
-                            echo $_GET['game'];
-                              } ?>">
+                       value=<?php if (isset($_GET['game'])) {
+                            echo json_encode($_GET['game']);
+                              } else {echo '""';} ?>>
                 <input type="submit" value="Search" class="postbutton">
             </form>
             <br><br>
