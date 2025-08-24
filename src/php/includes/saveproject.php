@@ -38,8 +38,7 @@ function saveProject(int $g_swf): int
                 ':user_id' => $_SESSION['userid'],
                 ':first_created_date' => $currentDate,
                 ':first_published_date' => $currentDate, // Will be updated when first published
-                ':last_published_date' => $currentDate, // Will be updated when published
-                ':isfeatured' => false
+                ':last_published_date' => $currentDate // Will be updated when published
             ]);
             $new_game = true;
             // Set xml2 "id" attribute to the new game id

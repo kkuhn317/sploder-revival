@@ -38,7 +38,7 @@ $graphicListRenderService = new GraphicListRenderService($graphicsRepository);
 </head>
 <?php include('../content/addressbar.php'); ?>
 
-<body id="everyones" class="newest" onload="doLoad();">
+<body id="everyones" class="graphics" onload="doLoad();">
     <?php include('../content/headernavigation.php'); ?>
     <div id="page">
     <?php include('../content/subnav.php'); ?>

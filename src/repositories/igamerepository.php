@@ -161,6 +161,24 @@ interface IGameRepository
      * @return void
      */
     public function publishGame(int $id, bool $private, string $comments): void;
+
+    /**
+     * Set featured status of a game
+     * 
+     * @param int $id of the game
+     * @param bool $feature true to feature, false to unfeature
+     * @param int $editorUserId user ID of the editor featuring/unfeaturing the game
+     * @return void
+     */
+    public function setFeaturedStatus(int $id, bool $feature, int $editorUserId): void;
+
+    /**
+     * Get featured status of a game
+     * 
+     * @param int $id of the game
+     * @return bool true if featured, false otherwise
+     */
+    public function getFeaturedStatus(int $id): bool;
 }
 
 class GameMetricsForUser

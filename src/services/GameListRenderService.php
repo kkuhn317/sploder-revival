@@ -266,4 +266,21 @@ class GameListRenderService
         );
         addPagination($games->totalCount, $perPage, $offset);
     }
+
+    public function renderPartialViewForFeaturedGames(int $offset, int $perPage): void
+    {
+        $games = $this->gameRepository->getFeaturedGames($offset, $perPage);
+        $this->renderPartialViewForGames(
+            $games->data,
+            "No featured games found!",
+            includeStyleWidth: false,
+            includeDelete: false,
+            includeRestore: false,
+            includeBoost: false,
+            includeChallenge: false,
+            includeUsername: true,
+            fixSidebar: false
+        );
+        addPagination($games->totalCount, $perPage, $offset);
+    }
 }

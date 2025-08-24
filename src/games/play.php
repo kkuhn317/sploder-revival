@@ -93,6 +93,20 @@ if(isset($_GET['challenge'])){
                 </div>
             </div>
             <div id="venue" style="margin: 6px 0 0 20px; float: right;"></div>
+            <?php
+            $isEditor = false;
+            if (isset($_SESSION['loggedin']))
+            {
+                $perms = $userRepository->getUserPerms($_SESSION['username']);
+                if ($perms != null || $perms !== '' ) {
+                    $isEditor = str_contains($perms, 'E');
+                }
+                if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
+                    $isFeatured = $gameRepository->getFeaturedStatus($game['g_id']);
+            ?>
+                <script type="text/javascript" src="actions.js"></script>
+                <a onclick="featureGame(<?= $game['g_id'] ?>, <?= $isFeatured ? 'false' : 'true' ?>)" id="featureGameLink" style="cursor:pointer; margin-top: 7px; display:block;float:right;"><?= $isFeatured ? 'Unfeature' : 'Feature' ?> Game</a>
+            <?php }} ?>
             <script>
             window.g_id = <?= $game['g_id'] ?>;
             swfobject.embedSWF("/swf/contest.swf", "contestflash", "150", "30", "8", "/swfobject/expressInstall.swf", { g: window.g_id}, { bgcolor: "#000000", menu: "false", quality: "high", scale: "noscale", salign: "tl", wmode: "opaque" });
@@ -109,7 +123,7 @@ if(isset($_GET['challenge'])){
             <?php } else if ($game['isprivate'] == 1) { $showPrompt = true; ?>
             <br><br>
             <div class="alert">This game is private but you have the key!</div>
-            <?php } ?>
+            <?php } else if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) { $showPrompt = true; } ?>
 
             <?php
             if(!$showPrompt) { echo '<br><br>'; }

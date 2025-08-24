@@ -401,4 +401,11 @@ LIMIT 90;
         return $result;
     }
 
+    public function getUserPerms(string $username): string
+    {
+        $query = "SELECT perms FROM members WHERE username = :username";
+        $result = $this->db->queryFirst($query, [':username' => $username]);
+        return $result ? (string)$result['perms'] : '';
+    }
+
 }
