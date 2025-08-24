@@ -4,6 +4,7 @@ session_start();
 $a = $_GET['a'];
 require_once('../database/connect.php');
 $db = getDatabase();
+$creator_name = $_SESSION['username'] ?? null;
 function extracted(IDatabase $db): string
 {
     require_once(__DIR__ . '/../content/timeelapsed.php');
@@ -170,7 +171,6 @@ if ($a == "read") {
     }
     $t = time();
     $score = 0;
-    $creator_name = $_SESSION['username'];
     // Check if the venue is a game
     $venueParts = explode('-', $venue);
     if ($venueParts[0] == 'game') {

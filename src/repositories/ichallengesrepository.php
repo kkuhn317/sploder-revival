@@ -34,9 +34,9 @@ interface IChallengesRepository
     /**
      * Get the challenge ID for a game
      * @param int $gameId
-     * @return int
+     * @return int|null
      */
-    public function getChallengeId(int $gameId): int;
+    public function getChallengeId(int $gameId): int|null;
 
     /**
      * Verify challenge ID and session challenge ID

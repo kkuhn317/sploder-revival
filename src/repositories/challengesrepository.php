@@ -38,10 +38,12 @@ class ChallengesRepository implements IChallengesRepository
         return $result['user_id'] === $userId;
     }
 
-    public function getChallengeId(int $gameId): int
+    public function getChallengeId(int $gameId): int|null
     {
         $query = "SELECT challenge_id FROM challenges WHERE g_id = :g_id";
-        return $this->db->queryFirst($query, [':g_id' => $gameId])['challenge_id'];
+        $result = $this->db->queryFirst($query, [':g_id' => $gameId])['challenge_id'];
+        // If $result is not an integer, return null
+        return is_int($result) ? $result : null;
     }
 
     public function verifyChallengeId(int $gameId, int $challengeId, int $sessionChallengeId): bool
