@@ -220,7 +220,7 @@ if(isset($_GET['challenge'])){
                 ?>
                 <div class="share_buttons">
                     <!-- <a class="facebook"
-                        href="<?= $fbUrl ?>"
+                        href="<?php // $fbUrl ?>"
                         onclick="window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=380,width=550');return false;"
                         title="share this on facebook"></a> -->
                     <a class="twitter"
