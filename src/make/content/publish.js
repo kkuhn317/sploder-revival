@@ -33,7 +33,11 @@ function sendDescription() {
                 description = description.replace(/[\r\n]{3,}/g, "\n\n");
                 // Trim trailing newlines and spaces
                 description = description.replace(/[\r\n\s]+$/, '');
-                document.getElementsByClassName('description')[0].innerHTML = escapeHtml(description);
+                // Escape HTML
+                description = escapeHtml(description);
+                // Change newline to <br>
+                description = description.replace(/\n/g, '<br>');
+                document.getElementsByClassName('description')[0].innerHTML = description;
                 hideDescription();
                 setMessageType('prompt');
                 document.getElementById('message').innerHTML = 'Game Description saved.';

@@ -231,7 +231,7 @@ if(isset($_GET['challenge'])){
             </div>
             <?php
             if (isset($game['description'])) {
-                echo '<p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">' . htmlspecialchars($game['description']) . '</p>';
+                echo '<p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">' . nl2br(htmlspecialchars($game['description'])) . '</p>';
             }
 
             // Get game tags

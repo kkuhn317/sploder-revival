@@ -15,8 +15,8 @@ if ($description == '') {
     // Send 400
     $description = null;
 } else {
-    $description = preg_replace('/[\r\n]{2,}/', "\n", $description);
-    $description = nl2br($description);
+    // Compress multiple newlines into maximum two newlines
+    $description = preg_replace('/[\r\n]{2,}/', "\n\n", $description);
 }
 
 // Update description in database
