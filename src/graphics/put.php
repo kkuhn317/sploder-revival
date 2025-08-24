@@ -42,10 +42,13 @@ if ($result == $userid) {
             $newimage = imagecreatetruecolor(80, 80);
             imagecopyresampled($newimage, $image, 0, 0, 0, 0, 80, 80, 60, 60);
 
+            // Fill background with black
+            $black = imagecolorallocate($newimage, 0, 0, 0);
+            imagefill($newimage, 0, 0, $black);
+
             // Convert to palette-based image for GIF compatibility
             imagetruecolortopalette($newimage, true, 256);
-            $transparent = imagecolorallocate($newimage, 255, 0, 255);
-            imagecolortransparent($newimage, $transparent);
+            // Do NOT set a transparent color
             imageinterlace($newimage, 0);
 
             if (ob_get_length()) ob_end_clean(); // Clean any previous output
