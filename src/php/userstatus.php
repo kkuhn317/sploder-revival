@@ -4,7 +4,7 @@ include('../database/connect.php');
 $db = getDatabase();
 
 $time = time();
-$last = $time - 30;
+$last = $time - 120;
 $pagechange = $time - 900;
 
 $result3 = $db->query("SELECT lastlogin, lastpagechange, status
