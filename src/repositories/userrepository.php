@@ -101,8 +101,7 @@ LIMIT 90;
                 $row['game_count'],
                 $row['total_views']
             );
-        }
-        print_r($result);   
+        }   
         return $result;
     }
 
@@ -165,8 +164,6 @@ LIMIT 90;
         $result = $this->db->queryFirst($qs, [':id' => $userId]) ?? null;
 
         if ($result) {
-            echo "DEBUG";
-            var_dump($result);
             return $this->getLevel(
                 $result['total_ratings_received'],
                 $result['friend_count'],
