@@ -72,7 +72,7 @@ if ($verifiedScore) {
         $challengeId = null;
     }
     
-    if($challengeId != null) {
+    if($challengeId != null && $w == 'true') {
         // Get challenge info to confirm if the game is a challenge and check the requirements
         $challengeInfo = $challengesRepository->getChallengeInfo($id[1]);
         $challenge = $challengeInfo['challenge'];
