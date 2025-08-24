@@ -152,19 +152,14 @@ LIMIT 90;
         $qs = "
             SELECT 
                 (SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = m.username AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0)) AS total_ratings_received,
-                COUNT(DISTINCT f.user2) AS friend_count,
-                COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
-                COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END), 0) AS total_views
+                (SELECT COUNT(DISTINCT f.user2) FROM friends f WHERE f.user1 = m.username) AS friend_count,
+                (SELECT COUNT(DISTINCT g.g_id) FROM games g WHERE g.author = m.username AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
+                (SELECT COALESCE(SUM(g.views), 0) FROM games g WHERE g.author = m.username AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS total_views
             FROM 
                 members m
-            LEFT JOIN 
-                friends f ON m.username = f.user1
-            LEFT JOIN 
-                games g ON m.username = g.author
             WHERE 
                 m.userid = :id
-            GROUP BY 
-                m.username
+            LIMIT 1
         ";
 
         $result = $this->db->queryFirst($qs, [':id' => $userId]) ?? null;
