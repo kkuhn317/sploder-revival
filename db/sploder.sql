@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict oFDBfTLxUAFHgoekr6JgwjdGs9d7of9xCh2NqsWfjofQbHre76InFVCwBxhf2qU
+\restrict xMGc8aqAJShjLRLEHoxfcHuGqr2wuc1hfPjkAwJ33ZUpqOE74BOaZ8e2Blv9bix
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -28,9 +28,9 @@ CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVI
 
 ALTER DATABASE sploder OWNER TO sploder;
 
-\unrestrict oFDBfTLxUAFHgoekr6JgwjdGs9d7of9xCh2NqsWfjofQbHre76InFVCwBxhf2qU
+\unrestrict xMGc8aqAJShjLRLEHoxfcHuGqr2wuc1hfPjkAwJ33ZUpqOE74BOaZ8e2Blv9bix
 \connect sploder
-\restrict oFDBfTLxUAFHgoekr6JgwjdGs9d7of9xCh2NqsWfjofQbHre76InFVCwBxhf2qU
+\restrict xMGc8aqAJShjLRLEHoxfcHuGqr2wuc1hfPjkAwJ33ZUpqOE74BOaZ8e2Blv9bix
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -350,6 +350,34 @@ CREATE TABLE public.contest_winner (
 ALTER TABLE public.contest_winner OWNER TO sploder;
 
 --
+-- Name: featured_games; Type: TABLE; Schema: public; Owner: sploder
+--
+
+CREATE TABLE public.featured_games (
+    feature_id integer NOT NULL,
+    g_id integer NOT NULL,
+    feature_date timestamp without time zone NOT NULL,
+    editor_userid integer NOT NULL
+);
+
+
+ALTER TABLE public.featured_games OWNER TO sploder;
+
+--
+-- Name: featured_games_feature_id_seq; Type: SEQUENCE; Schema: public; Owner: sploder
+--
+
+ALTER TABLE public.featured_games ALTER COLUMN feature_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.featured_games_feature_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
 -- Name: friend_requests; Type: TABLE; Schema: public; Owner: sploder
 --
 
@@ -465,8 +493,7 @@ CREATE TABLE public.games (
     difficulty numeric DEFAULT 5 NOT NULL,
     first_published_date timestamp without time zone NOT NULL,
     last_published_date timestamp without time zone NOT NULL,
-    first_created_date timestamp without time zone NOT NULL,
-    isfeatured boolean NOT NULL
+    first_created_date timestamp without time zone NOT NULL
 );
 
 
@@ -795,6 +822,14 @@ ALTER TABLE ONLY public.contest_winner
 
 
 --
+-- Name: featured_games featured_games_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.featured_games
+    ADD CONSTRAINT featured_games_pkey PRIMARY KEY (feature_id);
+
+
+--
 -- Name: games g_id; Type: CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -1099,6 +1134,14 @@ ALTER TABLE ONLY public.comments
 
 
 --
+-- Name: featured_games editor_userid_featured_games_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.featured_games
+    ADD CONSTRAINT editor_userid_featured_games_fkey FOREIGN KEY (editor_userid) REFERENCES public.members(userid) ON DELETE CASCADE;
+
+
+--
 -- Name: game_views_anonymous fk_game_views_anonymous_games_g_id; Type: FK CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -1152,6 +1195,14 @@ ALTER TABLE ONLY public.contest_winner
 
 ALTER TABLE ONLY public.challenges
     ADD CONSTRAINT g_id_contests_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: featured_games g_id_featured_games_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.featured_games
+    ADD CONSTRAINT g_id_featured_games_fkey FOREIGN KEY (g_id) REFERENCES public.games(g_id) ON DELETE CASCADE;
 
 
 --
@@ -1293,5 +1344,5 @@ GRANT ALL ON SCHEMA public TO sploder;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict oFDBfTLxUAFHgoekr6JgwjdGs9d7of9xCh2NqsWfjofQbHre76InFVCwBxhf2qU
+\unrestrict xMGc8aqAJShjLRLEHoxfcHuGqr2wuc1hfPjkAwJ33ZUpqOE74BOaZ8e2Blv9bix
 
