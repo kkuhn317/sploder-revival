@@ -102,9 +102,10 @@ if(isset($_GET['challenge'])){
                     $isEditor = str_contains($perms, 'E');
                 }
                 if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
+                    $isFeatured = $gameRepository->getFeaturedStatus($game['g_id']);
             ?>
-
-                <a onclick="featureGame()" style="cursor:pointer; margin-top: 7px; display:block;float:right;">Feature Game</a>
+                <script type="text/javascript" src="actions.js"></script>
+                <a onclick="featureGame(<?= $game['g_id'] ?>, <?= $isFeatured ? 'false' : 'true' ?>)" id="featureGameLink" style="cursor:pointer; margin-top: 7px; display:block;float:right;"><?= $isFeatured ? 'Unfeature' : 'Feature' ?> Game</a>
             <?php }} ?>
             <script>
             window.g_id = <?= $game['g_id'] ?>;

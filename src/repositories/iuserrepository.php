@@ -109,4 +109,12 @@ interface IUserRepository
      * @return int boost points of user
      */
     function getBoostPoints(int $userId): int;
+
+    /**
+     * Get user permissions by username
+     * 
+     * @param $username
+     * @return string permissions of user
+     */
+    function getUserPerms(string $username): string;
 }

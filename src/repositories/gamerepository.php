@@ -325,4 +325,25 @@ where g_id = :g_id
         ':id' => $id
     ]);
     }
+
+    public function setFeaturedStatus(int $id, bool $feature, int $editorUserId): void {
+        if ($feature) {
+            $this->db->execute("INSERT INTO featured_games (g_id, feature_date, editor_userid) VALUES (:g_id, :feature_date, :editor_userid) ON CONFLICT (g_id) DO NOTHING", [
+                ':g_id' => $id,
+                ':feature_date' => date("Y-m-d H:i:s"),
+                ':editor_userid' => $editorUserId
+            ]);
+        } else {
+            $this->db->execute("DELETE FROM featured_games WHERE g_id = :g_id", [
+                ':g_id' => $id
+            ]);
+        }
+    }
+
+    public function getFeaturedStatus(int $id): bool {
+        $result = $this->db->queryFirstColumn("SELECT COUNT(*) FROM featured_games WHERE g_id = :g_id", 0, [
+            ':g_id' => $id
+        ]);
+        return $result > 0;
+    }
 }
