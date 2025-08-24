@@ -59,7 +59,7 @@ WHERE
     OR
     (
         family(ip_address::inet) = 6
-        AND set_masklen(ip_address::inet, 64) = set_masklen(:ip_address::inet, 64)
+        AND set_masklen(ip_address::inet, 48) = set_masklen(:ip_address::inet, 48)
     )
     AND username != :username;
 ", [
