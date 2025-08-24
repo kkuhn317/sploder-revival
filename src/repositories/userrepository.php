@@ -79,7 +79,7 @@ LIMIT 90;
             m.joindate,
             COUNT(DISTINCT f.user2) AS friend_count,
             COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
-            COALESCE(SUM(DISTINCT g.views), 0) AS total_views,
+            (SELECT COALESCE(SUM(g.views), 0) FROM games g WHERE g.author = m.username AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS total_views,
             (SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = m.username AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0)) AS total_ratings_received
         FROM
             members m
