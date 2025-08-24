@@ -49,7 +49,20 @@ $db = getDatabase();
                     ':username' => $username
                 ]);
                 if ($ip_address) {
-                    $usernames = $db->query("SELECT username FROM members WHERE ip_address = :ip_address AND username != :username", [
+                    $usernames = $db->query("SELECT username
+FROM members
+WHERE
+    (
+        family(ip_address::inet) = 4
+        AND set_masklen(ip_address::inet, 24) = set_masklen(:ip_address::inet, 24)
+    )
+    OR
+    (
+        family(ip_address::inet) = 6
+        AND set_masklen(ip_address::inet, 64) = set_masklen(:ip_address::inet, 64)
+    )
+    AND username != :username;
+", [
                     ':ip_address' => $ip_address,
                     ':username' => $username
                     ]);
