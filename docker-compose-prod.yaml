@@ -23,6 +23,7 @@ services:
       - ./src/update/uploads:/var/www/html/update/uploads:rw
       - ./src/update/currentversion.txt:/var/www/html/update/currentversion.txt:rw
       - ./src/php/verifyscore.php:/var/www/html/php/verifyscore.php:rw
+      - php_sessions:/tmp # Store PHP sessions between container restarts
     environment:
       PHP_ENVIRONMENT: production
       DOMAIN_NAME: ${DOMAIN_NAME}
@@ -85,4 +86,6 @@ services:
 
 volumes:
   postgres_data:
+    driver: local
+  php_sessions:
     driver: local

@@ -6,7 +6,7 @@
  * @param string $text The text to be censored
  * @return string The censored text
  */
-function censorText($text): string {
+function censorText($text): string|null {
     // Return early if text is empty
     if (empty($text)) {
         return $text;
