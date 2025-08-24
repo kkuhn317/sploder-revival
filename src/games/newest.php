@@ -24,7 +24,7 @@ $total = $gameRepository->getTotalPublishedGameCount();
 </head>
 <?php include('../content/addressbar.php'); ?>
 
-<body id="everyones" class="featured">
+<body id="everyones" class="newest">
 
     <?php include('../content/headernavigation.php') ?>
     <div id="page">

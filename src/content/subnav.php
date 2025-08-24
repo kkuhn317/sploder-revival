@@ -1,8 +1,8 @@
 <div id="subnav">
     <ul class="nav_games">
         <li><a href="/">Home</a></li>
-        <!-- <li><a href="/games/featured/">Featured</a></li>
-					<li><a href="/games/boosts/">Boosts</a></li> -->
+        <li><a href="/games/featured.php">Featured</a></li> 
+					<!--<li><a href="/games/boosts/">Boosts</a></li> -->
         <li><a href="/games/newest.php">Newest</a></li>
         <!--<li><a href="/games/reviews/">Reviews</a></li>
 					<li><a href="/games/tournaments/">Tournaments</a></li> -->
