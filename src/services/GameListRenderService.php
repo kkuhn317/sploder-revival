@@ -24,7 +24,7 @@ class GameListRenderService
         bool $fixSidebar
     ): void {
         if (count($games) <= 0) {
-            echo "<p>$noGamesFoundMessage</p>";
+            echo "<div class=\"set\"><p class=\"prompt\">$noGamesFoundMessage</p></div>";
             echo $fixSidebar ? '<div>' : '';
             return;
         }
