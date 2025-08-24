@@ -39,22 +39,24 @@ if ($result == $userid) {
         }
         // If 60x60, resize to 80x80
         if ($width == 60 && $height == 60) {
-            $newimage = imagecreatetruecolor(80, 80);
-            imagecopyresampled($newimage, $image, 0, 0, 0, 0, 80, 80, 60, 60);
+            $image = new Imagick();
+            $image->readImageBlob($rawdata);
 
-            // Convert to palette-based image for GIF compatibility
-            imagetruecolortopalette($newimage, true, 256);
-            $transparent = imagecolorallocate($newimage, 0, 0, 0);
-            imagecolortransparent($newimage, $transparent);
-            imageinterlace($newimage, 0);
+            // Resize the image to 80x80 (preserving aspect ratio)
+            $image->resizeImage(80, 80, Imagick::FILTER_LANCZOS, 1);
 
-            if (ob_get_length()) ob_end_clean(); // Clean any previous output
-            ob_start();
-            imagegif($newimage);
-            $rawdata = ob_get_contents();
-            ob_end_clean();
+            // Set the background to black (no transparency)
+            $image->setImageBackgroundColor('black');
+            $image = $image->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN); // Flatten the image to remove transparency
 
-            imagedestroy($newimage);
+            $image->setImageType(Imagick::IMGTYPE_PALETTE);
+            $image->setImageColorspace(Imagick::COLORSPACE_RGB);
+            $image->setImageFormat('gif');
+
+            $rawdata = $image->getImageBlob(); // Get the image binary data
+
+            $image->clear();
+            $image->destroy();
         }
 
         file_put_contents("gif/" . $id . ".gif", $rawdata);
