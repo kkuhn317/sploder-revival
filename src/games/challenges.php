@@ -225,6 +225,7 @@ $offset = $_GET['o'] ?? 0;
                         echo "<div class='spacer'>&nbsp;</div>";
                     }
                 } ?>
+                <div class="spacer">&nbsp;</div>
             </div>
             <?php
                 // Add pagination
