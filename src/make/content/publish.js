@@ -33,8 +33,6 @@ function sendDescription() {
                 description = description.replace(/[\r\n]{3,}/g, "\n\n");
                 // Trim trailing newlines and spaces
                 description = description.replace(/[\r\n\s]+$/, '');
-                // Change newline to <br>
-                description = description.replace(/\n/g, '<br>');
                 document.getElementsByClassName('description')[0].innerHTML = escapeHtml(description);
                 hideDescription();
                 setMessageType('prompt');
