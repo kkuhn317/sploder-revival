@@ -235,14 +235,14 @@ where g_id = :g_id
         }
 
         $query = "SELECT games.g_id, games.title, games.author, games.user_id
-		FROM (
-			SELECT contest_id, g_id
-			FROM contest_winner
+        FROM (
+            SELECT contest_id, g_id
+            FROM contest_winner
             WHERE contest_id <= :id
-			ORDER BY contest_id
-			LIMIT 6
-		) AS recent_contests
-		JOIN games ON recent_contests.g_id = games.g_id;";
+            ORDER BY contest_id
+            LIMIT 6
+        ) AS recent_contests
+        JOIN games ON recent_contests.g_id = games.g_id;";
         return $this->db->query($query, ['id' => $contestId]);
     }
 
@@ -345,5 +345,16 @@ where g_id = :g_id
             ':g_id' => $id
         ]);
         return $result > 0;
+    }
+
+    public function getFeaturedGames(int $offset, int $perPage): PaginationData {
+        $query = "SELECT games.g_id, title, author, g_swf, first_published_date, views, user_id, featured_games.feature_date, ROUND(AVG(v.score), 1) as avg_rating, COUNT(v.score) as total_votes
+        FROM featured_games 
+        JOIN games ON featured_games.g_id = games.g_id 
+        LEFT JOIN votes v ON games.g_id = v.g_id
+        WHERE ispublished = 1 AND isprivate = 0 AND isdeleted = 0 
+        GROUP BY games.g_id, title, author, g_swf, first_published_date, views, user_id, featured_games.feature_date
+        ORDER BY featured_games.feature_date DESC";
+        return $this->db->queryPaginated($query, $offset, $perPage);
     }
 }

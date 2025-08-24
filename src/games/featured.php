@@ -1,5 +1,12 @@
 <?php require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php session_start(); ?>
+<?php
+require_once('../services/GameListRenderService.php');
+require_once('../repositories/repositorymanager.php');
+$gameRepository = RepositoryManager::get()->getGameRepository();
+$gameListRenderService = new GameListRenderService($gameRepository);
+$perPage = 12;
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -30,15 +37,9 @@
 
                 Want your game at the top of this list? Try bidding on <a href="/games/boosts/">Game Boosts!</a></p>-->
             <div id="viewpage">
-                <div class="set">
-
-                    <div class="spacer">&nbsp;</div>
-                </div>
-                <div class="pagination">
-                    <div class="pagination"><span class="page_button page_next" title="/games/featured/12/">next
-                            &raquo;</span><span class="page_button page_button_inactive">&laquo;</span></div>
-                    <div class="spacer">&nbsp;</div>
-                </div>
+                <?php
+                $gameListRenderService->renderPartialViewForFeaturedGames($_GET['o'] ?? 0, $perPage);
+                ?>
             </div>
             
             <div class="spacer">&nbsp;</div>
