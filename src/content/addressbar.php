@@ -1,5 +1,5 @@
 <?php
-if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Electron')) {
+if (str_contains(($_SERVER['HTTP_USER_AGENT'] ?? 'nothing'), 'Electron')) {
     require_once(__DIR__ . '/../config/env.php');
     $domainName = getenv("DOMAIN_NAME");
 ?>

@@ -14,6 +14,6 @@ $perms = $db->queryFirstColumn($qs, 0, [
     ':username' => $username
 ]);
 // If perms includes M, then the user is a moderator, else they are haxxor
-if (!str_contains($perms[0], 'M')) {
+if ($perms[0] === null || $perms[0] === '' || !str_contains($perms[0], 'M')) {
     die("Haxxor detected");
 }
