@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict xMGc8aqAJShjLRLEHoxfcHuGqr2wuc1hfPjkAwJ33ZUpqOE74BOaZ8e2Blv9bix
+\restrict zuKPLIQGClfUgWiyOKb2y0Cn6uaJno6JR9tvzdvjyhA2PchzkazGrNdDcIolkAi
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -28,9 +28,9 @@ CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVI
 
 ALTER DATABASE sploder OWNER TO sploder;
 
-\unrestrict xMGc8aqAJShjLRLEHoxfcHuGqr2wuc1hfPjkAwJ33ZUpqOE74BOaZ8e2Blv9bix
+\unrestrict zuKPLIQGClfUgWiyOKb2y0Cn6uaJno6JR9tvzdvjyhA2PchzkazGrNdDcIolkAi
 \connect sploder
-\restrict xMGc8aqAJShjLRLEHoxfcHuGqr2wuc1hfPjkAwJ33ZUpqOE74BOaZ8e2Blv9bix
+\restrict zuKPLIQGClfUgWiyOKb2y0Cn6uaJno6JR9tvzdvjyhA2PchzkazGrNdDcIolkAi
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -838,6 +838,14 @@ ALTER TABLE ONLY public.games
 
 
 --
+-- Name: featured_games g_id_featured_games_unique; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.featured_games
+    ADD CONSTRAINT g_id_featured_games_unique UNIQUE (g_id);
+
+
+--
 -- Name: games games_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -1344,5 +1352,5 @@ GRANT ALL ON SCHEMA public TO sploder;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict xMGc8aqAJShjLRLEHoxfcHuGqr2wuc1hfPjkAwJ33ZUpqOE74BOaZ8e2Blv9bix
+\unrestrict zuKPLIQGClfUgWiyOKb2y0Cn6uaJno6JR9tvzdvjyhA2PchzkazGrNdDcIolkAi
 
