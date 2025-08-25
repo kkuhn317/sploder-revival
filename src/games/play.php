@@ -135,6 +135,9 @@ if(isset($_GET['challenge'])){
                 }
             }
             if($challenge) {
+                if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
+                    echo '<br><br>';
+                }
                 echo '<div class="challenge_prompt">'.$mode.'</div>';
             }
             ?>
