@@ -134,11 +134,15 @@ if(isset($_GET['challenge'])){
                     echo '<div class="challenge_prompt">Yo ho ho! Log in to accept this challenge!</div>';
                 }
             }
+            $challengePromptEditor = false;
+            $challengePrompt = false;
             if($challenge) {
                 if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
                     echo '<br><br>';
+                    $challengePromptEditor = true;
                 }
                 echo '<div class="challenge_prompt">'.$mode.'</div>';
+                $challengePrompt = true;
             }
             ?>
             <div class="gameobject">
@@ -361,6 +365,11 @@ if(isset($_GET['challenge'])){
             <div id="events" style="width: 260px; height: 480px;<?php if($showPrompt && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) { echo ' margin-top: 85px;'; } ?><?php
             if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
                 echo ' margin-top: 15px;';
+            }
+            if ($challengePrompt) {
+                echo ' margin-top: 50px;';
+            } else if ($challengePromptEditor) {
+                echo ' margin-top: 35px;';
             }
             ?>">
             <div id="events_ticker"></div>
