@@ -28,4 +28,11 @@ if (isset($_GET['feature']) && $_GET['feature'] === 'false') {
     $feature = false;
 }
 $gameRepository->setFeaturedStatus($id, $feature, $_SESSION['userid']);
+$gameInfo = $gameRepository->getGameBasicInfo($id);
+require_once('../games/moderation/php/log.php');
+if ($feature) {
+    logModeration('featured', $gameInfo['title'], 2);
+} else {
+    logModeration('unfeatured', $gameInfo['title'], 2);
+}
 echo "Success";

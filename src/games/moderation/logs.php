@@ -39,7 +39,7 @@ $db = getDatabase();
             <?php if (isset($_GET['msg'])) : ?>
                 <p class="prompt"><?= htmlspecialchars($_GET['msg']) ?></p>
             <?php endif; ?>
-            <h2>List of all actions performed by moderators</h2>
+            <h2>List of all actions performed by moderators and editors</h2>
             <ul>
                 <?php
                 $offset = $_GET['o'] ?? 0;
