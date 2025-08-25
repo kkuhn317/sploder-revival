@@ -126,16 +126,21 @@ if(isset($_GET['challenge'])){
             <?php } else if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) { $showPrompt = true; } ?>
 
             <?php
+            $challengePromptEditor = false;
+            $challengePrompt = false;
             if(!$showPrompt) { echo '<br><br>'; }
             if((!$challenge) && (isset($_GET['challenge']))) {
+                if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
+                    echo '<br><br>';
+                    $challengePromptEditor = true;
+                }
                 if($challengesRepository->hasWonChallenge($game_id['id'], $_SESSION['userid'] ?? -1)) {
                     echo '<div class="challenge_prompt">Woo hoo! You won this challenge!</div>';
                 } else {
                     echo '<div class="challenge_prompt">Yo ho ho! Log in to accept this challenge!</div>';
                 }
+                $challengePrompt = true;
             }
-            $challengePromptEditor = false;
-            $challengePrompt = false;
             if($challenge) {
                 if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
                     echo '<br><br>';
