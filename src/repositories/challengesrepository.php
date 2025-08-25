@@ -123,7 +123,8 @@ class ChallengesRepository implements IChallengesRepository
 
     public function getTotalChallengeCount(): int
     {
-        $query = "SELECT COUNT(*) FROM challenges c 
+        // This function is basically a hack, but it works...
+        $query = "SELECT (COUNT(*)/2) FROM challenges c 
                   JOIN games g ON c.g_id = g.g_id 
                   WHERE c.insert_date > NOW() - INTERVAL '15 days'
                     AND g.isprivate = 0 AND g.ispublished = 1 AND g.isdeleted = 0";

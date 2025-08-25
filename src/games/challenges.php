@@ -230,7 +230,6 @@ $offset = $_GET['o'] ?? 0;
             <?php
                 // Add pagination
                 $totalChallenges = $challengesRepository->getTotalChallengeCount();
-                echo $totalChallenges;
                 require('../content/pages.php');
                 addPagination($totalChallenges, $perPage, $offset);
             ?>
