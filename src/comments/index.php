@@ -160,7 +160,20 @@ if ($a == "read") {
     $posts = file_get_contents("php://input");
     $formatter = explode("&", $posts);
     require_once('../content/censor.php');
-    $message = htmlspecialchars(censorText(urldecode(substr($formatter[0], 2))), ENT_QUOTES, "UTF-8", false);
+    // Make sure the message has only characters available on a standard keyboard
+    function filterKeyboard($str) {
+        // Allow only tab, newline, carriage return, and printable ASCII (space to ~). Remove all Unicode (including emojis).
+        return preg_replace("~[^a-zA-Z0-9_ !@#$%^&*();\\\/|<>\"'+.,:?=-]~", '', $str);
+    }
+
+    $rawMessage = urldecode(substr($formatter[0], 2));
+    $filteredMessage = filterKeyboard(trim($rawMessage));
+    // Enforce message length: >8 and <500 characters
+    if ($filteredMessage=='' || mb_strlen($filteredMessage) <= 8 || mb_strlen($filteredMessage) >= 500) {
+        http_response_code(400);
+        die("Message must be greater than 8 and less than 500 characters.");
+    }
+    $message = htmlspecialchars(censorText($filteredMessage), ENT_QUOTES, "UTF-8", false);
     $reply = substr($formatter[2], 4);
 
     $venue = $_GET['v'];

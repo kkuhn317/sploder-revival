@@ -595,6 +595,13 @@ function us_postMessage(btn)
     $us_last_action = "post";
 
     var msg = btn.form[$us_namespace + "messagebody"].value.split("<").join("&lt;").split(">").join("&gt;");
+    msg = msg.trim();
+    // Disallow emojis and non-QWERTY characters using the provided regex
+    var allowedRegex = /^[a-zA-Z0-9_ !@#$%^&*();\\/|<>"'+.,:?=-]*$/;
+    if (!allowedRegex.test(msg)) {
+        alert("Your message contains invalid characters. Only standard keyboard characters are allowed.");
+        return false;
+    }
     var tid = btn.form[$us_namespace + "thread_id"].value;
 
     var url = us_venueGateway("post");
