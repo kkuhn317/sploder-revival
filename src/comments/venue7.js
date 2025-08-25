@@ -599,7 +599,7 @@ function us_postMessage(btn)
     // Disallow emojis and non-QWERTY characters using the provided regex
     var allowedRegex = /^[a-zA-Z0-9_ !@#$%^&*();\\/|<>"'+.,:?=-]*$/;
     if (!allowedRegex.test(msg)) {
-        alert("Your message contains invalid characters. Only standard keyboard characters are allowed.");
+        alert("Your message contains invalid characters. Only standard keyboard characters (no emojis) are allowed.");
         return false;
     }
     var tid = btn.form[$us_namespace + "thread_id"].value;

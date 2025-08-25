@@ -160,12 +160,7 @@ if ($a == "read") {
     $posts = file_get_contents("php://input");
     $formatter = explode("&", $posts);
     require_once('../content/censor.php');
-    // Make sure the message has only characters available on a standard keyboard
-    function filterKeyboard($str) {
-        // Allow only tab, newline, carriage return, and printable ASCII (space to ~). Remove all Unicode (including emojis).
-        return preg_replace("~[^a-zA-Z0-9_ !@#$%^&*();\\\/|<>\"'+.,:?=-]~", '', $str);
-    }
-
+    require_once('../content/keyboardfilter.php');
     $rawMessage = urldecode(substr($formatter[0], 2));
     $filteredMessage = filterKeyboard(trim($rawMessage));
     // Enforce message length: >8 and <500 characters

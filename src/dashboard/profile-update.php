@@ -13,6 +13,14 @@ $favoriteBands = censorText($_POST["favoriteBands"]);
 $whomIRespect = censorText($_POST["whomIRespect"]);
 $isolated = censorText($_POST["isolate"]) ?? null;
 
+$description = mb_substr($description, 0, 500);
+$hobbies = mb_substr($hobbies, 0, 500);
+$favoriteSports = mb_substr($favoriteSports, 0, 500);
+$favoriteGames = mb_substr($favoriteGames, 0, 500);
+$favoriteMovies = mb_substr($favoriteMovies, 0, 500);
+$favoriteBands = mb_substr($favoriteBands, 0, 500);
+$whomIRespect = mb_substr($whomIRespect, 0, 500);
+
 # $isolated is set to "on" if the checkbox is checked
 if ($isolated === "on") {
     $isolated = false;

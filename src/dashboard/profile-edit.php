@@ -90,27 +90,51 @@ $userInfo = $userRepository->getUserInfo($_SESSION['username']);
             <div class="spacer">&nbsp;</div>
 
 
-            <form action="profile-update.php" method="post">
+            <form action="profile-update.php" method="post" onsubmit="return filterProfileFields(this);">
+                <script type="text/javascript">
+                function filterProfileFields(form) {
+                    // Regex: only allow standard keyboard characters
+                    var allowed = /^[a-zA-Z0-9_ !@#$%^&*();\\/|<>"'+.,:?=-]*$/;
+                    var fields = [
+                        form.description,
+                        form.hobbies,
+                        form.favoriteSports,
+                        form.favoriteGames,
+                        form.favoriteMovies,
+                        form.favoriteBands,
+                        form.whomIRespect
+                    ];
+                    for (var i = 0; i < fields.length; i++) {
+                        var val = fields[i].value;
+                        if (!allowed.test(val)) {
+                            alert("One or more fields contain invalid characters. Only standard keyboard characters (no emojis) are allowed.");
+                            fields[i].focus();
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                </script>
                 <label for="description">Description:</label><br><br>
-                <textarea id="description" name="description" rows="3" style="width: 100%; resize: none;"
+                <textarea id="description" name="description" rows="3" style="width: 100%; resize: none;" maxlength="500"
                     placeholder="Enter a description about yourself..."><?= $userInfo['description'] ?? '' ?></textarea><br><br><br>
                 <label for="hobbies">Hobbies:</label><br><br>
-                <textarea id="hobbies" name="hobbies" rows="3" style="width: 100%; resize: none;"
+                <textarea id="hobbies" name="hobbies" rows="3" style="width: 100%; resize: none;" maxlength="500"
                     placeholder="Enter your hobbies..."><?= $userInfo['hobbies'] ?? '' ?></textarea><br><br><br>
                 <label for="favoriteSports">Favorite Sports:</label><br><br>
-                <textarea id="favoriteSports" name="favoriteSports" rows="3" style="width: 100%; resize: none;"
+                <textarea id="favoriteSports" name="favoriteSports" rows="3" style="width: 100%; resize: none;" maxlength="500"
                     placeholder="Enter your favorite sports..."><?= $userInfo['sports'] ?? '' ?></textarea><br><br><br>
                 <label for="favoriteGames">Favorite Games:</label><br><br>
-                <textarea id="favoriteGames" name="favoriteGames" rows="3" style="width: 100%; resize: none;"
+                <textarea id="favoriteGames" name="favoriteGames" rows="3" style="width: 100%; resize: none;" maxlength="500"
                     placeholder="Enter your favorite games..."><?= $userInfo['games'] ?? '' ?></textarea><br><br><br>
                 <label for="favoriteMovies">Favorite Movies:</label><br><br>
-                <textarea id="favoriteMovies" name="favoriteMovies" rows="3" style="width: 100%; resize: none;"
+                <textarea id="favoriteMovies" name="favoriteMovies" rows="3" style="width: 100%; resize: none;" maxlength="500"
                     placeholder="Enter your favorite movies..."><?= $userInfo['movies'] ?? '' ?></textarea><br><br><br>
                 <label for="favoriteBands">Favorite Bands:</label><br><br>
-                <textarea id="favoriteBands" name="favoriteBands" rows="3" style="width: 100%; resize: none;"
+                <textarea id="favoriteBands" name="favoriteBands" rows="3" style="width: 100%; resize: none;" maxlength="500"
                     placeholder="Enter your favorite bands..."><?= $userInfo['bands'] ?? '' ?></textarea><br><br><br>
                 <label for="whomIRespect">Whom You Respect:</label><br><br>
-                <textarea id="whomIRespect" name="whomIRespect" rows="3" style="width: 100%; resize: none;"
+                <textarea id="whomIRespect" name="whomIRespect" rows="3" style="width: 100%; resize: none;" maxlength="500"
                     placeholder="Enter whom you respect..."><?= $userInfo['respect'] ?? '' ?></textarea><br><br>
                 <input type="checkbox" id="isolate" name="isolate" <?php if(!$isolated) { echo 'checked'; } ?>>
                 <label for="isolate">Allow comments and friending <?php if(!$isolated) {echo '<br>Warning! Disabling this option will permanently ERASE all your current friends.'; } ?></label><br><br>
