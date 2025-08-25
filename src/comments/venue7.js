@@ -127,9 +127,9 @@ function us_anim(tween)
 }
 
 var $us_icons = [
-    "[:)]","[=D]","[:&amp;]","[:D]","[:(]","[80]","[:9]","[;)]","[:P]","[=O]"
-    ,"[:/]","[:|]","[d:-)]","[:X]","[O:-)]","[:&#039;(]","[:*]","[^o)]","[&gt;:)]","[B)]"
-    ,"[&gt;:(]","[:8)]","[//_-]","[-_-]","[q.p]","[^-^]","[x_x]","[8-)]","[|-)]","[:^)]"
+    "[:)]","[=D]","[:&]","[:D]","[:(]","[80]","[:9]","[;)]","[:P]","[=O]"
+    ,"[:/]","[:|]","[d:-)]","[:X]","[O:-)]","[&gt;:(]","[:*]","[^o)]","[&gt;:)]","[B)]"
+    ,"[:'(]","[:8)]","[//_-]","[-_-]","[q.p]","[^-^]","[x_x]","[8-)]","[|-)]","[:^)]"
     ,"[Y]","[N]","[V]","[NV]","[pi]","[|%|]","[T]","[G]","[(x^x)]","[@]"
 ];
 
@@ -596,8 +596,8 @@ function us_postMessage(btn)
 
     var msg = btn.form[$us_namespace + "messagebody"].value.split("<").join("&lt;").split(">").join("&gt;");
     msg = msg.trim();
-    // Disallow emojis and non-QWERTY characters using the provided regex
-    var allowedRegex = /^[a-zA-Z0-9_ !@#$%^&*();\\/|<>"'+.,:?=-]*$/;
+    // Disallow emojis and non-QWERTY characters using the provided regex (now allows square brackets [])
+    var allowedRegex = /^[a-zA-Z0-9_ !@#$%^&*();\\/|<>"'+.,:?=\-\[\]]*$/;
     if (!allowedRegex.test(msg)) {
         alert("Your message contains invalid characters. Only standard keyboard characters (no emojis) are allowed.");
         return false;

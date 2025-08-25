@@ -161,7 +161,7 @@ if ($a == "read") {
     $formatter = explode("&", $posts);
     require_once('../content/censor.php');
     require_once('../content/keyboardfilter.php');
-    $rawMessage = urldecode(substr($formatter[0], 2));
+    $rawMessage = substr($formatter[0], 2);
     $filteredMessage = filterKeyboard(trim($rawMessage));
     // Enforce message length: >8 and <500 characters
     if ($filteredMessage=='' || mb_strlen($filteredMessage) <= 8 || mb_strlen($filteredMessage) >= 500) {

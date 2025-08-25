@@ -94,7 +94,7 @@ $userInfo = $userRepository->getUserInfo($_SESSION['username']);
                 <script type="text/javascript">
                 function filterProfileFields(form) {
                     // Regex: only allow standard keyboard characters
-                    var allowed = /^[a-zA-Z0-9_ !@#$%^&*();\\/|<>"'+.,:?=-]*$/;
+                    var allowed = /^[a-zA-Z0-9_ !@#$%^&*();\\/|<>"'+.,:?=\-\[\]]*$/;
                     var fields = [
                         form.description,
                         form.hobbies,
