@@ -107,6 +107,10 @@ function generate2DShooterImage(SimpleXMLElement $xml) : array {
         if ($id === 1) {
             $object1X = (int) $x;
             $object1Y = (int) $y;
+        } else if ($id === 101) {
+            // Object 101 is treated as object 1 for thumbnail purposes
+            $object1X = (int) $x;
+            $object1Y = (int) $y;
         }
     
         $newImage = overlayOnBase($newImage, max(1, $id), (int) $x, (int) $y, $scale*0.6125);
