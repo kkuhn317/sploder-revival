@@ -408,4 +408,14 @@ LIMIT 90;
         return $result ? (string)$result['perms'] : '';
     }
 
+    public function setUserPerms(string $username, string $perms): bool
+    {
+        $query = "UPDATE members SET perms = :perms WHERE username = :username";
+        $result = $this->db->execute($query, [
+            ':perms' => $perms,
+            ':username' => $username
+        ]);
+        return (bool)$result;
+    }
+
 }

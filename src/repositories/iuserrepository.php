@@ -117,4 +117,13 @@ interface IUserRepository
      * @return string permissions of user
      */
     function getUserPerms(string $username): string;
+
+    /**
+     * Set user permissions by username
+     * 
+     * @param $username
+     * @param $perms
+     * @return bool true on success, false on failure
+     */
+    function setUserPerms(string $username, string $perms): bool;
 }

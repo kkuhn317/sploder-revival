@@ -6,7 +6,12 @@
         <li><a href="ipcheck.php">IP check</a></li>
         <li><a href="banned.php">Banned members</a></li>
         <li><a href="logs.php">Logs</a></li>
-
-
+        <?php
+            require_once(__DIR__."/../php/admincheck.php");
+            $isAdmin = isAdmin($_SESSION['username']);
+            if ($isAdmin) {
+                echo '<li style="float:right"><a href="admin.php">Administration</a></li>';
+            }
+        ?>
     </ul>
 </div>
