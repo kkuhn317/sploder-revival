@@ -10,6 +10,9 @@ if (session_status() === PHP_SESSION_ACTIVE) {
 
 $username = $_POST['username'] ?? null;
 $password = $_POST['password'] ?? null;
+if (strlen($password) > 25) {
+    $password = substr($password, 0, 25);
+}
 $db = getDatabase();
 
 $user = $db->queryFirst(

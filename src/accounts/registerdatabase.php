@@ -46,6 +46,9 @@ if (intval($responseKeys["success"]) !== 1) {
 } else {
     session_start();
     $password = $_POST['pass2'];
+    if (strlen($password) > 25) {
+        $password = substr($password, 0, 25);
+    }
     $isolate = $_POST['social'] ?? "off";
     $tostest = $_POST['tostest'] ?? "off";
     $username = mb_strtolower($_SESSION['enteredusername']);
