@@ -9,6 +9,11 @@ $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 
 $db = getDatabase();
 
+if ($_SESSION['username'] === $_GET['u']) {
+    header('Location: ../index.php?err=you');
+    exit;
+}
+
 $alreadyFriends = $friendsRepository->alreadyFriends($_SESSION['username'], $_GET['u']);
 if (!$alreadyFriends) {
     $exists = $db->query("SELECT request_id
