@@ -31,8 +31,8 @@ $gameRepository->setFeaturedStatus($id, $feature, $_SESSION['userid']);
 $gameInfo = $gameRepository->getGameBasicInfo($id);
 require_once('../games/moderation/php/log.php');
 if ($feature) {
-    logModeration('featured', $gameInfo['title'], 2);
+    logModeration('featured', $gameInfo['title'] . ' by ' . $gameInfo['author'], 2);
 } else {
-    logModeration('unfeatured', $gameInfo['title'], 2);
+    logModeration('unfeatured', $gameInfo['title'] . ' by ' . $gameInfo['author'], 2);
 }
 echo "Success";
