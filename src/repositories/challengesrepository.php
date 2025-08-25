@@ -80,9 +80,9 @@ class ChallengesRepository implements IChallengesRepository
             AND g.isprivate = 0 AND g.ispublished = 1 AND g.isdeleted = 0
           GROUP BY c.challenge_id, c.g_id, c.mode, c.challenge, c.prize, c.winners, c.verified, c.insert_date, g.user_id, g.title, g.author
           HAVING COUNT(w.winner_id) < c.winners
-          ORDER BY c.verified DESC OFFSET :offset*:perPage LIMIT :perPage";
+          ORDER BY c.verified DESC OFFSET :offset LIMIT :perPage";
         return $this->db->query($query, [
-            ':offset' => $offset,
+            ':offset' => $offset*$perPage,
             ':perPage' => $perPage,
         ]);
     }
