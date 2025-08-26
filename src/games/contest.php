@@ -46,9 +46,7 @@ $db = getDatabase();
                 <div id="spotlight">
 
                     <br /><br /><br /><br /><br /><br />
-                    <center>Loading contest data...<br /><br />This requires the Adobe Flash Player.<br /><br /><a
-                            href="https://get.adobe.com/flashplayer"><img border="0" alt="Enable Flash"
-                                src="enable_flash.gif" /></a></center><br /><br /><br />
+                    <center>Loading contest data...<br /><br /></center><br /><br /><br />
 
 
 

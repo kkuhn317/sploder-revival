@@ -34,9 +34,6 @@
                     <div style="margin: 40px auto; text-align: center; width: 420px;">
                         <p>Make your own space shooter game with this game maker. Add ships, robots, powerups and
                             fight with your ray gun, mortars, mines and bots.</p>
-                        The Flash Game Maker requires the Adobe Flash plugin.<br /><br /><br />
-                        <div align="center" style="margin: auto;"><a href="https://get.adobe.com/flashplayer"><img
-                                    border="0" alt="Enable Flash" src="enable_flash.gif" /></a></div>
                     </div>
                 </div>
             </div>

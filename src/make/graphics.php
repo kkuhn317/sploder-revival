@@ -82,10 +82,6 @@
                                 editor</strong>. With this, you can build your own animated game sprites, game tiles and
                             textures (like <a href="https://www.gimp.org">gimp</a> or other programs) for use in the
                             game maker.</p>
-                        <p>The graphics editor requires the Adobe Flash plugin. <br /><br /><br />
-                        <div align="center" style="margin: auto;"><a href="https://get.adobe.com/flashplayer"><img
-                                    border="0" alt="Enable Flash" src="../images/enable_flash.gif" /></a></div>
-                        </p>
                     </div>
                 </div>
             </div>
