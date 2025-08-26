@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict ghbWwxRSCfL9rNqHD7OuPmlNxGo6F4AXUboqjZpcGLJ4aNaktbHxjJbqFgxONiA
+\restrict cJA6RB85NEGA9UcUTLvXa3rmoM76cONQUEto7IhCXWs4cL2096EdL3bxx4ZDVz3
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -28,9 +28,9 @@ CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVI
 
 ALTER DATABASE sploder OWNER TO sploder;
 
-\unrestrict ghbWwxRSCfL9rNqHD7OuPmlNxGo6F4AXUboqjZpcGLJ4aNaktbHxjJbqFgxONiA
+\unrestrict cJA6RB85NEGA9UcUTLvXa3rmoM76cONQUEto7IhCXWs4cL2096EdL3bxx4ZDVz3
 \connect sploder
-\restrict ghbWwxRSCfL9rNqHD7OuPmlNxGo6F4AXUboqjZpcGLJ4aNaktbHxjJbqFgxONiA
+\restrict cJA6RB85NEGA9UcUTLvXa3rmoM76cONQUEto7IhCXWs4cL2096EdL3bxx4ZDVz3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -634,7 +634,7 @@ CREATE TABLE public.moderation_logs (
     moderator text NOT NULL,
     action text NOT NULL,
     "on" text NOT NULL,
-    "time" time with time zone NOT NULL,
+    "time" timestamp without time zone NOT NULL,
     level integer NOT NULL
 );
 
@@ -1353,5 +1353,5 @@ GRANT ALL ON SCHEMA public TO sploder;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ghbWwxRSCfL9rNqHD7OuPmlNxGo6F4AXUboqjZpcGLJ4aNaktbHxjJbqFgxONiA
+\unrestrict cJA6RB85NEGA9UcUTLvXa3rmoM76cONQUEto7IhCXWs4cL2096EdL3bxx4ZDVz3
 
