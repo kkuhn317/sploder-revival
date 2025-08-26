@@ -179,6 +179,27 @@ interface IGameRepository
      * @return bool true if featured, false otherwise
      */
     public function getFeaturedStatus(int $id): bool;
+
+    /**
+     * Get review data for a game by a reviewer
+     * 
+     * @param int $userId
+     * @param int $gameId
+     * @return array review data or empty array if no review exists
+     */
+    public function getReviewData(int $userId, int $gameId): array;
+
+    /**
+     * Save review data for a game by a reviewer
+     * 
+     * @param int $userId
+     * @param int $gameId
+     * @param string $title
+     * @param string $review
+     * @param bool $isPublished
+     * @return void
+     */
+    public function saveReview(int $userId, int $gameId, string $title, string $review, bool $isPublished): void;
 }
 
 class GameMetricsForUser

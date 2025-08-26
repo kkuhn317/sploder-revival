@@ -357,4 +357,30 @@ where g_id = :g_id
         ORDER BY featured_games.feature_date DESC";
         return $this->db->queryPaginated($query, $offset, $perPage);
     }
+
+    public function getReviewData(int $userId, int $gameId): array {
+        $query = "SELECT title, review, ispublished FROM reviews WHERE userid = :userid AND g_id = :g_id";
+        $result =  $this->db->queryFirst($query, [
+            ':userid' => $userId,
+            ':g_id' => $gameId
+        ]);
+        if (empty($result)) {
+            return [];
+        }
+        return $result;
+    }
+
+    public function saveReview(int $userId, int $gameId, string $title, string $review, bool $isPublished): void {
+        $this->db->execute("INSERT INTO reviews (userid, g_id, title, review, ispublished, review_date) 
+        VALUES (:userid, :g_id, :title, :review, :ispublished, :review_date)
+        ON CONFLICT (userid, g_id) DO UPDATE 
+        SET title = :title, review = :review, ispublished = :ispublished, review_date = :review_date", [
+            ':userid' => $userId,
+            ':g_id' => $gameId,
+            ':title' => $title,
+            ':review' => $review,
+            ':ispublished' => $isPublished,
+            ':review_date' => date("Y-m-d H:i:s")
+        ]);
+    }
 }
