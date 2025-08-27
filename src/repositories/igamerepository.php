@@ -253,6 +253,14 @@ interface IGameRepository
      * @return bool true if reviewed, false otherwise
      */
     public function hasUserReviewedGame(int $userId, int $gameId): bool;
+
+    /**
+     * Get "S" from review ID
+     * 
+     * @param int $reviewId
+     * @return string "S" parameter for the review
+     */
+    public function getGameSFromReviewId(int $reviewId): string;
 }
 
 class GameMetricsForUser

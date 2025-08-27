@@ -326,7 +326,13 @@ if ($a == "read") {
         }
     }
     if ($_SESSION['username'] == $result2['creator_name'] || $_SESSION['username'] == $queriedAuthor) {
-        $db->execute("DELETE FROM comments WHERE thread_id=:id", [
+        $db->execute("
+            DELETE FROM comments
+            WHERE
+                (thread_id = :id AND :id = (SELECT thread_id FROM comments WHERE id = :id))
+                OR
+                (id = :id AND :id != (SELECT thread_id FROM comments WHERE id = :id))
+        ", [
             ':id' => $id
         ]);
         echo extracted($db);

@@ -194,10 +194,10 @@ function us_anim(tween) {
 }
 
 var $us_icons = [
-    "[:)]", "[=D]", "[:&amp;]", "[:D]", "[:(]", "[80]", "[:9]", "[;)]", "[:P]", "[=O]"
-    , "[:/]", "[:|]", "[d:-)]", "[:X]", "[O:-)]", "[:&#039;(]", "[:*]", "[^o)]", "[&gt;:)]", "[B)]"
-    , "[&gt;:(]", "[:8)]", "[//_-]", "[-_-]", "[q.p]", "[^-^]", "[x_x]", "[8-)]", "[|-)]", "[:^)]"
-    , "[Y]", "[N]", "[V]", "[NV]", "[pi]", "[|%|]", "[T]", "[G]", "[(x^x)]", "[@]"
+    "[:)]","[=D]","[:&]","[:D]","[:(]","[80]","[:9]","[;)]","[:P]","[=O]"
+    ,"[:/]","[:|]","[d:-)]","[:X]","[O:-)]","[&gt;:(]","[:*]","[^o)]","[&gt;:)]","[B)]"
+    ,"[:'(]","[:8)]","[//_-]","[-_-]","[q.p]","[^-^]","[x_x]","[8-)]","[|-)]","[:^)]"
+    ,"[Y]","[N]","[V]","[NV]","[pi]","[|%|]","[T]","[G]","[(x^x)]","[@]"
 ];
 
 function us_bbcode(body) {
@@ -390,6 +390,8 @@ function determinePage(venue) {
         url = "/members/index.php?u=" + venue.split("messages-")[1];
     } else if (venue.indexOf("staff-page") == 0) {
         url = "/staff.php";
+    } else if (venue.indexOf("review") == 0) {
+        url = "/games/view-review.php?review=" + venue.split("review-")[1];
     }
     window.location.href = url;
 }

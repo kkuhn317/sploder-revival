@@ -2,6 +2,18 @@
 <?php session_start(); ?>
 <?php
 require_once('../repositories/repositorymanager.php');
+$gameRepository = RepositoryManager::get()->getGameRepository();
+if (isset($_GET['review'])) {
+    // Direct access via review ID needs some work
+    $s = $gameRepository->getGameSFromReviewId((int)filter_var($_GET['review'], FILTER_SANITIZE_NUMBER_INT));
+    if ($s === '0_0') {
+        header('Location: /games/reviews.php');
+        die();
+    }
+    $s = explode('_',$s);
+    header('Location: /games/view-review.php?s=' . $s[0] . '_' . $s[1] . '&userid=' . $s[2]);
+    die();
+}
 $s = $_GET['s'] ?? '';
 if ($s == '') {
     header('Location: /games/reviews.php');
@@ -10,7 +22,6 @@ if ($s == '') {
 $s = explode("_", $s);
 $userId = $s[0];
 $gameId = $s[1];
-$gameRepository = RepositoryManager::get()->getGameRepository();
 $gameInfo = $gameRepository->getGameBasicInfo($gameId);
 if ($gameInfo === null) {
     header('Location: /games/reviews.php');

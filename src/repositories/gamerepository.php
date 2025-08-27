@@ -459,4 +459,21 @@ where g_id = :g_id
         ]);
         return $result > 0;
     }
+
+    public function getGameSFromReviewId(int $reviewId): string {
+        $query = "SELECT g.g_id, m.userid AS game_author_id, r.userid AS review_author_id
+        FROM reviews r
+        JOIN games g ON r.g_id = g.g_id
+        JOIN members m ON g.author = m.username
+        WHERE r.review_id = :review_id";
+
+        $result = $this->db->queryFirst($query, [
+            ':review_id' => $reviewId
+        ]);
+        if ($result === null) {
+            return '0_0';
+        }
+
+        return $result[1] . '_' . $result[0] . '_' . $result[2];
+    }
 }
