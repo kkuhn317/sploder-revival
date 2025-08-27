@@ -410,6 +410,10 @@ LIMIT 90;
 
     public function setUserPerms(string $username, string $perms): bool
     {
+        if ($perms === '') {
+            // If perms is empty, set to NULL in the database
+            $perms = null;
+        }
         $query = "UPDATE members SET perms = :perms WHERE username = :username";
         $result = $this->db->execute($query, [
             ':perms' => $perms,
