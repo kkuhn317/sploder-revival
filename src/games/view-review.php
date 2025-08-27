@@ -16,27 +16,10 @@ if ($gameInfo === null) {
     header('Location: /games/reviews.php');
     die();
 }
-$gameAuthor = $gameInfo['author'];
+$reviewData = $gameRepository->getReviewData($_GET['userid'], $gameId);
+$gameInfo = $gameRepository->getGameBasicInfo($gameId);
 $gameTitle = $gameInfo['title'];
-if (isset($_POST['reviewTitle'])) {
-    require_once('../content/censor.php');
-    $title = censorText(trim($_POST['reviewTitle']));
-    // Capitalize the first letter of each word in the title
-    $title = ucwords($title);
-    $body = censorText(trim($_POST['reviewBody']));
-
-    if (strlen($title) > 100) {
-        $title = substr($title, 0, 100);
-    }
-    if (strlen($body) > 5000) {
-        $body = substr($body, 0, 5000);
-    }
-
-    $publish = isset($_POST['publishNow']) ? 1 : 0;
-    $gameRepository->saveReview($_SESSION['userid'], $gameId, $title, $body, $publish);
-    $prompt = $publish ? "Review published successfully!" : "Review saved successfully!";
-}
-$reviewData = $gameRepository->getReviewData($_SESSION['userid'], $gameId);
+$gameAuthor = $gameInfo['author'];
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -62,7 +45,7 @@ $reviewData = $gameRepository->getReviewData($_SESSION['userid'], $gameId);
 
 
         <div id="content">
-            <h3>Game Review Editor</h3>
+            <h3><?= htmlspecialchars($reviewData['title']) ?></h3>
             <p>This is the <strong>game reviews hub</strong> where you can find reviews of
             some of your favorite games.  If you're interested in becoming a reviewer, let us know in the <a href="https://discord.com/invite/<?= getenv('DISCORD_INVITE') ?>" target="_blank">discord server</a>! Now, on to the main attraction...</p>
 

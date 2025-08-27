@@ -200,6 +200,15 @@ interface IGameRepository
      * @return void
      */
     public function saveReview(int $userId, int $gameId, string $title, string $review, bool $isPublished): void;
+
+    /**
+     * Get published reviews for a game
+     * 
+     * @param int $perPage
+     * @param int $offset
+     * @return PaginationData of reviews
+     */
+    public function getPublicReviews(int $offset, int $perPage): PaginationData;
 }
 
 class GameMetricsForUser

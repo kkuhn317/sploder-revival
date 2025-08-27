@@ -383,4 +383,17 @@ where g_id = :g_id
             ':review_date' => date("Y-m-d H:i:s")
         ]);
     }
+
+    public function getPublicReviews(int $offset, int $perPage): PaginationData {
+        $query = "SELECT r.userid, r.g_id, r.title,
+        LEFT(r.review, 316) || CASE WHEN LENGTH(r.review) > 316 THEN ' ...' ELSE '' END AS review,
+        r.review_date, m.username as author, g.user_id as game_author_id, g.title as game_title, g.g_swf
+        FROM reviews r
+        JOIN members m ON r.userid = m.userid
+        JOIN games g ON r.g_id = g.g_id
+        WHERE r.ispublished = true AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0
+        ORDER BY r.review_date DESC";
+
+        return $this->db->queryPaginated($query, $offset, $perPage);
+    }
 }

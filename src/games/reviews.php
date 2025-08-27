@@ -2,7 +2,10 @@
 <?php session_start(); ?>
 <?php
 require_once('../repositories/repositorymanager.php');
-
+require_once('../content/pages.php');
+$gameRepository = RepositoryManager::get()->getGameRepository();
+$perPage = 6;
+$reviews = $gameRepository->getPublicReviews($_GET['o'] ?? 0, $perPage);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -31,26 +34,43 @@ require_once('../repositories/repositorymanager.php');
             <h3>Game Reviews</h3>
             <p>This is the <strong>game reviews hub</strong> where you can find reviews of
         	some of your favorite games.  If you're interested in becoming a reviewer, let us know in the <a href="https://discord.com/invite/<?= getenv('DISCORD_INVITE') ?>" target="_blank">discord server</a>! Now, on to the main attraction...</p>
-
-            <div class="game">
-					<h4><a href="reviewlink">[REVIEW TITLE]</a></h4>
-					<cite>Review by <a href="reviewerpage">[reviewer username]</a> on Day of the Week, Month Day of the Month(th) Year</cite>
+            <?php
+                foreach ($reviews->data as $review) :
+                    $reviewTitle = htmlspecialchars($review['title']);
+                    $reviewLink = "/games/view-review.php?s=" . $review['game_author_id'] . "_" . $review['g_id'] . "&userid=" . $review['userid'];
+                    $reviewerPage = "/members/view-profile.php?u=" . urlencode($review['author']);
+                    $reviewerUsername = htmlspecialchars($review['author']);
+                    $reviewDate = date("l, F jS Y", strtotime($review['review_date']));
+                    $gameLink = "play.php?s=" . $review['game_author_id'] . "_" . $review['g_id'];
+                    $gameThumbUrl = "/users/user" . $review['game_author_id'] . "/images/proj" . $review['g_id'] . "/image.png";
+                    $gameAuthor = htmlspecialchars($review['author']);
+                    $reviewText = htmlspecialchars($review['review']);
+                    
+            ?>
+                <div class="game">
+					<h4><a href="<?= $reviewLink ?>"><?= $reviewTitle ?></a></h4>
+					<cite>Review by <a href="<?= $reviewerPage ?>"><?= $reviewerUsername ?></a> on <?= $reviewDate ?></cite>
 					<div class="smallthumb">
-						<a class="thumb" href="gamelink">
-						<img src="gamethumburl" width="80" height="80" alt="Click to play gameauthor"/>
+						<a class="thumb" href="<?= $gameLink ?>">
+						<img src="<?= $gameThumbUrl ?>" width="80" height="80" alt="Click to play <?= $gameAuthor ?>"/>
 						</a>
 					</div>
-					<p>Review up to 320 chars [316 actual characters, last 4 " ..."]</p>
-					<p class="postlink" align="right"><a href="reviewlink">Read and comment &raquo;</a></p>
-					
+					<p><?= $reviewText ?></p>
+					<p class="postlink" align="right"><a href="<?= $reviewLink ?>">Read and comment &raquo;</a></p>
+
 					<div class="spacer">&nbsp;</div>
 					<hr/>
 				</div>
+            <?php
+                endforeach;
+            ?>
             
             <div class="spacer">&nbsp;</div>
+            <?php
+                addPagination($reviews->totalCount, $perPage, $_GET['o'] ?? 0);
+            ?>
         </div>
         <div id="sidebar">
-
             <br /><br /><br />
             <div class="spacer">&nbsp;</div>
         </div>
