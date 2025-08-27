@@ -13,12 +13,44 @@ function extracted(IDatabase $db): string
     $p = $_GET['p'];
 
     if ($venue == "dashboard") {
-        $fulltotal = $db->queryFirstColumn("SELECT count(*)
-            FROM comments
-            WHERE venue LIKE '%-' || :username AND creator_name != :username", 0, [
-            ':username' => $_SESSION['username']
-        ]);
-        
+        // Store the dashboard subquery in a variable to avoid duplication
+        $dashboardSubquery = "
+            SELECT c.id AS thread_id, c.id, c.venue, c.creator_name, c.body, c.score, c.timestamp
+            FROM comments c
+            WHERE (c.venue LIKE '%-' || :username OR c.body LIKE '%@'|| :username || ' %')
+            AND c.creator_name != :username
+
+            UNION
+
+            SELECT c.id AS thread_id, c.id, c.venue, c.creator_name, c.body, c.score, c.timestamp
+            FROM comments c
+            WHERE c.venue LIKE 'review-%'
+              AND EXISTS (
+                  SELECT 1 FROM reviews r
+                  WHERE r.review_id = CAST(SUBSTRING(c.venue FROM 'review-([0-9]+)') AS INTEGER)
+                    AND r.userid = :userid
+              )
+              AND c.creator_name != :username
+
+            UNION
+
+            SELECT c.id AS thread_id, c.id, c.venue, c.creator_name, c.body, c.score, c.timestamp
+            FROM comments c
+            WHERE c.thread_id IN (
+                SELECT id 
+                FROM comments 
+                WHERE creator_name = :username 
+                AND thread_id = id
+            ) AND c.creator_name != :username
+        ";
+        $fulltotal = $db->queryFirstColumn(
+            "SELECT COUNT(*) FROM ( $dashboardSubquery ) AS combined_results",
+            0,
+            [
+                ':username' => $_SESSION['username'],
+                ':userid' => $_SESSION['userid']
+            ]
+        );
     } else if ($venue == "allmsgs") {
     $extra = $_GET['o'];
     $filter = explode("-", $extra);
@@ -72,30 +104,16 @@ function extracted(IDatabase $db): string
         $p = max(0, $latestp);
     }
     if ($venue == "dashboard") {
-        $result2 = $db->query("
-            SELECT * FROM (
-                SELECT c.id AS thread_id, c.id, c.venue, c.creator_name, c.body, c.score, c.timestamp
-                FROM comments c
-                WHERE (c.venue LIKE '%-' || :username OR c.body LIKE '%@'|| :username || ' %')
-                AND c.creator_name != :username
-
-                UNION
-
-                SELECT c.id AS thread_id, c.id, c.venue, c.creator_name, c.body, c.score, c.timestamp
-                FROM comments c
-                WHERE c.thread_id IN (
-                    SELECT id 
-                    FROM comments 
-                    WHERE creator_name = :username 
-                    AND thread_id = id
-                ) AND c.creator_name != :username
-            ) AS combined_results
+        $result2 = $db->query(
+            "SELECT * FROM ( $dashboardSubquery ) AS combined_results
             ORDER BY combined_results.thread_id DESC, combined_results.id ASC
-            LIMIT 10 OFFSET :p
-        ", [
-            ':username' => $_SESSION['username'],
-            ':p' => ($p * 10)
-        ]);
+            LIMIT 10 OFFSET :p",
+            [
+                ':username' => $_SESSION['username'],
+                ':userid' => $_SESSION['userid'],
+                ':p' => ($p * 10)
+            ]
+        );
     } else if ($venue == "allmsgs") {
         // Add :p only for the actual query
 $perPage = 50;
