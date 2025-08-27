@@ -1,5 +1,7 @@
 #!/bin/bash
 
+printenv | grep -v "no_proxy" | awk -F= '{print "export " $1 "=\"" substr($0, index($0,$2)) "\""}' > /etc/environment
+
 # Configure PHP based on environment variables
 # Default to development settings if not specified
 
