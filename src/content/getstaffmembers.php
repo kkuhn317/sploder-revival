@@ -28,6 +28,6 @@ function renderStaffList($staffList)
 {
     foreach ($staffList as $index => $member) {
         $class = ($index % 2 == 0) ? 'even' : 'odd';
-        echo '<li><a class="' . $class . '" href="members/index.php?u=' . $member . '"><img style="width:24px; height:24px;" src="php/avatarproxy.php?u=' . $member . '" alt="' . $member . '"/>' . $member . '</a></li>';
+        echo '<li><a class="' . $class . '" href="members/index.php?u=' . $member . '"><img style="width:24px; height:24px;" src="php/avatarproxy.php?size=24&u=' . $member . '" alt="' . $member . '"/>' . $member . '</a></li>';
     }
 }

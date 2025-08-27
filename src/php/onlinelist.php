@@ -39,7 +39,7 @@ for ($i = 0; $i < $total; $i++) {
         $status = "playing";
     }
 
-    echo '<li><a href="../members/index.php?u=' . $members[$i]['username'] . '"><img src="../php/avatarproxy.php?u=' . $members[$i]['username'] . '" alt="' . $members[$i]['username'] . '" border="0" style="width:24px;height:24px;margin:-6px 8px" />' . $members[$i]['username'] . '</a><img style="margin-left:30px" class="status" src="../images/status_' . $status . '.gif" width="11" height="11"/></li>';
+    echo '<li><a href="../members/index.php?u=' . $members[$i]['username'] . '"><img src="../php/avatarproxy.php?size=24&u=' . $members[$i]['username'] . '" alt="' . $members[$i]['username'] . '" border="0" style="width:24px;height:24px;margin:-6px 8px" />' . $members[$i]['username'] . '</a><img style="margin-left:30px" class="status" src="../images/status_' . $status . '.gif" width="11" height="11"/></li>';
 }
 
 
