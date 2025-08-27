@@ -60,6 +60,12 @@ $gameAuthor = $gameInfo['author'];
                         <p><a href="play.php?s=<?= $userId ?>_<?= $gameId ?>"><?= htmlspecialchars($gameTitle) ?></a> is a game created by <a href="../members/?u=<?= $gameAuthor ?>"><?= htmlspecialchars($gameAuthor) ?></a></p>
                     </div>
                     <?php
+                    function gameLinkFormat($text) {
+                        global $gameTitle;
+                        global $gameId;
+                        global $userId;
+                        return str_replace($gameTitle, '<a href="play.php?s=' . $userId . '_' . $gameId . '">' . htmlspecialchars($gameTitle) . '</a>', htmlspecialchars($text));
+                    }
                     function formatReview($reviewText) {
                         // Split by double line breaks for paragraphs
                         $paragraphs = preg_split("/\r?\n\r?\n/", $reviewText);
@@ -92,21 +98,21 @@ $gameAuthor = $gameInfo['author'];
                                 }
                                 // Large Heading
                                 if (preg_match('/\*\*(.+)\*\*/', $trimmed, $matches)) {
-                                    $output .= '<h6>' . htmlspecialchars($matches[1]) . '</h6>';
+                                    $output .= '<h6>' . gameLinkFormat($matches[1]) . '</h6>';
                                     continue;
                                 }
                                 // Bold Heading
                                 if (preg_match('/\*(.+)\*/', $trimmed, $matches)) {
-                                    $output .= '<p><strong>' . htmlspecialchars($matches[1]) . '</strong></p>';
+                                    $output .= '<p><strong>' . gameLinkFormat($matches[1]) . '</strong></p>';
                                     continue;
                                 }
                                 // Italic Heading
                                 if (preg_match('/~(.+)~/', $trimmed, $matches)) {
-                                    $output .= '<p><em>' . htmlspecialchars($matches[1]) . '</em></p>';
+                                    $output .= '<p><em>' . gameLinkFormat($matches[1]) . '</em></p>';
                                     continue;
                                 }
                                 // Default: wrap in <p>
-                                $output .= '<p>' . htmlspecialchars($trimmed) . '</p>';
+                                $output .= '<p>' . gameLinkFormat($trimmed) . '</p>';
                             }
                             // Only add <br> if not the last paragraph
                             if ($i < $paraCount - 1) {
