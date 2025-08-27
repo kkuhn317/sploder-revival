@@ -56,8 +56,10 @@ $awesomeness = $stats['awesomeness'] ?? 50;
                             ];
 
                             foreach ($roles as $key => $role) {
-                                $icon = strpos($result['perms'], $key) !== false ? "role_$role" : "role_empty";
-                                echo "<img src=\"/chrome/{$icon}.gif\" width=\"24\" height=\"28\" alt=\"{$icon}\" title=\"$icon\" />";
+                                // If no role, set to "empty"
+                                $role = strpos($result['perms'], $key) !== false ? $role : "empty";
+                                $icon = "role_$role";
+                                echo "<img src=\"/chrome/{$icon}.gif\" width=\"24\" height=\"28\" alt=\"{$role}\" title=\"$role\" />";
                             }
                             ?>
                         </div>
