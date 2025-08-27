@@ -73,6 +73,8 @@ if(isset($_GET['challenge'])){
     <?php
     if ($game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0) {
         echo '<script type="text/javascript">window.rpcinfo = ' . json_encode("Playing: " . $game['title']) . ';</script>';
+    } else {
+        echo '<script type="text/javascript">window.rpcinfo = "Playing a Game";</script>';
     }
     ?>
 </head>
