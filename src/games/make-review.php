@@ -2,6 +2,11 @@
 <?php session_start(); ?>
 <?php
 require_once('../repositories/repositorymanager.php');
+$userRepository = RepositoryManager::get()->getUserRepository();
+$perms = $userRepository->getUserPerms($_SESSION['username']);
+if ($perms === null || $perms === '' || !str_contains($perms, 'R')) {
+    die("Haxxor detected");
+}
 $s = $_GET['s'] ?? '';
 if ($s == '') {
     header('Location: /games/reviews.php');
@@ -19,22 +24,32 @@ if ($gameInfo === null) {
 $gameAuthor = $gameInfo['author'];
 $gameTitle = $gameInfo['title'];
 if (isset($_POST['reviewTitle'])) {
+    require_once('../content/keyboardfilter.php');
     require_once('../content/censor.php');
     $title = censorText(trim($_POST['reviewTitle']));
     // Capitalize the first letter of each word in the title
-    $title = ucwords($title);
-    $body = censorText(trim($_POST['reviewBody']));
-
-    if (strlen($title) > 100) {
+    $title = filterKeyboard(censorText(ucwords(trim($title))));
+    $body = filterKeyboard(censorText(trim($_POST['reviewBody'])));
+    $titleLength = strlen($title);
+    $bodyLength = strlen($body);
+    if ($titleLength > 100) {
         $title = substr($title, 0, 100);
     }
-    if (strlen($body) > 5000) {
-        $body = substr($body, 0, 5000);
+    if ($bodyLength > 10000) {
+        $body = substr($body, 0, 10000);
+    }
+    if ($titleLength < 5) {
+        $err = "Title must be at least 5 characters long.";
+    }
+    if ($bodyLength < 50) {
+        $err = "Review must be at least 50 characters long.";
     }
 
     $publish = isset($_POST['publishNow']) ? 1 : 0;
-    $gameRepository->saveReview($_SESSION['userid'], $gameId, $title, $body, $publish);
-    $prompt = $publish ? "Review published successfully!" : "Review saved successfully!";
+    if (!isset($err)) {
+        $gameRepository->saveReview($_SESSION['userid'], $gameId, $title, $body, $publish);
+        $prompt = $publish ? "Review published successfully!" : "Review saved successfully!";
+    }
 }
 $reviewData = $gameRepository->getReviewData($_SESSION['userid'], $gameId);
 ?>
@@ -70,6 +85,9 @@ $reviewData = $gameRepository->getReviewData($_SESSION['userid'], $gameId);
             if (isset($prompt)) {
                 echo '<p class="prompt">' . htmlspecialchars($prompt) . '</p>';
             }
+            if (isset($err)) {
+                echo '<p class="alert">' . htmlspecialchars($err) . '</p>';
+            }
             ?>
 
             <div class="game">
@@ -91,7 +109,7 @@ $reviewData = $gameRepository->getReviewData($_SESSION['userid'], $gameId);
             <label for="reviewTitle"><span style="font-weight:bold;">Review Title:</span></label><br />
             <input type="text" id="reviewTitle" name="reviewTitle" value="<?= $reviewData['title'] ?? '' ?>" required maxlength="100" style="width: 75%;"/><br /><br />
             <label for="reviewBody"><span style="font-weight:bold;">Review Body:</span> <span style="color:#aaa">(HTML is removed. ENTER twice for new paragraph.)</span></label><br />
-            <textarea id="reviewBody" name="reviewBody" rows="17" required maxlength="5000" style="width: 100%; resize: none;"><?= $reviewData['review'] ?? '' ?></textarea><br /><br />
+            <textarea id="reviewBody" name="reviewBody" rows="17" required maxlength="10000" style="width: 100%; resize: none;"><?= $reviewData['review'] ?? '' ?></textarea><br /><br />
             <input type="submit" class="postbutton" value="Submit Review"></input>
             &nbsp;
             <input type="checkbox" id="publishNow" name="publishNow" <?= $reviewData['ispublished'] ?? false ? 'checked' : '' ?>> Publish Now</input>

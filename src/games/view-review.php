@@ -17,6 +17,10 @@ if ($gameInfo === null) {
     die();
 }
 $reviewData = $gameRepository->getReviewData($_GET['userid'], $gameId);
+if ($reviewData['ispublished'] == false) {
+    header('Location: /games/reviews.php');
+    die();
+}
 $gameInfo = $gameRepository->getGameBasicInfo($gameId);
 $gameTitle = $gameInfo['title'];
 $gameAuthor = $gameInfo['author'];
@@ -46,54 +50,123 @@ $gameAuthor = $gameInfo['author'];
 
         <div id="content">
             <h3><?= htmlspecialchars($reviewData['title']) ?></h3>
-            <p>This is the <strong>game reviews hub</strong> where you can find reviews of
-            some of your favorite games.  If you're interested in becoming a reviewer, let us know in the <a href="https://discord.com/invite/<?= getenv('DISCORD_INVITE') ?>" target="_blank">discord server</a>! Now, on to the main attraction...</p>
-
-            <?php
-            if (isset($prompt)) {
-                echo '<p class="prompt">' . htmlspecialchars($prompt) . '</p>';
-            }
-            ?>
-
+            <cite>Review by <a href="../members/?u=<?= $reviewData['username'] ?>"><?= htmlspecialchars($reviewData['username']) ?></a> on <?= date('l, F jS Y', strtotime($reviewData['review_date'])) ?></cite><br><br>
+            <div id="venue" style="margin-bottom: 20px;">...</div>
             <div class="game">
-                    <div class="smallthumb">
+                    <div class="thumb">
                         <a class="thumb" href="play.php?s=<?= $userId ?>_<?= $gameId ?>">
-                        <img src="/users/user<?= $userId ?>/images/proj<?= $gameId ?>/thumbnail.png" width="80" height="80"/>
+                        <img src="/users/user<?= $userId ?>/images/proj<?= $gameId ?>/thumbnail.png" width="200" height="200"/>
                         </a>
-                    </div><br>
-                    <p>You are now writing a review for the game <a href="play.php?s=<?= $userId ?>_<?= $gameId ?>"><?= $gameTitle ?></a> by <a href="../members/?u=<?= $gameAuthor ?>"><?= $gameAuthor ?></a>. You can click "Save" at any time to save your work.
-                    It won't be published until you also check the "Publish Now" checkbox. You can also unpublish by unchecking the box and saving. Be sure to provide
-                    a fair, constructive review!</p>				
-                    <div class="spacer">&nbsp;</div>
-                    <hr style="margin-top:-1px;"/>
-                </div>
+                        <p><a href="play.php?s=<?= $userId ?>_<?= $gameId ?>"><?= htmlspecialchars($gameTitle) ?></a> is a game created by <a href="../members/?u=<?= $gameAuthor ?>"><?= htmlspecialchars($gameAuthor) ?></a></p>
+                    </div>
+                    <?php
+                    function formatReview($reviewText) {
+                        // Split by double line breaks for paragraphs
+                        $paragraphs = preg_split("/\r?\n\r?\n/", $reviewText);
+                        $output = '';
+                        $paraCount = count($paragraphs);
+                        foreach ($paragraphs as $i => $para) {
+                            // Split by single line for line-level formatting
+                            $lines = preg_split("/\r?\n/", $para);
+                            foreach ($lines as $line) {
+                                $trimmed = trim($line);
+
+                                if (preg_match('/^(.*?)([\*]+[^\/]*)\/([^\s]*)$/', $trimmed, $matches)) {
+                                    $label = trim($matches[1]);
+                                    $ticks1 = $matches[2];
+                                    $ticks2 = $matches[3];
+                                    $output .= '<div class="rating">';
+                                    if ($label !== '') {
+                                        $output .= '<span class="label">' . htmlspecialchars($label) . '</span> ';
+                                    }
+                                    // Replace * with <span class="tick">_</span>, keep other chars as-is
+                                    $output .= preg_replace_callback('/./u', function($m) {
+                                        return $m[0] === '*' ? '<span class="tick">_</span>' : htmlspecialchars($m[0]);
+                                    }, $ticks1);
+                                    $output .= '/';
+                                    $output .= preg_replace_callback('/./u', function($m) {
+                                        return $m[0] === '*' ? '<span class="tick">_</span>' : htmlspecialchars($m[0]);
+                                    }, $ticks2);
+                                    $output .= '<div class="spacer">&nbsp;</div></div>';
+                                    continue;
+                                }
+                                // Large Heading
+                                if (preg_match('/\*\*(.+)\*\*/', $trimmed, $matches)) {
+                                    $output .= '<h6>' . htmlspecialchars($matches[1]) . '</h6>';
+                                    continue;
+                                }
+                                // Bold Heading
+                                if (preg_match('/\*(.+)\*/', $trimmed, $matches)) {
+                                    $output .= '<p><strong>' . htmlspecialchars($matches[1]) . '</strong></p>';
+                                    continue;
+                                }
+                                // Italic Heading
+                                if (preg_match('/~(.+)~/', $trimmed, $matches)) {
+                                    $output .= '<p><em>' . htmlspecialchars($matches[1]) . '</em></p>';
+                                    continue;
+                                }
+                                // Default: wrap in <p>
+                                $output .= '<p>' . htmlspecialchars($trimmed) . '</p>';
+                            }
+                            // Only add <br> if not the last paragraph
+                            if ($i < $paraCount - 1) {
+                                $output .= '<br>';
+                            }
+                        }
+                        return $output;
+                    }
+                    echo formatReview($reviewData['review']);
+                    ?>
+                
             
+                <div class="spacer">&nbsp;</div>
+            </div>
+       
+        <div class="pagination">
+
+            <span class="button"><a href="reviews.php">&laquo; All Reviews</a></span>
+            <span class="button"><a href="../members/?u=<?= $reviewData['username'] ?>">Profile: <?= htmlspecialchars($reviewData['username']) ?></a></span>
+            <span class="button"><a href="../members/?u=<?= $gameAuthor ?>">Profile: <?= htmlspecialchars($gameAuthor) ?></a></span>
             <div class="spacer">&nbsp;</div>
-        <!-- Review Form UI -->
-        <form id="reviewForm" method="post" action="">
-            <label for="reviewTitle"><span style="font-weight:bold;">Review Title:</span></label><br />
-            <input type="text" id="reviewTitle" name="reviewTitle" value="<?= $reviewData['title'] ?? '' ?>" required maxlength="100" style="width: 75%;"/><br /><br />
-            <label for="reviewBody"><span style="font-weight:bold;">Review Body:</span> <span style="color:#aaa">(HTML is removed. ENTER twice for new paragraph.)</span></label><br />
-            <textarea id="reviewBody" name="reviewBody" rows="17" required maxlength="5000" style="width: 100%; resize: none;"><?= $reviewData['review'] ?? '' ?></textarea><br /><br />
-            <input type="submit" class="postbutton" value="Submit Review"></input>
-            &nbsp;
-            <input type="checkbox" id="publishNow" name="publishNow" <?= $reviewData['ispublished'] ?? false ? 'checked' : '' ?>> Publish Now</input>
-            <!-- Code syntax -->
-            <div class="codeSyntax" style="position: relative; float: right; margin; font-size: 13px; width: 200px; padding: 12px 12px 10px 12px; border: 3px solid #aaa;">
-            <span style="position: absolute; top: -13px; left: 12px; background: #000000; padding: 0 6px; margin-top: 3px;">
-                Code Syntax
-            </span>
-            <div>
-                Rating: ******<br />
-                <span>**Large Heading**</span><br />
-                <span>*Bold Heading*</span><br />
-                <span>~Italic Heading~</span>
-            </div>
-            </div>
-                    
-        </form>
-        <div class="spacer">&nbsp;</div>
         </div>
+        <script type="text/javascript">
+            us_config = {
+                container: 'messages',
+                venue: 'review-<?= $reviewData['review_id'] ?>',
+                venue_container: 'venue',
+                venue_type: 'review',
+                owner: '<?= $reviewData['username'] ?>',
+                username: '<?php if (isset($_SESSION['username'])) {
+                        echo $_SESSION['username'];
+                           }?>',
+                ip_address: '',
+                timestamp: '<?= time() ?>',
+                auth: '',
+                use_avatar: true,
+                venue_anchor_link: true,
+                show_messages: true,
+            }
+
+            window.onload = function() {
+                var n;
+                n = document.createElement('link');
+                n.rel = 'stylesheet';
+                n.type = 'text/css';
+                n.href = '/css/venue5.css';
+                document.getElementsByTagName('head')[0].appendChild(n);
+                n = document.createElement('script');
+                n.type = 'text/javascript';
+                n.src = '/comments/venue7.js';
+                document.getElementsByTagName('head')[0].appendChild(n);
+                if (window.addthis) addthis.button('#btn1', addthis_ui_config, addthis_share_config);
+            }
+            </script>
+
+
+            <a id="messages_top"></a>
+            <div id="messages"></div>
+        </div>
+        
         <div id="sidebar">
 
             <br /><br /><br />

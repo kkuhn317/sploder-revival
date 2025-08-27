@@ -359,7 +359,10 @@ where g_id = :g_id
     }
 
     public function getReviewData(int $userId, int $gameId): array {
-        $query = "SELECT title, review, ispublished FROM reviews WHERE userid = :userid AND g_id = :g_id";
+        $query = "SELECT r.title, r.review, r.ispublished, r.review_date, r.review_id, m.username 
+          FROM reviews r
+          JOIN members m ON r.userid = m.userid
+          WHERE r.userid = :userid AND r.g_id = :g_id";
         $result =  $this->db->queryFirst($query, [
             ':userid' => $userId,
             ':g_id' => $gameId
