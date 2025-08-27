@@ -7,6 +7,10 @@ function saveProject(int $g_swf): int
         $xml = $_POST['xml'] ?? file_get_contents('php://input');
         $xml2 = simplexml_load_string(strval($xml)) or die("INVALID XML FILE!!");
         $author = $_SESSION['username'];
+        $xml_author = urldecode($xml2->attributes()['title']);
+        if ($author != $xml2->attributes()['author']) {
+            die('<message result="failed" message="Haxxor detected"/>');
+        }
         $ispublished = 0;
         $id = 0;
         $new_game = false;

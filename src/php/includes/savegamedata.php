@@ -13,6 +13,10 @@ if (isset($_SESSION['loggedin'])) {
         die('<message result="failed" message="Please save your game again."/>');
     }
     $author = $_SESSION['username'];
+    $xml_author = urldecode($xml2->attributes()['title']);
+    if ($author != $xml2->attributes()['author']) {
+        die('<message result="failed" message="Haxxor detected"/>');
+    }
     $comments = $_GET['comments'];
     $private = $_GET['private'];
     $id = (int)filter_var($_GET['projid'], FILTER_SANITIZE_NUMBER_INT);
