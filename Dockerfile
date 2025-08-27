@@ -66,9 +66,10 @@ RUN composer install \
 COPY ./src /var/www/html/
 
 # Set up cron job
-RUN echo '* * * * * /usr/local/bin/php /var/www/html/cronjobs/contest.php >> /var/www/html/cronjobs/contest.log 2>&1' > /etc/cron.d/contest-cron \
-  && chmod 0644 /etc/cron.d/contest-cron \
-  && crontab /etc/cron.d/contest-cron
+RUN printenv | grep -v "no_proxy" >> /etc/cron.d/contest-cron \
+ && echo '0 0 * * * /usr/local/bin/php /var/www/html/cronjobs/contest.php >> /var/www/html/cronjobs/contest.log 2>&1' >> /etc/cron.d/contest-cron \
+ && chmod 0644 /etc/cron.d/contest-cron \
+ && crontab /etc/cron.d/contest-cron
 
 EXPOSE 80
 
