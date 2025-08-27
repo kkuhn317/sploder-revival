@@ -55,7 +55,7 @@ $gameAuthor = $gameInfo['author'];
             <div class="game">
                     <div class="thumb">
                         <a class="thumb" href="play.php?s=<?= $userId ?>_<?= $gameId ?>">
-                        <img src="/users/user<?= $userId ?>/images/proj<?= $gameId ?>/thumbnail.png" width="200" height="200"/>
+                        <img src="/users/user<?= $userId ?>/images/proj<?= $gameId ?>/image.png" width="200" height="200"/>
                         </a>
                         <p><a href="play.php?s=<?= $userId ?>_<?= $gameId ?>"><?= htmlspecialchars($gameTitle) ?></a> is a game created by <a href="../members/?u=<?= $gameAuthor ?>"><?= htmlspecialchars($gameAuthor) ?></a></p>
                     </div>
