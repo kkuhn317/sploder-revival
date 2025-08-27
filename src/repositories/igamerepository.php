@@ -225,6 +225,34 @@ interface IGameRepository
      * @return array of reviews
      */
     public function getReviewsByUsername(string $username): array;
+
+    /**
+     * Get all reviews by username
+     * 
+     * @param string $username
+     * @param int $offset
+     * @param int $perPage
+     * @return PaginationData of reviews
+     */
+    public function getAllReviewsByUsername(string $username, int $offset, int $perPage): PaginationData;
+
+    /**
+     * Delete a review by a reviewer for a game
+     * 
+     * @param int $userId
+     * @param int $gameId
+     * @return void
+     */
+    public function deleteReview(int $userId, int $gameId): void;
+
+    /**
+     * Check if a user has reviewed a game
+     * 
+     * @param int $userId
+     * @param int $gameId
+     * @return bool true if reviewed, false otherwise
+     */
+    public function hasUserReviewedGame(int $userId, int $gameId): bool;
 }
 
 class GameMetricsForUser

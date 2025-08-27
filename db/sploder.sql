@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict cJA6RB85NEGA9UcUTLvXa3rmoM76cONQUEto7IhCXWs4cL2096EdL3bxx4ZDVz3
+\restrict rh0KMyWx50yY4kSMQ19y3C47zPYu8mSEYeg73nmC9qYjWfBdTrVLPkezbz7zBgH
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -28,9 +28,9 @@ CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVI
 
 ALTER DATABASE sploder OWNER TO sploder;
 
-\unrestrict cJA6RB85NEGA9UcUTLvXa3rmoM76cONQUEto7IhCXWs4cL2096EdL3bxx4ZDVz3
+\unrestrict rh0KMyWx50yY4kSMQ19y3C47zPYu8mSEYeg73nmC9qYjWfBdTrVLPkezbz7zBgH
 \connect sploder
-\restrict cJA6RB85NEGA9UcUTLvXa3rmoM76cONQUEto7IhCXWs4cL2096EdL3bxx4ZDVz3
+\restrict rh0KMyWx50yY4kSMQ19y3C47zPYu8mSEYeg73nmC9qYjWfBdTrVLPkezbz7zBgH
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -665,7 +665,8 @@ CREATE TABLE public.reviews (
     userid integer NOT NULL,
     review text NOT NULL,
     ispublished boolean NOT NULL,
-    review_date timestamp without time zone NOT NULL
+    review_date timestamp without time zone NOT NULL,
+    title text NOT NULL
 );
 
 
@@ -940,6 +941,14 @@ ALTER TABLE ONLY public.graphic_tags
 
 ALTER TABLE ONLY public.members
     ADD CONSTRAINT userid PRIMARY KEY (userid);
+
+
+--
+-- Name: reviews userid_gid_reviews_unique; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT userid_gid_reviews_unique UNIQUE (userid, g_id);
 
 
 --
@@ -1353,5 +1362,5 @@ GRANT ALL ON SCHEMA public TO sploder;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict cJA6RB85NEGA9UcUTLvXa3rmoM76cONQUEto7IhCXWs4cL2096EdL3bxx4ZDVz3
+\unrestrict rh0KMyWx50yY4kSMQ19y3C47zPYu8mSEYeg73nmC9qYjWfBdTrVLPkezbz7zBgH
 

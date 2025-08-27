@@ -28,8 +28,8 @@ if (isset($_POST['reviewTitle'])) {
     require_once('../content/censor.php');
     $title = censorText(trim($_POST['reviewTitle']));
     // Capitalize the first letter of each word in the title
-    $title = filterKeyboard(censorText(ucwords(trim($title))));
-    $body = filterKeyboard(censorText(trim($_POST['reviewBody'])));
+    $title = filterKeyboard(censorText(ucwords(trim($title))), false);
+    $body = filterKeyboard(censorText(trim($_POST['reviewBody'])), false);
     $titleLength = strlen($title);
     $bodyLength = strlen($body);
     if ($titleLength > 100) {
@@ -48,7 +48,7 @@ if (isset($_POST['reviewTitle'])) {
     $publish = isset($_POST['publishNow']) ? 1 : 0;
     if (!isset($err)) {
         $gameRepository->saveReview($_SESSION['userid'], $gameId, $title, $body, $publish);
-        $prompt = $publish ? "Review published successfully!" : "Review saved successfully!";
+        $prompt = $publish ? "Review published successfully!" : "Review saved successfully! To see a preview, click <a href='view-review.php?s={$userId}_{$gameId}&userid={$_SESSION['userid']}'>here</a>.";
     }
 }
 $reviewData = $gameRepository->getReviewData($_SESSION['userid'], $gameId);
@@ -83,7 +83,7 @@ $reviewData = $gameRepository->getReviewData($_SESSION['userid'], $gameId);
 
             <?php
             if (isset($prompt)) {
-                echo '<p class="prompt">' . htmlspecialchars($prompt) . '</p>';
+                echo '<p class="prompt">' . $prompt . '</p>';
             }
             if (isset($err)) {
                 echo '<p class="alert">' . htmlspecialchars($err) . '</p>';

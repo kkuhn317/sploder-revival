@@ -17,7 +17,7 @@ if ($gameInfo === null) {
     die();
 }
 $reviewData = $gameRepository->getReviewData($_GET['userid'], $gameId);
-if ($reviewData['ispublished'] == false) {
+if ($reviewData['ispublished'] == false && $reviewData['userid'] != $_SESSION['userid']) {
     header('Location: /games/reviews.php');
     die();
 }
@@ -123,8 +123,16 @@ $gameAuthor = $gameInfo['author'];
             </div>
        
         <div class="pagination">
-
             <span class="button"><a href="reviews.php">&laquo; All Reviews</a></span>
+            <?php
+            if ($reviewData['userid'] == $_SESSION['userid']) {
+                $userRepository = RepositoryManager::get()->getUserRepository();
+                $perms = $userRepository->getUserPerms($_SESSION['username']);
+                if ($perms !== null && $perms !== '' && str_contains($perms, 'R')) {
+            ?>
+                <span class="button"><a href="make-review.php?s=<?= $userId ?>_<?= $gameId ?>">Edit Review</a></span>
+                <span class="button"><a href="../php/delete-review.php?s=<?= $userId ?>_<?= $gameId ?>">Delete Review</a></span>
+            <?php }} ?>
             <span class="button"><a href="../members/?u=<?= $reviewData['username'] ?>">Profile: <?= htmlspecialchars($reviewData['username']) ?></a></span>
             <span class="button"><a href="../members/?u=<?= $gameAuthor ?>">Profile: <?= htmlspecialchars($gameAuthor) ?></a></span>
             <div class="spacer">&nbsp;</div>

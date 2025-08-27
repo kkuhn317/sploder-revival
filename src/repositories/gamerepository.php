@@ -359,7 +359,7 @@ where g_id = :g_id
     }
 
     public function getReviewData(int $userId, int $gameId): array {
-        $query = "SELECT r.title, r.review, r.ispublished, r.review_date, r.review_id, m.username 
+        $query = "SELECT r.title, r.review, r.ispublished, r.review_date, r.review_id, r. userid, m.username 
           FROM reviews r
           JOIN members m ON r.userid = m.userid
           WHERE r.userid = :userid AND r.g_id = :g_id";
@@ -428,5 +428,35 @@ where g_id = :g_id
             return [];
         }
         return $result;
+    }
+
+    public function getAllReviewsByUsername(string $username, int $offset, int $perPage): PaginationData {
+        $query = "SELECT r.userid, r.g_id, r.title, r.ispublished,
+        LEFT(r.review, 316) || CASE WHEN LENGTH(r.review) > 316 THEN ' ...' ELSE '' END AS review,
+        r.review_date, m.username as author, g.user_id as game_author_id, g.title as game_title, g.g_swf
+        FROM reviews r
+        JOIN members m ON r.userid = m.userid
+        JOIN games g ON r.g_id = g.g_id
+        WHERE m.username = :username
+        ORDER BY r.review_date DESC";
+
+        return $this->db->queryPaginated($query, $offset, $perPage, [
+            ':username' => $username
+        ]);
+    }
+
+    public function deleteReview($userId, $gameId): void {
+        $this->db->execute("DELETE FROM reviews WHERE userid = :userid AND g_id = :g_id", [
+            ':userid' => $userId,
+            ':g_id' => $gameId
+        ]);
+    }
+
+    public function hasUserReviewedGame(int $userId, int $gameId): bool {
+        $result = $this->db->queryFirstColumn("SELECT COUNT(*) FROM reviews WHERE userid = :userid AND g_id = :g_id", 0, [
+            ':userid' => $userId,
+            ':g_id' => $gameId
+        ]);
+        return $result > 0;
     }
 }
