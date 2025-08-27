@@ -14,6 +14,8 @@ $newAwards = $awardsRepository->getAwardRequestCount($_SESSION['username'], fals
 $level = $userRepository->getLevelByUserId($_SESSION['userid']);
 $isolated = $userRepository->isIsolated($_SESSION['username']);
 $friends = $friendsRepository->getTotalFriends($username);
+$perms = $userRepository->getUserPerms($username);
+$isModerator = $perms !== null && $perms !== '' && str_contains($perms, 'M');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -123,6 +125,11 @@ $friends = $friendsRepository->getTotalFriends($username);
             <a href="../make/graphics.php">Draw
               some graphics</a>
           </li>
+          <?php
+          if ($isModerator) {
+              echo '<li><a href="../moderation/">Moderate site content</a></li>';
+          }
+          ?>
         </ul>
       </div>
       <div class="spacer">&nbsp;</div>
