@@ -265,6 +265,28 @@ if ($totalGraphics > 0){
         <div class="spacer">&nbsp;</div>
     </div>
 </div>
-<?php   
-}
+
+<?php
+// Get required data for reviews written
+$gameRepository = RepositoryManager::get()->getGameRepository();
+$reviews = $gameRepository->getReviewsByUsername($username);
+if (count($reviews) > 0) {
 ?>
+<div class="mprofgroup mprofsection">
+    <h4><a href="#" onclick="setClass('mprof_reviews', 'shown'); return false;">Reviews by <?= htmlspecialchars($username) ?></a></h4>
+    <div class="mprofcontent hidden" id="mprof_reviews">
+        <ul style="color:#ccc;">
+            <?php foreach ($reviews as $review): ?>
+                <li>
+                    <a href="../games/view-review.php?s=<?= $review['game_author_id'] ?>_<?= $review['g_id'] ?>&userid=<?= $review['userid'] ?>">
+                        <?= htmlspecialchars($review['title']) ?>
+                    </a> a review of "<?= htmlspecialchars($review['game_title']) ?>" by <?= htmlspecialchars($review['author']) ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <div class="spacer">&nbsp;</div>
+    </div>
+</div>
+<?php
+}
+} // End of function

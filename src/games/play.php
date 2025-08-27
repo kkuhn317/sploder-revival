@@ -95,18 +95,34 @@ if(isset($_GET['challenge'])){
             <div id="venue" style="margin: 6px 0 0 20px; float: right;"></div>
             <?php
             $isEditor = false;
+            $isReviewer = false;
+            $isEditorOrReviewer = false;
             if (isset($_SESSION['loggedin']))
             {
                 $perms = $userRepository->getUserPerms($_SESSION['username']);
-                if ($perms != null || $perms !== '' ) {
+                if ($perms != null || $perms !== '') {
                     $isEditor = str_contains($perms, 'E');
+                    $isReviewer = str_contains($perms, 'R');
+                    $isEditorOrReviewer = $isEditor || $isReviewer;
                 }
                 if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
                     $isFeatured = $gameRepository->getFeaturedStatus($game['g_id']);
             ?>
                 <script type="text/javascript" src="actions.js"></script>
                 <a onclick="featureGame(<?= $game['g_id'] ?>, <?= $isFeatured ? 'false' : 'true' ?>)" id="featureGameLink" style="cursor:pointer; margin-top: 7px; display:block;float:right;"><?= $isFeatured ? 'Unfeature' : 'Feature' ?> Game</a>
-            <?php }} ?>
+            <?php }
+            if ($isReviewer && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
+                $isReviewed = $gameRepository->hasUserReviewedGame($_SESSION['userid'], $game['g_id']);
+            ?>
+                <a href="/games/make-review.php?s=<?= $game['user_id'] . '_' . $game['g_id'] ?>" style="margin-top: 7px; display:block;float:right;<?= $isEditor ? 'margin-right: 10px;' : '' ?>"><?= $isReviewed ? 'Edit' : 'Write' ?> Review</a>
+                <?php
+                if ($isEditorOrReviewer) {
+                    echo '<span style="margin-top: 7px; display:block; float:right; margin-right: -77px;"> | </span>';
+                }
+                ?>
+            <?php
+        }}
+        ?>
             <script>
             window.g_id = <?= $game['g_id'] ?>;
             swfobject.embedSWF("/swf/contest.swf", "contestflash", "150", "30", "8", "/swfobject/expressInstall.swf", { g: window.g_id}, { bgcolor: "#000000", menu: "false", quality: "high", scale: "noscale", salign: "tl", wmode: "opaque" });
@@ -123,14 +139,14 @@ if(isset($_GET['challenge'])){
             <?php } else if ($game['isprivate'] == 1) { $showPrompt = true; ?>
             <br><br>
             <div class="alert">This game is private but you have the key!</div>
-            <?php } else if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) { $showPrompt = true; } ?>
+            <?php } else if ($isEditorOrReviewer && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) { $showPrompt = true; } ?>
 
             <?php
             $challengePromptEditor = false;
             $challengePrompt = false;
             if(!$showPrompt) { echo '<br><br>'; }
             if((!$challenge) && (isset($_GET['challenge']))) {
-                if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
+                if ($isEditorOrReviewer && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
                     echo '<br><br>';
                     $challengePromptEditor = true;
                 }
@@ -142,7 +158,7 @@ if(isset($_GET['challenge'])){
                 $challengePrompt = true;
             }
             if($challenge) {
-                if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
+                if ($isEditorOrReviewer && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
                     echo '<br><br>';
                     $challengePromptEditor = true;
                 }
@@ -260,6 +276,16 @@ if(isset($_GET['challenge'])){
                 echo '<p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">' . nl2br(htmlspecialchars($game['description'])) . '</p>';
             }
 
+            // Get reviews
+            $reviews = $gameRepository->getReviewsForGame($game['g_id']);
+            if ($reviews) {
+                echo '<div class="morelists"><h4>Game Reviews</h4><ul style="color:#ccc;">';
+                foreach ($reviews as $review) {
+                    echo '<li><a href="view-review.php?s=' . $game['user_id'] . '_' . $game['g_id'] . '&userid=' . $review['userid'] . '">' . htmlspecialchars(($review['title'])) . '</a> a review by <a style="font-weight: normal; color: #fff;" href="../members/?u=' . htmlspecialchars($review['username']) . '">' . htmlspecialchars($review['username']) . '</a></li>';
+                }
+                echo '</ul></div>';
+            }
+
             // Get game tags
             $tags = $gameRepository->getTagsFromGame($game['g_id']);
             if ($tags) {
@@ -368,13 +394,13 @@ if(isset($_GET['challenge'])){
             </div>
 
             <div id="events" style="width: 260px; height: 480px;<?php if($showPrompt && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) { echo ' margin-top: 85px;'; } ?><?php
-            if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
+            if ($isEditorOrReviewer && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
                 echo ' margin-top: 15px;';
             }
             if ($challengePrompt) {
-                echo ' margin-top: 50px;';
+                echo ' margin-top: 55px;';
             } else if ($challengePromptEditor) {
-                echo ' margin-top: 35px;';
+                echo ' margin-top: 40px;';
             }
             ?>">
             <div id="events_ticker"></div>

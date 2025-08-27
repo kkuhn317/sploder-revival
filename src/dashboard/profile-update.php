@@ -2,15 +2,16 @@
 
 include('../content/logincheck.php');
 require_once('../content/censor.php');
+require_once('../content/keyboardfilter.php');
 // Get the form data
 $username = $_SESSION['username'];
-$description = censorText($_POST["description"]);
-$hobbies = censorText($_POST["hobbies"]);
-$favoriteSports = censorText($_POST["favoriteSports"]);
-$favoriteGames = censorText($_POST["favoriteGames"]);
-$favoriteMovies = censorText($_POST["favoriteMovies"]);
-$favoriteBands = censorText($_POST["favoriteBands"]);
-$whomIRespect = censorText($_POST["whomIRespect"]);
+$description = filterKeyboard(censorText($_POST["description"]), false);
+$hobbies = filterKeyboard(censorText($_POST["hobbies"]));
+$favoriteSports = filterKeyboard(censorText($_POST["favoriteSports"]));
+$favoriteGames = filterKeyboard(censorText($_POST["favoriteGames"]));
+$favoriteMovies = filterKeyboard(censorText($_POST["favoriteMovies"]));
+$favoriteBands = filterKeyboard(censorText($_POST["favoriteBands"]));
+$whomIRespect = filterKeyboard(censorText($_POST["whomIRespect"]));
 $isolated = censorText($_POST["isolate"]) ?? null;
 
 $description = mb_substr($description, 0, 500);

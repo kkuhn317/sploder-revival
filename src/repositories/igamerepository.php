@@ -179,6 +179,80 @@ interface IGameRepository
      * @return bool true if featured, false otherwise
      */
     public function getFeaturedStatus(int $id): bool;
+
+    /**
+     * Get review data for a game by a reviewer
+     * 
+     * @param int $userId
+     * @param int $gameId
+     * @return array review data or empty array if no review exists
+     */
+    public function getReviewData(int $userId, int $gameId): array;
+
+    /**
+     * Save review data for a game by a reviewer
+     * 
+     * @param int $userId
+     * @param int $gameId
+     * @param string $title
+     * @param string $review
+     * @param bool $isPublished
+     * @return void
+     */
+    public function saveReview(int $userId, int $gameId, string $title, string $review, bool $isPublished): void;
+
+    /**
+     * Get published reviews for a game
+     * 
+     * @param int $perPage
+     * @param int $offset
+     * @return PaginationData of reviews
+     */
+    public function getPublicReviews(int $offset, int $perPage): PaginationData;
+
+    /**
+     * Get reviewer user IDs who have published reviews for a game
+     * 
+     * @param int $gameId
+     * @return array of user IDs
+     */
+    public function getReviewsForGame(int $gameId): array;
+
+    /**
+     * Get reviews by username
+     * 
+     * @param string $username
+     * @return array of reviews
+     */
+    public function getReviewsByUsername(string $username): array;
+
+    /**
+     * Get all reviews by username
+     * 
+     * @param string $username
+     * @param int $offset
+     * @param int $perPage
+     * @return PaginationData of reviews
+     */
+    public function getAllReviewsByUsername(string $username, int $offset, int $perPage): PaginationData;
+
+    /**
+     * Delete a review by a reviewer for a game
+     * 
+     * @param int $userId
+     * @param int $gameId
+     * @return void
+     */
+    public function deleteReview(int $userId, int $gameId): void;
+
+    /**
+     * Check if a user has reviewed a game
+     * 
+     * @param int $userId
+     * @param int $gameId
+     * @return bool true if reviewed, false otherwise
+     */
+    public function hasUserReviewedGame(int $userId, int $gameId): bool;
 }
 
 class GameMetricsForUser

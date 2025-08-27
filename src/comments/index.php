@@ -44,10 +44,15 @@ function extracted(IDatabase $db): string
             AND c.venue ~ '_[0-9]+-'
             AND CAST(SUBSTRING(c.venue FROM '_([0-9]+)-') AS INTEGER) = g.g_id
          )
+         LEFT JOIN reviews r ON (
+            c.venue LIKE 'review-%'
+            AND CAST(SUBSTRING(c.venue FROM 'review-([0-9]+)') AS INTEGER) = r.review_id
+         )
          $clause
          AND (
-            c.venue NOT LIKE 'game-%' 
-            OR (g.g_id IS NOT NULL AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)
+            (c.venue NOT LIKE 'game-%' AND c.venue NOT LIKE 'review-%')
+            OR (g.g_id IS NOT NULL AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 AND c.venue LIKE 'game-%')
+            OR (r.review_id IS NOT NULL AND r.ispublished = true AND r.g_id IS NOT NULL AND c.venue LIKE 'review-%' AND EXISTS (SELECT 1 FROM games g2 WHERE g2.g_id = r.g_id AND g2.ispublished = 1 AND g2.isprivate = 0 AND g2.isdeleted = 0))
          )", 0,
         $params
     );
@@ -98,17 +103,22 @@ $latestp = ceil($fulltotal / $perPage) - 1;
 $params[':p'] = max(0, ($latestp - $p) * $perPage);
 $p = $params[':p'];
 
-$result2 = $db->query("SELECT c.* 
+    $result2 = $db->query("SELECT c.* 
     FROM comments c
     LEFT JOIN games g ON (
         c.venue LIKE 'game-%' 
         AND c.venue ~ '_[0-9]+-'
         AND CAST(SUBSTRING(c.venue FROM '_([0-9]+)-') AS INTEGER) = g.g_id
     )
+    LEFT JOIN reviews r ON (
+        c.venue LIKE 'review-%'
+        AND CAST(SUBSTRING(c.venue FROM 'review-([0-9]+)') AS INTEGER) = r.review_id
+    )
     ".$clause."
     AND (
-        c.venue NOT LIKE 'game-%' 
-        OR (g.g_id IS NOT NULL AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)
+        (c.venue NOT LIKE 'game-%' AND c.venue NOT LIKE 'review-%')
+        OR (g.g_id IS NOT NULL AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 AND c.venue LIKE 'game-%')
+        OR (r.review_id IS NOT NULL AND r.ispublished = true AND r.g_id IS NOT NULL AND c.venue LIKE 'review-%' AND EXISTS (SELECT 1 FROM games g2 WHERE g2.g_id = r.g_id AND g2.ispublished = 1 AND g2.isprivate = 0 AND g2.isdeleted = 0))
     )
     ORDER BY c.thread_id DESC, c.id ASC
     LIMIT $perPage OFFSET :p", $params);
