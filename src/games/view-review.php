@@ -75,7 +75,9 @@ $gameAuthor = $gameInfo['author'];
                         global $gameTitle;
                         global $gameId;
                         global $userId;
-                        return str_replace($gameTitle, '<a href="play.php?s=' . $userId . '_' . $gameId . '">' . htmlspecialchars($gameTitle) . '</a>', htmlspecialchars($text));
+                        $pattern = '/' . preg_quote($gameTitle, '/') . '/i';
+                        $replacement = '<a href="play.php?s=' . $userId . '_' . $gameId . '">' . htmlspecialchars($gameTitle) . '</a>';
+                        return preg_replace($pattern, $replacement, htmlspecialchars($text));
                     }
                     function formatReview($reviewText) {
                         // Split by double line breaks for paragraphs
