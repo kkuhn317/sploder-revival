@@ -595,6 +595,7 @@ function us_postMessage(btn)
     $us_last_action = "post";
 
     var msg = btn.form[$us_namespace + "messagebody"].value.split("<").join("&lt;").split(">").join("&gt;");
+    msg = msg.replace(/[\n\r]+/g, ' ');
     msg = msg.trim();
     // Disallow emojis and non-QWERTY characters using the provided regex (now allows square brackets [])
     var allowedRegex = /^[a-zA-Z0-9_ !@#$%^&*();\\/|<>"'+.,:?=\-\[\]]*$/;

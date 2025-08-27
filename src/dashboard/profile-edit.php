@@ -94,9 +94,19 @@ $userInfo = $userRepository->getUserInfo($_SESSION['username']);
                 <script type="text/javascript">
                 function filterProfileFields(form) {
                     // Regex: only allow standard keyboard characters
-                    var allowed = /^[a-zA-Z0-9_ !@#$%^&*();\\/|<>"'+.,:?=\-\[\]]*$/;
-                    var fields = [
-                        form.description,
+                    var allowedWithNewlines = /^[a-zA-Z0-9_ !@#$%^&*();\/|<>"'+.,:?=\-\[\]\n\r]*$/;
+                    var allowedNoNewlines = /^[a-zA-Z0-9_ !@#$%^&*();\/|<>"'+.,:?=\-\[\]]*$/;
+
+                    // Description: allow newlines
+                    var descVal = form.description.value;
+                    if (!allowedWithNewlines.test(descVal)) {
+                        alert("Description contains invalid characters. Only standard keyboard characters (no emojis) are allowed.");
+                        form.description.focus();
+                        return false;
+                    }
+
+                    // All other fields: remove newlines, then test
+                    var otherFields = [
                         form.hobbies,
                         form.favoriteSports,
                         form.favoriteGames,
@@ -104,11 +114,12 @@ $userInfo = $userRepository->getUserInfo($_SESSION['username']);
                         form.favoriteBands,
                         form.whomIRespect
                     ];
-                    for (var i = 0; i < fields.length; i++) {
-                        var val = fields[i].value;
-                        if (!allowed.test(val)) {
+                    for (var i = 0; i < otherFields.length; i++) {
+                        var val = otherFields[i].value.replace(/[\n\r]+/g, ' ');
+                        otherFields[i].value = val;
+                        if (!allowedNoNewlines.test(val)) {
                             alert("One or more fields contain invalid characters. Only standard keyboard characters (no emojis) are allowed.");
-                            fields[i].focus();
+                            otherFields[i].focus();
                             return false;
                         }
                     }
