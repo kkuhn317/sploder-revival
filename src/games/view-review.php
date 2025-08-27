@@ -37,7 +37,7 @@ $gameAuthor = $gameInfo['author'];
     var _sf_startpt = (new Date()).getTime()
     </script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
-    <script type="text/javascript">window.rpcinfo = "Viewing Reviews";</script>
+    <script type="text/javascript">window.rpcinfo = "Viewing a Review";</script>
 </head>
 <?php include('../content/addressbar.php'); ?>
 
