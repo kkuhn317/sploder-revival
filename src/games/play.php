@@ -116,7 +116,7 @@ if(isset($_GET['challenge'])){
             ?>
                 <a href="/games/make-review.php?s=<?= $game['user_id'] . '_' . $game['g_id'] ?>" style="margin-top: 7px; display:block;float:right;<?= $isEditor ? 'margin-right: 10px;' : '' ?>"><?= $isReviewed ? 'Edit' : 'Write' ?> Review</a>
                 <?php
-                if ($isEditorOrReviewer) {
+                if ($isEditor && $isReviewer) {
                 ?>
                     <span style="margin-top: 7px; display:block; float:right; margin-right: -<?= $isReviewed ? '70' : '77' ?>px;"> | </span>
                 <?php
