@@ -399,4 +399,34 @@ where g_id = :g_id
 
         return $this->db->queryPaginated($query, $offset, $perPage);
     }
+
+    public function getReviewsForGame(int $gameId): array {
+        $query = "SELECT DISTINCT r.userid, m.username, r.title 
+                  FROM reviews r 
+                  JOIN members m ON r.userid = m.userid 
+                  WHERE r.g_id = :g_id AND r.ispublished = true";
+        $result = $this->db->query($query, [
+            ':g_id' => $gameId
+        ]);
+        if (empty($result)) {
+            return [];
+        }
+        return $result;
+    }
+
+    public function getReviewsByUsername(string $username): array {
+        $query = "SELECT r.userid, r.g_id, r.title, g.author, g.user_id as game_author_id, g.title as game_title 
+                  FROM reviews r 
+                  JOIN members m ON r.userid = m.userid 
+                  JOIN games g ON r.g_id = g.g_id
+                  WHERE m.username = :username AND r.ispublished = true AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0
+                  ORDER BY r.review_date DESC";
+        $result = $this->db->query($query, [
+            ':username' => $username
+        ]);
+        if (empty($result)) {
+            return [];
+        }
+        return $result;
+    }
 }

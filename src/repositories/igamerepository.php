@@ -209,6 +209,22 @@ interface IGameRepository
      * @return PaginationData of reviews
      */
     public function getPublicReviews(int $offset, int $perPage): PaginationData;
+
+    /**
+     * Get reviewer user IDs who have published reviews for a game
+     * 
+     * @param int $gameId
+     * @return array of user IDs
+     */
+    public function getReviewsForGame(int $gameId): array;
+
+    /**
+     * Get reviews by username
+     * 
+     * @param string $username
+     * @return array of reviews
+     */
+    public function getReviewsByUsername(string $username): array;
 }
 
 class GameMetricsForUser

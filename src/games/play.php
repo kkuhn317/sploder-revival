@@ -260,6 +260,16 @@ if(isset($_GET['challenge'])){
                 echo '<p class="description" style="overflow: hidden; border: 1px solid #999; padding: 10px; margin: 0; ">' . nl2br(htmlspecialchars($game['description'])) . '</p>';
             }
 
+            // Get reviews
+            $reviews = $gameRepository->getReviewsForGame($game['g_id']);
+            if ($reviews) {
+                echo '<div class="morelists"><h4>Game Reviews</h4><ul style="color:#ccc;">';
+                foreach ($reviews as $review) {
+                    echo '<li><a href="view-review.php?s=' . $game['user_id'] . '_' . $game['g_id'] . '&userid=' . $review['userid'] . '">' . htmlspecialchars(($review['title'])) . '</a> a review by <a style="font-weight: normal; color: #fff;" href="../members/?u=' . htmlspecialchars($review['username']) . '">' . htmlspecialchars($review['username']) . '</a></li>';
+                }
+                echo '</ul></div>';
+            }
+
             // Get game tags
             $tags = $gameRepository->getTagsFromGame($game['g_id']);
             if ($tags) {
