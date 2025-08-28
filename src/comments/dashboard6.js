@@ -356,6 +356,8 @@ function determinePage(venue) {
         url = "/members/index.php?u=" + venue.split("messages-")[1];
     } else if (venue.indexOf("staff-page") == 0) {
         url = "/staff.php";
+    } else if (venue.indexOf("review") == 0) {
+        url = "/games/view-review.php?review=" + venue.split("review-")[1];
     }
     window.location.href = url;
 }

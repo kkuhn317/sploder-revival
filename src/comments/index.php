@@ -196,7 +196,7 @@ if ($a == "read") {
         http_response_code(400);
         die("Message must be greater than 8 and less than 500 characters.");
     }
-    $message = htmlspecialchars(censorText($filteredMessage), ENT_QUOTES, "UTF-8", false);
+    $message = htmlspecialchars(censorText(urldecode($filteredMessage)), ENT_QUOTES, "UTF-8", false);
     $reply = substr($formatter[2], 4);
 
     $venue = $_GET['v'];
