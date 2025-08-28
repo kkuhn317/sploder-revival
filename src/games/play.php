@@ -107,26 +107,30 @@ if(isset($_GET['challenge'])){
                     $isReviewer = str_contains($perms, 'R');
                     $isEditorOrReviewer = $isEditor || $isReviewer;
                 }
-                if ($isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
-                    $isFeatured = $gameRepository->getFeaturedStatus($game['g_id']);
-            ?>
-                <script type="text/javascript" src="actions.js"></script>
-                <a onclick="featureGame(<?= $game['g_id'] ?>, <?= $isFeatured ? 'false' : 'true' ?>)" id="featureGameLink" style="cursor:pointer; margin-top: 7px; display:block;float:right;"><?= $isFeatured ? 'Unfeature' : 'Feature' ?> Game</a>
-            <?php }
-            if ($isReviewer && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
-                $isReviewed = $gameRepository->hasUserReviewedGame($_SESSION['userid'], $game['g_id']);
-            ?>
-                <a href="/games/make-review.php?s=<?= $game['user_id'] . '_' . $game['g_id'] ?>" style="margin-top: 7px; display:block;float:right;<?= $isEditor ? 'margin-right: 10px;' : '' ?>"><?= $isReviewed ? 'Edit' : 'Write' ?> Review</a>
-                <?php
-                if ($isEditor && $isReviewer) {
-                ?>
-                    <span style="margin-top: 7px; display:block; float:right; margin-right: -<?= $isReviewed ? '70' : '77' ?>px;"> | </span>
-                <?php
-                }
-                ?>
-            <?php
-        }}
+?>
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 10px;">
+    <?php if (
+        $isEditor && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']
+    ) {
+        $isFeatured = $gameRepository->getFeaturedStatus($game['g_id']);
         ?>
+        <script type="text/javascript" src="actions.js"></script>
+        <a onclick="featureGame(<?= $game['g_id'] ?>, <?= $isFeatured ? 'false' : 'true' ?>)" id="featureGameLink" style="cursor:pointer;">
+            <?= $isFeatured ? 'Unfeature' : 'Feature' ?> Game
+        </a>
+    <?php }
+    if (
+        $isReviewer && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']
+    ) {
+        $isReviewed = $gameRepository->hasUserReviewedGame($_SESSION['userid'], $game['g_id']);
+        if ($isEditor) { ?>
+            <span>|</span>
+        <?php } ?>
+        <a href="/games/make-review.php?s=<?= $game['user_id'] . '_' . $game['g_id'] ?>">
+            <?= $isReviewed ? 'Edit' : 'Write' ?> Review
+        </a>
+    <?php }} ?>
+</div>
             <script>
             window.g_id = <?= $game['g_id'] ?>;
             swfobject.embedSWF("/swf/contest.swf", "contestflash", "150", "30", "8", "/swfobject/expressInstall.swf", { g: window.g_id}, { bgcolor: "#000000", menu: "false", quality: "high", scale: "noscale", salign: "tl", wmode: "opaque" });
