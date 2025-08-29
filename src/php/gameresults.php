@@ -32,10 +32,6 @@ function difficulty(int $wins, int $loss): int {
     $hash = $_GET['ax'];
     $gtm = filter_var($_POST['gtm'], FILTER_VALIDATE_INT);
 
-    if (isset($_POST['scorebased']) && $_POST['scorebased'] == '1') {
-        $gtm = filter_var($_POST['score'], FILTER_VALIDATE_INT);
-    }
-
     $w = filter_var($_POST['w'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     $w = $w ? 'true' : 'false';
 
@@ -49,6 +45,9 @@ if ($verifiedScore) {
     session_start();
     if (!isset($_SESSION['username'])) {
         die("&success=true");
+    }
+    if (isset($_POST['scorebased']) && $_POST['scorebased'] == '1') {
+        $gtm = filter_var($_POST['score'], FILTER_VALIDATE_INT);
     }
     require_once('../database/connect.php');
     $db = getDatabase();
