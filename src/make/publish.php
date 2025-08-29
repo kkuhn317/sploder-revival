@@ -111,7 +111,7 @@ $isolated = $userRepository->isIsolated($_SESSION['username']);
             <div style="display:none;" id="description">
                 <hr>
                 <p>Please enter a description for your game.</p>
-                <textarea id="descriptionTextarea" type="text" name="description" size="50"
+                <textarea id="descriptionTextarea" type="text" name="description" size="50" maxlength="2000"
                     style="width: 300px; height: 200px;"><?= br2nl($game['description']) ?></textarea><br><br>
                 <input onclick="sendDescription()" type="submit" value="Save Description"
                     class="loginbutton postbutton">

@@ -4,6 +4,11 @@ require('content/verify.php');
 require('../content/censor.php');
 $description = trim(censorText($_POST['description']));
 
+// Enforce max length of 2000 characters
+if (strlen($description) > 2000) {
+    $description = substr($description, 0, 2000);
+}
+
 // Check whether the description contains characters other than alphabets, numbers, spaces and !@#$%^&*()_+{}|:"<>?`-=[]\;',./
 if (!preg_match('/^[a-zA-Z0-9 !@#$%^&*()_+{}|:"<>?`\-=\[\]\\;\',.\/\n\r]*$/', $description)) {
     // Send 400
