@@ -20,7 +20,7 @@
 </head>
 <?php include('../../content/addressbar.php'); ?>
 
-<body id="everyones" class="reviews">
+<body id="everyones" class="graphics">
     <?php include('../../content/headernavigation.php'); ?>
 
     <div id="page">
