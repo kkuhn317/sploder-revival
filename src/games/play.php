@@ -401,15 +401,15 @@ if(isset($_GET['challenge'])){
                 </p>
             </div>
 
-            <div id="events" style="width: 260px; height: 480px;<?php if($showPrompt && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) { echo ' margin-top: 85px;'; } ?><?php
-            if ($isEditorOrReviewer && $game['isprivate'] == 0 && $game['ispublished'] == 1 && $game['isdeleted'] == 0 && $game['author'] != $_SESSION['username']) {
-                echo ' margin-top: 15px;';
+            <div id="events" style="width: 260px; height: 480px; <?php
+            $marginTop = 20;
+            if ($showPrompt){
+                $marginTop = $marginTop + 70;
             }
-            if ($challengePrompt) {
-                echo ' margin-top: 55px;';
-            } else if ($challengePromptEditor) {
-                echo ' margin-top: 40px;';
+            if ($challengePrompt){
+                $marginTop = $marginTop + 40;
             }
+            echo 'margin-top: '.$marginTop.'px;';
             ?>">
             <div id="events_ticker"></div>
 	        </div>
