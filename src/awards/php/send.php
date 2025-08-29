@@ -29,8 +29,9 @@ if ($membername == $_SESSION['username']) {
 if (!in_array($category, $valid_categories)) {
     die("Haxxor detected");
 }
-
-$message = $_GET['message'];
+require_once('../../content/censor.php');
+require_once('../../content/keyboardfilter.php');
+$message = filterKeyboard(censorText($_GET['message']));
 
 // If message is over 40 characters, die
 
