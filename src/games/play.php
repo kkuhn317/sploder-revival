@@ -106,6 +106,9 @@ if(isset($_GET['challenge'])){
                     $isEditor = str_contains($perms, 'E');
                     $isReviewer = str_contains($perms, 'R');
                     $isEditorOrReviewer = $isEditor || $isReviewer;
+                    if ($isEditorOrReviewer) {
+                        echo '<style>.challenge_prompt { margin-top: -10px; }</style>';
+                    }
                 }
 ?>
 <div style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 10px;">
