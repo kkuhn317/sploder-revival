@@ -106,7 +106,7 @@ if(isset($_GET['challenge'])){
                     $isEditor = str_contains($perms, 'E');
                     $isReviewer = str_contains($perms, 'R');
                     $isEditorOrReviewer = $isEditor || $isReviewer;
-                    if ($isEditorOrReviewer) {
+                    if ($isEditorOrReviewer && $game['author'] != $_SESSION['username']) {
                         echo '<style>.challenge_prompt { margin-top: -10px !important; }</style>';
                     }
                 }
