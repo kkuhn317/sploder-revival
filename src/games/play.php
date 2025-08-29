@@ -410,6 +410,9 @@ if(isset($_GET['challenge'])){
             if ($challengePrompt){
                 $marginTop = $marginTop + 40;
             }
+            if ($isEditorOrReviewer && $game['author'] != $_SESSION['username']) {
+                $marginTop = $marginTop - 75;
+            }
             echo 'margin-top: '.$marginTop.'px;';
             ?>">
             <div id="events_ticker"></div>
