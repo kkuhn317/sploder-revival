@@ -129,8 +129,9 @@ if(isset($_GET['challenge'])){
         <a href="/games/make-review.php?s=<?= $game['user_id'] . '_' . $game['g_id'] ?>">
             <?= $isReviewed ? 'Edit' : 'Write' ?> Review
         </a>
-    <?php }} ?>
+    <?php } ?>
 </div>
+		<?php } ?>
             <script>
             window.g_id = <?= $game['g_id'] ?>;
             swfobject.embedSWF("/swf/contest.swf", "contestflash", "150", "30", "8", "/swfobject/expressInstall.swf", { g: window.g_id}, { bgcolor: "#000000", menu: "false", quality: "high", scale: "noscale", salign: "tl", wmode: "opaque" });
