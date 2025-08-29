@@ -47,7 +47,9 @@ if ($verifiedScore) {
         die("&success=true");
     }
     if (isset($_POST['scorebased']) && $_POST['scorebased'] == '1') {
-        $gtm = filter_var($_POST['score'], FILTER_VALIDATE_INT);
+        $insert = filter_var($_POST['score'], FILTER_VALIDATE_INT);
+    } else {
+        $insert = $gtm;
     }
     require_once('../database/connect.php');
     $db = getDatabase();
@@ -56,7 +58,7 @@ if ($verifiedScore) {
         VALUES (:username, :pubkey, :gtm, :w)", [
         ':username' => $_SESSION['username'],
         ':pubkey' => $id[1],
-        ':gtm' => $gtm,
+        ':gtm' => $insert,
         ':w' => $w
     ]);
 
