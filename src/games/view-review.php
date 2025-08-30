@@ -73,11 +73,9 @@ $gameAuthor = $gameInfo['author'];
                     <?php
                     function gameLinkFormat($text) {
                         global $gameTitle, $gameId, $userId;
-                        // Trim trailing spaces from the game title for matching
-                        $trimmedTitle = rtrim($gameTitle);
-                        // Regex: match the game title with optional trailing spaces (case-insensitive)
-                        $pattern = '/(' . preg_quote($trimmedTitle, '/') . ')\s*/i';
-                        $replacement = '<a href="play.php?s=' . $userId . '_' . $gameId . '">' . htmlspecialchars($trimmedTitle) . '</a>';
+                        // Use the game title as-is, including spaces
+                        $pattern = '/' . preg_quote($gameTitle, '/') . '/i';
+                        $replacement = '<a href="play.php?s=' . $userId . '_' . $gameId . '">' . htmlspecialchars($gameTitle) . '</a>';
                         // Replace all occurrences, case-insensitive
                         return preg_replace($pattern, $replacement, htmlspecialchars($text));
                     }
