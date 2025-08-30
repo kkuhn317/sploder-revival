@@ -139,14 +139,13 @@ if ($totalGraphics > 0){
     // All hail GitHub Copilot!!
     // TODO: in switching to a repository, consider caching, maybe improving query
     $validTributesCount = $db->queryFirstColumn("SELECT COUNT(*)
-        FROM games
-        WHERE title ILIKE 'Tribute to %'
-        AND author = :username $publicgames
-        AND EXISTS (
-            SELECT 1 FROM members
-            WHERE username ILIKE SUBSTRING(title FROM 12 FOR LENGTH(title) - 11)
-            AND username ILIKE :username = FALSE
-        )
+    FROM games g
+    JOIN members m
+    ON lower(m.username) = lower(substring(g.title from 12)) -- or use split_part if format is strict
+    WHERE g.title ILIKE 'Tribute to %'
+    AND g.author = :username
+    $publicgames
+    AND lower(m.username) <> lower(:username)
     ", 0, [
         ':username' => $username
     ]);
