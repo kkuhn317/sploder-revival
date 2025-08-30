@@ -141,7 +141,11 @@ $nocache = time();
             </div>
             <h4 class="mprofgames">Games by <?= $username ?></h4>
                 <?php
+                // Maybe this takes a ton of time?
+                $gameTime = microtime(true);
                     $gameListRenderService->renderPartialViewForUser($username, $_GET['o'] ?? 0, 12);
+                    $gameTime = microtime(true) - $gameTime;
+                    echo "<!-- Game list render time: $gameTime seconds -->";
                 ?>
 
                 <!-- SWFHTTPRequest - for browsers that don't support CORS -->
@@ -197,11 +201,7 @@ $nocache = time();
                 <?php } ?>
                 <div class="spacer">&nbsp;</div>
                 <?php
-                // Time this
-                $friendTime = microtime(true);
                 echo $friendsListRenderService->renderPartialViewForMemberFriends($username);
-                $friendTime = microtime(true) - $friendTime;
-                echo "<!-- Friends list generated in $friendTime seconds -->";
                 ?>
                 <div class="spacer">&nbsp;</div>
             </div>
