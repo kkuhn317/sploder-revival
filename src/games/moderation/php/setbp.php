@@ -14,7 +14,10 @@ if ($count == 0) {
     header("Location: ../index.php?err=User does not exist");
     die();
 }
-
+// Get boost points
+$oldbp = $db->queryFirstColumn("SELECT boostpoints FROM members WHERE username=:username", 0, [
+    ':username' => $username
+]);
 // Set boost points
 if (
     $db->execute("UPDATE members SET boostpoints = :boostpoints WHERE username=:username", [
@@ -22,11 +25,6 @@ if (
     ':username' => $username
     ])
 ) {
-    // Get boost points
-    $oldbp = $db->queryFirstColumn("SELECT boostpoints FROM members WHERE username=:username", 0, [
-        ':username' => $username
-    ]);
-
     include('log.php');
     logModeration('set boost points', 'from ' . $oldbp . ' to ' . $_POST['bp'] . ' for ' . $username, 2);
     header("Location: ../index.php?msg=Boost points set successfully");
