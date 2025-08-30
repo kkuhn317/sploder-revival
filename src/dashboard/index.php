@@ -63,7 +63,7 @@ $isModerator = $perms !== null && $perms !== '' && str_contains($perms, 'M');
         <div id="idbadge">
           <div>
             <a href="../accounts/avatar.php">
-              <img src="../php/avatarproxy.php?u=<?= $username ?>" alt="Edit Your Avatar" title="Edit Your Avatar" border="0"
+              <img src="../php/avatarproxy.php?u=<?= $username ?>&nocache=<?= time() ?>" alt="Edit Your Avatar" title="Edit Your Avatar" border="0"
                 width="96" height="96">
             </a>
             <p class="badgename">
@@ -140,12 +140,12 @@ $isModerator = $perms !== null && $perms !== '' && str_contains($perms, 'M');
         ?>
         <div class="promo"><b>NOTICE: </b>Your account access has been limited. A moderator has disallowed you from publishing games, making comments or giving awards. You will be unbanned on <?= date('Y/m/d', $banInfo['autounbandate']) ?>.<br>Reason: <?= htmlspecialchars($banInfo['reason']) ?></div>
       <?php } ?>
-      <?php include('../content/friendgamelist.php'); ?>
-      <br>
-      <div class="spacer">&nbsp;</div>
-      <?php include('../content/friendactivity.php') ?>
-      <br>
-      <br>
+      <?php /* include('../content/friendgamelist.php'); */ ?>
+      <!-- <br> -->
+      <!-- <div class="spacer">&nbsp;</div> -->
+      <?php /* include('../content/friendactivity.php') */ ?>
+      <!-- <br>
+      <br> -->
       <?php if (!$isolated) { ?>
       <div class="notifications">
           <h4>Messages on your Pages</h4>

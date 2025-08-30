@@ -16,6 +16,7 @@ $friendsListRenderService = new FriendsListRenderService($friendsRepository);
 $difficulty = $stats['avg_difficulty'] ?? 50;
 $feedback = $stats['avg_score'] ?? 50;
 $awesomeness = $stats['awesomeness'] ?? 50;
+$nocache = time();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -40,7 +41,7 @@ $awesomeness = $stats['awesomeness'] ?? 50;
             <div class="mprof">
                 <div class="mprofgroup mprofvcard">
                     <a href="/members/index.php?u=<?= $username ?>"><img class="mprofavatar96"
-                            src="../php/avatarproxy.php?u=<?= $username ?>" width="96" height="96"
+                            src="../php/avatarproxy.php?u=<?= $username ?>&nocache=<?= $nocache ?>" width="96" height="96"
                             alt="<?= $username ?>" /></a>
                     <div class="mprofvitals">
                         <h2><a href="/members/index.php?u=<?= $username ?>"><?= $username ?></a></h2>

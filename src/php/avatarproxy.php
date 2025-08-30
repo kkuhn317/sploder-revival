@@ -15,6 +15,8 @@ if ($size != 96 && $size != 48 && $size != 24) {
 }
 // Resize the image if its not 96x96
 if ($size != 96) {
+    // Allow caching for 1 day
+    header('Cache-Control: public, max-age=86400');
     $img = imagecreatefromstring($raw);
     $img = imagescale($img, $size, $size);
 
