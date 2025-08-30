@@ -2,6 +2,15 @@
 
 function display_user_info($username)
 {
+    // Helper function to time SQL queries and output HTML comments
+    function time_sql_query($label, $callback) {
+        $start = microtime(true);
+        $result = $callback();
+        $end = microtime(true);
+        $elapsed = number_format(($end - $start) * 1000, 2);
+        echo "<!-- SQL Query [$label] took {$elapsed} ms -->\n";
+        return $result;
+    }
     require_once('../repositories/repositorymanager.php');
     require_once('../services/AwardsListRenderService.php');
     $userRepository = RepositoryManager::get()->getUserRepository();
@@ -17,7 +26,9 @@ function display_user_info($username)
     // TODO:: just inline this when migrating to the repository
     $publicgames = " AND isdeleted=0 AND ispublished=1 AND isprivate=0";
 
-    $row = $userRepository->getUserInfo($username);
+    $row = time_sql_query('getUserInfo', function() use ($userRepository, $username) {
+        return $userRepository->getUserInfo($username);
+    });
     //check if all columns are empty or if row does not exist
     if (
         empty($row['description'])
@@ -74,7 +85,9 @@ function setClass(id, c) {
     <?php } ?>
 <?php
     // Get required data for awards
-    $totalAwards = $awardsRepository->getAwardCount($username);
+    $totalAwards = time_sql_query('getAwardCount', function() use ($awardsRepository, $username) {
+        return $awardsRepository->getAwardCount($username);
+    });
     if ($totalAwards > 0) {
         
 ?>
@@ -83,7 +96,9 @@ function setClass(id, c) {
     <div class="mprofcontent hidden" id="mprof_awards">
         <div id="profile_awards">
             <?php
-            $awards = $awardsRepository->getAwardsPage($username, 0, 25);
+            $awards = time_sql_query('getAwardsPage', function() use ($awardsRepository, $username) {
+                return $awardsRepository->getAwardsPage($username, 0, 25);
+            });
             $material_list = $awardsListRenderService->getMaterialList();
             $awardsListRenderService->renderAwardsList($awards, 64, 'img');
             ?>
@@ -93,14 +108,18 @@ function setClass(id, c) {
 </div>
 <?php
     }
-$totalGraphics = $graphicsRepository->getTotalPublicGraphicsByUsername($username);
+$totalGraphics = time_sql_query('getTotalPublicGraphicsByUsername', function() use ($graphicsRepository, $username) {
+    return $graphicsRepository->getTotalPublicGraphicsByUsername($username);
+});
 if ($totalGraphics > 0){
 ?>
 <div class="mprofgroup mprofsection">
     <h4><a href="#" onclick="setClass('mprof_graphics', 'shown'); return false;">Graphics (<?= $totalGraphics ?>)</a><a name="top"></a></h4>
     <div class="mprofcontent hidden" id="mprof_graphics"><br>
     <?php        
-        $graphicListRenderService->renderPartialViewForMemberPublicGraphics($username);
+        time_sql_query('renderPartialViewForMemberPublicGraphics', function() use ($graphicListRenderService, $username) {
+            $graphicListRenderService->renderPartialViewForMemberPublicGraphics($username);
+        });
     ?>
 </div></div>
 <?php
@@ -110,25 +129,19 @@ if ($totalGraphics > 0){
 
     // Get required data for votes, comments, vote average, tributes, group memberships, and group ownerships
     // TODO: Group Memberships, Group Ownerships, Comment view page
-    $votes_cast = $db->queryFirstColumn("SELECT COUNT(*) as votes
-        FROM votes
-        WHERE username = :username", 0, [
-        ':username' => $username
-    ]);
+    $votes_cast = time_sql_query('votes_cast', function() use ($db, $username) {
+        return $db->queryFirstColumn("SELECT COUNT(*) as votes FROM votes WHERE username = :username", 0, [ ':username' => $username ]);
+    });
 
-    $comments_made = $db->queryFirstColumn("SELECT COUNT(*) as comments
-        FROM comments
-        WHERE creator_name = :username", 0, [
-        ':username' => $username
-    ]);
+    $comments_made = time_sql_query('comments_made', function() use ($db, $username) {
+        return $db->queryFirstColumn("SELECT COUNT(*) as comments FROM comments WHERE creator_name = :username", 0, [ ':username' => $username ]);
+    });
 
     // Round the average vote to the nearest integer and make it a percentage out of 100
     // Scores are store in the database as integers from 1 to 5
-    $vote_avg = $db->queryFirstColumn("SELECT AVG(score) as vote_avg 
-        FROM votes
-        WHERE username = :username", 0, [
-        ':username' => $username
-        ]) ?? 0;
+    $vote_avg = time_sql_query('vote_avg', function() use ($db, $username) {
+        return $db->queryFirstColumn("SELECT AVG(score) as vote_avg FROM votes WHERE username = :username", 0, [ ':username' => $username ]) ?? 0;
+    });
 
     // Convert the average vote to a percentage out of 96 (the width of the bar [WHY GEOFF, WHY!!!])
     $max_score = 5;
@@ -138,18 +151,9 @@ if ($totalGraphics > 0){
     // and have a valid username except for the user themselves in one query
     // All hail GitHub Copilot!!
     // TODO: in switching to a repository, consider caching, maybe improving query
-    $validTributesCount = $db->queryFirstColumn("SELECT COUNT(*)
-        FROM games
-        WHERE title ILIKE 'Tribute to %'
-        AND author = :username $publicgames
-        AND EXISTS (
-            SELECT 1 FROM members
-            WHERE username ILIKE SUBSTRING(title FROM 12 FOR LENGTH(title) - 11)
-            AND username ILIKE :username = FALSE
-        )
-    ", 0, [
-        ':username' => $username
-    ]);
+    $validTributesCount = time_sql_query('validTributesCount', function() use ($db, $username, $publicgames) {
+        return $db->queryFirstColumn("SELECT COUNT(*) FROM games WHERE title ILIKE 'Tribute to %' AND author = :username $publicgames AND EXISTS ( SELECT 1 FROM members WHERE username ILIKE SUBSTRING(title FROM 12 FOR LENGTH(title) - 11) AND username ILIKE :username = FALSE )", 0, [ ':username' => $username ]);
+    });
     ?>
 <div class="mprofgroup mprofsection">
     <h4><a href="#" onclick="setClass('mprof_activity', 'shown'); return false;"
@@ -182,15 +186,10 @@ if ($totalGraphics > 0){
 
     <?php
     // Get required data for reactions
-    $five_star_faves = $db->queryFirstColumn("SELECT COUNT(*) as five_star_faves
-        FROM votes v 
-        JOIN games g
-        ON v.g_id = g.g_id
-        AND g.author = :username
-        WHERE v.score = 5
-        AND v.username != :username", 0, [
-        ':username' => $username,
-    ]);
+
+    $five_star_faves = time_sql_query('five_star_faves', function() use ($db, $username) {
+        return $db->queryFirstColumn("SELECT COUNT(*) as five_star_faves FROM votes v JOIN games g ON v.g_id = g.g_id AND g.author = :username WHERE v.score = 5 AND v.username != :username", 0, [ ':username' => $username ]);
+    });
 
     // Get required data for comments received
     // This is  calculated by counting the number of comments on the user's items.
@@ -200,13 +199,10 @@ if ($totalGraphics > 0){
     // Comments received must not include the user's own comments on their own items
 
     // TODO: change string concat to paramete injection for LIKE clause
-    $comments_received = $db->queryFirstColumn("SELECT COUNT(*) as comments_received
-        FROM comments
-        WHERE venue
-        LIKE '%-$username'
-        AND creator_name != :username", 0, [
-        ':username' => $username
-    ]);
+
+    $comments_received = time_sql_query('comments_received', function() use ($db, $username) {
+        return $db->queryFirstColumn("SELECT COUNT(*) as comments_received FROM comments WHERE venue LIKE '%-$username' AND creator_name != :username", 0, [ ':username' => $username ]);
+    });
 
     // TODO: Favourites
 
@@ -214,33 +210,28 @@ if ($totalGraphics > 0){
     // This is calculated by counting the number of games that have the title 'Tribute to username'
     // Care must be taken that the tribute is not to the user themselves and user1's tribute is not counted as user11's tribute
     // Tribute to detection is not case sensitive
-    $tributes_received = $db->queryFirstColumn("SELECT COUNT(*) as tributes_received
-        FROM games
-        WHERE title ILIKE 'Tribute to ' || :username AND author != :username $publicgames", 0, [
-        ':username' => $username
-    ]);
+
+    $tributes_received = time_sql_query('tributes_received', function() use ($db, $username, $publicgames) {
+        return $db->queryFirstColumn("SELECT COUNT(*) as tributes_received FROM games WHERE title ILIKE 'Tribute to ' || :username AND author != :username $publicgames", 0, [ ':username' => $username ]);
+    });
 
     // Get required data for comment rating
     // This is calculated by averaging the ratings of other users on the user's comments
     // Round off till 3 decimal places
     // Prevent NULL depreciation warning
-    $comment_rating = round($db->queryFirstColumn("SELECT AVG(score) as comment_rating
-        FROM comments
-        WHERE creator_name = :username", 0, [
-        ':username' => $username
-        ]) ?? 0, 3);
+
+    $comment_rating = round(time_sql_query('comment_rating', function() use ($db, $username) {
+        return $db->queryFirstColumn("SELECT AVG(score) as comment_rating FROM comments WHERE creator_name = :username", 0, [ ':username' => $username ]) ?? 0;
+    }), 3);
 
     // Get required data for contests won
     // This is calculated by counting the number of contests the user has won in the table 'contest_winner'
     // This table has 2 columns, g_id and contest_id
     // The user has won a contest if their g_id is present in the table
-    $contests_won = $db->queryFirstColumn("SELECT COUNT(*) as contests_won
-        FROM contest_winner cw
-        JOIN games g
-        ON cw.g_id = g.g_id
-        WHERE g.author = :username", 0, [
-        ':username' => $username
-    ]);
+
+    $contests_won = time_sql_query('contests_won', function() use ($db, $username) {
+        return $db->queryFirstColumn("SELECT COUNT(*) as contests_won FROM contest_winner cw JOIN games g ON cw.g_id = g.g_id WHERE g.author = :username", 0, [ ':username' => $username ]);
+    });
 
     ?>
 
@@ -269,7 +260,9 @@ if ($totalGraphics > 0){
 <?php
 // Get required data for reviews written
 $gameRepository = RepositoryManager::get()->getGameRepository();
-$reviews = $gameRepository->getReviewsByUsername($username);
+$reviews = time_sql_query('getReviewsByUsername', function() use ($gameRepository, $username) {
+    return $gameRepository->getReviewsByUsername($username);
+});
 if (count($reviews) > 0) {
 ?>
 <div class="mprofgroup mprofsection">

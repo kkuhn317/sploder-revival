@@ -5,11 +5,26 @@ require_once('../repositories/repositorymanager.php');
 require_once('../services/GameListRenderService.php');
 require_once('../services/FriendsListRenderService.php');
 
+
+// Helper function to time SQL queries and output HTML comments
+function time_query($label, $callback) {
+    $start = microtime(true);
+    $result = $callback();
+    $end = microtime(true);
+    $elapsed = number_format(($end - $start) * 1000, 2);
+    echo "<!-- Query [$label] took {$elapsed} ms -->\n";
+    return $result;
+}
+
 $gameListRenderService = new GameListRenderService(RepositoryManager::get()->getGameRepository());
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
-$friends = $friendsRepository->getTotalFriends($_GET['u'] ?? '');
+$friends = time_query('getTotalFriends', function() use ($friendsRepository) {
+    return $friendsRepository->getTotalFriends($_GET['u'] ?? '');
+});
 $userRepository = RepositoryManager::get()->getUserRepository();
-$stats = $userRepository->getUserStats($_GET['u'] ?? '');
+$stats = time_query('getUserStats', function() use ($userRepository) {
+    return $userRepository->getUserStats($_GET['u'] ?? '');
+});
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $friendsListRenderService = new FriendsListRenderService($friendsRepository);
 
