@@ -135,7 +135,10 @@ $isModerator = $perms !== null && $perms !== '' && str_contains($perms, 'M');
       <div class="spacer">&nbsp;</div>
       <?php include('../content/checkban.php') ?>
       <?php if (checkBan($username)) { ?>
-        <div class="promo"><b>NOTICE: </b>Your account access has been limited. A moderator has disallowed you from publishing games, making comments or giving awards.</div>
+        <?php
+        $banInfo = $userRepository->getBanInfo($username);
+        ?>
+        <div class="promo"><b>NOTICE: </b>Your account access has been limited. A moderator has disallowed you from publishing games, making comments or giving awards. You will be unbanned on <?= date('Y/m/d', $banInfo['autounbandate']) ?>.<br>Reason: <?= htmlspecialchars($banInfo['reason']) ?></div>
       <?php } ?>
       <?php include('../content/friendgamelist.php'); ?>
       <br>

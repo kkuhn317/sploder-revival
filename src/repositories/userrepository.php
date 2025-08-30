@@ -422,4 +422,10 @@ LIMIT 90;
         return (bool)$result;
     }
 
+    public function getBanInfo(string $username): array
+    {
+        $query = "SELECT reason, autounbandate FROM banned_members WHERE username = :username ORDER BY bandate DESC LIMIT 1";
+        $result = $this->db->queryFirst($query, [':username' => $username]);
+        return $result ? $result : ['reason' => '', 'autounbandate' => null];
+    }
 }

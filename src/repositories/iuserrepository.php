@@ -126,4 +126,12 @@ interface IUserRepository
      * @return bool true on success, false on failure
      */
     function setUserPerms(string $username, string $perms): bool;
+
+    /**
+     * Get ban reason of user by username
+     * 
+     * @param $username
+     * @return array ban info of user
+     */
+    function getBanInfo(string $username): array;
 }
