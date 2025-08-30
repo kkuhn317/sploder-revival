@@ -153,19 +153,23 @@ where g_id = :g_id
 
     public function getGamesFromUserAndGameSearch(string $userName, string $game, int $offset, int $perPage, $isDeleted): PaginationData
     {
-        $qs = 'SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.first_created_date, g.user_id, g.views, g.ispublished,g.isprivate, g.ispublished,
-        ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes,
-        c.challenge_id as challenge_id,
-        SIMILARITY(title, :game) as similarity_score
-        FROM games g 
-        LEFT JOIN votes r ON g.g_id = r.g_id 
-        LEFT JOIN challenges c ON g.g_id = c.g_id
-        WHERE g.author = :userName
-        AND g.isdeleted = :isDeleted
-        AND SIMILARITY(title, :game) > 0.3
-        GROUP BY g.g_id, g.title, c.challenge_id
-        ORDER BY similarity_score DESC, g.date DESC';
-
+        $qs = "
+            SELECT * FROM (
+                SELECT g.author, g.title, g.description, g.g_id, g.user_id, g.g_swf, g.date, g.first_created_date, g.user_id, g.views, g.ispublished, g.isprivate, g.ispublished,
+                    ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes,
+                    c.challenge_id as challenge_id,
+                    SIMILARITY(g.title, :game) as similarity_score
+                FROM games g
+                LEFT JOIN votes r ON g.g_id = r.g_id
+                LEFT JOIN challenges c ON g.g_id = c.g_id
+                WHERE g.author = :userName
+                  AND g.isdeleted = :isDeleted
+                  AND g.title % :game
+                GROUP BY g.g_id, g.title, c.challenge_id
+            ) sub
+            WHERE similarity_score > 0.3
+            ORDER BY similarity_score DESC, date DESC
+        ";
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,
             ':game' => $game,
@@ -188,16 +192,21 @@ where g_id = :g_id
 
     public function getGamesNewestByName(string $game, int $offset, int $perPage): PaginationData
     {
-        return $this->db->queryPaginated("SELECT g.g_id, g.author, g.title, g.description, g.user_id, g.g_swf, g.first_published_date, g.user_id, g.views, g.ispublished,
-            ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes 
-            FROM games g 
-            LEFT JOIN votes r ON g.g_id = r.g_id 
-            WHERE g.ispublished = 1
-            AND g.isprivate = 0
-            and g.isdeleted = 0
-            AND SIMILARITY(title, :game) > 0.3
-            GROUP BY g.g_id 
-            ORDER BY g.first_published_date DESC", $offset, $perPage, [
+        return $this->db->queryPaginated("
+            SELECT * FROM (
+                SELECT g.g_id, g.author, g.title, g.description, g.user_id, g.g_swf, g.first_published_date, g.user_id, g.views, g.ispublished,
+                    ROUND(AVG(r.score), 1) as avg_rating, COUNT(r.score) as total_votes, SIMILARITY(g.title, :game) as similarity_score
+                FROM games g
+                LEFT JOIN votes r ON g.g_id = r.g_id
+                WHERE g.ispublished = 1
+                  AND g.isprivate = 0
+                  AND g.isdeleted = 0
+                  AND g.title % :game
+                GROUP BY g.g_id
+            ) sub
+            WHERE similarity_score > 0.1
+            ORDER BY similarity_score DESC
+        ", $offset, $perPage, [
             ':game' => $game,
         ]);
     }
