@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict spFJBKsuiYdYLua41Ut1F85Hm7bhengOmxvEh8hXFAf2GDGpneUWXE0YTqDTcGt
+\restrict XnlZfKhLA45VKVfEDDI7GIoOkYjz60nzbl395oQXhoP2L0fPMjWNSqhzc1MRtEy
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -28,9 +28,9 @@ CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVI
 
 ALTER DATABASE sploder OWNER TO sploder;
 
-\unrestrict spFJBKsuiYdYLua41Ut1F85Hm7bhengOmxvEh8hXFAf2GDGpneUWXE0YTqDTcGt
+\unrestrict XnlZfKhLA45VKVfEDDI7GIoOkYjz60nzbl395oQXhoP2L0fPMjWNSqhzc1MRtEy
 \connect sploder
-\restrict spFJBKsuiYdYLua41Ut1F85Hm7bhengOmxvEh8hXFAf2GDGpneUWXE0YTqDTcGt
+\restrict XnlZfKhLA45VKVfEDDI7GIoOkYjz60nzbl395oQXhoP2L0fPMjWNSqhzc1MRtEy
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1150,6 +1150,13 @@ CREATE INDEX idx_games_user_id ON public.games USING btree (user_id);
 
 
 --
+-- Name: idx_reviews_userid; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_reviews_userid ON public.reviews USING btree (userid);
+
+
+--
 -- Name: collection_games collection_id_collection_games_fkey; Type: FK CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -1376,5 +1383,5 @@ GRANT ALL ON SCHEMA public TO sploder;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict spFJBKsuiYdYLua41Ut1F85Hm7bhengOmxvEh8hXFAf2GDGpneUWXE0YTqDTcGt
+\unrestrict XnlZfKhLA45VKVfEDDI7GIoOkYjz60nzbl395oQXhoP2L0fPMjWNSqhzc1MRtEy
 
