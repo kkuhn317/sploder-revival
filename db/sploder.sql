@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict rh0KMyWx50yY4kSMQ19y3C47zPYu8mSEYeg73nmC9qYjWfBdTrVLPkezbz7zBgH
+\restrict spFJBKsuiYdYLua41Ut1F85Hm7bhengOmxvEh8hXFAf2GDGpneUWXE0YTqDTcGt
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -28,9 +28,9 @@ CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVI
 
 ALTER DATABASE sploder OWNER TO sploder;
 
-\unrestrict rh0KMyWx50yY4kSMQ19y3C47zPYu8mSEYeg73nmC9qYjWfBdTrVLPkezbz7zBgH
+\unrestrict spFJBKsuiYdYLua41Ut1F85Hm7bhengOmxvEh8hXFAf2GDGpneUWXE0YTqDTcGt
 \connect sploder
-\restrict rh0KMyWx50yY4kSMQ19y3C47zPYu8mSEYeg73nmC9qYjWfBdTrVLPkezbz7zBgH
+\restrict spFJBKsuiYdYLua41Ut1F85Hm7bhengOmxvEh8hXFAf2GDGpneUWXE0YTqDTcGt
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1129,6 +1129,20 @@ CREATE INDEX idx_games_is_published_is_private ON public.games USING btree (ispu
 
 
 --
+-- Name: idx_games_title_btree; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_games_title_btree ON public.games USING btree (title);
+
+
+--
+-- Name: idx_games_title_trgm; Type: INDEX; Schema: public; Owner: sploder
+--
+
+CREATE INDEX idx_games_title_trgm ON public.games USING gin (title public.gin_trgm_ops);
+
+
+--
 -- Name: idx_games_user_id; Type: INDEX; Schema: public; Owner: sploder
 --
 
@@ -1362,5 +1376,5 @@ GRANT ALL ON SCHEMA public TO sploder;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict rh0KMyWx50yY4kSMQ19y3C47zPYu8mSEYeg73nmC9qYjWfBdTrVLPkezbz7zBgH
+\unrestrict spFJBKsuiYdYLua41Ut1F85Hm7bhengOmxvEh8hXFAf2GDGpneUWXE0YTqDTcGt
 
