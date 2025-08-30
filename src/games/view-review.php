@@ -68,13 +68,13 @@ $gameAuthor = $gameInfo['author'];
                         <a class="thumb" href="play.php?s=<?= $userId ?>_<?= $gameId ?>">
                         <img src="/users/user<?= $userId ?>/images/proj<?= $gameId ?>/image.png" width="200" height="200"/>
                         </a>
-                        <p><a href="play.php?s=<?= $userId ?>_<?= $gameId ?>"><?= htmlspecialchars($gameTitle) ?></a> is a game created by <a href="../members/?u=<?= $gameAuthor ?>"><?= htmlspecialchars($gameAuthor) ?></a></p>
+                        <p><a href="play.php?s=<?= $userId ?>_<?= $gameId ?>"><?= htmlspecialchars(trim($gameTitle)) ?></a> is a game created by <a href="../members/?u=<?= $gameAuthor ?>"><?= htmlspecialchars($gameAuthor) ?></a></p>
                     </div>
                     <?php
                     function gameLinkFormat($text) {
                         global $gameTitle, $gameId, $userId;
                         // Use the game title as-is, including spaces
-                        $pattern = '/' . preg_quote($gameTitle, '/') . '/i';
+                        $pattern = '/' . preg_quote(trim($gameTitle), '/') . '/i';
                         $replacement = '<a href="play.php?s=' . $userId . '_' . $gameId . '">' . htmlspecialchars($gameTitle) . '</a>';
                         // Replace all occurrences, case-insensitive
                         return preg_replace($pattern, $replacement, htmlspecialchars($text));
