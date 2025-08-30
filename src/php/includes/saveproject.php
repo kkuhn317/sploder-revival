@@ -19,12 +19,12 @@ function saveProject(int $g_swf): int
         if (isset($_GET['projid'])) {
             $id = (int)filter_var($_GET['projid'], FILTER_SANITIZE_NUMBER_INT);
         }
+        $title = urldecode($xml2->attributes()['title']);
+        if($g_swf == 1){
+            $title = urldecode($title); // Screw you geoff
+            $xml2->attributes()['title'] = $title; // Fix the title in the XML as well... Screw geoff again!!
+        }
         if (!isset($_GET['projid'])) {
-            $title = urldecode($xml2->attributes()['title']);
-            if($g_swf == 1){
-                $title = urldecode($title); // Screw you geoff
-                $xml2->attributes()['title'] = $title; // Fix the title in the XML as well... Screw geoff again!!
-            }
             $currentDate = date("Y-m-d H:i:s");
             $qs = "INSERT INTO games (author, user_id, title, date, description, g_swf, ispublished, isdeleted, isprivate, comments, first_created_date, first_published_date, last_published_date) 
                 VALUES (:username, :user_id, :title, :date, :description, :g_swf, :ispublished, :isdeleted, :isprivate, :comments, :first_created_date, :first_published_date, :last_published_date)
@@ -47,8 +47,6 @@ function saveProject(int $g_swf): int
             $new_game = true;
             // Set xml2 "id" attribute to the new game id
             $xml2->attributes()['id'] = $id;
-            // Save XML to $xml
-            $xml = $xml2->asXML();
         } else {
             require_once('../repositories/repositorymanager.php');
             $gameRepository = RepositoryManager::get()->getGameRepository();
@@ -66,7 +64,8 @@ function saveProject(int $g_swf): int
                 ':id' => $id
             ]);
         }
-
+        // Save XML to $xml
+        $xml = $xml2->asXML();
 
         $project_path = "../users/user" . $_SESSION['userid'] . "/projects/proj" . $id . "/";
         if ($new_game) {
