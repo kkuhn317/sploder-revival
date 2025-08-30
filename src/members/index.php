@@ -197,7 +197,11 @@ $nocache = time();
                 <?php } ?>
                 <div class="spacer">&nbsp;</div>
                 <?php
+                // Time this
+                $friendTime = microtime(true);
                 echo $friendsListRenderService->renderPartialViewForMemberFriends($username);
+                $friendTime = microtime(true) - $friendTime;
+                echo "<!-- Friends list generated in $friendTime seconds -->";
                 ?>
                 <div class="spacer">&nbsp;</div>
             </div>
