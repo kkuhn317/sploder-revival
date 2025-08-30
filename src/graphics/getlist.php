@@ -17,12 +17,12 @@ $params = [
     ':start' => $start
 ];
 
-if ($_GET['userid'] == $_SESSION['userid']) {
+if ($_GET['userid'] == $_SESSION['userid'] && !isset($_GET['searchmode'])) {
     $clause = isset($_GET['published']) ? "ispublished=true" : "1=1";
     $params[':userid'] = $_SESSION['userid'];
     $clause .= " AND userid=:userid";
     $order = "id";
-} elseif($_GET['userid']==0) {
+} elseif($_GET['userid']==0 || isset($_GET['searchmode'])) {
     if(isset($_GET['searchmode'])){
         $searchmode = $_GET['searchmode'];
         $searchterm = $_GET['searchterm'];
