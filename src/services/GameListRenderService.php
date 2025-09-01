@@ -42,6 +42,7 @@ class GameListRenderService
                         $userId = $game['user_id'];
                         $author = $game['author'];
                         $date = $game['first_published_date'] ?? $game['first_created_date'];
+                        $contest_game = $game['contest_game'] ?? false;
                         $views = $game['views'];
                         $lastModified = $game['date'] ?? null;
                         $gameDate = date('m&\m\i\d\d\o\t;d&\m\i\d\d\o\t;y', strtotime($date));
@@ -51,7 +52,7 @@ class GameListRenderService
                         $totalVotes = $game['total_votes'] ?? 0;
                         $isPublished = (bool)($game['ispublished'] ?? 1);
                         ?>
-                    <div class="game">
+                    <div class="game <?= ($contest_game == true) ? 'boosted_game' : '' ?>">
                         <div class="photo">
                             <a
                                 href="/games/play.php?&s=<?= $userId ?>_<?= $id ?>">
@@ -78,6 +79,9 @@ class GameListRenderService
                                 <img src="<?= $starUrl ?>" width="64" height="12" border="0" alt="'<?= $avgRating ?>' stars"/>
                                 <?= $totalVotes ?> vote<?= ($totalVotes == 1 ? '' : 's') ?>
                             </p>
+                            <?php } ?>
+                            <?php if ($contest_game) { ?>
+                                <p class="boostleader"><a href="/games/contest.php">Contest Winner!</a></p>
                             <?php } ?>
                             <p class="gameviews">
                                 <?php
