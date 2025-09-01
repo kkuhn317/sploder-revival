@@ -90,6 +90,9 @@ $userRepository = RepositoryManager::get()->getUserRepository();
                 // Reload updated perms
                 $perms = $newPerms;
             }
+            if (!isset($_POST['save_perms']) || !$usernameValid) {
+                echo '<br><br>';
+            }
             ?>
             <form method="post" action="">
                 <input type="hidden" name="username" value="<?= htmlspecialchars($_POST['username']) ?>" />
