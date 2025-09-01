@@ -1,7 +1,4 @@
 <?php
-// Enable all sorts of reporting in all envrionements
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
 
 session_start();
 $a = $_GET['a'];
@@ -254,8 +251,9 @@ if ($a == "read") {
         $cuser = $_SESSION['username'] . ',';
 
         // Has the user already voted down and is changing their vote?
-        $result2 = $db->query("SELECT vote FROM comment_votes WHERE id=:id", [
-            ':id' => $id
+        $result2 = $db->query("SELECT vote FROM comment_votes WHERE id=:id AND username=:username", [
+            ':id' => $id,
+            ':username' => $_SESSION['username']
         ]);
 
         if (isset($result2[0]['vote']) && ($result2[0]['vote'] == -1)) {
@@ -280,8 +278,9 @@ if ($a == "read") {
                 ':vote' => 1
             ]);
 
-            $db->execute("UPDATE comments SET score=score+1 WHERE id=:id", [
-                ':id' => $id
+            $db->execute("UPDATE comments SET score=score+1 WHERE id=:id AND username=:username", [
+                ':id' => $id,
+                ':username' => $_SESSION['username']
             ]);
         }
     }
@@ -301,8 +300,9 @@ if ($a == "read") {
         $cuser = $_SESSION['username'] . ',';
 
         // Has the user already voted up and is changing their vote?
-        $result2 = $db->query("SELECT vote FROM comment_votes WHERE id=:id", [
-            ':id' => $id
+        $result2 = $db->query("SELECT vote FROM comment_votes WHERE id=:id AND username=:username", [
+            ':id' => $id,
+            ':username' => $_SESSION['username']
         ]);
 
         if (isset($result2[0]['vote']) && ($result2[0]['vote'] == '1')) {
@@ -323,8 +323,9 @@ if ($a == "read") {
                 ':username' => $_SESSION['username'],
                 ':vote' => -1
             ]);
-            $db->execute("UPDATE comments SET score=score-1 WHERE id=:id", [
-                ':id' => $id
+            $db->execute("UPDATE comments SET score=score-1 WHERE id=:id AND username=:username", [
+                ':id' => $id,
+                ':username' => $_SESSION['username']
             ]);
         }
     }
