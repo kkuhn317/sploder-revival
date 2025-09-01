@@ -278,9 +278,8 @@ if ($a == "read") {
                 ':vote' => 1
             ]);
 
-            $db->execute("UPDATE comments SET score=score+1 WHERE id=:id AND username=:username", [
-                ':id' => $id,
-                ':username' => $_SESSION['username']
+            $db->execute("UPDATE comments SET score=score+1 WHERE id=:id", [
+                ':id' => $id
             ]);
         }
     }
@@ -323,9 +322,8 @@ if ($a == "read") {
                 ':username' => $_SESSION['username'],
                 ':vote' => -1
             ]);
-            $db->execute("UPDATE comments SET score=score-1 WHERE id=:id AND username=:username", [
-                ':id' => $id,
-                ':username' => $_SESSION['username']
+            $db->execute("UPDATE comments SET score=score-1 WHERE id=:id", [
+                ':id' => $id
             ]);
         }
     }
