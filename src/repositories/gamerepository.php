@@ -394,7 +394,7 @@ where g_id = :g_id
 
             // Combine results in PHP
             
-            $normalGames = $this->db->query($query);
+            $normalGames = $this->db->query($query . " LIMIT " . $perPage);
             $allGames = array_merge($contestGames, $normalGames);
             $totalNormalGames = $this->db->queryFirstColumn($totalNormalGamesQuery, 0);
 
