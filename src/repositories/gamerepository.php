@@ -371,8 +371,9 @@ where g_id = :g_id
             GROUP BY games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date
             ORDER BY featured_games.feature_date DESC
         ";
+                
         if ($offset === 0) {
-            // Get up to 2 contest games first
+
             $contestGamesQuery = "
                 SELECT games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date,
                     ROUND(AVG(v.score), 1) as avg_rating, COUNT(v.score) as total_votes,
@@ -387,31 +388,17 @@ where g_id = :g_id
                 LIMIT 2
             ";
 
-            // Get the rest as normal featured games, excluding contest games
-            $normalGamesQuery = "
-                SELECT games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date,
-                    ROUND(AVG(v.score), 1) as avg_rating, COUNT(v.score) as total_votes,
-                    FALSE AS contest_game
-                FROM featured_games
-                JOIN games ON featured_games.g_id = games.g_id
-                LEFT JOIN votes v ON games.g_id = v.g_id
-                LEFT JOIN contest_winner cw ON games.g_id = cw.g_id
-                WHERE games.ispublished = 1 AND games.isprivate = 0 AND games.isdeleted = 0
-                AND cw.g_id IS NULL
-                GROUP BY games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date
-                ORDER BY featured_games.feature_date DESC
-                LIMIT " . ($perPage - 2) . "
-            ";
+            $contestGames = $this->db->query($contestGamesQuery);
 
             $totalNormalGamesQuery = "SELECT COUNT(*) FROM (".$query.") subquery";
 
             // Combine results in PHP
-            $contestGames = $this->db->query($contestGamesQuery);
-            $normalGames = $this->db->query($normalGamesQuery);
+            
+            $normalGames = $this->db->query($query);
             $allGames = array_merge($contestGames, $normalGames);
             $totalNormalGames = $this->db->queryFirstColumn($totalNormalGamesQuery, 0);
 
-            return new PaginationData($allGames, $perPage, $totalNormalGames);
+            return new PaginationData($allGames, $totalNormalGames, ceil($totalNormalGames/$perPage));
         } else {
             return $this->db->queryPaginated($query, $offset, $perPage, []);
         }
