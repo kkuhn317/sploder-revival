@@ -32,7 +32,7 @@ if ($day == 1) {
     SELECT id, :contest_id
     FROM contest_votes
     ORDER BY votes DESC
-    LIMIT 1;", [
+    LIMIT 3;", [
       ':contest_id' => file_get_contents('../config/currentcontest.txt')
     ]);
     $db->execute("DELETE FROM contest_votes");

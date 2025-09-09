@@ -52,6 +52,7 @@ services:
       DISCORD_SECRET_ID:
       DISCORD_BOT_TOKEN:
       UPLOAD_API_KEY:
+      SPLODERHEADS_ENABLED: true
       CENSORED_WORDS: example1,example2,example3
       DISALLOWED_USERNAMES: admin,administrator,root,moderator,mod,sploder,sploderadmin,sploderadministrator,geoff,ggaudrea,lpa,soundburst,doncato,moonove,vim
   db:
