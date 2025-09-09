@@ -184,7 +184,7 @@ if (isset($_GET['s'])) {
 
                 <a href="/games/members.php" class="sprite_button home_button_members">Members</a>
                 <?php
-                if (getenv('SPLODERHEADS_ENABLED') == true) { ?>
+                if (getenv('SPLODERHEADS_ENABLED') == true && false) { ?>
                     <a href="/games/multiplayer.php" class="sprite_button home_button_multiplayer">Multiplayer Games</a>
                 <?php } else { ?>
                     <a href="games/newest.php"><img src="/chrome/home_button_newestgames.gif" width="160" height="120"
