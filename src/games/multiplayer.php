@@ -59,9 +59,10 @@
 
                 default:
                     var room = e.data;
-                    // Print whatever is received
-                    console.log("message received: ", e.data);
-                    if (room) window.location.href="/games/multiplayer.php?room=" + room;
+                    // room must either be lobby or end with _room
+                    if (room === "lobby" || room.endsWith("_room")) {
+                        if (room) window.location.href="/games/multiplayer.php?room=" + room;
+                    }
                 break;
 				
 		    }
