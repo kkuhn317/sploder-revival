@@ -38,7 +38,7 @@ if (isset($_GET['s'])) {
                     <a href="make/arcade.php"><img src="/images/hp3/hp_retro_arcade_night.gif"
                             data-src="/images/hp3/hp_retro_arcade_night.gif" width="920" height="440" alt=""
                             title="#htmlcaption6" /></a>
-                    <?php if(getenv('SPLODERHEADS_ENABLED') == true) { ?>
+                    <?php if(getenv('SPLODERHEADS_ENABLED') == 'true') { ?>
                     <a href="/games/multiplayer.php"><img src="/images/hp3/hp_multiplayer_sploderheads2.gif" data-src="/images/hp3/hp_multiplayer_sploderheads2.gif" width="920" height="440" alt="" title="#htmlcaption5"/></a>
                     <?php } ?>
 
@@ -106,7 +106,7 @@ if (isset($_GET['s'])) {
 
 
                 </div>
-                <?php if(getenv('SPLODERHEADS_ENABLED') == true) { ?>
+                <?php if(getenv('SPLODERHEADS_ENABLED') == 'true') { ?>
                 <div id="htmlcaption5" class="nivo-html-caption">
 
                     <h3><a href="/games/multiplayer.php">Multiplayer Game Creator</a></h3>Design and publish real-time multiplayer games and play online with friends!
@@ -193,7 +193,7 @@ if (isset($_GET['s'])) {
 
                 <a href="/games/members.php" class="sprite_button home_button_members">Members</a>
                 <?php
-                if (getenv('SPLODERHEADS_ENABLED') == true) { ?>
+                if (getenv('SPLODERHEADS_ENABLED') == 'true') { ?>
                     <a href="/games/multiplayer.php" class="sprite_button home_button_multiplayer">Multiplayer Games</a>
                 <?php } else { ?>
                     <a href="games/newest.php"><img src="/chrome/home_button_newestgames.gif" width="160" height="120"
