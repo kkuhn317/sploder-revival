@@ -1,5 +1,9 @@
 <?php require(__DIR__.'/../content/disablemobile.php'); ?>
-<?php session_start(); ?>
+<?php
+session_start();
+require_once(__DIR__ . '/../repositories/repositorymanager.php');
+$userRepository = RepositoryManager::get()->getUserRepository();
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
@@ -74,8 +78,13 @@
         if (isset($_GET['room']) && $_GET['room'] != "lobby") {
             $urlAdd = htmlspecialchars($_GET['room']) . "/";
         }
+        if (isset($_SESSION['loggedin'])) {
+            $isolate = $userRepository->isIsolated($_SESSION['username']) ? "1" : "0";
+        } else {
+            $isolate = "1";
+        }
         ?>
-        <a name="game"></a><iframe id="html5_game" scrolling="no" width="880" height="540" src="/sploderheads/games/first/<?= $urlAdd ?>?username=<?= htmlspecialchars($_SESSION['username'] ?? 'guest') ?>"></iframe><div class="info"><a name='help'></a>
+        <a name="game"></a><iframe id="html5_game" scrolling="no" width="880" height="540" src="/sploderheads/games/first/<?= $urlAdd ?>?username=<?= htmlspecialchars($_SESSION['username'] ?? 'guest') ?>&isolated=<?= $isolate ?>"></iframe><div class="info"><a name='help'></a>
 
 <h2>SploderHeads Multiplayer Help</h3>
 
