@@ -59,6 +59,14 @@ $isModerator = $perms !== null && $perms !== '' && str_contains($perms, 'M');
     <div id="content">
       <div class="prompt">Welcome, <?php echo $username ?>! What would you like to do?
       </div>
+      <?php
+      if(getenv('SPLODERHEADS_ENABLED') == true) {
+          echo '
+          <div class="promo" style="background-color:#a417a0"><b>SNEAK PEEK:</b> Check out our new <a href="/games/multiplayer.php">Sploder Multiplayer Game</a>!
+          </div>
+          ';
+      }
+      ?>
       <div id="new_status" class="dashboard">
         <div id="idbadge">
           <div>
