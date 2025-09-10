@@ -5,6 +5,7 @@ Folders containing alternative licenses will contain their own LICENSE.txt, LICE
 Folders containing different licenses are specified below:
 
 - [src/swf](https://github.com/Sploder-Saptarshi/sploder-revival/tree/main/src/swf) (Copyright of Geoffrey P. Gaudreault)
+- src/sploderheads - Does not exist in this repository as it's a microservice, linked in [src/games/multiplayer.php](https://github.com/Sploder-Saptarshi/sploder-revival/tree/main/src/games/multiplayer.php) (Proprietary code used in the official sploder revival instance)
 
 Files containing different licenses are specified below:
 
