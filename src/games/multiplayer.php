@@ -59,6 +59,8 @@
 
                 default:
                     var room = e.data;
+                    // Print whatever is received
+                    console.log("message received: " + e.data);
                     if (room) window.location.href="/games/multiplayer.php?room=" + room;
                 break;
 				
