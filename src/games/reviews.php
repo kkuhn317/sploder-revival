@@ -60,7 +60,7 @@ if (isset($_GET['mine'])) {
                 foreach ($reviews->data as $review) :
                     $reviewTitle = htmlspecialchars($review['title']);
                     $reviewLink = "view-review.php?s=" . $review['game_author_id'] . "_" . $review['g_id'] . "&userid=" . $review['userid'];
-                    $reviewerPage = "/members/view-profile.php?u=" . urlencode($review['author']);
+                    $reviewerPage = "/members/index.php?u=" . urlencode($review['author']);
                     $reviewerUsername = htmlspecialchars($review['author']);
                     $reviewDate = date("l, F jS Y", strtotime($review['review_date']));
                     $gameLink = "view-review.php?s=" . $review['game_author_id'] . "_" . $review['g_id'] . "&userid=" . $review['userid'];
