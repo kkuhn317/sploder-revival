@@ -49,7 +49,7 @@ $graphicListRenderService = new GraphicListRenderService($graphicsRepository);
             <br /><br /><br />
             <div class="spacer">&nbsp;</div>
         </div>
-        </div></div>
+        </div>
         <div class="spacer">&nbsp;</div>
         <?php include('../content/footernavigation.php') ?>
 </body>
