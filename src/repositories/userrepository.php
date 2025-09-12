@@ -115,34 +115,27 @@ LIMIT 90;
     {
         $last = time() - 120; # 120 seconds
         $qs = "
-        SELECT 
+            SELECT
             m.username,
             m.lastlogin,
             m.lastpagechange,
             m.status,
             (SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = m.username AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0)) AS total_ratings_received,
-            COUNT(DISTINCT f.user2) AS friend_count,
-            COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
-            COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END), 0) AS total_views,
+            (SELECT COUNT(DISTINCT f.user2) FROM friends f WHERE f.user1 = m.username) AS friend_count,
+            (SELECT COUNT(DISTINCT g.g_id) FROM games g WHERE g.author = m.username AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS game_count,
+            (SELECT COALESCE(SUM(g.views), 0) FROM games g WHERE g.author = m.username AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) AS total_views,
             LEAST(250, FLOOR(
                 (SELECT COUNT(1) FROM votes WHERE g_id IN (SELECT g_id FROM games WHERE author = m.username AND ispublished = 1 AND isprivate = 0 AND isdeleted = 0))/25.0
-                + COUNT(DISTINCT f.user2)/10.0
-                + COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)/10.0
-                + COALESCE(SUM(CASE WHEN g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 THEN g.views ELSE 0 END),0)/1000.0
+                + (SELECT COUNT(DISTINCT f.user2) FROM friends f WHERE f.user1 = m.username)/10.0
+                + (SELECT COUNT(DISTINCT g.g_id) FROM games g WHERE g.author = m.username AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)/10.0
+                + (SELECT COALESCE(SUM(g.views), 0) FROM games g WHERE g.author = m.username AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)/1000.0
             ) + 1) AS level
-        FROM 
+        FROM
             members m
-        LEFT JOIN 
-            friends f ON m.username = f.user1
-        LEFT JOIN 
-            games g ON m.username = g.author
-        WHERE 
+        WHERE
             m.lastlogin > :last
-        GROUP BY 
-            m.username, m.lastlogin, m.lastpagechange, m.status
         ORDER BY level DESC
-        LIMIT 15
-        ";
+        LIMIT 15";
         return $this->db->query($qs, [':last' => $last]);
     }
 
