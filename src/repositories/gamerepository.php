@@ -67,11 +67,11 @@ where g_id = :g_id
     public function getGameTags(int $offset, int $perPage): PaginationData
     {
         return $this->db->queryPaginated(
-            "SELECT DISTINCT gt.tag 
+            "SELECT DISTINCT gt.tag, COUNT(*) AS game_count 
             FROM game_tags gt
             JOIN games g ON gt.g_id = g.g_id
             WHERE g.ispublished = 1 AND g.isprivate = 0
-            ORDER BY gt.tag",
+            GROUP BY gt.tag ORDER BY game_count DESC, gt.tag",
             $offset,
             $perPage
         );
@@ -375,16 +375,15 @@ where g_id = :g_id
         if ($offset === 0) {
 
             $contestGamesQuery = "
-                SELECT games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date,
+                SELECT g.g_id, g.title, g.author, g.g_swf, g.first_published_date, g.views, g.user_id, NULL AS feature_date,
                     ROUND(AVG(v.score), 1) as avg_rating, COUNT(v.score) as total_votes,
                     TRUE AS contest_game
-                FROM featured_games
-                JOIN games ON featured_games.g_id = games.g_id
-                LEFT JOIN votes v ON games.g_id = v.g_id
-                JOIN contest_winner cw ON games.g_id = cw.g_id
-                WHERE games.ispublished = 1 AND games.isprivate = 0 AND games.isdeleted = 0
-                GROUP BY games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date, cw.g_id, cw.contest_id
-                ORDER BY cw.contest_id DESC, featured_games.feature_date DESC
+                FROM contest_winner cw
+                JOIN games g ON cw.g_id = g.g_id
+                LEFT JOIN votes v ON g.g_id = v.g_id
+                WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0
+                GROUP BY g.g_id, g.title, g.author, g.g_swf, g.first_published_date, g.views, g.user_id, cw.contest_id
+                ORDER BY cw.contest_id DESC
                 LIMIT 2
             ";
 

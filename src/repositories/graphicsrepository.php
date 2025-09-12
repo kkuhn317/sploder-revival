@@ -118,11 +118,11 @@ on conflict do nothing", [
     public function getGraphicTags(int $offset, int $perPage): PaginationData
     {
         return $this->db->queryPaginated(
-            "SELECT DISTINCT gt.tag 
+            "SELECT DISTINCT gt.tag, COUNT(*) AS graphic_count
             FROM graphic_tags gt
             JOIN graphics g ON gt.g_id = g.id
             WHERE g.ispublished = true AND g.isprivate = false
-            ORDER BY gt.tag",
+            GROUP BY gt.tag ORDER BY graphic_count DESC, gt.tag",
             $offset,
             $perPage
         );
