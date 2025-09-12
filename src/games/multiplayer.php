@@ -63,9 +63,15 @@ $userRepository = RepositoryManager::get()->getUserRepository();
 
                 default:
                     var room = e.data;
-                    // room must either be lobby or end with _room
                     if (room === "lobby" || room.endsWith("_room")) {
-                        if (room) window.location.href="/games/multiplayer.php?room=" + room;
+                        if (room) {
+                            const link = document.createElement('a');
+                            link.href = "/games/multiplayer.php?room=" + room;
+                            link.style.display = 'none';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        }
                     }
                 break;
 				
