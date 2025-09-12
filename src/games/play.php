@@ -88,7 +88,7 @@ if(isset($_GET['challenge'])){
         <div id="content">
             <h3><?= htmlspecialchars($game['title']) ?></h3>
             <h4 class="subtitle">By <a href="/members/index.php?u=<?= $game['author'] ?>"><?= $game['author'] ?></a> ::
-                <?= date('l F j\t\h, Y', strtotime($game['last_published_date'])) ?></h4>
+                <?= date('l F jS, Y', strtotime($game['last_published_date'])) ?></h4>
 
             <div class="vote" id="contestwidget">
                 <div style="margin-top:-15px; width: 150px; height:45px; overflow: hidden;" id="contestflash">&nbsp;
