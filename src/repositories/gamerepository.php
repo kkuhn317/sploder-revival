@@ -383,7 +383,7 @@ where g_id = :g_id
                 LEFT JOIN votes v ON g.g_id = v.g_id
                 WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0
                 GROUP BY g.g_id, g.title, g.author, g.g_swf, g.first_published_date, g.views, g.user_id, cw.contest_id
-                ORDER BY cw.contest_id DESC
+                ORDER BY cw.contest_id DESC, RANDOM()
                 LIMIT 2
             ";
 
