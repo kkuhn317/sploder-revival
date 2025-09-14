@@ -13,7 +13,7 @@ $day = date("w");
  echo "Day of the week: " . date("w\-l") . "\n";
  // Save current contest...
 if ($day == 1) {
-    $file = '../config/currentcontest.txt';
+    $file = __DIR__ . '/../config/currentcontest.txt';
 // Get current contest
     $current = file_get_contents($file);
     $updated = $current + 1;
@@ -33,7 +33,7 @@ if ($day == 1) {
     FROM contest_votes
     ORDER BY votes DESC
     LIMIT 3;", [
-      ':contest_id' => file_get_contents('../config/currentcontest.txt')
+      ':contest_id' => file_get_contents(__DIR__ . '/../config/currentcontest.txt')
     ]);
     $db->execute("DELETE FROM contest_votes");
     $db->execute("DELETE FROM contest_voter_usernames");
