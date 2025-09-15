@@ -198,11 +198,10 @@ if ($totalGraphics > 0){
     // someone with the username "user" does not get comments on items with the venue "user2" or "user3"
     // Comments received must not include the user's own comments on their own items
 
-    // TODO: change string concat to paramete injection for LIKE clause
     $comments_received = $db->queryFirstColumn("SELECT COUNT(*) as comments_received
         FROM comments
         WHERE venue
-        LIKE '%-$username'
+        LIKE '%-:username'
         AND creator_name != :username", 0, [
         ':username' => $username
     ]);
