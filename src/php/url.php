@@ -2,30 +2,36 @@
 
 $url = $_POST["url"];
 require_once(__DIR__ . '/../config/env.php');
-$domainName = getenv("DOMAIN_NAME");
+
+$envParsed = parse_url(getenv("DOMAIN_NAME"));
+$domainName = $envParsed['host'] ?? '';
 $back = str_replace(["&urlerr=1", "&err404=1"], "", $_POST["back"]);
 
-// Use parse_url to correctly validate the hostname
 $parsedUrl = parse_url($url);
 $host = $parsedUrl['host'] ?? '';
 $path = $parsedUrl['path'] ?? '';
+$scheme = $parsedUrl['scheme'] ?? '';
 
-// Normalize domains for comparison (handle www and non-www)
 $normalizedDomainName = str_replace('www.', '', $domainName);
 $normalizedHost = str_replace('www.', '', $host);
 
-// Check if the domain is valid
 $isDomainValid = ($normalizedHost === $normalizedDomainName);
 
-// Check if the file exists on the server
+// Check if the file exists and if the URL path is a directory
 $fileExists = file_exists(__DIR__ . '/..' . $path);
+$isDir = is_dir(__DIR__ . '/..' . $path);
 
 if (!$isDomainValid) {
     header("Location: " . $back . "&urlerr=1");
-} elseif (!$fileExists) {
+} elseif (!$fileExists && !$isDir) {
+    // If it's not a file or a directory, then it's a 404
     header("Location: " . $back . "&err404=1");
 } else {
-    // Both domain is valid and file exists
-    header("Location: " . $url);
+    if ($isDir) {
+        $path = rtrim($path, '/') . '/index.php';
+    }
+
+    $safeUrl = $scheme . '://' . $host . $path;
+    header("Location: " . $safeUrl);
 }
 ?>
