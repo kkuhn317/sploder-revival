@@ -8,22 +8,22 @@ $back = str_replace("&urlerr=1", "", str_replace("&err404=1", "", $_POST["back"]
 
 // Extract the file path from the URL
 $parsedUrl = parse_url($url);
-$file = $parsedUrl['path'];
-$exists = file_exists(__DIR__."/../".$file);
+$file = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
+$exists = $file ? file_exists(__DIR__."/../".$file) : false;
 
 $host = isset($parsedUrl['host']) ? $parsedUrl['host'] : '';
 $hostNoWww = preg_replace('/^www\./', '', $host);
 
-if (!$exists) {
-    $err404 = true;
-} else {
-    $err404 = false;
-}
+// Accept if host matches domain (with or without www), or if host is empty (relative URL)
+$isLocal = (
+    ($host && ($host === $domainName || $hostNoWww === $domainNameNoWww)) ||
+    (!$host && $exists)
+);
 
-if (($host == $domainName || $hostNoWww === $domainNameNoWww) && ($err404 == false)) {
+if ($isLocal && $exists) {
     header("Location: " . $url);
-} elseif ($host !== $domainName && $hostNoWww !== $domainNameNoWww) {
+} elseif ($host && $host !== $domainName && $hostNoWww !== $domainNameNoWww) {
     header("Location: " . $back . "&urlerr=1");
-} elseif ($err404) {
+} elseif (!$exists) {
     header("Location: " . $back . "&errload=1");
 }
