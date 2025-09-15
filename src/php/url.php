@@ -11,27 +11,25 @@ $parsedUrl = parse_url($url);
 $host = $parsedUrl['host'] ?? '';
 $path = $parsedUrl['path'] ?? '';
 $scheme = $parsedUrl['scheme'] ?? '';
+$query = $parsedUrl['query'] ?? '';
 
 $normalizedDomainName = str_replace('www.', '', $domainName);
 $normalizedHost = str_replace('www.', '', $host);
 
 $isDomainValid = ($normalizedHost === $normalizedDomainName);
 
-// Check if the file exists and if the URL path is a directory
-$fileExists = file_exists(__DIR__ . '/..' . $path);
-$isDir = is_dir(__DIR__ . '/..' . $path);
+$filePath = __DIR__ . '/..' . $path;
+$fileExists = file_exists($filePath) || is_dir($filePath);
 
 if (!$isDomainValid) {
     header("Location: " . $back . "&urlerr=1");
-} elseif (!$fileExists && !$isDir) {
-    // If it's not a file or a directory, then it's a 404
+} elseif (!$fileExists) {
     header("Location: " . $back . "&err404=1");
 } else {
-    if ($isDir) {
-        $path = rtrim($path, '/') . '/index.php';
-    }
-
     $safeUrl = $scheme . '://' . $host . $path;
+    if (!empty($query)) {
+        $safeUrl .= '?' . $query;
+    }
     header("Location: " . $safeUrl);
 }
 ?>
