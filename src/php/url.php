@@ -3,24 +3,29 @@
 $url = $_POST["url"];
 require_once(__DIR__ . '/../config/env.php');
 $domainName = getenv("DOMAIN_NAME");
-$domain = substr($url, 0, strlen($domainName));
-$back = str_replace("&urlerr=1", "", str_replace("&err404=1", "", $_POST["back"]));
+$back = str_replace(["&urlerr=1", "&err404=1"], "", $_POST["back"]);
 
-// Extract the file path from the URL
+// Use parse_url to correctly validate the hostname
 $parsedUrl = parse_url($url);
-$file = $parsedUrl['path'];
-$exists = file_exists(__DIR__."/../".$file);
+$host = $parsedUrl['host'] ?? '';
+$path = $parsedUrl['path'] ?? '';
 
-if (!$exists) {
-    $err404 = true;
-} else {
-    $err404 = false;
-}
+// Normalize domains for comparison (handle www and non-www)
+$normalizedDomainName = str_replace('www.', '', $domainName);
+$normalizedHost = str_replace('www.', '', $host);
 
-if (($domain == $domainName) && ($err404 == false)) {
-    header("Location: " . $url);
-} elseif ($domain !== $domainName) {
+// Check if the domain is valid
+$isDomainValid = ($normalizedHost === $normalizedDomainName);
+
+// Check if the file exists on the server
+$fileExists = file_exists(__DIR__ . '/..' . $path);
+
+if (!$isDomainValid) {
     header("Location: " . $back . "&urlerr=1");
-} elseif ($err404) {
-    header("Location: " . $back . "&errload=1");
+} elseif (!$fileExists) {
+    header("Location: " . $back . "&err404=1");
+} else {
+    // Both domain is valid and file exists
+    header("Location: " . $url);
 }
+?>
