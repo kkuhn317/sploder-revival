@@ -48,7 +48,11 @@ LIMIT :limit";
 SELECT 
     g.author, 
     COUNT(gv.g_id) + COUNT(ga.g_id) AS total_views, 
-    (SELECT max_time FROM latest_view) AS last_view_time
+    COALESCE(
+        MAX(gv.create_date), 
+        MAX(ga.create_date), 
+        (SELECT max_time FROM latest_view)
+    ) AS last_view_time
 FROM public.games g
 LEFT JOIN public.game_views_members gv 
     ON g.g_id = gv.g_id 
