@@ -232,42 +232,101 @@ LIMIT 90;
     public function getUserStats(string $username): array|null
     {
         $query = "
-            WITH user_stats AS (
-                SELECT 
-                    m.username,
-                    COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_games,
-                    COALESCE(AVG(g.difficulty) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 5) as avg_difficulty,
-                    COUNT(DISTINCT f.user2) as total_friends,
-                    COUNT(v.score) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0) as total_votes,
-                    COALESCE(AVG(l.gtm) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 0) as avg_playtime,
-                    COALESCE(AVG(COALESCE(v.score, 3)) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 3) as avg_score,
-                    COALESCE(
-                        floor(
-                            (
-                                (SELECT COUNT(*) FROM votes v2 
-                                 JOIN games g2 ON g2.g_id = v2.g_id 
-                                 WHERE v2.username = m.username 
-                                 AND g2.ispublished = 1 
-                                 AND g2.isprivate = 0 
-                                 AND g2.isdeleted = 0)/25.0 +
-                                COUNT(DISTINCT f.user2)/10.0 +
-                                COUNT(DISTINCT g.g_id) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0)/10.0 +
-                                COALESCE(SUM(g.views) FILTER (WHERE g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0), 0)/1000.0
-                            ) + 1
-                        ),
-                        1
-                    ) as calculated_level
-                FROM members m
-                LEFT JOIN games g ON m.username = g.author
-                LEFT JOIN friends f ON m.username = f.user1
-                LEFT JOIN votes v ON g.g_id = v.g_id
-                LEFT JOIN leaderboard l ON g.g_id = l.pubkey
-                WHERE m.username = :username
-                GROUP BY m.username
-            )
-            SELECT *,
-                   LEAST(250, calculated_level) as level
-            FROM user_stats";
+WITH games_authored_stats AS (
+    SELECT
+        author,
+        COUNT(g_id) AS total_games,
+        COALESCE(AVG(difficulty), 5) AS avg_difficulty,
+        COALESCE(SUM(views), 0) AS total_views
+    FROM games
+    WHERE
+        author = :username AND
+        ispublished = 1 AND
+        isprivate = 0 AND
+        isdeleted = 0
+    GROUP BY author
+),
+friends_stats AS (
+    SELECT
+        user1,
+        COUNT(DISTINCT user2) AS total_friends
+    FROM friends
+    WHERE user1 = :username
+    GROUP BY user1
+),
+votes_stats AS (
+    SELECT
+        g.author,
+        COUNT(v.score) AS total_votes,
+        COALESCE(AVG(v.score), 3) AS avg_score
+    FROM votes v
+    JOIN games g ON v.g_id = g.g_id
+    WHERE
+        g.author = :username AND
+        g.ispublished = 1 AND
+        g.isprivate = 0 AND
+        g.isdeleted = 0
+    GROUP BY g.author
+),
+playtime_stats AS (
+    SELECT
+        g.author,
+        COALESCE(AVG(l.gtm), 0) AS avg_playtime
+    FROM leaderboard l
+    JOIN games g ON l.pubkey = g.g_id
+    WHERE
+        g.author = :username AND
+        g.ispublished = 1 AND
+        g.isprivate = 0 AND
+        g.isdeleted = 0
+    GROUP BY g.author
+),
+votes_cast_stats AS (
+    SELECT
+        username,
+        COUNT(score) AS votes_cast_by_user
+    FROM votes
+    WHERE username = :username
+    GROUP BY username
+)
+SELECT
+    :username as username,
+    COALESCE(gas.total_games, 0) AS total_games,
+    COALESCE(gas.avg_difficulty, 5) AS avg_difficulty,
+    COALESCE(fs.total_friends, 0) AS total_friends,
+    COALESCE(vs.total_votes, 0) AS total_votes,
+    COALESCE(ps.avg_playtime, 0) AS avg_playtime,
+    COALESCE(vs.avg_score, 3) AS avg_score,
+    -- Perform the level calculation using the pre-calculated values.
+    COALESCE(
+        floor(
+            (
+                (COALESCE(vcs.votes_cast_by_user, 0) / 25.0) +
+                (COALESCE(fs.total_friends, 0) / 10.0) +
+                (COALESCE(gas.total_games, 0) / 10.0) +
+                (COALESCE(gas.total_views, 0) / 1000.0)
+            ) + 1
+        ),
+        1
+    ) AS calculated_level,
+    LEAST(250, COALESCE(
+        floor(
+            (
+                (COALESCE(vcs.votes_cast_by_user, 0) / 25.0) +
+                (COALESCE(fs.total_friends, 0) / 10.0) +
+                (COALESCE(gas.total_games, 0) / 10.0) +
+                (COALESCE(gas.total_views, 0) / 1000.0)
+            ) + 1
+        ),
+        1
+    )) AS level
+FROM (SELECT :username) as dummy_user
+LEFT JOIN games_authored_stats gas ON gas.author = :username
+LEFT JOIN friends_stats fs ON fs.user1 = :username
+LEFT JOIN votes_stats vs ON vs.author = :username
+LEFT JOIN playtime_stats ps ON ps.author = :username
+LEFT JOIN votes_cast_stats vcs ON vcs.username = :username;
+";
 
         $result = $this->db->queryFirst($query, [':username' => $username]);
         
