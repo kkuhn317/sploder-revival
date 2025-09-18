@@ -191,8 +191,9 @@ if ($a == "read") {
     require_once('../content/keyboardfilter.php');
     $rawMessage = substr($formatter[0], 2);
     $filteredMessage = filterKeyboard(trim($rawMessage));
+    $urlDecodedFilteredMessage = urldecode($filteredMessage);
     // Enforce message length: >8 and <500 characters
-    if ($filteredMessage=='' || mb_strlen($filteredMessage) < 8 || mb_strlen($filteredMessage) > 500) {
+    if ($urlDecodedFilteredMessage=='' || mb_strlen($urlDecodedFilteredMessage) < 8 || mb_strlen($urlDecodedFilteredMessage) > 500) {
         http_response_code(400);
         die("Message must be greater than 8 and less than 500 characters.");
     }
