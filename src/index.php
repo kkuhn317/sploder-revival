@@ -1,4 +1,6 @@
 <?php
+require_once 'content/initialize.php';
+
 require(__DIR__.'/content/disablemobile.php');
 session_start();
 if (isset($_GET['s'])) {

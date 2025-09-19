@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 session_start();
 header('Content-Type: text/xml');
 $id = (int)filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);

@@ -1,4 +1,5 @@
 <?php
+require_once '../../content/initialize.php';
 
 $material_list = array(
     0 => "Pewter",

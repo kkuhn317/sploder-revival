@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 
 // Get the list of staff members

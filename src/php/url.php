@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 $url = $_POST["url"];
 require_once(__DIR__ . '/../config/env.php');

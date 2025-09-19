@@ -1,4 +1,6 @@
 <?php
+require_once '../../../content/initialize.php';
+
 function isAdmin($username): bool {
     require_once(__DIR__ . '/../../../repositories/repositorymanager.php');
     $userRepository = RepositoryManager::get()->getUserRepository();

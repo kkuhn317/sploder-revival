@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 require(__DIR__.'/../config/env.php');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

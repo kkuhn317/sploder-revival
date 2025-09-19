@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 session_start();
 // Login check
 if (!isset($_SESSION['loggedin'])) {

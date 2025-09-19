@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 header('Content-Type: text/xml');
 session_id($_GET['PHPSESSID']);

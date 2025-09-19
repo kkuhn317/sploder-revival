@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 /* Discord Oauth v.4.1
  * This file contains the core functions of the oauth2 script.

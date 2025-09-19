@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 header('Content-Type: image/png');
 $username = $_GET['u'];
 // Check file exists php

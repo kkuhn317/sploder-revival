@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 require('content/verify.php');
 require_once('../content/censor.php');
 $tags = explode(" ", censorText($_POST['tags']));

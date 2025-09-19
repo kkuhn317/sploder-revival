@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 require('../repositories/repositorymanager.php');
 require('../services/GameFeedService.php');

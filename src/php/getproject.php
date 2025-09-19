@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 if ($_GET['PHPSESSID'] != "demo") {
     session_id($_GET['PHPSESSID']);

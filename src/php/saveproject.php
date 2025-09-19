@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 require('includes/saveproject.php');
 $id = saveProject(1);
 require('thumbnails/thumb.php');

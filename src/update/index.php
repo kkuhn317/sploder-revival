@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 require(__DIR__.'/../config/env.php');
 $version = file_get_contents('currentversion.txt');
 $userVersion = explode('Sploder/', $_SERVER['HTTP_USER_AGENT'])[1];

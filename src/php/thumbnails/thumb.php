@@ -1,4 +1,5 @@
 <?php
+require_once '../../content/initialize.php';
 
 # This code is written by Finlay Metcalfe, encrappified by malware8148 held under the AGPL-3.0 License
 

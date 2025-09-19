@@ -1,4 +1,6 @@
 <?php
+require_once '../../../content/initialize.php';
+
 
 include('verify.php');
 require_once("../../../database/connect.php");

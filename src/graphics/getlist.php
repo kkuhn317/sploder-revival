@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 header('Content-Type: application/xml');
 session_start();

@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 $authors = [
     'moonove' => 'https://moonove.com/',
     'syphus' => 'https://echolevel.co.uk/',

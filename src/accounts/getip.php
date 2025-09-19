@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 function getVisitorIp()
 {

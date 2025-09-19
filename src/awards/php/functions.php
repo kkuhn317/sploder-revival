@@ -1,4 +1,5 @@
 <?php
+require_once '../../content/initialize.php';
 
 
 require_once(__DIR__ . "/../../database/connect.php");

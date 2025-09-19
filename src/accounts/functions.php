@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 /* Useful functions.
  * This file contains some useful functions for demo.

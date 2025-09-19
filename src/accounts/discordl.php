@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 if (!isset($_SESSION)) {
     session_start();

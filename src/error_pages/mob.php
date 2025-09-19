@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <?php include('../content/head.php'); ?>
+    <?php
+require_once '../content/initialize.php';
+ include('../content/head.php'); ?>
 
     <link rel="stylesheet" type="text/css" href="../update/update.css" />
     <!-- Mobile device support -->

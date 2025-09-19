@@ -1,4 +1,5 @@
 <?php
+require_once '../../content/initialize.php';
 
 session_start();
 require_once('../../database/connect.php');

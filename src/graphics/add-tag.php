@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 include('../content/logincheck.php');
 require_once('verify.php');

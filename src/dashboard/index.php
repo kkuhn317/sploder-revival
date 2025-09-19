@@ -1,4 +1,6 @@
-<?php require(__DIR__.'/../content/disablemobile.php'); ?>
+<?php
+require_once '../content/initialize.php';
+require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php
 include('../content/logincheck.php');
 $username = $_SESSION['username'];

@@ -11,6 +11,7 @@
 <div align="center" style="width: 340px; margin: auto;">
 <h1>Treemap Example</h1>
 <?php
+require_once '../../content/initialize.php';
 // include the function
 require_once("treemap.php");
 

@@ -1,4 +1,5 @@
 <?php
+require_once '../../content/initialize.php';
 
 include_once('../database/connect.php');
 function get_votes($g_id)

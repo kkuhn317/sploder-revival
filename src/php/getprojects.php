@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 header("Content-type: text/xml");
 $version = $_GET['version'] ?? 1;

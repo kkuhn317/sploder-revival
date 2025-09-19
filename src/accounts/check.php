@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 require('logincheck.php');
 require_once('../database/connect.php');

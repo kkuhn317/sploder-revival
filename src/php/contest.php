@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 function in_array_recursive(mixed $needle, array $haystack, bool $strict): bool
 {

@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 echo "Service  Running!\n";
 require_once(__DIR__.'/../database/connect.php');

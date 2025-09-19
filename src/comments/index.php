@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 session_start();
 $a = $_GET['a'];

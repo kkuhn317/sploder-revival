@@ -1,4 +1,5 @@
 <?php
+require_once '../content/initialize.php';
 
 include_once('../database/connect.php');
 require_once('../repositories/repositorymanager.php');

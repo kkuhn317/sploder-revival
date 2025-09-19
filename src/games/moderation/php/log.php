@@ -1,4 +1,6 @@
 <?php
+require_once '../../../content/initialize.php';
+
 
 function logModeration($action, $on, $level)
 {

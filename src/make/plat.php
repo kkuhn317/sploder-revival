@@ -1,4 +1,6 @@
-<?php require(__DIR__.'/../content/disablemobile.php'); ?>
+<?php
+require_once '../content/initialize.php';
+require(__DIR__.'/../content/disablemobile.php'); ?>
 <?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
