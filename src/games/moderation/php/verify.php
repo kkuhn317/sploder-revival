@@ -1,8 +1,4 @@
 <?php
-require_once '../../../content/initialize.php';
-
-
-
 // Login check
 include(__DIR__ . '/../../../content/logincheck.php');
 
