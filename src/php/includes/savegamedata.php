@@ -1,6 +1,4 @@
 <?php
-require_once '../../content/initialize.php';
-
 session_id($_GET['PHPSESSID']);
 session_start();
 if (isset($_SESSION['loggedin'])) {

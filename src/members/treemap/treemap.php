@@ -1,5 +1,4 @@
 <?php
-require_once '../../content/initialize.php';
 /*
 
 HTML Treemap Implementation

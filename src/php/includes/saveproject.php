@@ -1,6 +1,4 @@
 <?php
-require_once '../../content/initialize.php';
-
 function saveProject(int $g_swf): int
 {
     session_start();
