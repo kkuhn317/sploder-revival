@@ -16,7 +16,7 @@ function fatal_error_handler() {
     if ($last_error && in_array($last_error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
         // Capture the output of err50x.php into a variable
         ob_start();
-        include __DIR__ . '/../error_pages/err50x.php';
+        require(__DIR__ . '/../error_pages/err50x.php');
         $error_page_content = ob_get_clean();
 
         // Check if headers have been sent

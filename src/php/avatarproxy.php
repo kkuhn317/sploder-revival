@@ -25,10 +25,5 @@ if ($size != 96) {
     imagesavealpha($img, true);
     $transparent = imagecolorallocatealpha($img, 0, 0, 0, 127);
     imagefill($img, 0, 0, $transparent);
-
-    ob_start();
-    imagepng($img);
-    $raw = ob_get_clean();
 }
-echo $raw;
-?>
+imagepng($img);
