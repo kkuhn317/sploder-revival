@@ -61,11 +61,11 @@ $topMembers = $userRepository->getTopMembers();
             }
             
             ?>
-        </div>
-        <div class="spacer">&nbsp;</div>
-    
+        </div>        
     <div id="sidebar">
-        <br /><br /><br />
+        <?php
+        require('../content/onlinelist.php');
+        ?>
         <div class="spacer">&nbsp;</div>
     </div>
     <div class="spacer">&nbsp;</div>
