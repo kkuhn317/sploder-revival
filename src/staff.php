@@ -1,6 +1,6 @@
 <?php
 require_once 'content/initialize.php';
- require(__DIR__.'/content/disablemobile.php'); ?>
+require(__DIR__.'/content/disablemobile.php'); ?>
 <?php
 session_start();
 ?>

@@ -1,6 +1,6 @@
 <?php
 require_once 'content/initialize.php';
- require(__DIR__.'/content/disablemobile.php'); ?>
+require(__DIR__.'/content/disablemobile.php'); ?>
 <?php session_start() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -40,7 +40,7 @@ require_once 'content/initialize.php';
             <h2>Grant Lanham (<span class="at-symbol">@</span>declared7772): Programming; code review</h2>
             <h2>SmilerRyan (<span class="at-symbol">@</span>smilerryan): Code review</h2>
             <h2>EVEN_STEEL (<span class="at-symbol">@</span>even_steel): Domain provider</h2>
-            <h2>NeoTheb (neotheb): ex-developer; programming</h2>
+            <h2>NeoTheb (<span class="at-symbol">@</span>neotheb): ex-developer; programming</h2>
             <h2>EVEN_STEEL (<span class="at-symbol">@</span>even_steel): Domain provider</h2>
             <h2>dmn (<span class="at-symbol">@</span>dmn01): Logo designer</h2>
             <br><br><br><br><br><br><br>
