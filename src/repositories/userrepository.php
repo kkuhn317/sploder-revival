@@ -383,8 +383,13 @@ LEFT JOIN votes_cast_stats vcs ON vcs.username = :username;
         ));
 
         // Return only the required stats
+        if ($result['avg_difficulty'] > 1) {
+            $avg_difficulty = (int)round(((min(10, $result['avg_difficulty'] + 0.5)) - 1) * (100 / 9));
+        } else {
+            $avg_difficulty = 0;
+        }
         return [
-            'avg_difficulty' => (int)round(((min(10, $result['avg_difficulty'] + 0.5)) - 1) * (100 / 9)),
+            'avg_difficulty' => $avg_difficulty,
             'avg_score' => (int)round(($result['avg_score'] - 1) * 25),  // Convert to 0-100 scale
             'awesomeness' => $awesomeness
         ];
