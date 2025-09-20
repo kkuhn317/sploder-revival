@@ -83,7 +83,7 @@
 
             <p class="note"><?= ucfirst(getDomainNameWithoutProtocolWww()) ?> does NOT have ownership of the game engine and all source code, SWF bytecode,
                 graphics, artwork, ideas and concepts presented on and in conjunction with the site. These are owned by the original creator, Geoffrey P. Gaudreault,
-                and have been hosted on <?= ucfirst(getDomainNameWithoutProtocolWww()) ?> as abandonware. Back-end code is licensed under AGPL-3.0 
+                and have been hosted on <?= ucfirst(getDomainNameWithoutProtocolWww()) ?> as abandonware. Most of the back-end code is licensed under AGPL-3.0 
                 and is hosted publicly on GitHub. Link to the source is provided in the footer of all pages. Levels created by
                 users remain the property of the user. By creating or submitting User Content you are granting
                 <?= ucfirst(getDomainNameWithoutProtocolWww()) ?> unlimited license to host, cache, store, maintain, use, reproduce, publish, distribute,
