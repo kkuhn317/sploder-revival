@@ -25,5 +25,7 @@ if ($size != 96) {
     imagesavealpha($img, true);
     $transparent = imagecolorallocatealpha($img, 0, 0, 0, 127);
     imagefill($img, 0, 0, $transparent);
+    imagepng($img);
+    die();
 }
-imagepng($img);
+echo $raw;
