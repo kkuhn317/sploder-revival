@@ -108,9 +108,9 @@ $offset = $_GET['o'] ?? 0;
                     } else {
                         $showScore = false;
                     }
-
+            $boostPoints = $userRepository->getBoostPoints($_SESSION['userid']);
             ?>
-            <script>const boostPoints = <?= $userRepository->getBoostPoints($_SESSION['userid']); ?>;</script>
+            <script>const boostPoints = <?= $boostPoints ?>;</script>
             <script type="text/javascript" src="challenges.js"></script>
             <div style="border-radius:10px" class="challenge_form">
                 <br>
@@ -158,7 +158,7 @@ $offset = $_GET['o'] ?? 0;
                         <td>
                             <a href="/dashboard/my-games.php"><input type="button" class="postbutton" value="Cancel"></input></a>
                             <input type="hidden" name="g_id" value="<?= $gameId ?>">
-                            <input value="Create" type="submit" class="postbutton"></input>
+                            <input value="Create" type="submit" class="postbutton" <?= $boostPoints >= 150 ? '' : 'disabled=""' ?>></input>
                         </td>
                     </tr>
                 </table>
