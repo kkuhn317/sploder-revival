@@ -41,7 +41,6 @@ require(__DIR__.'/content/disablemobile.php'); ?>
             <h2>SmilerRyan (<span class="at-symbol">@</span>smilerryan): Code review</h2>
             <h2>EVEN_STEEL (<span class="at-symbol">@</span>even_steel): Domain provider</h2>
             <h2>NeoTheb (<span class="at-symbol">@</span>neotheb): ex-developer; programming</h2>
-            <h2>EVEN_STEEL (<span class="at-symbol">@</span>even_steel): Domain provider</h2>
             <h2>dmn (<span class="at-symbol">@</span>dmn01): Logo designer</h2>
             <br><br><br><br><br><br><br>
             Names in parentheses are Discord usernames.
