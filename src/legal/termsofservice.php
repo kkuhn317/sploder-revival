@@ -81,8 +81,8 @@
 
             <h5>Ownership</h5>
 
-            <p class="note"><?= ucfirst(getDomainNameWithoutProtocolWww()) ?> retains ownership of the game engine and all source code, SWF bytecode,
-                graphics, artwork, ideas and concepts presented on and in conjunction with the site. Levels created by
+            <p class="note"><?= ucfirst(getDomainNameWithoutProtocolWww()) ?> does NOT have ownership of the game engine and all source code, SWF bytecode,
+                graphics, artwork, ideas and concepts presented on and in conjunction with the site. These are owned by the original creator, Geoffrey P. Gaudreault, and have been hosted on <?= ucfirst(getDomainNameWithoutProtocolWww()) ?> as abandonware. Levels created by
                 users remain the property of the user. By creating or submitting User Content you are granting
                 <?= ucfirst(getDomainNameWithoutProtocolWww()) ?> unlimited license to host, cache, store, maintain, use, reproduce, publish, distribute,
                 display, exhibit, broadcast, transmit, modify, create derivative works of, adapt, reformat, translate,
