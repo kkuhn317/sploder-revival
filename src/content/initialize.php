@@ -1,4 +1,6 @@
 <?php
+ob_start();
+
 // Measure page execution time
 $pageExecutionStartTime = microtime(true);
 
@@ -14,6 +16,7 @@ function fatal_error_handler() {
     $last_error = error_get_last();
     // Check if the last error is a fatal error
     if ($last_error && in_array($last_error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        ob_clean();
         // Capture the output of err50x.php into a variable
         ob_start();
         require(__DIR__ . '/../error_pages/err50x.php');
@@ -33,5 +36,6 @@ function fatal_error_handler() {
             echo $error_page_content;
         }
     }
+    ob_end_flush();
 }
 ?>
