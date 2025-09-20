@@ -14,32 +14,23 @@ function fatal_error_handler() {
     $last_error = error_get_last();
     // Check if the last error is a fatal error
     if ($last_error && in_array($last_error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        // Capture the output of err50x.php into a variable
+        ob_start();
+        include __DIR__ . '/../error_pages/err50x.php';
+        $error_page_content = ob_get_clean();
+
         // Check if headers have been sent
         if (headers_sent()) {
-            // Headers sent, use JavaScript to fetch the error page and replace content
+            // Headers sent, use JavaScript to replace content with the captured HTML
             echo '<script type="text/javascript">
-    document.body.style.display = "none";
-    fetch("/error_pages/err50x.php")
-    .then(response => {
-    if (!response.ok) {
-        throw new Error("Network response was not ok");
-    }
-    return response.text();
-    })
-    .then(html => {
-        document.open();
-        document.write(html);
-        document.close();
-    })
-    .catch(error => {
-    document.body.innerHTML = "<h1>500 Internal Server Error</h1><p>An unexpected error occurred. Please try again later.</p>";
-    console.error("Failed to fetch error page:", error);
-    });
+    document.open();
+    document.write(' . json_encode($error_page_content) . ');
+    document.close();
 </script>';
         } else {
-            // Headers not sent, set a 500 status code and include the error template
+            // Headers not sent, set a 500 status code and output the captured content
             http_response_code(500);
-            include __DIR__ . '/../error_pages/err50x.php';
+            echo $error_page_content;
         }
     }
 }
