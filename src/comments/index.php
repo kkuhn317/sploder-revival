@@ -122,8 +122,7 @@ $latestp = ceil($fulltotal / $perPage) - 1;
 $params[':p'] = max(0, ($latestp - $p) * $perPage);
 $p = $params[':p'];
 
-    $result2 = $db->query("SELECT c.* 
-    FROM comments c
+    $result2 = $db->query("SELECT c.id AS thread_id, c.id, c.venue, c.creator_name, c.body, c.score, c.timestamp FROM comments c
     LEFT JOIN games g ON (
         c.venue LIKE 'game-%' 
         AND c.venue ~ '_[0-9]+-'
