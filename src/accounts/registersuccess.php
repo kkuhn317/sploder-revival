@@ -34,7 +34,7 @@ require(__DIR__.'/../content/disablemobile.php'); ?>
             <div id="content">
                 <h3>Registration Successful!</h3>
                 <hr>
-                <p class="prompt">Registration completed successfully! You may now open the launcher and log in!</p>
+                <p class="prompt">Registration completed successfully! You may now <a href="/accounts/login.php">log in</a>!</p>
 
 
                 <div class="spacer">&nbsp;</div>
