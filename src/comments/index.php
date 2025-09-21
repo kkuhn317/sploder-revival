@@ -381,6 +381,17 @@ if ($a == "read") {
         $userPerms = $userRepository->getUserPerms($_SESSION['username']);
         if (str_contains($userPerms, 'M')) {
             $is_owner = true;
+            // Log moderator action
+            require('../games/moderation/php/log.php');
+            // Get comment details for logging
+            $commentDetails = $db->queryFirst("SELECT creator_name, body FROM comments WHERE id = :id", [
+                ':id' => $id
+            ]);
+            logModeration(
+                'deleted',
+                'a comment by ' . $commentDetails['creator_name'] . ' saying "' . $commentDetails['body'] . '"',
+                3
+            );
         }
     }
 
