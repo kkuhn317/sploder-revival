@@ -27,6 +27,7 @@ $isolated = $userRepository->isIsolated($_SESSION['username']);
     <script type="text/javascript" src="content/publish.js"></script>
     <script>
     id = <?= $id ?>;
+    window.parent.postMessage({ type: "iframe-audio", state: "playing" }, "*");
     </script>
 </head>
 
