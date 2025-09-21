@@ -212,7 +212,6 @@ if ($a == "read") {
     // Check if the venue is a game
     $venueParts = explode('-', $venue);
     if ($venueParts[0] == 'game') {
-        require('../repositories/repositorymanager.php');
         $gameRepository = RepositoryManager::get()->getGameRepository();
         $gameId = explode("_",$venueParts[1])[1];
         $allowComment = $gameRepository->allowComment($gameId);
