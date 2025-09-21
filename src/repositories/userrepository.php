@@ -489,4 +489,13 @@ LEFT JOIN votes_cast_stats vcs ON vcs.username = :username;
         $result = $this->db->queryFirst($query, [':username' => $username]);
         return $result ? $result : ['reason' => '', 'autounbandate' => null];
     }
+
+    public function showOnlineList(): bool
+    {
+        // Check if at least one user is online
+        $query = "SELECT COUNT(*) AS online_count FROM members WHERE lastlogin > :last";
+        $last = time() - 120; // 120 seconds
+        $result = $this->db->queryFirst($query, [':last' => $last]);
+        return $result && $result['online_count'] > 0;
+    }
 }

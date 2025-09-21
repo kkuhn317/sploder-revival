@@ -134,4 +134,11 @@ interface IUserRepository
      * @return array ban info of user
      */
     function getBanInfo(string $username): array;
+
+    /**
+     * Show online members list
+     * 
+     * @return bool true if online members exist, false otherwise
+     */
+    function showOnlineList(): bool;
 }

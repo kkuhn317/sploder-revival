@@ -8,6 +8,7 @@ require_once('../members/treemap/treemap.php');
 
 $userRepository = RepositoryManager::get()->getUserRepository();
 $topMembers = $userRepository->getTopMembers();
+$showList = $userRepository->showOnlineList();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -64,7 +65,9 @@ $topMembers = $userRepository->getTopMembers();
         </div>        
     <div id="sidebar">
         <?php
-        require('../content/onlinelist.php');
+        if ($showList) {
+            require('../content/onlinelist.php');
+        }
         ?>
         <div class="spacer">&nbsp;</div>
     </div>
