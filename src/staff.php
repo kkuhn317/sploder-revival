@@ -3,6 +3,13 @@ require_once 'content/initialize.php';
 require(__DIR__.'/content/disablemobile.php'); ?>
 <?php
 session_start();
+require_once('repositories/repositorymanager.php');
+$userRepository = RepositoryManager::get()->getUserRepository();
+$ownerUsername = '';
+if (isset($_SESSION['loggedin'])) {
+    $perms = $userRepository->getUserPerms($_SESSION['username'] ?? '');
+    $ownerUsername = str_contains($perms, 'M') ? $_SESSION['username'] ?? '' : 'staff';
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -118,7 +125,7 @@ session_start();
                 venue: 'staff-page',
                 venue_container: 'venue',
                 venue_type: 'staff',
-                owner: 'staff',
+                owner: '<?= $ownerUsername ?>',
                 username: '<?php if (isset($_SESSION['username'])) {
                         echo $_SESSION['username'];
                            }?>',

@@ -14,7 +14,11 @@ $userRepository = RepositoryManager::get()->getUserRepository();
 $stats = $userRepository->getUserStats($_GET['u'] ?? '');
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $friendsListRenderService = new FriendsListRenderService($friendsRepository);
-
+$ownerUsername = '';
+if (isset($_SESSION['loggedin'])) {
+    $viewerPermissions = $userRepository->getUserPerms($_SESSION['username'] ?? '');
+    $ownerUsername = str_contains($viewerPermissions, 'M') ? $_SESSION['username'] ?? '' : ($_GET['u'] ?? '');
+}
 $difficulty = $stats['avg_difficulty'] ?? 50;
 $feedback = $stats['avg_score'] ?? 50;
 $awesomeness = $stats['awesomeness'] ?? 50;
@@ -166,7 +170,7 @@ $nocache = time();
                 venue: 'messages-<?= $username ?>',
                 venue_container: 'venue',
                 venue_type: 'member',
-                owner: '<?= $username ?>',
+                owner: '<?= $ownerUsername ?>',
                 username: '<?php if (isset($_SESSION['username'])) {
                         echo $_SESSION['username'];
                            }?>',

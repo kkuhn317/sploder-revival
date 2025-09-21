@@ -37,6 +37,12 @@ if ($reviewData['ispublished'] == false && $reviewData['userid'] != $_SESSION['u
 $gameInfo = $gameRepository->getGameBasicInfo($gameId);
 $gameTitle = $gameInfo['title'];
 $gameAuthor = $gameInfo['author'];
+$userRepository = RepositoryManager::get()->getUserRepository();
+$ownerUsername = '';
+if (isset($_SESSION['loggedin'])) {
+    $viewerPermissions = $userRepository->getUserPerms($_SESSION['username'] ?? '');
+    $ownerUsername = str_contains($viewerPermissions, 'M') ? $_SESSION['username'] ?? '' : ($reviewData['username'] ?? '');
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -164,7 +170,7 @@ $gameAuthor = $gameInfo['author'];
                 venue: 'review-<?= $reviewData['review_id'] ?>',
                 venue_container: 'venue',
                 venue_type: 'review',
-                owner: '<?= $reviewData['username'] ?>',
+                owner: '<?= $ownerUsername ?>',
                 username: '<?php if (isset($_SESSION['username'])) {
                         echo $_SESSION['username'];
                            }?>',

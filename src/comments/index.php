@@ -1,7 +1,8 @@
 <?php
 require_once '../content/initialize.php';
-
 session_start();
+require('../repositories/repositorymanager.php');
+$userRepository = RepositoryManager::get()->getUserRepository();
 $a = $_GET['a'];
 require_once('../database/connect.php');
 $db = getDatabase();
@@ -334,28 +335,68 @@ if ($a == "read") {
     $formatter = explode("&", $posts);
     $id = substr($formatter[0], 3);
 
-    $result2 = $db->queryFirst("SELECT creator_name, venue FROM comments WHERE id=:id", [
-        ':id' => $id
-    ]);
-    if ($_SESSION['username'] != $result2['creator_name']) {
-        $queriedAuthor = $db->queryFirstColumn("SELECT author FROM games WHERE g_id=:g_id", 0, [
-            ':g_id' => substr($result2['venue'], 5)
-        ]);
+    // Refactored ownership check
+    $is_owner = false;
 
-        if ($_SESSION['username'] != $queriedAuthor) {
-            die("Malicious Request Detected");
-        }
+    // Check if the user is the creator of the comment
+    $comment_creator_check = $db->queryFirstColumn("SELECT 1 FROM comments WHERE id = :id AND creator_name = :username", 0, [
+        ':id' => $id,
+        ':username' => $_SESSION['username']
+    ]);
+    if ($comment_creator_check) {
+        $is_owner = true;
     }
-    if ($_SESSION['username'] == $result2['creator_name'] || $_SESSION['username'] == $queriedAuthor) {
-        $db->execute("
-            DELETE FROM comments
-            WHERE
-                (thread_id = :id AND :id = (SELECT thread_id FROM comments WHERE id = :id))
-                OR
-                (id = :id AND :id != (SELECT thread_id FROM comments WHERE id = :id))
-        ", [
+
+    // If not the comment creator, check if they own the related game or review
+    if (!$is_owner) {
+        $result2 = $db->queryFirst("SELECT venue FROM comments WHERE id=:id", [
             ':id' => $id
         ]);
-        echo extracted($db);
+        if (str_contains($result2['venue'], 'game-')) {
+            // Check if user owns the game
+            $temp = explode('-', $result2['venue']);
+            $game_id = explode('_', $temp[1])[1];
+            $game_owner_check = $db->queryFirstColumn("SELECT 1 FROM games WHERE g_id = :g_id AND author = :username", 0, [
+                ':g_id' => $game_id,
+                ':username' => $_SESSION['username']
+            ]);
+            if ($game_owner_check) {
+                $is_owner = true;
+            }
+        } elseif (str_contains($result2['venue'], 'review-')) {
+            // Check if user owns the review
+            $review_id = substr($result2['venue'], 7);
+            $review_owner_check = $db->queryFirstColumn("SELECT 1 FROM reviews WHERE review_id = :review_id AND userid = :userid", 0, [
+                ':review_id' => $review_id,
+                ':userid' => $_SESSION['userid']
+            ]);
+            if ($review_owner_check) {
+                $is_owner = true;
+            }
+        }
     }
+    
+    // Check if the user is a moderator if no other ownership is found
+    if (!$is_owner) {
+        $userPerms = $userRepository->getUserPerms($_SESSION['username']);
+        if (str_contains($userPerms, 'M')) {
+            $is_owner = true;
+        }
+    }
+
+    if (!$is_owner) {
+        die("Malicious Request Detected");
+    }
+
+    // If the user is an owner, proceed with deletion
+    $db->execute("
+        DELETE FROM comments
+        WHERE
+            (thread_id = :id AND :id = (SELECT thread_id FROM comments WHERE id = :id))
+            OR
+            (id = :id AND :id != (SELECT thread_id FROM comments WHERE id = :id))
+    ", [
+        ':id' => $id
+    ]);
+    echo extracted($db);
 }

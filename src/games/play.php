@@ -100,6 +100,7 @@ if(isset($_GET['challenge'])){
             <?php
             $isEditor = false;
             $isReviewer = false;
+            $isModerator = false;
             $isEditorOrReviewer = false;
             if (isset($_SESSION['loggedin']))
             {
@@ -107,6 +108,7 @@ if(isset($_GET['challenge'])){
                 if ($perms != null || $perms !== '') {
                     $isEditor = str_contains($perms, 'E');
                     $isReviewer = str_contains($perms, 'R');
+                    $isModerator = str_contains($perms, 'M');
                     $isEditorOrReviewer = $isEditor || $isReviewer;
                     if ($isEditorOrReviewer && $game['author'] != $_SESSION['username']) {
                         echo '<style>.challenge_prompt { margin-top: -10px !important; }</style>';
@@ -315,7 +317,7 @@ if(isset($_GET['challenge'])){
                 venue: 'game-<?= $game['user_id'] ?>_<?= $game['g_id'] . '-' . $game['author'] ?>',
                 venue_container: 'venue',
                 venue_type: 'game',
-                owner: '<?= $game['author'] ?>',
+                owner: '<?= $isModerator ? $_SESSION['username'] : $game['author'] ?>',
                 username: '<?php if (isset($_SESSION['username'])) {
                         echo $_SESSION['username'];
                            }?>',
