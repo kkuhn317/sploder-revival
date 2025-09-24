@@ -60,7 +60,19 @@ class FriendsListRenderService
         }
 
         if ($showHeader && $showActions) {
-            $html .= '<h4>Recent Friends</h4>';
+            $html .= '<h4>My Friends</h4>';
+            $html .= '
+            <div class="friend_chooser">
+
+                <h4>Find a friend:</h4>
+                <form action="all.php" method="GET">
+                    <label for="friendname">Enter your friend\'s username:</label>
+                    <input type="text" id="friendname" name="username" required autocomplete="off" autocorrect="off"
+                        autocapitalize="off" spellcheck="false" maxlength="16" />
+                    <input style="width:auto;text-align:left;" type="submit" name="submit"
+                        class="postbutton" value="Search" />
+                </form>
+            </div>';
         }
 
         $html .= '<div id="friends">';

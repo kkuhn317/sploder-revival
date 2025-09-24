@@ -41,19 +41,11 @@ $total_likes = $graphicRepository->getTotalGraphicLikesByUserId($_SESSION['useri
 <body id="home" class="" onload="doLoad();">
     <?php include('../content/headernavigation.php'); ?>
     <div id="page">
-        <div id="subnav">
-            <ul class="nav_dashboard">
-                <li><a href="/">Home</a></li>
-                <li><a href="/dashboard/my-games.php">My Games</a></li>
-                <li><a href="profile-edit.php">Profile</a></li>
-                <li><a href="/friends/index.php">Friends</a></li>
-                <!-- TODO: Groups <li><a href="groups/">Groups</a></li> -->
-                <li><a href="/awards/index.php">Awards</a></li>
-                <li><a href="/tournaments/index.php" style="display: none;">Tournaments</a></li>
-                <li><a href="" class="active">Graphics</a></li>
-                <li style="float: right;"><a href="/accounts/account.php">My Account</a></li>
-            </ul>
-        </div>
+        <?php
+        require_once('../services/DashboardSubnavService.php');
+        $subnavService = new DashboardSubnavService();
+        echo $subnavService->renderNavigationLinks($_SERVER['REQUEST_URI']);
+        ?>
         <div id="content">
             <h3>My Graphics</h3>
             <?php if (isset($_GET['err'])) { ?>
