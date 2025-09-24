@@ -119,7 +119,9 @@ $friendsService = new FriendsListRenderService($friendsRepository);
                 echo $friendsService->renderPartialViewForRecentFriends($_SESSION['username']);
             ?>
             <?php } ?>
-
+            <div class="buttons" style="margin:0px; padding:0px;">
+                <span style="float:right;" class="firstbutton button"><a href="all.php">Manage my friends</a></span>
+            </div>
 
             <div class="spacer">&nbsp;</div>
 
