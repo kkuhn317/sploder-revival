@@ -10,10 +10,6 @@ $db = getDatabase();
 $url = $_REQUEST['url'];
 $page = $_REQUEST['return'];
 
-require_once("../../../database/connect.php");
-
-$db = getDatabase();
-
 // Get the game id from the URL by parsing it and getting the 'id' parameter
 function getIdFromUrl($url)
 {
@@ -82,21 +78,31 @@ $count = $count + 1; // Don't forget to count the current request
 
 if ($count >= 3) {
     try {
-        // Single query to backup game, delete from games, and delete pending deletions
-        $db->execute("
-            WITH backup_game AS (
-                INSERT INTO games_backup (SELECT * FROM games WHERE g_id = :id)
-            ),
-            delete_game AS (
-                DELETE FROM games WHERE g_id = :id
-            )
-            DELETE FROM pending_deletions WHERE g_id = :g_id
-        ", [
-            ':id' => $gameId,
-            ':g_id' => $gameId
-        ]);
-
         $title = getGameName($gameId);
+        // First, fetch the data from the 'games' table
+        $gameData = $db->queryFirst("SELECT g_id, author, to_jsonb(games) as data FROM games WHERE g_id = :id", [
+            ':id' => $gameId
+        ]);
+        // Check if the game was found
+        if ($gameData) {
+            // Insert the fetched data into the new games_backup table
+            $db->execute("INSERT INTO games_backup (g_id, author, data) VALUES (:g_id, :author, :data)", [
+                ':g_id' => $gameData['g_id'],
+                ':author' => $gameData['author'],
+                ':data' => $gameData['data']
+            ]);
+
+            // Delete the original record from the 'games' table
+            $db->execute("DELETE FROM ONLY games WHERE g_id = :id", [
+                ':id' => $gameId
+            ]);
+
+            // Delete the record from the 'pending_deletions' table
+            $db->execute("DELETE FROM pending_deletions WHERE g_id = :id", [
+                ':id' => $gameId
+            ]);
+        }
+
         include_once('log.php');
         logModeration('made a delete request', 'on ' . $title . ' and deleted it because of ' . $reason, 3);
         header("Location: ../" . $page . "?msg=Game deleted successfully");

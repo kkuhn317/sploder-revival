@@ -188,7 +188,7 @@ class GameListRenderService
         $games = $this->gameRepository->getAllGamesFromUser($userName, $offset, $perPage, $isDeleted);
         $this->renderPartialViewForGames(
             $games->data,
-            'You have not made any games yet.<div class="spacer">&nbsp;</div>',
+            'You have not made any games yet.',
             includeStyleWidth: false,
             includeDelete: true,
             includeRestore: $isDeleted,
@@ -206,7 +206,7 @@ class GameListRenderService
         $games = $this->gameRepository->getGamesFromUserAndGameSearch($userName, $game, $offset, $perPage, $isDeleted);
         $this->renderPartialViewForGames(
             $games->data,
-            'This game was not found.<div class="spacer">&nbsp;</div>',
+            'This game was not found.',
             includeStyleWidth: false,
             includeDelete: true,
             includeRestore: $isDeleted,

@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict XnlZfKhLA45VKVfEDDI7GIoOkYjz60nzbl395oQXhoP2L0fPMjWNSqhzc1MRtEy
+\restrict 4AaagqC8O1GZmrPI2TvwEiCy8dQxSsRIqMKLOqUU82quyaFndC2NsZH9QmhdfOS
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -28,9 +28,9 @@ CREATE DATABASE sploder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVI
 
 ALTER DATABASE sploder OWNER TO sploder;
 
-\unrestrict XnlZfKhLA45VKVfEDDI7GIoOkYjz60nzbl395oQXhoP2L0fPMjWNSqhzc1MRtEy
+\unrestrict 4AaagqC8O1GZmrPI2TvwEiCy8dQxSsRIqMKLOqUU82quyaFndC2NsZH9QmhdfOS
 \connect sploder
-\restrict XnlZfKhLA45VKVfEDDI7GIoOkYjz60nzbl395oQXhoP2L0fPMjWNSqhzc1MRtEy
+\restrict 4AaagqC8O1GZmrPI2TvwEiCy8dQxSsRIqMKLOqUU82quyaFndC2NsZH9QmhdfOS
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -504,8 +504,10 @@ ALTER TABLE public.games OWNER TO sploder;
 --
 
 CREATE TABLE public.games_backup (
-)
-INHERITS (public.games);
+    g_id integer NOT NULL,
+    author text NOT NULL,
+    data jsonb NOT NULL
+);
 
 
 ALTER TABLE public.games_backup OWNER TO sploder;
@@ -718,48 +720,6 @@ CREATE TABLE public.votes (
 ALTER TABLE public.votes OWNER TO sploder;
 
 --
--- Name: games_backup ispublished; Type: DEFAULT; Schema: public; Owner: sploder
---
-
-ALTER TABLE ONLY public.games_backup ALTER COLUMN ispublished SET DEFAULT 0;
-
-
---
--- Name: games_backup isdeleted; Type: DEFAULT; Schema: public; Owner: sploder
---
-
-ALTER TABLE ONLY public.games_backup ALTER COLUMN isdeleted SET DEFAULT 0;
-
-
---
--- Name: games_backup isprivate; Type: DEFAULT; Schema: public; Owner: sploder
---
-
-ALTER TABLE ONLY public.games_backup ALTER COLUMN isprivate SET DEFAULT 1;
-
-
---
--- Name: games_backup comments; Type: DEFAULT; Schema: public; Owner: sploder
---
-
-ALTER TABLE ONLY public.games_backup ALTER COLUMN comments SET DEFAULT 0;
-
-
---
--- Name: games_backup views; Type: DEFAULT; Schema: public; Owner: sploder
---
-
-ALTER TABLE ONLY public.games_backup ALTER COLUMN views SET DEFAULT 0;
-
-
---
--- Name: games_backup difficulty; Type: DEFAULT; Schema: public; Owner: sploder
---
-
-ALTER TABLE ONLY public.games_backup ALTER COLUMN difficulty SET DEFAULT 5;
-
-
---
 -- Name: award_requests award_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
 --
 
@@ -845,6 +805,14 @@ ALTER TABLE ONLY public.games
 
 ALTER TABLE ONLY public.featured_games
     ADD CONSTRAINT g_id_featured_games_unique UNIQUE (g_id);
+
+
+--
+-- Name: games_backup games_backup_pkey; Type: CONSTRAINT; Schema: public; Owner: sploder
+--
+
+ALTER TABLE ONLY public.games_backup
+    ADD CONSTRAINT games_backup_pkey PRIMARY KEY (g_id);
 
 
 --
@@ -1383,5 +1351,5 @@ GRANT ALL ON SCHEMA public TO sploder;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict XnlZfKhLA45VKVfEDDI7GIoOkYjz60nzbl395oQXhoP2L0fPMjWNSqhzc1MRtEy
+\unrestrict 4AaagqC8O1GZmrPI2TvwEiCy8dQxSsRIqMKLOqUU82quyaFndC2NsZH9QmhdfOS
 
