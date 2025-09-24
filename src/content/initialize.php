@@ -13,6 +13,10 @@ $pageExecutionStartTime = microtime(true);
 register_shutdown_function('fatal_error_handler');
 
 function fatal_error_handler() {
+    // If development, return
+    if (getenv('PHP_ENVIRONMENT') === 'development') {
+        return;
+    }
     $last_error = error_get_last();
     // Check if the last error is a fatal error
     if ($last_error && in_array($last_error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {

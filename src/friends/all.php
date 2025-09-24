@@ -6,6 +6,12 @@ session_start();
 require_once(__DIR__ . "/../repositories/repositorymanager.php");
 require_once(__DIR__ . "/../members/content/searchresult.php");
 $searchUserName = $_GET['u'] ?? '';
+$offset = $_GET['o'] ?? 0;
+$perPage = 100;
+$friendsRepository = RepositoryManager::get()->getFriendsRepository();
+$totalFriends = $friendsRepository->getTotalFriends($_SESSION['username']);
+require_once(__DIR__ . "/../services/FriendsListRenderService.php");
+$friendsListRenderService = new FriendsListRenderService($friendsRepository);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -25,26 +31,44 @@ $searchUserName = $_GET['u'] ?? '';
 
     <?php include('../content/headernavigation.php') ?>
     <div id="page">
-        <?php include('../content/subnav.php') ?>
+        <?php
+        require_once('../services/DashboardSubnavService.php');
+        $subnavService = new DashboardSubnavService();
+        echo $subnavService->renderNavigationLinks($_SERVER['REQUEST_URI']);
+        ?>
 
 
         <div id="content">
-            <h3>Page does not work, come back later!</h3>
+            <h3>All My Friends</h3>
             <form action="" method="GET">
                 <label for="username">Find an existing friend by username: &nbsp;</label>
                 <input type="text" name="u" value=<?= json_encode($searchUserName) ?? '""' ?> size="16" maxlength="16" class="" />&nbsp;&nbsp;
                 <input type="submit" value="Search" class="postbutton" />
             </form>
             <?php
+            if ($totalFriends !== 0) {
+            ?>
+            <h1><span class="tagcolor1"><?= $totalFriends ?> friend<?= $totalFriends == 1 ? "" : "s" ?></span></h1>
+            <?php
+            }
+            ?>
+            <?php
             if ($searchUserName != null || $searchUserName != '') {
             ?>
-            <h4>Members matching search <span class="tagcolor1"><?= htmlspecialchars($searchUserName) ?? null ?></span>:</h4>
             </p>
             
             <?php
-                $searchResults = RepositoryManager::get()->getUserRepository()->search($searchUserName);
-                generateSearchResults($searchResults);
+                $result = $friendsRepository->search($_SESSION['username'], $searchUserName, $offset, $perPage);
+                // Split the data as soon as bested = false
+                // First list is only fir bested = true
+                // Second list is for bested = false
 
+                $bested = array_filter($result->data, fn($f) => $f['bested'] == 1);
+                $accepted = array_filter($result->data, fn($f) => $f['bested'] == 0);
+
+                echo $friendsListRenderService->renderPartialViewForFriendSearchWithActions($bested, $accepted);
+                require_once(__DIR__ . "/../content/pages.php");
+                addPagination($result->totalCount, $perPage, $offset);
             }
             ?>
         </div>

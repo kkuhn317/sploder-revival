@@ -73,4 +73,32 @@ class FriendsRepository implements IFriendsRepository
                 ':limit' => $limit
             ]);
     }
+
+    public function search(string $username, string $search, int $page, int $perPage): PaginationData
+    {
+        $query = "WITH friends_with_sim AS (
+            SELECT
+                user2 AS user1,
+                bested,
+                similarity(:search, user1) AS sim
+            FROM
+                friends
+            WHERE
+                user1 = :username
+        )
+        SELECT
+            user1,
+            bested
+        FROM
+            friends_with_sim
+        WHERE
+            sim > 0.3
+        ORDER BY
+            bested DESC,
+            sim DESC";
+        return $this->db->queryPaginated($query, $page, $perPage, [
+            ':username' => $username,
+            ':search' => $search
+        ]);
+    }
 }

@@ -116,7 +116,7 @@ $friendsService = new FriendsListRenderService($friendsRepository);
                 </form>
             </div>
             <?php
-echo $friendsService->renderPartialViewForRecentFriends($_SESSION['username'], true);
+                echo $friendsService->renderPartialViewForRecentFriends($_SESSION['username']);
             ?>
             <?php } ?>
 

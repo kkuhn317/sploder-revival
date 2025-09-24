@@ -53,4 +53,15 @@ interface IFriendsRepository
      * @return array Array of friend records containing user1 and user2 fields
      */
     public function getAcceptedFriends(string $username, int $limit): array;
+
+    /**
+     * Search for a friend by username
+     * 
+     * @param string $username The username who is searching
+     * @param string $search The username to search for
+     * @param int $page The page number to retrieve
+     * @param int $perPage The number of results per page
+     * @return array of friend records matching the search criteria
+     */
+    public function search(string $username, string $search, int $page, int $perPage): PaginationData;
 }

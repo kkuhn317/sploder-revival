@@ -50,6 +50,21 @@ class FriendsListRenderService
         ];
     }
 
+    private function displayFriendChooser(): string {
+        return '
+            <div class="friend_chooser">
+
+                <h4>Find a friend:</h4>
+                <form action="all.php" method="GET">
+                    <label for="friendname">Enter your friend\'s username:</label>
+                    <input type="text" id="friendname" name="u" required autocomplete="off" autocorrect="off"
+                        autocapitalize="off" spellcheck="false" maxlength="16" />
+                    <input style="width:auto;text-align:left;" type="submit" name="submit"
+                        class="postbutton" value="Search" />
+                </form>
+            </div>';
+    }
+
     private function renderFriendsList(array $bestedFriends, array $acceptedFriends, string $username, bool $showActions = false, bool $showHeader = false, bool $showName = false): string 
     {
         $html = "";
@@ -61,18 +76,7 @@ class FriendsListRenderService
 
         if ($showHeader && $showActions) {
             $html .= '<h4>My Friends</h4>';
-            $html .= '
-            <div class="friend_chooser">
-
-                <h4>Find a friend:</h4>
-                <form action="all.php" method="GET">
-                    <label for="friendname">Enter your friend\'s username:</label>
-                    <input type="text" id="friendname" name="username" required autocomplete="off" autocorrect="off"
-                        autocapitalize="off" spellcheck="false" maxlength="16" />
-                    <input style="width:auto;text-align:left;" type="submit" name="submit"
-                        class="postbutton" value="Search" />
-                </form>
-            </div>';
+            $html .= $this->displayFriendChooser();
         }
 
         $html .= '<div id="friends">';
@@ -120,5 +124,9 @@ class FriendsListRenderService
 
     public function renderPartialViewForMemberList(array $members): string {
         return $this->renderFriendsList([], $members, '', false, false, false);
+    }
+
+    public function renderPartialViewForFriendSearchWithActions(array $bested, array $accepted) {
+        return $this->renderFriendsList($bested, $accepted, '', true, false);
     }
 }
