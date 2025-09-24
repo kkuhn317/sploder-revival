@@ -124,7 +124,7 @@ where g_id = :g_id
             AND g.author = :userName
             AND g.isdeleted = :isDeleted
             GROUP BY g.g_id 
-            ORDER BY g.g_id DESC";
+            ORDER BY g.first_published_date DESC";
 
         return $this->db->queryPaginated($qs, $offset, $perPage, [
             ':userName' => $userName,
