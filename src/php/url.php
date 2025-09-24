@@ -6,7 +6,7 @@ require_once(__DIR__ . '/../config/env.php');
 
 $envParsed = parse_url(getenv("DOMAIN_NAME"));
 $domainName = $envParsed['host'] ?? '';
-$back = str_replace(["&urlerr=1", "&err404=1"], "", $_POST["back"]);
+$back = str_replace(["&urlerr=1", "&errload=1"], "", $_POST["back"]);
 
 $parsedUrl = parse_url($url);
 $host = $parsedUrl['host'] ?? '';
