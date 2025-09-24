@@ -9,18 +9,9 @@ class FriendsListRenderService
         $this->friendsRepository = $friendsRepository;
     }
 
-    private function getAvatarPath(string $username): string
-    {
-        if (file_exists('../avatar/a/' . $username . '.png')) {
-            return $username;
-        }
-        return 'fb/noob';
-    }
-
     private function renderFriend(array $friend, string $currentUser, bool $isBested, bool $showActions): string
     {
         $friendUsername = ($friend['user1'] == $currentUser) ? $friend['user2'] : $friend['user1'];
-        $avt = $this->getAvatarPath($friendUsername);
         $bestClass = $isBested ? ' friend_48_best' : '';
 
         $html = "";
@@ -33,7 +24,7 @@ class FriendsListRenderService
 
         $html .= '<div '.$style.'" class="friend friend_48' . $bestClass . '">';
         $html .= '<a class="name" href="../members/index.php?u=' . htmlspecialchars($friendUsername) . '">';
-        $html .= '<img src="../avatar/a/' . htmlspecialchars($avt) . '.png" width="48" height="48" /></a>';
+        $html .= '<img src="/php/avatarproxy.php?size=48&u=' . htmlspecialchars($friendUsername) . '" width="48" height="48" /></a>';
         $html .= '<a class="name" href="../members/index.php?u=' . htmlspecialchars($friendUsername) . '">' . htmlspecialchars($friendUsername) . '</a>';
         
         if ($showActions) {

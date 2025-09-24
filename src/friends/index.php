@@ -91,12 +91,7 @@ $friendsService = new FriendsListRenderService($friendsRepository);
             ]);
 
             for ($i = 0; $i < count($result); $i++) {
-                if (file_exists('../avatar/a/' . $result[$i]['sender_username'] . '.png')) {
-                    $avt = $result[$i]['sender_username'];
-                } else {
-                    $avt = 'fb/noob';
-                }
-                echo '<div class="friend_request_new friend_request"><img src="../avatar/a/' . $avt . '.png">' . $result[$i]['sender_username'] . ' has requested to add you as a friend.<span style="width:200px"><a href="php/ignore.php?u=' . $result[$i]['sender_username'] . '">ignore</a> | <a href="php/accept.php?u=' . $result[$i]['sender_username'] . '">accept</a></span></div>';
+                echo '<div class="friend_request_new friend_request"><img src="../php/avatarproxy.php?size=24&u=' . $result[$i]['sender_username'] . '"> ' . $result[$i]['sender_username'] . ' has requested to add you as a friend.<span style="width:200px"><a href="php/ignore.php?u=' . $result[$i]['sender_username'] . '">ignore</a> | <a href="php/accept.php?u=' . $result[$i]['sender_username'] . '">accept</a></span></div>';
             }
             if (count($result) == 0) {
                 echo '<div style="text-align:center" class="friend_request">You have no pending friend requests!</div>';
@@ -111,12 +106,7 @@ $friendsService = new FriendsListRenderService($friendsRepository);
                     ':sender_id' => $_SESSION['userid']
                 ]);
             for ($i = 0; $i < count($result); $i++) {
-                if (file_exists('../avatar/a/' . $result[$i]['receiver_username'] . '.png')) {
-                    $avt = $result[$i]['receiver_username'];
-                } else {
-                    $avt = 'fb/noob';
-                }
-                echo '<div class="friend_request"><img src="../avatar/a/' . $avt . '.png">You\'ve requested to become friends with ' . $result[$i]['receiver_username'] . '.<span><a href="php/revoke.php?u=' . $result[$i]['receiver_username'] . '">revoke</a></span></div>';
+                echo '<div class="friend_request"><img src="../php/avatarproxy.php?size=24&u=' . $result[$i]['receiver_username'] . '">You\'ve requested to become friends with ' . $result[$i]['receiver_username'] . '.<span><a href="php/revoke.php?u=' . $result[$i]['receiver_username'] . '">revoke</a></span></div>';
             }
             if (count($result) == 0) {
                 echo '<div style="text-align:center" class="friend_request">You have not sent any request!</div>';
