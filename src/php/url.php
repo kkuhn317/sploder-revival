@@ -25,7 +25,7 @@ $fileExists = file_exists($filePath) || is_dir($filePath);
 if (!$isDomainValid) {
     header("Location: " . $back . "&urlerr=1");
 } elseif (!$fileExists) {
-    header("Location: " . $back . "&err404=1");
+    header("Location: " . $back . "&errload=1");
 } else {
     $safeUrl = $scheme . '://' . $host . $path;
     if (!empty($query)) {
