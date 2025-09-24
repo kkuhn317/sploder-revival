@@ -43,12 +43,10 @@ if ($isLoggedIn && !isset($_GET['searchmode'])) {
                 
                 $clause .= " AND 1=0";
             }
-        } else {     
+        } else {
             $qs = "SELECT g_id FROM graphic_tags WHERE SIMILARITY(tag, :tag) > 0.3";
-            $g_ids = $db->queryFirstColumn($qs, 0, [':tag' => $searchterm]);
-            if (!$g_ids) {
-                $g_ids = [];
-            }
+            $rows = $db->query($qs, [':tag' => $searchterm]);
+            $g_ids = array_column($rows, 'g_id');
             if (!empty($g_ids)) {
                 $g_ids = array_unique($g_ids); 
                 $clause .= " AND id IN (" . implode(",", array_map('intval', $g_ids)) . ")";
