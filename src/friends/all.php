@@ -49,12 +49,6 @@ $friendsListRenderService = new FriendsListRenderService($friendsRepository);
             if ($totalFriends !== 0) {
             ?>
             <h1><span class="tagcolor1"><?= $totalFriends ?> friend<?= $totalFriends == 1 ? "" : "s" ?></span></h1>
-            <?php
-            }
-            ?>
-            <?php
-            if ($searchUserName != null || $searchUserName != '') {
-            ?>
             </p>
             
             <?php

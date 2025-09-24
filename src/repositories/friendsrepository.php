@@ -80,7 +80,7 @@ class FriendsRepository implements IFriendsRepository
             SELECT
                 user2 AS user1,
                 bested,
-                similarity(:search, user1) AS sim
+                similarity(:search, user2) AS sim
             FROM
                 friends
             WHERE
@@ -95,7 +95,8 @@ class FriendsRepository implements IFriendsRepository
             sim > 0.3
         ORDER BY
             bested DESC,
-            sim DESC";
+            sim DESC,
+            id DESC";
         return $this->db->queryPaginated($query, $page, $perPage, [
             ':username' => $username,
             ':search' => $search
