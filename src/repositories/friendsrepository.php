@@ -76,11 +76,12 @@ class FriendsRepository implements IFriendsRepository
 
     public function search(string $username, string $search, int $page, int $perPage): PaginationData
     {
+        $hasSearch = !empty($search);
         $query = "WITH friends_with_sim AS (
             SELECT
                 user2 AS user1, id,
                 bested,
-                similarity(:search, user2) AS sim
+                CASE WHEN :hasSearch = 1 THEN similarity(:search, user2) ELSE 1.0 END AS sim
             FROM
                 friends
             WHERE
@@ -99,7 +100,8 @@ class FriendsRepository implements IFriendsRepository
             id DESC";
         return $this->db->queryPaginated($query, $page, $perPage, [
             ':username' => $username,
-            ':search' => $search
+            ':search' => $search,
+            ':hasSearch' => $hasSearch
         ]);
     }
 }
