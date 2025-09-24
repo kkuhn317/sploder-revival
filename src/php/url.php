@@ -47,6 +47,7 @@ if (!$isDomainValid) {
 exit;
 
 function add_query_param($url, $param, $value) {
+    $url = rtrim($url, '?&');
     $separator = (strpos($url, '?') === false) ? '?' : '&';
     return $url . $separator . $param . '=' . urlencode($value);
 }
