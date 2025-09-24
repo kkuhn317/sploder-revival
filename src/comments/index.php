@@ -139,7 +139,7 @@ $p = $params[':p'];
         OR (g.g_id IS NOT NULL AND g.ispublished = 1 AND g.isprivate = 0 AND g.isdeleted = 0 AND c.venue LIKE 'game-%')
         OR (r.review_id IS NOT NULL AND r.ispublished = true AND r.g_id IS NOT NULL AND c.venue LIKE 'review-%' AND EXISTS (SELECT 1 FROM games g2 WHERE g2.g_id = r.g_id AND g2.ispublished = 1 AND g2.isprivate = 0 AND g2.isdeleted = 0))
     )
-    ORDER BY c.thread_id DESC, c.id ASC
+    ORDER BY c.id DESC
     LIMIT $perPage OFFSET :p", $params);
     } else {
         $result2 = $db->query("SELECT *
