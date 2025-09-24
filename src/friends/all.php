@@ -7,7 +7,7 @@ require_once(__DIR__ . "/../repositories/repositorymanager.php");
 require_once(__DIR__ . "/../members/content/searchresult.php");
 $searchUserName = $_GET['u'] ?? '';
 $offset = $_GET['o'] ?? 0;
-$perPage = 100;
+$perPage = 30;
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $totalFriends = $friendsRepository->getTotalFriends($_SESSION['username']);
 require_once(__DIR__ . "/../services/FriendsListRenderService.php");
@@ -27,18 +27,18 @@ $friendsListRenderService = new FriendsListRenderService($friendsRepository);
 </head>
 <?php include('../content/addressbar.php'); ?>
 
-<body id="members" class="">
+<body id="home" class="">
 
     <?php include('../content/headernavigation.php') ?>
+    
     <div id="page">
         <?php
         require_once('../services/DashboardSubnavService.php');
         $subnavService = new DashboardSubnavService();
         echo $subnavService->renderNavigationLinks($_SERVER['REQUEST_URI']);
         ?>
-
-
         <div id="content">
+            
             <h3>All My Friends</h3>
             <form action="" method="GET">
                 <label for="username">Find an existing friend by username: &nbsp;</label>
@@ -49,7 +49,6 @@ $friendsListRenderService = new FriendsListRenderService($friendsRepository);
             if ($totalFriends !== 0) {
             ?>
             <h1><span class="tagcolor1"><?= $totalFriends ?> friend<?= $totalFriends == 1 ? "" : "s" ?></span></h1>
-            </p>
             
             <?php
                 $result = $friendsRepository->search($_SESSION['username'], $searchUserName, $offset, $perPage);

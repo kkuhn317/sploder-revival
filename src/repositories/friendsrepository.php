@@ -78,7 +78,7 @@ class FriendsRepository implements IFriendsRepository
     {
         $query = "WITH friends_with_sim AS (
             SELECT
-                user2 AS user1,
+                user2 AS user1, id,
                 bested,
                 similarity(:search, user2) AS sim
             FROM
