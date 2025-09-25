@@ -22,7 +22,7 @@ $friendsListRenderService = new FriendsListRenderService($friendsRepository);
     <script type="text/javascript">
     var _sf_startpt = (new Date()).getTime()
     </script>
-    <script type="text/javascript">window.rpcinfo = "Searching for a Member";</script>
+    <script type="text/javascript">window.rpcinfo = "Managing their Friends";</script>
     <?php include(__DIR__ . '/../content/onlinechecker.php'); ?>
 </head>
 <?php include('../content/addressbar.php'); ?>
