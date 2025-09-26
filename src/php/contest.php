@@ -78,26 +78,39 @@ if ($a == "status") {
     } elseif ($status == 2) {
         $output .= "&voting=1";
         $id = $_POST['game_id'] ?? -1;
+        $username = $_SESSION['username'] ?? '';
         $db = getDatabase();
-        $result = $db->query("SELECT * FROM contest_votes WHERE id = :id", [
-            ':id' => $id,
-        ]);
-        if (count($result) > 0) {
-            $result = $db->query("SELECT * FROM contest_voter_usernames WHERE voter_username = :username", [
-                ':username' => $_SESSION['username'] ?? ''
-            ]);
-            if (isset($result[$id])) {
+
+        $result = $db->query("
+            SELECT 
+                EXISTS (SELECT 1 FROM contest_votes WHERE id = :id) AS game_exists,
+                EXISTS (
+                    SELECT 1 FROM contest_voter_usernames 
+                    WHERE voter_username = :username 
+                    AND id = :id
+                ) AS already_voted,
+                (SELECT COUNT(*) FROM contest_voter_usernames WHERE voter_username = :username) AS ballot_count
+            ",
+            [
+                ':id' => $id,
+                ':username' => $username,
+            ]
+        );
+
+        if ($result) {
+            $row = $result[0];
+
+            if (!$row['game_exists']) {
+                $output .= '&can_vote=0';
+            } elseif ($row['already_voted']) {
                 $output .= '&already_voted=1';
+            } elseif ($row['ballot_count'] >= 3) {
+                $output .= '&max_ballots_cast=1';
             } else {
-                if (count($result) >= 3) {
-                    $output .= '&max_ballots_cast=1';
-                } else {
-                    $output .= '&can_vote=1';
-                }
-            }  
-        } else {
-            $output .= '&can_vote=0';
+                $output .= '&can_vote=1';
+            }
         }
+
     }
 
     $output .= '&lastContest=' . $lastContest;
