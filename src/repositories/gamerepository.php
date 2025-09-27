@@ -246,14 +246,21 @@ where g_id = :g_id
         $page = $pageNumber - 1;
 
         $query = "
-        WITH total AS (
-            SELECT COUNT(*) AS cnt FROM contest_winner
+        WITH filtered_winners AS (
+            SELECT cw.contest_id, cw.g_id
+            FROM contest_winner cw
+            JOIN games g ON cw.g_id = g.g_id
+            WHERE g.isprivate = 0 AND g.ispublished = 1 AND g.isdeleted = 0
+        ),
+        total AS (
+            SELECT COUNT(*) AS cnt FROM filtered_winners
         ),
         numbered AS (
             SELECT
+                contest_id,
                 g_id,
                 ROW_NUMBER() OVER (ORDER BY contest_id ASC) AS rn
-            FROM contest_winner
+            FROM filtered_winners
         )
         SELECT g.g_id, g.title, g.author, g.user_id
         FROM numbered n
@@ -268,9 +275,9 @@ where g_id = :g_id
                 AND n.rn > (t.cnt % 6) + (:page - 1) * 6
                 AND n.rn <= (t.cnt % 6) + :page * 6)
         )
-        ORDER BY g.g_id DESC;
+        ORDER BY n.contest_id DESC;
         ";
-        
+
         return $this->db->query($query, ['page' => $page]);
     }
 
