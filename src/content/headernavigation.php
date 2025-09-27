@@ -13,7 +13,7 @@ $bp = $db->query("SELECT boostpoints
     WHERE username=:user", [
     ':user' => isset($_SESSION['username']) ? $_SESSION['username'] : null
 ]);
-function format_num(floor $num, $precision = 0): string
+function format_num(float $num, $precision = 0): string
 {
     if ($num >= 1000 && $num < 1000000) {
         $n_format = floor($num / 1000) . 'k';
