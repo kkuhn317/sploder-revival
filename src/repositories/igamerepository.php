@@ -116,7 +116,7 @@ interface IGameRepository
      * Retrieves the contest winners from the database
      * @return contest winners
      */
-    public function getContestWinners(int $contestId): array;
+    public function getContestWinners(int $contestIdOffset): array;
 
     /**
      * Retrieves games that are pending deletion
