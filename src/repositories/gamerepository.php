@@ -243,14 +243,27 @@ where g_id = :g_id
             return [];
         }
 
-        $query = "SELECT games.g_id, games.title, games.author, games.user_id
-        FROM (
-            SELECT contest_id, g_id
+        $query = "
+        WITH total AS (
+            SELECT COUNT(*) AS cnt FROM contest_winner
+        ),
+        numbered AS (
+            SELECT
+                g_id,
+                ROW_NUMBER() OVER (ORDER BY contest_id DESC) AS rn
             FROM contest_winner
-            ORDER BY contest_id
-            LIMIT 6 OFFSET :id*6
-        ) AS recent_contests
-        JOIN games ON recent_contests.g_id = games.g_id;";
+        )
+        SELECT g.g_id, g.title, g.author, g.user_id
+        FROM numbered n
+        JOIN total t ON true
+        JOIN games g ON g.g_id = n.g_id
+        WHERE (
+            (:page = 0 AND n.rn <= (t.cnt % 6)) OR
+            (:page > 0 AND n.rn > (t.cnt % 6) + (:page - 1) * 6
+                        AND n.rn <= (t.cnt % 6) + :page * 6)
+        )
+        ORDER BY n.rn;
+        ";
         return $this->db->query($query, ['id' => $contestIdOffset-1]);
     }
 
