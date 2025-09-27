@@ -45,8 +45,6 @@ if ($isLoggedIn && !isset($_GET['searchmode'])) {
             }
         } else {
             $qs = "SELECT g_id FROM graphic_tags WHERE SIMILARITY(tag, :tag) > 0.3";
-            // Make the order be the similarity score
-            $order = "SIMILARITY(tag, :tag)";
             $rows = $db->query($qs, [':tag' => $searchterm]);
             $g_ids = array_column($rows, 'g_id');
             if (!empty($g_ids)) {
