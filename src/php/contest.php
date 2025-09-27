@@ -46,7 +46,7 @@ if (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'games/c
     // Basically, we get the number of pages that would correctly fit all the contest winners
     $totalWinners = $db->queryFirstColumn("SELECT COUNT(*) FROM contest_winner");
     // Set lastContest to the number of pages, per page, there are 6 winners
-    $lastContest = floor($totalWinners / 6);
+    $lastContest = ceil($totalWinners / 6);
 }
 // Contest status, 0 = results, 1 = nominations, 2 = voting
 if (is_winner($_POST['game_id'] ?? -1)) {
