@@ -13,16 +13,16 @@ $bp = $db->query("SELECT boostpoints
     WHERE username=:user", [
     ':user' => isset($_SESSION['username']) ? $_SESSION['username'] : null
 ]);
-function format_num($num, $precision = 0)
+function format_num(floor $num, $precision = 0): string
 {
     if ($num >= 1000 && $num < 1000000) {
-        $n_format = number_format($num / 1000, $precision) . 'k';
+        $n_format = floor($num / 1000) . 'k';
     } elseif ($num >= 1000000 && $num < 1000000000) {
-        $n_format = number_format($num / 1000000, $precision) . 'm';
+        $n_format = floor($num / 1000000) . 'm';
     } elseif ($num >= 1000000000) {
-        $n_format = number_format($num / 1000000000, $precision) . 'b';
+        $n_format = floor($num / 1000000000) . 'b';
     } else {
-        $n_format = $num;
+        $n_format = floor($num);
     }
     return $n_format;
 }
