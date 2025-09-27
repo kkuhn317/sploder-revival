@@ -264,7 +264,7 @@ where g_id = :g_id
         )
         ORDER BY n.rn;
         ";
-        return $this->db->query($query, ['id' => $contestIdOffset-1]);
+        return $this->db->query($query, ['page' => $contestIdOffset-1]);
     }
 
     public function getTotalPublishedGameCount(): int
