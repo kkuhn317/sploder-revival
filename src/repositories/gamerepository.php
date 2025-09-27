@@ -237,11 +237,13 @@ where g_id = :g_id
     }
 
     // TODO: move this to the contest repository
-    public function getContestWinners(int $contestIdOffset): array
+    public function getContestWinners(int $pageNumber): array
     {
-        if ($contestId < 0) {
+        if ($pageNumber < 1) {
             return [];
         }
+        
+        $page = $pageNumber - 1;
 
         $query = "
         WITH total AS (
@@ -258,32 +260,36 @@ where g_id = :g_id
         JOIN total t ON true
         JOIN games g ON g.g_id = n.g_id
         WHERE (
-            (:page = 0 AND n.rn <= (t.cnt % 6)) OR
-            (:page > 0 AND n.rn > (t.cnt % 6) + (:page - 1) * 6
-                        AND n.rn <= (t.cnt % 6) + :page * 6)
+            (:page = 0 AND n.rn <= (t.cnt % 6))
+            
+            OR
+            (:page > 0 
+                AND n.rn > (t.cnt % 6) + (:page - 1) * 6
+                AND n.rn <= (t.cnt % 6) + :page * 6)
         )
         ORDER BY n.rn;
         ";
-        return $this->db->query($query, ['page' => $contestIdOffset-1]);
+        
+        return $this->db->query($query, ['page' => $page]);
     }
 
-    public function getTotalPublishedGameCount(): int
-    {
-        return $this->db->queryFirstColumn("SELECT COUNT(g_id)
-            FROM games
-            WHERE ispublished = 1
-            AND isprivate = 0", 0);
-    }
+        public function getTotalPublishedGameCount(): int
+        {
+            return $this->db->queryFirstColumn("SELECT COUNT(g_id)
+                FROM games
+                WHERE ispublished = 1
+                AND isprivate = 0", 0);
+        }
 
-    public function getTotalDeletedGameCount($userName): int
-    {
-        return $this->db->queryFirstColumn("SELECT g_id
-            FROM games
-            WHERE author=:user
-            AND isdeleted=1", 0, [
-                ':user' => $userName
-            ]);
-    }
+        public function getTotalDeletedGameCount($userName): int
+        {
+            return $this->db->queryFirstColumn("SELECT g_id
+                FROM games
+                WHERE author=:user
+                AND isdeleted=1", 0, [
+                    ':user' => $userName
+                ]);
+        }
 
     public function getTotalMetricsForUser(string $userName): GameMetricsForUser
     {
