@@ -32,7 +32,7 @@ if ($isLoggedIn && !isset($_GET['searchmode'])) {
         $searchmode = $_GET['searchmode'];
         $searchterm = $_GET['searchterm'];
         if ($searchmode == "users") {
-            
+            $order = "id";  
             $qs = "SELECT userid FROM members WHERE username=:username";
             $userid = $db->queryFirstColumn($qs, 0, [':username' => $searchterm]);
             if ($userid) {
@@ -45,6 +45,8 @@ if ($isLoggedIn && !isset($_GET['searchmode'])) {
             }
         } else {
             $qs = "SELECT g_id FROM graphic_tags WHERE SIMILARITY(tag, :tag) > 0.3";
+            // Make the order be the similarity score
+            $order = "SIMILARITY(tag, :tag)";
             $rows = $db->query($qs, [':tag' => $searchterm]);
             $g_ids = array_column($rows, 'g_id');
             if (!empty($g_ids)) {
