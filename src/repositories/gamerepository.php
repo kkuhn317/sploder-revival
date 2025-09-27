@@ -251,7 +251,7 @@ where g_id = :g_id
             LIMIT 6 OFFSET :id*6
         ) AS recent_contests
         JOIN games ON recent_contests.g_id = games.g_id;";
-        return $this->db->query($query, ['id' => $contestIdOffset]);
+        return $this->db->query($query, ['id' => $contestIdOffset-1]);
     }
 
     public function getTotalPublishedGameCount(): int
