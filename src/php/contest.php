@@ -36,7 +36,10 @@ session_start();
 $output = "";
 $a = $_POST['action'];
 $day = date("w");
-$lastContest = file_get_contents('../config/currentcontest.txt') - 1;
+$lastContest = file_get_contents('../config/currentcontest.txt');
+if ($day >= 1 && $day <= 5) {
+    $lastContest = $lastContest - 1;
+}
 // Contest status, 0 = results, 1 = nominations, 2 = voting
 if (is_winner($_POST['game_id'] ?? -1)) {
     $output .= '&is_winner=1';
