@@ -347,7 +347,7 @@ where g_id = :g_id
             isprivate = :isprivate, 
             comments = :comments, 
             first_published_date = CASE 
-                WHEN ispublished = 0 THEN :current_date 
+                WHEN first_published_date = '1970-01-01 00:00:00' AND :isprivate = 0 THEN :current_date 
                 ELSE first_published_date 
             END,
             last_published_date = :current_date,
