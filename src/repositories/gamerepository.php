@@ -252,7 +252,7 @@ where g_id = :g_id
         numbered AS (
             SELECT
                 g_id,
-                ROW_NUMBER() OVER (ORDER BY contest_id DESC) AS rn
+                ROW_NUMBER() OVER (ORDER BY contest_id ASC) AS rn
             FROM contest_winner
         )
         SELECT g.g_id, g.title, g.author, g.user_id
@@ -263,11 +263,12 @@ where g_id = :g_id
             (:page = 0 AND n.rn <= (t.cnt % 6))
             
             OR
+            
             (:page > 0 
                 AND n.rn > (t.cnt % 6) + (:page - 1) * 6
                 AND n.rn <= (t.cnt % 6) + :page * 6)
         )
-        ORDER BY n.rn;
+        ORDER BY g.g_id DESC;
         ";
         
         return $this->db->query($query, ['page' => $page]);
