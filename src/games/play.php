@@ -417,7 +417,7 @@ if(isset($_GET['challenge'])){
             if ($challengePrompt){
                 $marginTop = $marginTop + 40;
             }
-            if ($isEditorOrReviewer && $game['author'] != $_SESSION['username'] && $game['isprivate'] != 0) {
+            if ($isEditorOrReviewer && $game['author'] != $_SESSION['username'] && $game['isprivate'] == 0) {
                 $marginTop = $marginTop - 75;
             }
             echo 'margin-top: '.$marginTop.'px;';
