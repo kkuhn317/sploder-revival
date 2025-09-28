@@ -133,16 +133,14 @@ var flashvars = {
     username: "<?php echo $_SESSION['username'] ?>",
     creationdate: "<?php echo time() ?>",
     userlevel: "<?php echo $level ?>",
+    <?php } ?>
     copyaction: "<?php
-        if (isset($_GET['copyaction']) && $_GET['copyaction'] == '1') {
-            echo '1';
+        if (isset($_GET['copyaction']) && $_GET['copyaction'] === 'true') {
+            echo 'true';
         } else {
-            echo '0';
+            echo 'false';
         }
         ?>"
-
-
-    <?php } ?>
 };
 
 var params = {
