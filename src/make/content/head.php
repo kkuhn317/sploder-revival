@@ -121,6 +121,13 @@ function updateMovie(value) {
 
 var flashvars = {
     v: "15",
+    copyaction: "<?php
+        if (isset($_GET['copyaction']) && $_GET['copyaction'] === 'true') {
+            echo 'true';
+        } else {
+            echo 'false';
+        }
+        ?>",
     <?php if (!isset($_SESSION['username'])) { ?>
     PHPSESSID: "demo",
     userid: "demo",
@@ -132,15 +139,8 @@ var flashvars = {
     userid: "<?php echo $_SESSION['userid'] ?>",
     username: "<?php echo $_SESSION['username'] ?>",
     creationdate: "<?php echo time() ?>",
-    userlevel: "<?php echo $level ?>",
+    userlevel: "<?php echo $level ?>"
     <?php } ?>
-    copyaction: "<?php
-        if (isset($_GET['copyaction']) && $_GET['copyaction'] === 'true') {
-            echo 'true';
-        } else {
-            echo 'false';
-        }
-        ?>"
 };
 
 var params = {
