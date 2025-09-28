@@ -4,15 +4,28 @@ ob_start();
 // Measure page execution time
 $pageExecutionStartTime = microtime(true);
 
+$GLOBALS['has_page_warning'] = false;
+
+function custom_warning_handler($errno, $errstr, $errfile, $errline) {
+    if ($errno & (E_WARNING | E_NOTICE | E_DEPRECATED)) {
+        $GLOBALS['has_page_warning'] = true;
+    }
+    return false;
+}
+
+if (getenv('PHP_ENVIRONMENT') !== 'development') {
+    set_error_handler('custom_warning_handler');
+}
+
 // Add an error handler that catches fatal errors
 // This checks if headers have been sent,
 // If it is, it will attempt to add javascript
 // that replaces the HTML content with a 500 error message
 // else, just load the error 500 template and serve it directly
 // Add an error handler that catches fatal errors
-register_shutdown_function('fatal_error_handler');
+register_shutdown_function('error_handler');
 
-function fatal_error_handler() {
+function error_handler() {
     // If development, return
     if (getenv('PHP_ENVIRONMENT') === 'development') {
         return;
@@ -39,6 +52,16 @@ function fatal_error_handler() {
             http_response_code(500);
             echo $error_page_content;
         }
+    }
+    if ($GLOBALS['has_page_warning']) {
+        $output = ob_get_clean();
+        $warning_message = ' <div style="background-color: black; color: yellow; padding: 15px; border-color: gray; border-style: solid; border-width: 2px; font-weight: bold;">
+We noticed that there is an issue with this page! There is currently a problem with the server. Some functions and content are unavailable at this time.
+Please be patient as we are working on the problem and will have it fixed as soon as possible. Thanks!
+</div>';
+        $output = str_replace('<!-- Sploder Home Page Top Banner -->', $warning_message, $output);
+        ob_start();
+        echo $output;
     }
     ob_end_flush();
 }
