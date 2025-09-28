@@ -120,12 +120,7 @@ function updateMovie(value) {
 }
 
 var flashvars = {
-    <?php
-        if (strpos($_SERVER['REQUEST_URI'], 'arcade.php') !== false) {
-            echo 'v: "15",';
-        //pr: "15.2",';
-        }
-        ?>
+    v: "15",
     <?php if (!isset($_SESSION['username'])) { ?>
     PHPSESSID: "demo",
     userid: "demo",
@@ -137,7 +132,14 @@ var flashvars = {
     userid: "<?php echo $_SESSION['userid'] ?>",
     username: "<?php echo $_SESSION['username'] ?>",
     creationdate: "<?php echo time() ?>",
-    userlevel: "<?php echo $level ?>"
+    userlevel: "<?php echo $level ?>",
+    copyaction: "<?php
+        if (isset($_GET['copyaction']) && $_GET['copyaction'] == '1') {
+            echo '1';
+        } else {
+            echo '0';
+        }
+        ?>"
 
 
     <?php } ?>
