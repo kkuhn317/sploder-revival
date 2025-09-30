@@ -47,6 +47,9 @@ if(isset($_GET['challenge'])){
         $challenge = false;
     }
 }
+if (isset($_SESSION['challenge']) && !$challenge) {
+    unset($_SESSION['challenge']);
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
