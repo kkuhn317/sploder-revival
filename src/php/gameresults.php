@@ -88,8 +88,7 @@ if ($verifiedScore) {
         // Verify challenge ID
         $isValidChallenge = $challengesRepository->verifyChallengeId($id[1], $challengeId, $_SESSION['challenge'] ?? -1);
         // Verify if the challenge requirements are met
-        if ($mode) {
-        if ($mode) {            
+        if ($mode) {         
             if($gtm > $challenge) {
                 $isValidChallenge = false;
             }
