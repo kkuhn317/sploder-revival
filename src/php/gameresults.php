@@ -89,6 +89,7 @@ if ($verifiedScore) {
         $isValidChallenge = $challengesRepository->verifyChallengeId($id[1], $challengeId, $_SESSION['challenge'] ?? -1);
         // Verify if the challenge requirements are met
         if ($mode) {
+        if ($mode) {            
             if($gtm > $challenge) {
                 $isValidChallenge = false;
             }
@@ -114,8 +115,6 @@ if ($verifiedScore) {
                 $challengesRepository->addChallengeWinner($id[1], $_SESSION['userid']);
                 $userRepository->addBoostPoints($_SESSION['userid'], $prize);
             }
-        } else {
-            unset($_SESSION['challenge']);
         }
     }
     echo "&success=true";
