@@ -144,7 +144,7 @@ if (isset($_SESSION['challenge']) && !$challenge) {
 		<?php } ?>
             <script>
             window.g_id = <?= $game['g_id'] ?>;
-            swfobject.embedSWF("/swf/contest.swf", "contestflash", "150", "30", "8", "/swfobject/expressInstall.swf", { g: window.g_id}, { bgcolor: "#000000", menu: "false", quality: "high", scale: "noscale", salign: "tl", wmode: "opaque" });
+            swfobject.embedSWF("/swf/contest.swf?nocache=<?= time() ?>", "contestflash", "150", "30", "8", "/swfobject/expressInstall.swf", { g: window.g_id}, { bgcolor: "#000000", menu: "false", quality: "high", scale: "noscale", salign: "tl", wmode: "opaque" });
             </script>
             <?php
             $showPrompt = false;
