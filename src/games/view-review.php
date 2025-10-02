@@ -152,7 +152,7 @@ if (isset($_SESSION['loggedin'])) {
         <div class="pagination">
             <span class="button"><a href="reviews.php">&laquo; All Reviews</a></span>
             <?php
-            if ($reviewData['userid'] == $_SESSION['userid']) {
+            if ($reviewData['userid'] == ($_SESSION['userid'] ?? 0)) {
                 $userRepository = RepositoryManager::get()->getUserRepository();
                 $perms = $userRepository->getUserPerms($_SESSION['username']);
                 if ($perms !== null && $perms !== '' && str_contains($perms, 'R')) {
