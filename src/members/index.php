@@ -14,7 +14,7 @@ $userRepository = RepositoryManager::get()->getUserRepository();
 $stats = $userRepository->getUserStats($_GET['u'] ?? '');
 $friendsRepository = RepositoryManager::get()->getFriendsRepository();
 $friendsListRenderService = new FriendsListRenderService($friendsRepository);
-$ownerUsername = '';
+$ownerUsername = $_GET['u'] ?? '';
 if (isset($_SESSION['loggedin'])) {
     $viewerPermissions = $userRepository->getUserPerms($_SESSION['username'] ?? '');
     $ownerUsername = str_contains($viewerPermissions, 'M') ? $_SESSION['username'] ?? '' : ($_GET['u'] ?? '');

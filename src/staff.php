@@ -5,7 +5,7 @@ require(__DIR__.'/content/disablemobile.php'); ?>
 session_start();
 require_once('repositories/repositorymanager.php');
 $userRepository = RepositoryManager::get()->getUserRepository();
-$ownerUsername = '';
+$ownerUsername = 'staff';
 if (isset($_SESSION['loggedin'])) {
     $perms = $userRepository->getUserPerms($_SESSION['username'] ?? '');
     $ownerUsername = str_contains($perms, 'M') ? $_SESSION['username'] ?? '' : 'staff';

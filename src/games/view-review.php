@@ -38,7 +38,7 @@ $gameInfo = $gameRepository->getGameBasicInfo($gameId);
 $gameTitle = $gameInfo['title'];
 $gameAuthor = $gameInfo['author'];
 $userRepository = RepositoryManager::get()->getUserRepository();
-$ownerUsername = '';
+$ownerUsername = $reviewData['username'];
 if (isset($_SESSION['loggedin'])) {
     $viewerPermissions = $userRepository->getUserPerms($_SESSION['username'] ?? '');
     $ownerUsername = str_contains($viewerPermissions, 'M') ? $_SESSION['username'] ?? '' : ($reviewData['username'] ?? '');
