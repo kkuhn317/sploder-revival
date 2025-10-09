@@ -110,7 +110,7 @@ $nocache = time();
                         <div class="mprofcount" title="total games/featured games">
                             <div class="stat"><?php 
                             if ($featuredgames != 0) {
-                                echo $totalgames . ' / ' . $featuredgames;
+                                echo $totalgames . '/' . $featuredgames;
                             } else {
                                 echo $totalgames;
                             } ?> <span>Game<?= $totalgames == 1 ? '' : 's' ?></span></div>
