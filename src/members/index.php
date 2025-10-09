@@ -103,7 +103,7 @@ $nocache = time();
                 </div>
                 <div class="shown">
                     <div class="mprofgroup">
-                        <div class="mprofchart mprofmain" title="Awesomeness - computed using a secret recipe">
+                        <div class="mprofchart mprofmain" title="Awesomeness (<?= $awesomeness ?>%) - computed using a secret recipe">
                             <img src="/images/charts/awesomeness/chart_<?php echo $awesomeness ?>.png" width="230" height="116" />
                             <p>Awesomeness</p>
                         </div>
