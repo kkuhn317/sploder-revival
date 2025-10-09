@@ -108,7 +108,12 @@ $nocache = time();
                             <p>Awesomeness</p>
                         </div>
                         <div class="mprofcount" title="total games/featured games">
-                            <div class="stat"><?php echo $totalgames ?> <span>Game<?= $totalgames == 1 ? '' : 's' ?></span></div>
+                            <div class="stat"><?php 
+                            if ($featuredgames != 0) {
+                                echo $totalgames . ' / ' . $featuredgames;
+                            } else {
+                                echo $totalgames;
+                            } ?> <span>Game<?= $totalgames == 1 ? '' : 's' ?></span></div>
                         </div>
                         <div class="mprofcount mprofend">
                             <div class="stat"><?php echo $friends ?> <span>Friend<?= $friends == 1 ? '' : 's' ?></span></div>
