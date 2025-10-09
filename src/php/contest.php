@@ -1,25 +1,6 @@
 <?php
 require_once '../content/initialize.php';
 
-function in_array_recursive(mixed $needle, array $haystack, bool $strict): bool
-{
-    foreach ($haystack as $element) {
-        if ($element === $needle) {
-            return true;
-        }
-
-        $isFound = false;
-        if (is_array($element)) {
-            $isFound = in_array_recursive($needle, $element, $strict);
-        }
-
-        if ($isFound === true) {
-            return true;
-        }
-    }
-
-    return false;
-}
 function is_winner($id)
 {
     $db = getDatabase();
