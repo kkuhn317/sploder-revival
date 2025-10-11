@@ -383,23 +383,8 @@ where g_id = :g_id
     }
 
     public function getFeaturedGames(int $offset, int $perPage): PaginationData {
-        // Only normal featured games for other pages
-        $query = "
-            SELECT games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date,
-                ROUND(AVG(v.score), 1) as avg_rating, COUNT(v.score) as total_votes,
-                FALSE AS contest_game
-            FROM featured_games
-            JOIN games ON featured_games.g_id = games.g_id
-            LEFT JOIN votes v ON games.g_id = v.g_id
-            LEFT JOIN contest_winner cw ON games.g_id = cw.g_id
-            WHERE games.ispublished = 1 AND games.isprivate = 0 AND games.isdeleted = 0
-            AND cw.g_id IS NULL
-            GROUP BY games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date
-            ORDER BY featured_games.feature_date DESC
-        ";
-                
         if ($offset === 0) {
-
+            // First page: get 2 contest winners to display
             $contestGamesQuery = "
                 SELECT g.g_id, g.title, g.author, g.g_swf, g.first_published_date, g.views, g.user_id, NULL AS feature_date,
                     ROUND(AVG(v.score), 1) as avg_rating, COUNT(v.score) as total_votes,
@@ -414,17 +399,63 @@ where g_id = :g_id
             ";
 
             $contestGames = $this->db->query($contestGamesQuery);
-
-            $totalNormalGamesQuery = "SELECT COUNT(*) FROM (".$query.") subquery";
-
-            // Combine results in PHP
             
-            $normalGames = $this->db->query($query . " LIMIT " . $perPage);
-            $allGames = array_merge($contestGames, $normalGames);
-            $totalNormalGames = $this->db->queryFirstColumn($totalNormalGamesQuery, 0);
+            $displayedContestGameIds = array_map(fn($game) => $game['g_id'], $contestGames);
 
-            return new PaginationData($allGames, $totalNormalGames, ceil($totalNormalGames/$perPage));
+            $exclusionClause = '';
+            $params = [];
+            if (!empty($displayedContestGameIds)) {
+                $placeholders = [];
+                foreach ($displayedContestGameIds as $index => $gId) {
+                    $paramName = ':excluded_g_id_' . $index;
+                    $placeholders[] = $paramName;
+                    $params[$paramName] = $gId;
+                }
+                $exclusionClause = ' AND games.g_id NOT IN (' . implode(', ', $placeholders) . ')';
+            }
+
+            $query = "
+                SELECT games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date,
+                    ROUND(AVG(v.score), 1) as avg_rating, COUNT(v.score) as total_votes,
+                    FALSE AS contest_game
+                FROM featured_games
+                JOIN games ON featured_games.g_id = games.g_id
+                LEFT JOIN votes v ON games.g_id = v.g_id
+                WHERE games.ispublished = 1 AND games.isprivate = 0 AND games.isdeleted = 0
+                " . $exclusionClause . "
+                GROUP BY games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date
+                ORDER BY featured_games.feature_date DESC
+                LIMIT " . $perPage;
+
+            $normalGames = $this->db->query($query, $params);
+
+            $totalQuery = "
+                SELECT COUNT(DISTINCT games.g_id)
+                FROM featured_games
+                JOIN games ON featured_games.g_id = games.g_id
+                WHERE games.ispublished = 1 AND games.isprivate = 0 AND games.isdeleted = 0
+                " . $exclusionClause;
+
+            $totalNormalGames = $this->db->queryFirstColumn($totalQuery, 0, $params);
+
+            // Combine results
+            $allGames = array_merge($contestGames, $normalGames);
+
+            return new PaginationData($allGames, $totalNormalGames, ceil($totalNormalGames / $perPage));
         } else {
+            // For pages after the first, show only featured games (no contest exclusion)
+            $query = "
+                SELECT games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date,
+                    ROUND(AVG(v.score), 1) as avg_rating, COUNT(v.score) as total_votes,
+                    FALSE AS contest_game
+                FROM featured_games
+                JOIN games ON featured_games.g_id = games.g_id
+                LEFT JOIN votes v ON games.g_id = v.g_id
+                WHERE games.ispublished = 1 AND games.isprivate = 0 AND games.isdeleted = 0
+                GROUP BY games.g_id, games.title, games.author, games.g_swf, games.first_published_date, games.views, games.user_id, featured_games.feature_date
+                ORDER BY featured_games.feature_date DESC
+            ";
+            
             return $this->db->queryPaginated($query, $offset, $perPage, []);
         }
     }
