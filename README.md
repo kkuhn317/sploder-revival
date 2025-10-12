@@ -2,6 +2,8 @@
 
 PHP Backend code used to power the Sploder Revival.
 
+The code is mostly complete and will only ever be updated to allow for running on newer PHP versions.
+
 ## Flash & Security Notice
 
 For using Sploder Revival securely as an end-user, we recommend you to download the official launcher directly from the [Sploder Revival website](https://sploder.net/). It will prompt you to download it when necessary.
