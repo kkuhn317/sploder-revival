@@ -55,6 +55,7 @@ services:
       SPLODERHEADS_ENABLED: true
       CENSORED_WORDS: example1,example2,example3
       DISALLOWED_USERNAMES: admin,administrator,root,moderator,mod,sploder,sploderadmin,sploderadministrator,geoff,ggaudrea,lpa,soundburst,doncato,moonove,vim
+      SWITCH: false
       SWITCH_MESSAGE: The website is currently down for maintenance.
       SWITCH_TIMER: 0
   db:
