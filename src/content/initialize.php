@@ -15,7 +15,7 @@ function custom_warning_handler($errno, $errstr, $errfile, $errline) {
 
 if (getenv('PHP_ENVIRONMENT') === 'development') {
     set_error_handler('custom_warning_handler');
-    if ((getenv('SWITCH') == 'true' || (getenv('SWITCH_TIMER') != 0 && getenv('SWITCH_TIMER') > time()))) {
+    if ((getenv('SWITCH') == 'true' || (getenv('SWITCH_TIMER') != 0 && getenv('SWITCH_TIMER') < time()))) {
         // Logout
         if (session_status() == PHP_SESSION_NONE) {
             session_start();

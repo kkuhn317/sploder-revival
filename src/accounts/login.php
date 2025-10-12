@@ -36,7 +36,7 @@ require('logincheck.php');
             <div id="content">
                 <h3>Sploder Revival Login</h3>
                 <?php
-                if (!(getenv('SWITCH') == 'true' || (getenv('SWITCH_TIMER') != 0 && getenv('SWITCH_TIMER') > time()))) {
+                if (!(getenv('SWITCH') == 'true' || (getenv('SWITCH_TIMER') != 0 && getenv('SWITCH_TIMER') < time()))) {
                 ?>
                 <p>
 
