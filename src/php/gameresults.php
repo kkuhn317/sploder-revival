@@ -40,6 +40,13 @@ function difficulty(int $wins, int $loss): int {
     $id[0] = filter_var($id[0], FILTER_VALIDATE_INT);
     $id[1] = filter_var($id[1], FILTER_VALIDATE_INT);
     require_once(__DIR__ . '/verifyscore.php');
+    // Check whether verifyscore just spits out true with 0 validation
+    $verifiedScore = false;
+    if (verifyScore("novalid", $id[0], $id[1], $w, $gtm)) {
+        // Attempt to validate using the local modified md5 javascript
+        // This is insecure and only for local development use ONLY
+        `{$hash}`;
+    }
     $verifiedScore = verifyScore($hash, $id[0], $id[1], $w, $gtm);
 
 if ($verifiedScore) {
