@@ -57,7 +57,6 @@ class GraphicsRepository implements IGraphicsRepository
                 ':userid' => $loggedInUserId,
                 ':projid' => $graphicsId,
                 ]);
-            }
         }
     }
 	
