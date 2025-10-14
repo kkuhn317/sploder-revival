@@ -51,15 +51,12 @@ class GraphicsRepository implements IGraphicsRepository
         ]);
 
         if ($userId !== $loggedInUserId) {
-            try {
-                $this->db->execute("
-INSERT INTO graphic_likes (userid, g_id) VALUES (:userid, :projid)
-on conflict do nothing", [
+            $this->db->execute("
+                INSERT INTO graphic_likes (userid, g_id) VALUES (:userid, :projid)
+                ON CONFLICT DO NOTHING", [
                 ':userid' => $loggedInUserId,
                 ':projid' => $graphicsId,
                 ]);
-            } catch (Exception $ex) {
-              // TODO: log this error, as the conflict should handle this
             }
         }
     }
