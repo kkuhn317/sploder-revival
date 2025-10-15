@@ -13,15 +13,14 @@ function custom_warning_handler($errno, $errstr, $errfile, $errline) {
     return false;
 }
 
-if (getenv('PHP_ENVIRONMENT') === 'development') {
+if (getenv('PHP_ENVIRONMENT') !== 'development') {
     set_error_handler('custom_warning_handler');
-    if ((getenv('SWITCH') == 'true' || (getenv('SWITCH_TIMER') != 0 && getenv('SWITCH_TIMER') > time()))) {
+    if (getenv('SWITCH') === 'true') {
         // Logout
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
+        session_start();
+        if (isset($_SESSION['loggedin'])) {
+            session_destroy();
         }
-        session_regenerate_id(true);
-        session_destroy();
     }
 }
 

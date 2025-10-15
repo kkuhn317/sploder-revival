@@ -69,7 +69,6 @@ services:
       DISALLOWED_USERNAMES: ${DISALLOWED_USERNAMES}
       SWITCH: ${SWITCH}
       SWITCH_MESSAGE: ${SWITCH_MESSAGE}
-      SWITCH_TIMER: ${SWITCH_TIMER}
     restart: unless-stopped
 
   db:
