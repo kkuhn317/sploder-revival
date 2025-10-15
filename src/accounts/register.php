@@ -88,7 +88,7 @@ require('logincheck.php');
             <div id="content">
                 <h3>Join Sploder Revival!</h3>
                 <?php
-                if (!(getenv('SWITCH') == 'true' || (getenv('SWITCH_TIMER') != 0 && getenv('SWITCH_TIMER') < time()))) {
+                if (!(getenv('SWITCH') == 'true' || (getenv('SWITCH_TIMER') != 0 && getenv('SWITCH_TIMER') > time()))) {
                 ?>
                 <p style="font-size: 120%; line-height: 160%;">
                     Membership is absolutely free! Just fill out the form below. Please be sure you understand our
