@@ -35,9 +35,6 @@ require('logincheck.php');
         <div id="page">
             <div id="content">
                 <h3>Sploder Revival Login</h3>
-                <?php
-                if (getenv('SWITCH') !== 'true') {
-                ?>
                 <p>
 
                     Enter your login information below to sign in to Sploder Revival.
@@ -88,18 +85,6 @@ require('logincheck.php');
                     </p>
 
                 </form>
-                <?php
-                } else {
-                ?>
-                <br>
-                <p class="alert">
-                    <?php
-                    $switch_message = getenv('SWITCH_MESSAGE');
-                    if ($switch_message) {
-                        echo htmlspecialchars($switch_message);
-                    }
-                }
-                ?>
                 <div class="spacer">&nbsp;</div>
             </div>
             <div class="spacer">&nbsp;</div>
